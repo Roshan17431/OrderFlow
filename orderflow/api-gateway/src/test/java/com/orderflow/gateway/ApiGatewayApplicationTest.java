@@ -12,7 +12,11 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -114,6 +118,18 @@ class ApiGatewayApplicationTest {
         @Bean
         TestEndpoints testEndpoints() {
             return new TestEndpoints();
+        }
+
+        @Bean
+        @Order(-1)
+        SecurityWebFilterChain phaseOneTestSecurity(ServerHttpSecurity http) {
+            return http
+                    .securityMatcher(ServerWebExchangeMatchers.pathMatchers(
+                            "/test/**",
+                            "/does-not-exist"))
+                    .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                    .authorizeExchange(authorize -> authorize.anyExchange().permitAll())
+                    .build();
         }
     }
 

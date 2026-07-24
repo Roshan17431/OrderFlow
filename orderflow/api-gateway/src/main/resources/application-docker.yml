@@ -4,3 +4,9 @@ eureka:
       defaultZone: ${EUREKA_DEFAULT_ZONE:http://service-registry:8761/eureka/}
   instance:
     prefer-ip-address: true
+
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
