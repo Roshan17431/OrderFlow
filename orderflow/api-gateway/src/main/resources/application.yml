@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: auth-platform
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/api/platform/**
+            - id: auth-api
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/api/auth/**
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
+                allowedMethods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+                allowedHeaders: '*'
+                allowCredentials: true
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  port: 8080
+  shutdown: graceful
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+    healthcheck:
+      enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      rename:
+        '[@timestamp]': timestamp
+        logger_name: logger
+        thread_name: thread
+      add:
+        service: ${spring.application.name}

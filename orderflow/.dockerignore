@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+**/target
+**/build
+**/*.log
+.env
+.env.*
+!.env.example
+node_modules
+**/node_modules
+tmp
+temp
+*.tmp
+.DS_Store

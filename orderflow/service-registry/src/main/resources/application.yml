@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: service-registry
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  port: 8761
+  shutdown: graceful
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    enable-self-preservation: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      rename:
+        '[@timestamp]': timestamp
+        logger_name: logger
+        thread_name: thread
+      add:
+        service: ${spring.application.name}

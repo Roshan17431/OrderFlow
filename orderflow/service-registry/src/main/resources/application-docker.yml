@@ -1,0 +1,6 @@
+eureka:
+  instance:
+    hostname: service-registry
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 5000
