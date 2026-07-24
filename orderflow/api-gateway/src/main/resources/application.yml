@@ -16,6 +16,10 @@ spring:
               uri: lb://AUTH-SERVICE
               predicates:
                 - Path=/api/auth/**
+            - id: security-api
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/api/security/**
           globalcors:
             cors-configurations:
               '[/**]':
@@ -25,6 +29,13 @@ spring:
                 allowCredentials: true
   lifecycle:
     timeout-per-shutdown-phase: 20s
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: 3s
+      timeout: 3s
 
 server:
   port: 8080
@@ -51,6 +62,11 @@ management:
       probes:
         enabled: true
       show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,redis
   health:
     livenessstate:
       enabled: true
@@ -76,3 +92,8 @@ logging:
         thread_name: thread
       add:
         service: ${spring.application.name}
+
+app:
+  security:
+    issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+    jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
