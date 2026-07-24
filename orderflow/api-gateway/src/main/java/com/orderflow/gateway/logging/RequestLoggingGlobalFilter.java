@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -46,7 +47,9 @@ public class RequestLoggingGlobalFilter implements GlobalFilter, WebFilter, Orde
             long durationMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAt);
             HttpStatusCode statusCode = exchange.getResponse().getStatusCode();
             int status = statusCode == null
-                    ? HttpStatus.INTERNAL_SERVER_ERROR.value()
+                    ? signalType == SignalType.ON_ERROR
+                            ? HttpStatus.INTERNAL_SERVER_ERROR.value()
+                            : HttpStatus.OK.value()
                     : statusCode.value();
             String correlationId =
                     exchange.getAttribute(GatewayCorrelationContext.EXCHANGE_ATTRIBUTE);

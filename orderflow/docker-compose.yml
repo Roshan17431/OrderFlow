@@ -117,12 +117,19 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_JWT_KEY_ID: ${APP_JWT_KEY_ID:-orderflow-docker-local}
+      APP_JWT_ALLOW_EPHEMERAL_KEYS: "true"
+      APP_AUTH_REFRESH_TOKEN_TTL: ${APP_AUTH_REFRESH_TOKEN_TTL:-14d}
+      APP_AUTH_REFRESH_COOKIE_NAME: ${APP_AUTH_REFRESH_COOKIE_NAME:-ORDERFLOW_REFRESH}
+      APP_AUTH_REFRESH_COOKIE_SECURE: ${APP_AUTH_REFRESH_COOKIE_SECURE:-false}
+      APP_AUTH_REFRESH_COOKIE_SAME_SITE: ${APP_AUTH_REFRESH_COOKIE_SAME_SITE:-Strict}
+      APP_AUTH_LOGIN_MAX_ATTEMPTS: ${APP_AUTH_LOGIN_MAX_ATTEMPTS:-5}
+      APP_AUTH_LOGIN_ATTEMPT_WINDOW: ${APP_AUTH_LOGIN_ATTEMPT_WINDOW:-15m}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_healthy
-      kafka:
         condition: service_healthy
       service-registry:
         condition: service_healthy
@@ -148,8 +155,15 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
       APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
     depends_on:
+      redis:
+        condition: service_healthy
       service-registry:
         condition: service_healthy
       auth-service:

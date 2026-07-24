@@ -1,212 +1,190 @@
 # OrderFlow
 
-OrderFlow is a production-style, event-driven microservices learning platform for
-e-commerce and delivery workflows. Phase 1 establishes the runtime, observability,
-data, error-handling, and testing foundation on which later business capabilities
-can be added.
-
-Phase 1 intentionally contains no users, authentication, authorization, JWT,
-OAuth2, roles, products, carts, orders, inventory, payments, delivery,
-notifications, or analytics.
+OrderFlow is a Java 21/Spring microservice learning platform. Phase 2 extends the
+Phase 1 runtime with registration, login, RSA-signed access tokens, opaque
+rotating refresh tokens, logout and logout-all revocation, role authorization,
+CSRF protection, login throttling, and optional Google/GitHub OAuth2 login.
+Products, carts, inventory, orders, payments, delivery, notifications, and
+analytics remain intentionally deferred.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    Client["Client"] -->|HTTP + X-Correlation-ID| Gateway["API Gateway :8080"]
-    Gateway -->|Eureka lookup + load balancing| Auth["Auth service foundation :8081"]
-    Gateway --> Eureka["Eureka registry :8761"]
-    Auth --> Eureka
+    Client["Browser or API client"] -->|HTTPS, JWT, CSRF cookie/header| Gateway["API Gateway :8080"]
+    Gateway -->|RS256 via cached JWK| JWK["Auth public JWK"]
+    Gateway -->|Reactive revocation checks| Redis["Redis :6379"]
+    Gateway -->|Eureka route| Auth["Auth service :8081"]
+    Auth -->|Independent JWT and authorization checks| Auth
     Auth --> PostgreSQL["PostgreSQL :5432"]
-    Auth --> Redis["Redis :6379"]
-    Auth --> Kafka["Kafka KRaft :9092 / :29092"]
+    Auth --> Redis
+    Auth -. optional audit transport .-> Kafka["Kafka :9092"]
+    Gateway --> Eureka["Eureka :8761"]
+    Auth --> Eureka
 ```
 
-The public routes are explicit:
-
-- `/api/platform/**` routes to `AUTH-SERVICE`.
-- `/api/auth/**` is reserved for Phase 2 and also routes to `AUTH-SERVICE`.
-- Eureka discovery-locator routes are not exposed.
+The gateway removes client-supplied identity headers, validates RS256 tokens,
+issuer, expiry, roles, revoked `jti` values, and user token versions, then routes
+to the MVC auth service. The auth service independently repeats token,
+revocation, and method-level role checks; downstream identity is derived from
+the JWT, never from request parameters or identity headers.
 
 ## Modules
 
 | Module | Purpose |
 | --- | --- |
-| `platform-contracts` | Framework-light error and correlation contracts |
-| `service-registry` | Eureka server and operational endpoints |
-| `api-gateway` | Reactive routing, correlation, CORS, logging, and safe errors |
-| `auth-service` | MVC/JPA infrastructure foundation and platform diagnostics |
+| `platform-contracts` | Shared `ApiError`, error codes, and correlation contracts |
+| `service-registry` | Eureka registry and operational endpoints |
+| `api-gateway` | Reactive routing, JWT/JWK validation, Redis revocation, CORS, and safe errors |
+| `auth-service` | Users, OAuth accounts, credentials, tokens, sessions, roles, and audit events |
 
-Only these four modules participate in the Maven reactor.
+## Prerequisites and commands
 
-## Prerequisites
-
-- A Java 21-compatible JDK (the compiler is configured with `release=21`)
-- Docker Desktop or another Docker Engine with Compose v2
-- `curl`
-- Bash
-
-Maven does not need to be installed; the repository contains Maven Wrapper.
-Docker must be running for Testcontainers and the full stack.
-
-The requested Spring Cloud version `2025.0.2.1` is not published in Maven
-Central. This build uses the released, Spring Boot 3.5-compatible `2025.0.2` BOM;
-see the root POM comment.
-
-## Ports
-
-| Component | Host port | Container address |
-| --- | ---: | --- |
-| API Gateway | 8080 | `api-gateway:8080` |
-| Auth service | 8081 | `auth-service:8081` |
-| Eureka dashboard | 8761 | `service-registry:8761` |
-| PostgreSQL | 5432 | `postgres:5432` |
-| Redis | 6379 | `redis:6379` |
-| Kafka external listener | 9092 | `localhost:9092` |
-| Kafka internal listener | — | `kafka:29092` |
-
-## Environment
-
-Copy `.env.example` to `.env` only for local overrides. `.env` files are ignored.
-The committed password is explicitly a local-development default, not a secret.
-
-| Variable | Default | Used by |
-| --- | --- | --- |
-| `POSTGRES_HOST` | `localhost` (`postgres` in Docker) | Auth service |
-| `POSTGRES_PORT` | `5432` | Auth service / Compose |
-| `POSTGRES_DB` | `orderflow_auth` | PostgreSQL / Auth service |
-| `POSTGRES_USER` | `orderflow` | PostgreSQL / Auth service |
-| `POSTGRES_PASSWORD` | `orderflow_local_password` | Local development only |
-| `REDIS_HOST` | `localhost` (`redis` in Docker) | Auth service |
-| `REDIS_PORT` | `6379` | Redis / Auth service |
-| `REDIS_PASSWORD` | empty | Redis / Auth service |
-| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:9092` (`kafka:29092` in Docker) | Auth service |
-| `EUREKA_DEFAULT_ZONE` | `http://localhost:8761/eureka/` | Clients |
-| `APP_CORS_ALLOWED_ORIGINS` | localhost ports 3000 and 5173 | Gateway |
-
-## Build and test
+- Java 21-compatible JDK
+- Docker Engine with Compose v2
+- Bash and `curl`
 
 ```bash
 ./mvnw clean verify
-```
-
-This runs unit tests with Surefire and `*IT` integration tests with Failsafe.
-`InfrastructureIT` uses PostgreSQL, Redis, and Kafka Testcontainers and disables
-Eureka. It is skipped only when no Docker environment is available.
-
-To validate the deployment model separately:
-
-```bash
 docker compose config
-```
-
-## Run locally
-
-For a complete containerized environment:
-
-```bash
 ./scripts/dev-up.sh
 ./scripts/smoke-test.sh
 ./scripts/dev-down.sh
 ```
 
-`dev-up.sh` builds all application images, starts the dependencies, waits for
-readiness and a successful Eureka-backed gateway route, then prints the service
-URLs. `dev-down.sh` retains persistent data.
+Maven Wrapper is committed. `*IT` tests use isolated PostgreSQL/Redis/Kafka
+Testcontainers and do not depend on a running Compose stack. `smoke-test.sh`
+preserves Phase 1 checks and adds registration, JWT structure, `/me`, secure
+ping, customer/admin authorization, refresh rotation/reuse rejection, logout,
+access revocation, and correlation checks. It never prints full tokens.
 
-To run applications from the host instead, first start PostgreSQL, Redis, Kafka,
-and Eureka on the host-default ports, then run the desired module with its
-default configuration. The `docker` profile switches addresses to Compose
-service names.
+## Authentication flows
 
-## Operational URLs
+Registration normalizes the email, enforces a 12–128-character password policy,
+hashes it with BCrypt cost 12, assigns only `CUSTOMER`, creates a Redis refresh
+session, and returns a 10-minute access token plus an HttpOnly refresh cookie.
+Login uses equivalent generic behavior for unknown email and wrong password and
+applies an atomic Redis attempt limit.
 
-For each application, the following paths are available:
+Access tokens use RS256 and carry `iss`, `sub`, `iat`, `exp`, `jti`, `email`,
+`roles`, `session_id`, and `token_version`. Refresh tokens contain at least 256
+random bits; only their SHA-256 hashes and safe session metadata are stored.
+Every refresh rotates the token atomically. Reuse of a rotated token revokes the
+whole family. Logout revokes the refresh token and blacklists the access `jti`;
+logout-all also increments the persistent user token version and revokes every
+session.
 
-- `/actuator/health`
-- `/actuator/health/liveness`
-- `/actuator/health/readiness`
-- `/actuator/info`
-- `/actuator/prometheus`
+Browser writes require the `XSRF-TOKEN` cookie value in `X-XSRF-TOKEN`. The
+refresh credential remains in a separate HttpOnly cookie. Call
+`GET /api/auth/csrf` before registration, login, refresh, logout, logout-all, or
+OAuth code exchange.
 
-Examples:
+OAuth2 is inactive by default. With the `oauth2` profile and provider
+credentials, Spring Security enforces provider state. Google and GitHub emails
+must be trustworthy and verified; GitHub's primary verified email is retrieved
+from its email API. A successful callback redirects with only a single-use,
+60-second exchange code. OrderFlow access or refresh tokens never appear in the
+redirect URL.
 
-- Gateway health: <http://localhost:8080/actuator/health>
-- Auth readiness: <http://localhost:8081/actuator/health/readiness>
-- Registry Prometheus metrics: <http://localhost:8761/actuator/prometheus>
-- Eureka dashboard: <http://localhost:8761>
+## Key endpoints
 
-Environment and bean-dump actuator endpoints are not exposed. Health details are
-not returned to unauthenticated callers. Auth readiness includes PostgreSQL,
-Redis, Kafka, and Spring readiness state.
+| Method | Path | Access |
+| --- | --- | --- |
+| GET | `/api/auth/csrf` | Public |
+| POST | `/api/auth/register` | Public + CSRF |
+| POST | `/api/auth/login` | Public + CSRF |
+| POST | `/api/auth/refresh` | Refresh cookie + CSRF |
+| POST | `/api/auth/logout` | Bearer + CSRF |
+| POST | `/api/auth/logout-all` | Bearer + CSRF |
+| GET | `/api/auth/me` | Bearer |
+| GET | `/api/auth/.well-known/jwks.json` | Public key material only |
+| POST | `/api/auth/oauth2/exchange` | One-time code + CSRF |
+| GET | `/api/security/authenticated` | Any authenticated user |
+| GET | `/api/security/customer` | `CUSTOMER` or `ADMIN` |
+| GET | `/api/security/admin` | `ADMIN` |
+| GET | `/api/platform/ping` and `/info` | Public Phase 1 endpoints |
+| GET | `/api/platform/secure-ping` | Bearer |
 
-## Correlation IDs
+## Curl example
 
-The gateway accepts `X-Correlation-ID` only when the trimmed value is 1–128
-characters and contains letters, digits, hyphens, underscores, periods, or
-colons. Missing or unsafe values are replaced with a UUID. The final value is:
+The smoke script is the executable reference. A minimal local sequence is:
 
-1. attached to the downstream request;
-2. stored in Reactor context at the gateway;
-3. stored as a request attribute and in MDC at the MVC service;
-4. returned in the response header and response JSON;
-5. included in structured request-completion logs.
-
-Headers, cookies, tokens, passwords, and bodies are never included in completion
-logs.
-
-## API error contract
-
-All handled API errors use the shared shape:
-
-```json
-{
-  "timestamp": "2026-07-24T01:00:00Z",
-  "status": 404,
-  "error": "Not Found",
-  "code": "RESOURCE_NOT_FOUND",
-  "message": "The requested resource was not found",
-  "path": "/unknown",
-  "correlationId": "demo-correlation-123",
-  "fieldErrors": []
-}
+```bash
+curl -sS -c cookies.txt http://localhost:8080/api/auth/csrf > csrf.json
+# Read the JSON "token" value without printing credentials in shared logs.
+curl -sS -b cookies.txt -c cookies.txt \
+  -H 'Content-Type: application/json' \
+  -H "X-XSRF-TOKEN: ${CSRF_TOKEN}" \
+  --data '{"email":"customer@example.com","password":"A long local password!","displayName":"Customer"}' \
+  http://localhost:8080/api/auth/register
 ```
 
-Client responses never contain stack traces, Java class names, SQL messages, or
-raw unexpected exception messages. See
-[`docs/api-error-contract.md`](docs/api-error-contract.md).
+Do not commit `cookies.txt`, copied tokens, `.env`, private PEM files, or provider
+credentials.
 
-## Smoke tests
+## Configuration and secrets
 
-`./scripts/smoke-test.sh` waits with a bounded timeout and verifies all core
-health endpoints, Eureka registration, gateway-to-auth routing, the Flyway-backed
-metadata endpoint, and both supplied and generated correlation IDs. It uses
-`jq` when present and a standard `sed` fallback otherwise.
+`.env.example` contains local placeholders only; `.env` is ignored. Local
+Compose explicitly generates one ephemeral RSA-2048 key pair per auth-service
+process. Restarting it invalidates existing tokens. Production must set
+`APP_JWT_ALLOW_EPHEMERAL_KEYS=false`, mount protected PKCS#8 private and X.509
+public PEM files, and set `APP_AUTH_REFRESH_COOKIE_SECURE=true`.
 
-## Troubleshooting
+| Variable | Local default | Purpose |
+| --- | --- | --- |
+| `APP_JWT_ISSUER` | `https://orderflow.local` | Exact token issuer in both services |
+| `APP_JWT_KEY_ID` | `orderflow-docker-local` | JWK/JWT key identifier |
+| `APP_JWT_ACCESS_TOKEN_TTL` | `10m` | Access-token lifetime |
+| `APP_JWT_ALLOW_EPHEMERAL_KEYS` | Docker only: `true` | Explicit local key generation |
+| `APP_JWT_PRIVATE_KEY_LOCATION` | empty | Production PKCS#8 PEM resource |
+| `APP_JWT_PUBLIC_KEY_LOCATION` | empty | Production X.509 PEM resource |
+| `APP_AUTH_JWK_SET_URI` | auth service JWK URL | Gateway validation source |
+| `APP_AUTH_REFRESH_TOKEN_TTL` | `14d` | Refresh session lifetime |
+| `APP_AUTH_REFRESH_COOKIE_NAME` | `ORDERFLOW_REFRESH` | HttpOnly cookie name |
+| `APP_AUTH_REFRESH_COOKIE_SECURE` | local `false` | Must be `true` behind production HTTPS |
+| `APP_AUTH_REFRESH_COOKIE_SAME_SITE` | `Strict` | Cookie cross-site policy |
+| `APP_AUTH_LOGIN_MAX_ATTEMPTS` | `5` | Login threshold |
+| `APP_AUTH_LOGIN_ATTEMPT_WINDOW` | `15m` | Attempt counter TTL |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | empty | Optional OAuth profile |
+| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | empty | Optional OAuth profile |
+| `APP_BOOTSTRAP_ADMIN_ENABLED` | `false` | Explicit local-only admin bootstrap |
 
-- **Docker connection fails:** start Docker Desktop and confirm `docker version`
-  reports a server.
-- **A host port is occupied:** override its variable in a local `.env`, then use
-  the same port variable when running smoke tests.
-- **Auth readiness is DOWN:** inspect `docker compose logs auth-service` and the
-  PostgreSQL, Redis, and Kafka health states with `docker compose ps`.
-- **Kafka is slow on first start:** allow the configured startup window; the
-  image initializes a single-node KRaft log on its first run.
-- **Stale dependency state:** stop the stack, remove only OrderFlow volumes, and
-  rebuild:
+Database, Redis, Kafka, Eureka, redirect, and port variables are documented in
+`.env.example`. No administrator is created by default. When the optional
+bootstrap is enabled, all values are required and the same password policy and
+BCrypt hashing apply. Production administration should use a dedicated
+provisioning process.
 
-  ```bash
-  ./scripts/clean-environment.sh
-  ./scripts/dev-up.sh
-  ```
+## Operations and security notes
 
-`clean-environment.sh` permanently removes this Compose project's PostgreSQL,
-Redis, and Kafka volumes.
+Health, liveness, readiness, info, and Prometheus endpoints remain available.
+Auth readiness includes PostgreSQL, Redis, Flyway completion, and Spring
+readiness; optional Kafka audit delivery does not block login. Gateway readiness
+includes Redis because protected authorization fails closed when revocation
+state cannot be checked. Environment and bean-dump actuator endpoints are not
+exposed.
 
-## Phase 2 preview
+All handled failures use the shared `ApiError` and preserve
+`X-Correlation-ID`. Request logs and security audit events exclude passwords,
+authorization headers, cookies, tokens, OAuth provider tokens, raw IP addresses,
+and key material. Audit output is structured logging; Kafka remains a
+noncritical future transport.
 
-Phase 2 can add users, roles, registration, login, password hashing, JWT access
-tokens, refresh tokens, OAuth2 integration, logout, and security rules inside the
-existing service and gateway boundaries. None of those domain or security
-features are implemented in Phase 1.
+Current limitations: local ephemeral keys are not suitable for multi-replica
+deployments, key rotation is not automated, account recovery/MFA/email
+verification/password creation for OAuth-only users are deferred, and provider
+end-to-end login requires real credentials and provider configuration.
+
+Detailed design:
+
+- [Phase 2 authentication](docs/phase-2-authentication.md)
+- [JWT and key management](docs/jwt-and-key-management.md)
+- [Refresh-token security](docs/refresh-token-security.md)
+- [OAuth2 login](docs/oauth2-login.md)
+- [API error contract](docs/api-error-contract.md)
+
+## Phase 3 preview
+
+Phase 3 can build business services on these identity and authorization
+boundaries. Products, carts, inventory, orders, payments, delivery,
+notifications, and analytics are not implemented in Phase 2.
