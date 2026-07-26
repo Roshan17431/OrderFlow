@@ -62,9 +62,8 @@ history and creates `platform_metadata`; Hibernate is strictly set to `validate`
 The controller reads a response DTO through a service and repository, never the
 JPA entity itself.
 
-Redis and Kafka are connected foundations for later phases. Phase 1 deliberately
-creates no cache-backed business behavior and no domain topics or consumers.
-Their connectivity is tested and included in auth readiness.
+Redis and Kafka were connected foundations in Phase 1. Phase 2 now uses Redis
+for security state; Kafka remains optional and noncritical for authentication.
 
 Named Compose volumes preserve PostgreSQL, Redis, and Kafka data between normal
 shutdowns. The explicit clean script removes only this project's containers and
@@ -73,10 +72,10 @@ volumes.
 ## Health and observability
 
 All applications expose health, liveness, readiness, info, metrics, and
-Prometheus endpoints. The auth service readiness group combines Spring readiness
-state with PostgreSQL, Redis, and a bounded Kafka Admin API check. Liveness avoids
-external dependencies so a dependency outage does not cause an unhealthy restart
-loop.
+Prometheus endpoints. In Phase 2 the auth service readiness group combines
+Spring readiness state with PostgreSQL and Redis. Kafka availability does not
+block login. Liveness avoids external dependencies so a dependency outage does
+not cause an unhealthy restart loop.
 
 Spring Boot structured logging emits JSON console records with timestamp, level,
 service, logger, thread, message, and available MDC fields. Gateway and MVC

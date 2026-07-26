@@ -8,6 +8,11 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:29092}
 
+app:
+  security:
+    jwt:
+      allow-ephemeral-keys: true
+
 eureka:
   client:
     service-url:

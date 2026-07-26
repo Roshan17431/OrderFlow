@@ -59,7 +59,7 @@ management:
         liveness:
           include: livenessState,ping
         readiness:
-          include: readinessState,db,redis,kafka
+          include: readinessState,db,redis
   health:
     livenessstate:
       enabled: true
@@ -85,3 +85,35 @@ logging:
         thread_name: thread
       add:
         service: ${spring.application.name}
+
+app:
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      key-id: ${APP_JWT_KEY_ID:orderflow-local}
+      access-token-ttl: ${APP_JWT_ACCESS_TOKEN_TTL:10m}
+      allow-ephemeral-keys: ${APP_JWT_ALLOW_EPHEMERAL_KEYS:false}
+      private-key-location: ${APP_JWT_PRIVATE_KEY_LOCATION:}
+      public-key-location: ${APP_JWT_PUBLIC_KEY_LOCATION:}
+      minimum-key-size: 2048
+    refresh:
+      token-ttl: ${APP_AUTH_REFRESH_TOKEN_TTL:14d}
+      token-bytes: 32
+      oauth-exchange-ttl: 60s
+    cookies:
+      refresh-cookie-name: ${APP_AUTH_REFRESH_COOKIE_NAME:ORDERFLOW_REFRESH}
+      secure: ${APP_AUTH_REFRESH_COOKIE_SECURE:false}
+      same-site: ${APP_AUTH_REFRESH_COOKIE_SAME_SITE:Strict}
+      path: /api/auth
+    login-attempts:
+      max-attempts: ${APP_AUTH_LOGIN_MAX_ATTEMPTS:5}
+      window: ${APP_AUTH_LOGIN_ATTEMPT_WINDOW:15m}
+    oauth2:
+      success-redirect-uri: ${APP_OAUTH2_SUCCESS_REDIRECT_URI:http://localhost:5173/oauth2/success}
+      failure-redirect-uri: ${APP_OAUTH2_FAILURE_REDIRECT_URI:http://localhost:5173/oauth2/failure}
+  bootstrap:
+    admin:
+      enabled: ${APP_BOOTSTRAP_ADMIN_ENABLED:false}
+      email: ${APP_BOOTSTRAP_ADMIN_EMAIL:}
+      password: ${APP_BOOTSTRAP_ADMIN_PASSWORD:}
+      display-name: ${APP_BOOTSTRAP_ADMIN_DISPLAY_NAME:}
