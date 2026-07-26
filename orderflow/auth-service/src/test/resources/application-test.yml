@@ -8,3 +8,8 @@ spring:
   cloud:
     discovery:
       enabled: false
+
+app:
+  security:
+    jwt:
+      allow-ephemeral-keys: true

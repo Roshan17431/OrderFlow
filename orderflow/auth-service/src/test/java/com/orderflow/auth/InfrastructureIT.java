@@ -73,12 +73,16 @@ class InfrastructureIT {
         Integer migrationCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM flyway_schema_history WHERE success = true",
                 Integer.class);
-        assertThat(migrationCount).isGreaterThanOrEqualTo(1);
+        assertThat(migrationCount).isGreaterThanOrEqualTo(2);
 
         PlatformMetadata metadata = metadataRepository.findByServiceName("auth-service")
                 .orElseThrow();
         assertThat(metadata.getSchemaVersion()).isEqualTo("1");
         assertThat(metadata.getCreatedAt()).isNotNull();
+        assertThat(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables "
+                        + "WHERE table_name IN ('users', 'user_roles', 'oauth_accounts')",
+                Integer.class)).isEqualTo(3);
 
         redisTemplate.opsForValue().set("orderflow:test", "ready", Duration.ofSeconds(30));
         assertThat(redisTemplate.opsForValue().get("orderflow:test")).isEqualTo("ready");
