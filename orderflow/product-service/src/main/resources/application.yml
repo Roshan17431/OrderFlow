@@ -1,0 +1,106 @@
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:postgresql://${PRODUCT_POSTGRES_HOST:localhost}:${PRODUCT_POSTGRES_PORT:5432}/${PRODUCT_POSTGRES_DB:orderflow_product}
+    username: ${PRODUCT_POSTGRES_USER:orderflow_product}
+    password: ${PRODUCT_POSTGRES_PASSWORD:orderflow_product_local_password}
+    hikari:
+      initialization-fail-timeout: 60000
+  flyway:
+    enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: 3s
+      timeout: 3s
+  cache:
+    type: redis
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  port: 8082
+  shutdown: graceful
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+    healthcheck:
+      enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+    redis:
+      enabled: false
+  metrics:
+    enable:
+      cache: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      rename:
+        '[@timestamp]': timestamp
+        logger_name: logger
+        thread_name: thread
+      add:
+        service: ${spring.application.name}
+
+app:
+  catalog:
+    default-currency: ${APP_CATALOG_DEFAULT_CURRENCY:USD}
+    supported-currencies: ${APP_CATALOG_SUPPORTED_CURRENCIES:USD,EUR,GBP,INR}
+    max-page-size: ${APP_CATALOG_MAX_PAGE_SIZE:100}
+    cache:
+      namespace: orderflow:catalog:v1
+      product-ttl: ${APP_CATALOG_PRODUCT_CACHE_TTL:5m}
+      search-ttl: ${APP_CATALOG_SEARCH_CACHE_TTL:2m}
+      category-ttl: ${APP_CATALOG_CATEGORY_CACHE_TTL:10m}
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
