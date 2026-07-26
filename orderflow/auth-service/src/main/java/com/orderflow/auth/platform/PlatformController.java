@@ -3,6 +3,9 @@ package com.orderflow.auth.platform;
 import com.orderflow.auth.correlation.CorrelationRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
+import java.util.List;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +34,21 @@ public class PlatformController {
                 metadata.schemaVersion(),
                 metadata.createdAt(),
                 correlationId(request));
+    }
+
+    @GetMapping("/secure-ping")
+    public SecurePingResponse securePing(
+            @AuthenticationPrincipal Jwt jwt,
+            HttpServletRequest request) {
+        List<String> roles = jwt.getClaimAsStringList("roles");
+        return new SecurePingResponse(
+                SERVICE_NAME,
+                "UP",
+                jwt.getSubject(),
+                jwt.getClaimAsString("email"),
+                roles == null ? List.of() : roles,
+                correlationId(request),
+                Instant.now());
     }
 
     private String correlationId(HttpServletRequest request) {

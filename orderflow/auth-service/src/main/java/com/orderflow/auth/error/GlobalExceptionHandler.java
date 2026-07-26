@@ -10,8 +10,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -96,6 +98,70 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND,
                 ErrorCode.RESOURCE_NOT_FOUND,
                 exception.getMessage(),
+                request,
+                List.of());
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ApiError> handleDuplicateEmail(
+            DuplicateEmailException exception,
+            HttpServletRequest request) {
+        return create(
+                HttpStatus.CONFLICT,
+                ErrorCode.EMAIL_ALREADY_REGISTERED,
+                exception.getMessage(),
+                request,
+                List.of());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> handleAuthentication(
+            AuthenticationException exception,
+            HttpServletRequest request) {
+        return create(
+                HttpStatus.UNAUTHORIZED,
+                exception.getCode(),
+                exception.getMessage(),
+                request,
+                List.of());
+    }
+
+    @ExceptionHandler(LoginThrottledException.class)
+    public ResponseEntity<ApiError> handleLoginThrottled(
+            LoginThrottledException exception,
+            HttpServletRequest request) {
+        ResponseEntity<ApiError> response = create(
+                HttpStatus.TOO_MANY_REQUESTS,
+                ErrorCode.TOO_MANY_LOGIN_ATTEMPTS,
+                exception.getMessage(),
+                request,
+                List.of());
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .header(HttpHeaders.RETRY_AFTER, Long.toString(exception.getRetryAfterSeconds()))
+                .body(response.getBody());
+    }
+
+    @ExceptionHandler(SecurityStateUnavailableException.class)
+    public ResponseEntity<ApiError> handleSecurityStateUnavailable(
+            SecurityStateUnavailableException exception,
+            HttpServletRequest request) {
+        LOGGER.warn("Security state could not be verified");
+        return create(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                ErrorCode.SECURITY_STATE_UNAVAILABLE,
+                "Security state is temporarily unavailable.",
+                request,
+                List.of());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiError> handleAccessDenied(
+            AccessDeniedException exception,
+            HttpServletRequest request) {
+        return create(
+                HttpStatus.FORBIDDEN,
+                ErrorCode.INSUFFICIENT_PERMISSIONS,
+                "You do not have permission to access this resource.",
                 request,
                 List.of());
     }
