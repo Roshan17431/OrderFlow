@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PRODUCT_POSTGRES_HOST:postgres}:${PRODUCT_POSTGRES_PORT:5432}/${PRODUCT_POSTGRES_DB:orderflow_product}
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://service-registry:8761/eureka/}
+  instance:
+    prefer-ip-address: true

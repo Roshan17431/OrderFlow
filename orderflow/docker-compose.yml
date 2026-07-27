@@ -73,12 +73,33 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1
+        - /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:29092 --list >/dev/null 2>&1
       interval: 10s
       timeout: 10s
       retries: 20
       start_period: 20s
     restart: unless-stopped
+
+  product-db-bootstrap:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-orderflow_auth}
+      POSTGRES_USER: ${POSTGRES_USER:-orderflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-orderflow_local_password}
+      PRODUCT_POSTGRES_DB: ${PRODUCT_POSTGRES_DB:-orderflow_product}
+      PRODUCT_POSTGRES_USER: ${PRODUCT_POSTGRES_USER:-orderflow_product}
+      PRODUCT_POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD:-orderflow_product_local_password}
+    volumes:
+      - ./scripts/bootstrap-product-database.sh:/opt/orderflow/bootstrap-product-database.sh:ro
+    entrypoint:
+      - /bin/sh
+      - /opt/orderflow/bootstrap-product-database.sh
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
 
   service-registry:
     build:
@@ -148,6 +169,95 @@ services:
       start_period: 30s
     restart: unless-stopped
 
+  product-service:
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      PRODUCT_POSTGRES_HOST: postgres
+      PRODUCT_POSTGRES_PORT: 5432
+      PRODUCT_POSTGRES_DB: ${PRODUCT_POSTGRES_DB:-orderflow_product}
+      PRODUCT_POSTGRES_USER: ${PRODUCT_POSTGRES_USER:-orderflow_product}
+      PRODUCT_POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD:-orderflow_product_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_CATALOG_DEFAULT_CURRENCY: ${APP_CATALOG_DEFAULT_CURRENCY:-USD}
+      APP_CATALOG_SUPPORTED_CURRENCIES: ${APP_CATALOG_SUPPORTED_CURRENCIES:-USD,EUR,GBP,INR}
+      APP_CATALOG_MAX_PAGE_SIZE: ${APP_CATALOG_MAX_PAGE_SIZE:-100}
+      APP_CATALOG_PRODUCT_CACHE_TTL: ${APP_CATALOG_PRODUCT_CACHE_TTL:-5m}
+      APP_CATALOG_SEARCH_CACHE_TTL: ${APP_CATALOG_SEARCH_CACHE_TTL:-2m}
+      APP_CATALOG_CATEGORY_CACHE_TTL: ${APP_CATALOG_CATEGORY_CACHE_TTL:-10m}
+    depends_on:
+      product-db-bootstrap:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "${PRODUCT_SERVICE_PORT:-8082}:8082"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8082/actuator/health/readiness
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  cart-service:
+    build:
+      context: .
+      dockerfile: cart-service/Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_PRODUCT_CLIENT_BASE_URL: http://PRODUCT-SERVICE
+      APP_PRODUCT_CLIENT_CONNECT_TIMEOUT: ${APP_PRODUCT_CLIENT_CONNECT_TIMEOUT:-2s}
+      APP_PRODUCT_CLIENT_READ_TIMEOUT: ${APP_PRODUCT_CLIENT_READ_TIMEOUT:-3s}
+      APP_CART_TTL: ${APP_CART_TTL:-30d}
+      APP_CART_MAX_DISTINCT_ITEMS: ${APP_CART_MAX_DISTINCT_ITEMS:-100}
+      APP_CART_MAX_QUANTITY_PER_ITEM: ${APP_CART_MAX_QUANTITY_PER_ITEM:-99}
+    depends_on:
+      redis:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      product-service:
+        condition: service_healthy
+    ports:
+      - "${CART_SERVICE_PORT:-8083}:8083"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8083/actuator/health/readiness
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
   api-gateway:
     build:
       context: .
@@ -167,6 +277,10 @@ services:
       service-registry:
         condition: service_healthy
       auth-service:
+        condition: service_healthy
+      product-service:
+        condition: service_healthy
+      cart-service:
         condition: service_healthy
     ports:
       - "${API_GATEWAY_PORT:-8080}:8080"
