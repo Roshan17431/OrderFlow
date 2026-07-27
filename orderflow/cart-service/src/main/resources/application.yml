@@ -1,0 +1,106 @@
+spring:
+  application:
+    name: cart-service
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: 3s
+      timeout: 3s
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  port: 8083
+  shutdown: graceful
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+    healthcheck:
+      enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,redis
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      rename:
+        '[@timestamp]': timestamp
+        logger_name: logger
+        thread_name: thread
+      add:
+        service: ${spring.application.name}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      product-service:
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+  retry:
+    instances:
+      product-service:
+        max-attempts: 2
+        wait-duration: 200ms
+
+app:
+  cart:
+    ttl: ${APP_CART_TTL:30d}
+    max-distinct-items: ${APP_CART_MAX_DISTINCT_ITEMS:100}
+    max-quantity-per-item: ${APP_CART_MAX_QUANTITY_PER_ITEM:99}
+    key-prefix: "orderflow:cart:"
+  clients:
+    product:
+      base-url: ${APP_PRODUCT_CLIENT_BASE_URL:http://PRODUCT-SERVICE}
+      connect-timeout: ${APP_PRODUCT_CLIENT_CONNECT_TIMEOUT:2s}
+      read-timeout: ${APP_PRODUCT_CLIENT_READ_TIMEOUT:3s}
+      discovery-enabled: ${APP_PRODUCT_CLIENT_DISCOVERY_ENABLED:true}
+      resilience:
+        max-attempts: 2
+        retry-wait: 200ms
+        sliding-window-size: 20
+        minimum-calls: 10
+        failure-rate-threshold: 50
+        open-state-duration: 30s
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
