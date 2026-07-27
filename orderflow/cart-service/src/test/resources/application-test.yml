@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    discovery:
+      enabled: false
+  main:
+    banner-mode: off
+
+eureka:
+  client:
+    enabled: false
+
+app:
+  clients:
+    product:
+      discovery-enabled: false
+  security:
+    jwt:
+      issuer: https://issuer.test
+      jwk-set-uri: http://localhost:1/test-jwks
