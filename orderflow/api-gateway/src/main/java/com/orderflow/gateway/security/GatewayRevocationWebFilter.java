@@ -46,7 +46,7 @@ public class GatewayRevocationWebFilter implements WebFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerWebExchange sanitized = sanitize(exchange);
         String path = sanitized.getRequest().getURI().getPath();
-        if (isPublic(path)) {
+        if (isPublic(path, sanitized.getRequest().getMethod())) {
             return chain.filter(sanitized);
         }
         return sanitized.getPrincipal()
@@ -125,11 +125,16 @@ public class GatewayRevocationWebFilter implements WebFilter, Ordered {
         return exchange.mutate().request(request).build();
     }
 
-    private boolean isPublic(String path) {
+    private boolean isPublic(String path, org.springframework.http.HttpMethod method) {
         return PUBLIC_PATHS.contains(path)
                 || path.startsWith("/actuator/")
                 || path.startsWith("/oauth2/")
-                || path.startsWith("/login/oauth2/");
+                || path.startsWith("/login/oauth2/")
+                || method == org.springframework.http.HttpMethod.GET
+                        && (path.equals("/api/products")
+                                || path.startsWith("/api/products/")
+                                || path.equals("/api/categories")
+                                || path.startsWith("/api/categories/"));
     }
 
     @Override

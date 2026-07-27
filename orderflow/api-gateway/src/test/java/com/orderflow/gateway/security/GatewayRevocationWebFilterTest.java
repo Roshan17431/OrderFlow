@@ -2,6 +2,7 @@ package com.orderflow.gateway.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +56,8 @@ class GatewayRevocationWebFilterTest {
         verify(chain).filter(org.mockito.ArgumentMatchers.argThat(forwarded ->
                 "user-id".equals(forwarded.getRequest().getHeaders()
                         .getFirst("X-Authenticated-User-ID"))
+                        && "Bearer incoming-token".equals(forwarded.getRequest().getHeaders()
+                                .getFirst("Authorization"))
                         && !"attacker".equals(forwarded.getRequest().getHeaders()
                                 .getFirst("X-User-ID"))));
     }
@@ -86,9 +89,29 @@ class GatewayRevocationWebFilterTest {
                 MockServerHttpRequest.get("/api/auth/login"));
         StepVerifier.create(filter.filter(exchange, chain)).verifyComplete();
         verify(chain).filter(org.mockito.ArgumentMatchers.any());
+        verify(redis, never()).hasKey(org.mockito.ArgumentMatchers.anyString());
+    }
+
+    @Test
+    void publicCatalogGetSkipsRedisButProtectedResolutionChecksIt() {
+        ServerWebExchange publicCatalog = exchange("/api/products", 2);
+        StepVerifier.create(filter.filter(publicCatalog, chain)).verifyComplete();
+        verify(redis, never()).hasKey(org.mockito.ArgumentMatchers.anyString());
+
+        when(redis.hasKey("security:revoked:jti:jti")).thenReturn(Mono.just(false));
+        when(values.get("security:user:token-version:user-id")).thenReturn(Mono.just("2"));
+        ServerWebExchange resolution = exchange(
+                MockServerHttpRequest.post("/api/products/resolve"), 2);
+        StepVerifier.create(filter.filter(resolution, chain)).verifyComplete();
+        verify(redis).hasKey("security:revoked:jti:jti");
     }
 
     private ServerWebExchange exchange(String path, long version) {
+        return exchange(MockServerHttpRequest.get(path), version);
+    }
+
+    private ServerWebExchange exchange(
+            MockServerHttpRequest.BaseBuilder<?> request, long version) {
         Jwt jwt = new Jwt(
                 "token",
                 Instant.now(),
@@ -103,8 +126,9 @@ class GatewayRevocationWebFilterTest {
         JwtAuthenticationToken authentication = new JwtAuthenticationToken(
                 jwt,
                 List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
-        return MockServerWebExchange.from(MockServerHttpRequest.get(path)
-                        .header("X-User-ID", "attacker"))
+        return MockServerWebExchange.from(request
+                        .header("X-User-ID", "attacker")
+                        .header("Authorization", "Bearer incoming-token"))
                 .mutate()
                 .principal(Mono.just(authentication))
                 .build();

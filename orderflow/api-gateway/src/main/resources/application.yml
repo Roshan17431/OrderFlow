@@ -20,6 +20,14 @@ spring:
               uri: lb://AUTH-SERVICE
               predicates:
                 - Path=/api/security/**
+            - id: product-api
+              uri: lb://PRODUCT-SERVICE
+              predicates:
+                - Path=/api/products,/api/products/**,/api/categories,/api/categories/**,/api/vendor/products,/api/vendor/products/**,/api/admin/categories,/api/admin/categories/**,/api/admin/products,/api/admin/products/**
+            - id: cart-api
+              uri: lb://CART-SERVICE
+              predicates:
+                - Path=/api/cart,/api/cart/**
           globalcors:
             cors-configurations:
               '[/**]':

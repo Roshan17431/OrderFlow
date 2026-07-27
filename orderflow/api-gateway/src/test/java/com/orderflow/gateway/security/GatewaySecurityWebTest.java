@@ -116,6 +116,61 @@ class GatewaySecurityWebTest {
                 .expectStatus().isOk();
     }
 
+    @Test
+    void catalogReadsArePublicButResolutionAndCartRequireAuthentication() {
+        client.get()
+                .uri("/api/products")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().doesNotExist(HttpHeaders.LOCATION);
+        client.get()
+                .uri("/api/categories")
+                .exchange()
+                .expectStatus().isOk();
+        client.mutateWith(csrf())
+                .post()
+                .uri("/api/products/resolve")
+                .exchange()
+                .expectStatus().isUnauthorized()
+                .expectBody()
+                .jsonPath("$.code").isEqualTo("AUTHENTICATION_REQUIRED");
+        client.get()
+                .uri("/api/cart")
+                .exchange()
+                .expectStatus().isUnauthorized();
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/cart")
+                .exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
+    void vendorAndAdminRoutesEnforceRoles() {
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/vendor/products")
+                .exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(mockJwt()
+                        .jwt(jwt -> jwt
+                                .subject("vendor-id")
+                                .claim("jti", "vendor-jti")
+                                .claim("email", "vendor@example.com")
+                                .claim("roles", java.util.List.of("VENDOR"))
+                                .claim("token_version", 0))
+                        .authorities(new SimpleGrantedAuthority("ROLE_VENDOR")))
+                .get()
+                .uri("/api/vendor/products")
+                .exchange()
+                .expectStatus().isOk();
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/admin/categories")
+                .exchange()
+                .expectStatus().isForbidden();
+    }
+
     private org.springframework.security.test.web.reactive.server
             .SecurityMockServerConfigurers.JwtMutator customerJwt() {
         return mockJwt()
@@ -144,6 +199,31 @@ class GatewaySecurityWebTest {
         @GetMapping("/api/security/admin")
         Mono<Map<String, String>> admin() {
             return Mono.just(Map.of("scope", "admin"));
+        }
+
+        @GetMapping({"/api/products", "/api/categories"})
+        Mono<Map<String, String>> catalog() {
+            return Mono.just(Map.of("scope", "catalog"));
+        }
+
+        @PostMapping("/api/products/resolve")
+        Mono<Map<String, String>> resolve() {
+            return Mono.just(Map.of("scope", "resolve"));
+        }
+
+        @GetMapping("/api/vendor/products")
+        Mono<Map<String, String>> vendor() {
+            return Mono.just(Map.of("scope", "vendor"));
+        }
+
+        @GetMapping("/api/admin/categories")
+        Mono<Map<String, String>> categories() {
+            return Mono.just(Map.of("scope", "admin-categories"));
+        }
+
+        @GetMapping("/api/cart")
+        Mono<Map<String, String>> cart() {
+            return Mono.just(Map.of("scope", "cart"));
         }
     }
 }

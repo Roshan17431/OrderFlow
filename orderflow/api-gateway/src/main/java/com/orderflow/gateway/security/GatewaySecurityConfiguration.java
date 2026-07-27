@@ -97,6 +97,23 @@ public class GatewaySecurityConfiguration {
                         .hasRole("ADMIN")
                         .pathMatchers("/api/security/customer")
                         .hasAnyRole("CUSTOMER", "ADMIN")
+                        .pathMatchers(
+                                org.springframework.http.HttpMethod.GET,
+                                "/api/products",
+                                "/api/products/**",
+                                "/api/categories",
+                                "/api/categories/**")
+                        .permitAll()
+                        .pathMatchers(
+                                org.springframework.http.HttpMethod.POST,
+                                "/api/products/resolve")
+                        .authenticated()
+                        .pathMatchers("/api/vendor/products/**")
+                        .hasAnyRole("VENDOR", "ADMIN")
+                        .pathMatchers("/api/admin/categories/**", "/api/admin/products/**")
+                        .hasRole("ADMIN")
+                        .pathMatchers("/api/cart", "/api/cart/**")
+                        .authenticated()
                         .anyExchange()
                         .authenticated())
                 .exceptionHandling(exceptions -> exceptions
