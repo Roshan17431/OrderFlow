@@ -1,190 +1,197 @@
 # OrderFlow
 
-OrderFlow is a Java 21/Spring microservice learning platform. Phase 2 extends the
-Phase 1 runtime with registration, login, RSA-signed access tokens, opaque
-rotating refresh tokens, logout and logout-all revocation, role authorization,
-CSRF protection, login throttling, and optional Google/GitHub OAuth2 login.
-Products, carts, inventory, orders, payments, delivery, notifications, and
-analytics remain intentionally deferred.
+OrderFlow is a Java 21 and Spring Boot microservice platform. Phase 3 adds a
+vendor-owned product catalog, Redis-backed public catalog caching, and atomic
+shopping carts while preserving the Phase 1 platform and Phase 2 authentication
+foundation.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    Client["Browser or API client"] -->|HTTPS, JWT, CSRF cookie/header| Gateway["API Gateway :8080"]
-    Gateway -->|RS256 via cached JWK| JWK["Auth public JWK"]
-    Gateway -->|Reactive revocation checks| Redis["Redis :6379"]
-    Gateway -->|Eureka route| Auth["Auth service :8081"]
-    Auth -->|Independent JWT and authorization checks| Auth
-    Auth --> PostgreSQL["PostgreSQL :5432"]
+    Client["Browser or API client"] --> Gateway["API Gateway :8080"]
+    Gateway -->|"public catalog and protected management"| Product["Product service :8082"]
+    Gateway -->|"authenticated cart API"| Cart["Cart service :8083"]
+    Gateway --> Auth["Auth service :8081"]
+    Product --> ProductDB[("orderflow_product")]
+    Product --> Redis[("Redis :6379")]
+    Cart --> Redis
+    Cart -->|"batch resolve via Eureka and LoadBalancer"| Product
+    Auth --> AuthDB[("orderflow_auth")]
     Auth --> Redis
-    Auth -. optional audit transport .-> Kafka["Kafka :9092"]
+    Auth -. "optional audit transport" .-> Kafka["Kafka :9092"]
     Gateway --> Eureka["Eureka :8761"]
     Auth --> Eureka
+    Product --> Eureka
+    Cart --> Eureka
 ```
 
-The gateway removes client-supplied identity headers, validates RS256 tokens,
-issuer, expiry, roles, revoked `jti` values, and user token versions, then routes
-to the MVC auth service. The auth service independently repeats token,
-revocation, and method-level role checks; downstream identity is derived from
-the JWT, never from request parameters or identity headers.
+Every protected service independently validates RS256 access tokens, issuer,
+expiry, required claims, revoked `jti` values, and the user's current token
+version. Ownership comes from the JWT subject. Client-supplied identity headers
+are stripped by the gateway and never determine product or cart ownership.
 
-## Modules
+## Modules and ports
 
-| Module | Purpose |
+| Module | Port | Responsibility |
+| --- | ---: | --- |
+| `platform-contracts` | — | Shared `ApiError`, error codes, and correlation contracts |
+| `service-registry` | 8761 | Eureka registry |
+| `api-gateway` | 8080 | Reactive routing, JWT security, CSRF, CORS, safe errors |
+| `auth-service` | 8081 | Users, credentials, roles, JWTs, refresh sessions, OAuth2 |
+| `product-service` | 8082 | Categories, vendor products, lifecycle, search, Redis caching |
+| `cart-service` | 8083 | JWT-owned Redis carts, Lua mutations, product snapshot validation |
+
+PostgreSQL is exposed on 5432, Redis on 6379, and Kafka's host listener on 9092.
+
+## Product catalog
+
+New products begin in `DRAFT`. A vendor may manage only products whose
+`vendorId` equals the JWT subject; an administrator may manage any product.
+Activation requires a valid non-archived product and an active category.
+`INACTIVE` products can be reactivated, while `ARCHIVED` is a permanent normal
+API transition. Public reads return only `ACTIVE` products in `ACTIVE`
+categories. A vendor querying another vendor's private management resource gets
+404; explicit role denial gets 403.
+
+Categories are administrator-managed. The migration seeds stable Electronics,
+Books, Home and Kitchen, and Clothing UUIDs. A category containing active
+products cannot be deactivated and returns `CATEGORY_IN_USE`.
+
+Public endpoints:
+
+| Method | Path | Notes |
+| --- | --- | --- |
+| GET | `/api/products` | Search, category/price/currency filters, allowlisted sort, bounded paging |
+| GET | `/api/products/{id}` | Publicly visible product only |
+| GET | `/api/products/slug/{slug}` | Publicly visible product only |
+| GET | `/api/categories` | Active categories |
+| GET | `/api/categories/{slug}/products` | Public products in an active category |
+
+Protected endpoints:
+
+| Access | Endpoints |
 | --- | --- |
-| `platform-contracts` | Shared `ApiError`, error codes, and correlation contracts |
-| `service-registry` | Eureka registry and operational endpoints |
-| `api-gateway` | Reactive routing, JWT/JWK validation, Redis revocation, CORS, and safe errors |
-| `auth-service` | Users, OAuth accounts, credentials, tokens, sessions, roles, and audit events |
+| Any authenticated user | `POST /api/products/resolve`, all `/api/cart/**` |
+| `VENDOR` or `ADMIN` | all `/api/vendor/products/**` |
+| `ADMIN` | all `/api/admin/categories/**` and `/api/admin/products/**` |
 
-## Prerequisites and commands
+The resolution API accepts at most 100 product IDs and uses one batch database
+query. It reports purchasability without exposing vendor-private fields or
+inventing inventory. Stock and reservations intentionally remain Phase 4 work.
 
-- Java 21-compatible JDK
-- Docker Engine with Compose v2
-- Bash and `curl`
+Product data lives in the separate logical database `orderflow_product`;
+authentication data remains in `orderflow_auth`. Compose can host both on one
+PostgreSQL server for local efficiency. An idempotent bootstrap container also
+creates or repairs the product role/database for existing Phase 2 volumes.
+
+Public detail, slug, search, and category results use JSON Redis caches. Keys
+are under `orderflow:catalog:v1`, nulls are not cached, and default TTLs are
+five minutes for details/slugs, two minutes for searches, and ten minutes for
+categories. Every catalog mutation increments the exact `catalog:version` key.
+Search and category keys include that version, providing broad invalidation
+without `KEYS`, scans, or cache-key enumeration. Targeted product caches are
+evicted directly. Redis cache failures are logged safely; PostgreSQL reads and
+committed writes remain authoritative. Product readiness therefore includes
+PostgreSQL but deliberately excludes optional Redis caching.
+
+## Shopping cart
+
+Cart ownership is always the JWT subject. The service accepts no user ID in a
+path, query, request body, or client identity header. A cart is a namespaced
+Redis hash at `orderflow:cart:{subject}` with reserved metadata fields and one
+JSON item field per product. It never contains access tokens, cookies, or
+refresh credentials.
+
+Add, quantity update, remove, and validation replacement use Redis Lua scripts.
+They atomically enforce currency consistency, quantity and distinct-item limits,
+version increments, timestamps, and TTL refresh. The defaults are 100 distinct
+products, quantity 1–99 per product, and a rolling 30-day TTL. Removing the last
+item deletes the key; reading a missing cart returns an empty HTTP 200 response.
+
+Each item stores a product name, price, currency, and product-version snapshot.
+This keeps stored carts readable while product-service is unavailable.
+`POST /api/cart/validate` resolves all IDs in one request, refreshes snapshots,
+marks unavailable products without deleting them, and reports
+`PRICE_CHANGED`/`PRODUCT_UNAVAILABLE`. Checkout in Phase 4 must repeat
+authoritative product and inventory validation.
+
+Cart-to-product requests use `http://PRODUCT-SERVICE` through Eureka and Spring
+Cloud LoadBalancer. Authorization and the existing correlation ID are
+propagated, while cookies are removed. Configured connection/read timeouts,
+Resilience4j retry, and a circuit breaker protect temporary connection,
+timeout, 502, 503, and 504 failures only. Stored cart reads make no product call.
+Mutations or validation return safe `PRODUCT_SERVICE_UNAVAILABLE` errors when
+resolution cannot be trusted. Cart readiness includes Redis but not
+product-service.
+
+## Build, test, and run
+
+Prerequisites are a Java 21-compatible JDK, Docker Engine with Compose v2,
+Bash, and `curl`. Docker must be available for the PostgreSQL and Redis
+Testcontainers integration suites.
 
 ```bash
-./mvnw clean verify
+./mvnw -B clean verify
 docker compose config
 ./scripts/dev-up.sh
 ./scripts/smoke-test.sh
 ./scripts/dev-down.sh
 ```
 
-Maven Wrapper is committed. `*IT` tests use isolated PostgreSQL/Redis/Kafka
-Testcontainers and do not depend on a running Compose stack. `smoke-test.sh`
-preserves Phase 1 checks and adds registration, JWT structure, `/me`, secure
-ping, customer/admin authorization, refresh rotation/reuse rejection, logout,
-access revocation, and correlation checks. It never prints full tokens.
-
-## Authentication flows
-
-Registration normalizes the email, enforces a 12–128-character password policy,
-hashes it with BCrypt cost 12, assigns only `CUSTOMER`, creates a Redis refresh
-session, and returns a 10-minute access token plus an HttpOnly refresh cookie.
-Login uses equivalent generic behavior for unknown email and wrong password and
-applies an atomic Redis attempt limit.
-
-Access tokens use RS256 and carry `iss`, `sub`, `iat`, `exp`, `jti`, `email`,
-`roles`, `session_id`, and `token_version`. Refresh tokens contain at least 256
-random bits; only their SHA-256 hashes and safe session metadata are stored.
-Every refresh rotates the token atomically. Reuse of a rotated token revokes the
-whole family. Logout revokes the refresh token and blacklists the access `jti`;
-logout-all also increments the persistent user token version and revokes every
-session.
-
-Browser writes require the `XSRF-TOKEN` cookie value in `X-XSRF-TOKEN`. The
-refresh credential remains in a separate HttpOnly cookie. Call
-`GET /api/auth/csrf` before registration, login, refresh, logout, logout-all, or
-OAuth code exchange.
-
-OAuth2 is inactive by default. With the `oauth2` profile and provider
-credentials, Spring Security enforces provider state. Google and GitHub emails
-must be trustworthy and verified; GitHub's primary verified email is retrieved
-from its email API. A successful callback redirects with only a single-use,
-60-second exchange code. OrderFlow access or refresh tokens never appear in the
-redirect URL.
-
-## Key endpoints
-
-| Method | Path | Access |
-| --- | --- | --- |
-| GET | `/api/auth/csrf` | Public |
-| POST | `/api/auth/register` | Public + CSRF |
-| POST | `/api/auth/login` | Public + CSRF |
-| POST | `/api/auth/refresh` | Refresh cookie + CSRF |
-| POST | `/api/auth/logout` | Bearer + CSRF |
-| POST | `/api/auth/logout-all` | Bearer + CSRF |
-| GET | `/api/auth/me` | Bearer |
-| GET | `/api/auth/.well-known/jwks.json` | Public key material only |
-| POST | `/api/auth/oauth2/exchange` | One-time code + CSRF |
-| GET | `/api/security/authenticated` | Any authenticated user |
-| GET | `/api/security/customer` | `CUSTOMER` or `ADMIN` |
-| GET | `/api/security/admin` | `ADMIN` |
-| GET | `/api/platform/ping` and `/info` | Public Phase 1 endpoints |
-| GET | `/api/platform/secure-ping` | Bearer |
-
-## Curl example
-
-The smoke script is the executable reference. A minimal local sequence is:
+Focused verification:
 
 ```bash
-curl -sS -c cookies.txt http://localhost:8080/api/auth/csrf > csrf.json
-# Read the JSON "token" value without printing credentials in shared logs.
-curl -sS -b cookies.txt -c cookies.txt \
-  -H 'Content-Type: application/json' \
-  -H "X-XSRF-TOKEN: ${CSRF_TOKEN}" \
-  --data '{"email":"customer@example.com","password":"A long local password!","displayName":"Customer"}' \
-  http://localhost:8080/api/auth/register
+./mvnw -B -pl product-service -am verify
+./mvnw -B -pl cart-service -am verify
+./mvnw -B -pl api-gateway -am test
 ```
 
-Do not commit `cookies.txt`, copied tokens, `.env`, private PEM files, or provider
-credentials.
+The smoke test preserves Phase 1/2 checks, creates a local vendor through a
+database-only role promotion, exercises product lifecycle and public caching,
+uses a separate customer cart, detects a price change, checks authorization and
+correlation propagation, and never prints tokens.
 
 ## Configuration and secrets
 
-`.env.example` contains local placeholders only; `.env` is ignored. Local
-Compose explicitly generates one ephemeral RSA-2048 key pair per auth-service
-process. Restarting it invalidates existing tokens. Production must set
-`APP_JWT_ALLOW_EPHEMERAL_KEYS=false`, mount protected PKCS#8 private and X.509
-public PEM files, and set `APP_AUTH_REFRESH_COOKIE_SECURE=true`.
+`.env.example` contains local placeholders only. Never commit `.env`, cookie
+jars, copied JWTs, OAuth secrets, passwords, private keys, keystores, or PEM key
+material. Docker's ephemeral RSA keys are local-development behavior only;
+production must mount protected keys and disable ephemeral generation.
 
-| Variable | Local default | Purpose |
-| --- | --- | --- |
-| `APP_JWT_ISSUER` | `https://orderflow.local` | Exact token issuer in both services |
-| `APP_JWT_KEY_ID` | `orderflow-docker-local` | JWK/JWT key identifier |
-| `APP_JWT_ACCESS_TOKEN_TTL` | `10m` | Access-token lifetime |
-| `APP_JWT_ALLOW_EPHEMERAL_KEYS` | Docker only: `true` | Explicit local key generation |
-| `APP_JWT_PRIVATE_KEY_LOCATION` | empty | Production PKCS#8 PEM resource |
-| `APP_JWT_PUBLIC_KEY_LOCATION` | empty | Production X.509 PEM resource |
-| `APP_AUTH_JWK_SET_URI` | auth service JWK URL | Gateway validation source |
-| `APP_AUTH_REFRESH_TOKEN_TTL` | `14d` | Refresh session lifetime |
-| `APP_AUTH_REFRESH_COOKIE_NAME` | `ORDERFLOW_REFRESH` | HttpOnly cookie name |
-| `APP_AUTH_REFRESH_COOKIE_SECURE` | local `false` | Must be `true` behind production HTTPS |
-| `APP_AUTH_REFRESH_COOKIE_SAME_SITE` | `Strict` | Cookie cross-site policy |
-| `APP_AUTH_LOGIN_MAX_ATTEMPTS` | `5` | Login threshold |
-| `APP_AUTH_LOGIN_ATTEMPT_WINDOW` | `15m` | Attempt counter TTL |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | empty | Optional OAuth profile |
-| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | empty | Optional OAuth profile |
-| `APP_BOOTSTRAP_ADMIN_ENABLED` | `false` | Explicit local-only admin bootstrap |
+Important Phase 3 variables:
 
-Database, Redis, Kafka, Eureka, redirect, and port variables are documented in
-`.env.example`. No administrator is created by default. When the optional
-bootstrap is enabled, all values are required and the same password policy and
-BCrypt hashing apply. Production administration should use a dedicated
-provisioning process.
-
-## Operations and security notes
-
-Health, liveness, readiness, info, and Prometheus endpoints remain available.
-Auth readiness includes PostgreSQL, Redis, Flyway completion, and Spring
-readiness; optional Kafka audit delivery does not block login. Gateway readiness
-includes Redis because protected authorization fails closed when revocation
-state cannot be checked. Environment and bean-dump actuator endpoints are not
-exposed.
+| Variables | Purpose |
+| --- | --- |
+| `PRODUCT_POSTGRES_HOST`, `PRODUCT_POSTGRES_PORT`, `PRODUCT_POSTGRES_DB` | Product-owned database location |
+| `PRODUCT_POSTGRES_USER`, `PRODUCT_POSTGRES_PASSWORD` | Product database credential |
+| `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` | Shared server with namespaced data |
+| `EUREKA_DEFAULT_ZONE` | Service discovery endpoint |
+| `APP_AUTH_JWK_SET_URI`, `APP_JWT_ISSUER` | Independent JWT validation |
+| `APP_CATALOG_DEFAULT_CURRENCY`, `APP_CATALOG_SUPPORTED_CURRENCIES` | Catalog currency policy |
+| `APP_CATALOG_MAX_PAGE_SIZE` | Public/vendor page bound |
+| `APP_CATALOG_PRODUCT_CACHE_TTL`, `APP_CATALOG_SEARCH_CACHE_TTL`, `APP_CATALOG_CATEGORY_CACHE_TTL` | Cache TTLs |
+| `APP_CART_TTL`, `APP_CART_MAX_DISTINCT_ITEMS`, `APP_CART_MAX_QUANTITY_PER_ITEM` | Cart expiration and limits |
+| `APP_PRODUCT_CLIENT_CONNECT_TIMEOUT`, `APP_PRODUCT_CLIENT_READ_TIMEOUT` | Cart downstream timeouts |
 
 All handled failures use the shared `ApiError` and preserve
-`X-Correlation-ID`. Request logs and security audit events exclude passwords,
-authorization headers, cookies, tokens, OAuth provider tokens, raw IP addresses,
-and key material. Audit output is structured logging; Kafka remains a
-noncritical future transport.
-
-Current limitations: local ephemeral keys are not suitable for multi-replica
-deployments, key rotation is not automated, account recovery/MFA/email
-verification/password creation for OAuth-only users are deferred, and provider
-end-to-end login requires real credentials and provider configuration.
+`X-Correlation-ID`. Health, liveness, readiness, info, metrics, and Prometheus
+are exposed; secret-bearing actuator endpoints are not.
 
 Detailed design:
 
+- [Phase 3 product and cart](docs/phase-3-product-cart.md)
+- [Product catalog](docs/product-catalog.md)
+- [Redis caching](docs/redis-caching.md)
+- [Cart consistency](docs/cart-consistency.md)
 - [Phase 2 authentication](docs/phase-2-authentication.md)
 - [JWT and key management](docs/jwt-and-key-management.md)
-- [Refresh-token security](docs/refresh-token-security.md)
-- [OAuth2 login](docs/oauth2-login.md)
 - [API error contract](docs/api-error-contract.md)
 
-## Phase 3 preview
+## Phase 4 preview
 
-Phase 3 can build business services on these identity and authorization
-boundaries. Products, carts, inventory, orders, payments, delivery,
-notifications, and analytics are not implemented in Phase 2.
+Phase 4 can add inventory authority, reservations, checkout, orders, and Kafka
+business events without moving Phase 3 data or weakening service boundaries.
+It must revalidate cart product snapshots and obtain authoritative inventory
+before order creation. Payments, delivery, notifications, coupons, reviews,
+recommendations, and product media remain outside Phase 3.
