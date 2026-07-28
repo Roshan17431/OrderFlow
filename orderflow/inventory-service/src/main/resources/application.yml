@@ -1,0 +1,136 @@
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: jdbc:postgresql://${INVENTORY_POSTGRES_HOST:localhost}:${INVENTORY_POSTGRES_PORT:5432}/${INVENTORY_POSTGRES_DB:orderflow_inventory}
+    username: ${INVENTORY_POSTGRES_USER:orderflow_inventory}
+    password: ${INVENTORY_POSTGRES_PASSWORD:orderflow_inventory_local_password}
+    hikari:
+      initialization-fail-timeout: 60000
+  flyway:
+    enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: 3s
+      timeout: 3s
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      fail-fast: true
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+    consumer:
+      group-id: inventory-service-order-events-v1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: record
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  port: 8084
+  shutdown: graceful
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+    healthcheck:
+      enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db,redis,kafka
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      rename:
+        '[@timestamp]': timestamp
+        logger_name: logger
+        thread_name: thread
+      add:
+        service: ${spring.application.name}
+
+app:
+  inventory:
+    reservation-ttl: ${APP_INVENTORY_RESERVATION_TTL:15m}
+    expiration-poll-delay: ${APP_INVENTORY_EXPIRATION_POLL_DELAY:30s}
+    expiration-batch-size: ${APP_INVENTORY_EXPIRATION_BATCH_SIZE:50}
+    expiration-enabled: ${APP_INVENTORY_EXPIRATION_ENABLED:true}
+    max-history-page-size: ${APP_INVENTORY_MAX_HISTORY_PAGE_SIZE:100}
+  clients:
+    product:
+      base-url: ${APP_PRODUCT_CLIENT_BASE_URL:http://PRODUCT-SERVICE}
+      connect-timeout: ${APP_PRODUCT_CLIENT_CONNECT_TIMEOUT:2s}
+      read-timeout: ${APP_PRODUCT_CLIENT_READ_TIMEOUT:3s}
+      discovery-enabled: ${APP_PRODUCT_CLIENT_DISCOVERY_ENABLED:true}
+      max-attempts: 2
+      retry-wait: 200ms
+  kafka:
+    topics:
+      order-events: ${APP_ORDER_EVENTS_TOPIC:orderflow.order-events.v1}
+      inventory-events: ${APP_INVENTORY_EVENTS_TOPIC:orderflow.inventory-events.v1}
+      order-events-dlt: ${APP_ORDER_EVENTS_DLT:orderflow.order-events.v1.DLT}
+      inventory-events-dlt: ${APP_INVENTORY_EVENTS_DLT:orderflow.inventory-events.v1.DLT}
+  outbox:
+    poll-delay: ${APP_OUTBOX_POLL_DELAY:500ms}
+    batch-size: ${APP_OUTBOX_BATCH_SIZE:50}
+    max-attempts: ${APP_OUTBOX_MAX_ATTEMPTS:10}
+    lock-timeout: ${APP_OUTBOX_LOCK_TIMEOUT:2m}
+    retry-base-delay: ${APP_OUTBOX_RETRY_BASE_DELAY:2s}
+    send-timeout: ${APP_OUTBOX_SEND_TIMEOUT:10s}
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
