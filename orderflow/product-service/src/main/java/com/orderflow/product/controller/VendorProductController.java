@@ -3,6 +3,7 @@ package com.orderflow.product.controller;
 import com.orderflow.product.dto.CreateProductRequest;
 import com.orderflow.product.dto.PageResponse;
 import com.orderflow.product.dto.ProductManagementResponse;
+import com.orderflow.product.dto.ProductManagementAccessResponse;
 import com.orderflow.product.dto.UpdateProductRequest;
 import com.orderflow.product.dto.VersionRequest;
 import com.orderflow.product.security.RequestIdentity;
@@ -82,5 +83,11 @@ public class VendorProductController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = ProductSearchValidator.DEFAULT_SORT) String sort) {
         return products.list(RequestIdentity.from(jwt), vendorId, page, size, sort);
+    }
+
+    @GetMapping("/{productId}/management-access")
+    public ProductManagementAccessResponse managementAccess(
+            @AuthenticationPrincipal Jwt jwt, @PathVariable UUID productId) {
+        return products.managementAccess(RequestIdentity.from(jwt), productId);
     }
 }

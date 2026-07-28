@@ -11,6 +11,7 @@ import com.orderflow.product.domain.Product;
 import com.orderflow.product.dto.CreateProductRequest;
 import com.orderflow.product.dto.PageResponse;
 import com.orderflow.product.dto.ProductManagementResponse;
+import com.orderflow.product.dto.ProductManagementAccessResponse;
 import com.orderflow.product.dto.ProductSearchCriteria;
 import com.orderflow.product.dto.UpdateProductRequest;
 import com.orderflow.product.dto.VersionRequest;
@@ -268,5 +269,13 @@ public class ProductManagementService {
 
     private ProductDomainException conflict(ErrorCode code, String message) {
         return new ProductDomainException(HttpStatus.CONFLICT, code, message);
+    }
+
+    @Transactional(readOnly = true)
+    public ProductManagementAccessResponse managementAccess(
+            RequestIdentity identity, UUID productId) {
+        Product product = requireOwned(identity, productId);
+        return new ProductManagementAccessResponse(
+                product.getId(), product.getStatus(), product.getVendorId());
     }
 }
