@@ -1,0 +1,83 @@
+package com.orderflow.inventory.config;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import java.util.Map;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.common.TopicPartition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.core.KafkaAdmin;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.util.backoff.FixedBackOff;
+
+@Configuration
+public class KafkaConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConfiguration.class);
+
+    @Bean
+    NewTopic orderEventsTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.orderEvents()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic inventoryEventsTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.inventoryEvents()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic orderEventsDltTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.orderEventsDlt()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic inventoryEventsDltTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.inventoryEventsDlt()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    DefaultErrorHandler inventoryKafkaErrorHandler(
+            KafkaTemplate<String, String> template,
+            KafkaTopicProperties topics,
+            MeterRegistry metrics) {
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
+                template,
+                (record, exception) -> {
+                    metrics.counter(
+                                    "orderflow_kafka_dlt_publications_total",
+                                    "service",
+                                    "inventory-service")
+                            .increment();
+                    LOGGER.error(
+                            "Publishing invalid order event to DLT topic={} partition={} offset={}",
+                            topics.orderEventsDlt(),
+                            record.partition(),
+                            record.offset());
+                    return new TopicPartition(topics.orderEventsDlt(), record.partition());
+                });
+        DefaultErrorHandler handler = new DefaultErrorHandler(recoverer, new FixedBackOff(500, 2));
+        handler.setCommitRecovered(true);
+        return handler;
+    }
+
+    @Bean
+    HealthIndicator kafkaHealthIndicator(KafkaAdmin kafkaAdmin) {
+        Map<String, Object> configuration = kafkaAdmin.getConfigurationProperties();
+        return () -> {
+            try (AdminClient client = AdminClient.create(configuration)) {
+                client.listTopics().names().get();
+                return Health.up().build();
+            } catch (Exception exception) {
+                return Health.down().build();
+            }
+        };
+    }
+}
