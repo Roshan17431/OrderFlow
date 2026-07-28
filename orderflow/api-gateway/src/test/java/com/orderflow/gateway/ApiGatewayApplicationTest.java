@@ -55,6 +55,19 @@ class ApiGatewayApplicationTest {
     }
 
     @Test
+    void untrustedIdentityHeadersAreRemoved() {
+        client.get()
+                .uri("/test/identity")
+                .header("X-User-ID", "forged-user")
+                .header("X-Vendor-ID", "forged-vendor")
+                .header("X-Roles", "ADMIN")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.identityHeaders").isEqualTo("absent");
+    }
+
+    @Test
     void missingCorrelationIdIsGenerated() {
         client.get()
                 .uri("/test/echo")
@@ -145,6 +158,16 @@ class ApiGatewayApplicationTest {
         @GetMapping("/test/fail")
         Mono<Void> fail() {
             return Mono.error(new IllegalStateException("sensitive-database-detail"));
+        }
+
+        @GetMapping("/test/identity")
+        Mono<Map<String, String>> identity(
+                @RequestHeader(value = "X-User-ID", required = false) String userId,
+                @RequestHeader(value = "X-Vendor-ID", required = false) String vendorId,
+                @RequestHeader(value = "X-Roles", required = false) String roles) {
+            return Mono.just(Map.of(
+                    "identityHeaders",
+                    userId == null && vendorId == null && roles == null ? "absent" : "present"));
         }
     }
 }

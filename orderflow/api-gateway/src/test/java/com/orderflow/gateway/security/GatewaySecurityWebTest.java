@@ -171,6 +171,40 @@ class GatewaySecurityWebTest {
                 .expectStatus().isForbidden();
     }
 
+    @Test
+    void phaseFourOrderAndInventoryRolesAreEnforced() {
+        client.get().uri("/api/orders").exchange().expectStatus().isUnauthorized();
+        client.get().uri("/api/inventory/products/123").exchange()
+                .expectStatus().isUnauthorized();
+        client.mutateWith(customerJwt()).get().uri("/api/orders").exchange()
+                .expectStatus().isOk();
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/inventory/products/123")
+                .exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(vendorJwt())
+                .get()
+                .uri("/api/inventory/products/123")
+                .exchange()
+                .expectStatus().isOk();
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/admin/orders")
+                .exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(adminJwt())
+                .get()
+                .uri("/api/admin/orders")
+                .exchange()
+                .expectStatus().isOk();
+        client.mutateWith(vendorJwt())
+                .get()
+                .uri("/api/inventory/reservations/order/123")
+                .exchange()
+                .expectStatus().isForbidden();
+    }
+
     private org.springframework.security.test.web.reactive.server
             .SecurityMockServerConfigurers.JwtMutator customerJwt() {
         return mockJwt()
@@ -181,6 +215,30 @@ class GatewaySecurityWebTest {
                         .claim("roles", java.util.List.of("CUSTOMER"))
                         .claim("token_version", 0))
                 .authorities(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+    }
+
+    private org.springframework.security.test.web.reactive.server
+            .SecurityMockServerConfigurers.JwtMutator vendorJwt() {
+        return mockJwt()
+                .jwt(jwt -> jwt
+                        .subject("vendor-id")
+                        .claim("jti", "vendor-jti")
+                        .claim("email", "vendor@example.com")
+                        .claim("roles", java.util.List.of("VENDOR"))
+                        .claim("token_version", 0))
+                .authorities(new SimpleGrantedAuthority("ROLE_VENDOR"));
+    }
+
+    private org.springframework.security.test.web.reactive.server
+            .SecurityMockServerConfigurers.JwtMutator adminJwt() {
+        return mockJwt()
+                .jwt(jwt -> jwt
+                        .subject("admin-id")
+                        .claim("jti", "admin-jti")
+                        .claim("email", "admin@example.com")
+                        .claim("roles", java.util.List.of("ADMIN"))
+                        .claim("token_version", 0))
+                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @RestController
@@ -224,6 +282,24 @@ class GatewaySecurityWebTest {
         @GetMapping("/api/cart")
         Mono<Map<String, String>> cart() {
             return Mono.just(Map.of("scope", "cart"));
+        }
+
+        @GetMapping("/api/orders")
+        Mono<Map<String, String>> orders() {
+            return Mono.just(Map.of("scope", "orders"));
+        }
+
+        @GetMapping({
+            "/api/inventory/products/123",
+            "/api/inventory/reservations/order/123"
+        })
+        Mono<Map<String, String>> inventory() {
+            return Mono.just(Map.of("scope", "inventory"));
+        }
+
+        @GetMapping("/api/admin/orders")
+        Mono<Map<String, String>> adminOrders() {
+            return Mono.just(Map.of("scope", "admin-orders"));
         }
     }
 }

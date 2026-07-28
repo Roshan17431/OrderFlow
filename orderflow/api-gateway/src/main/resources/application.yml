@@ -28,6 +28,18 @@ spring:
               uri: lb://CART-SERVICE
               predicates:
                 - Path=/api/cart,/api/cart/**
+            - id: admin-order-api
+              uri: lb://ORDER-SERVICE
+              predicates:
+                - Path=/api/admin/orders,/api/admin/orders/**
+            - id: inventory-api
+              uri: lb://INVENTORY-SERVICE
+              predicates:
+                - Path=/api/inventory,/api/inventory/**
+            - id: order-api
+              uri: lb://ORDER-SERVICE
+              predicates:
+                - Path=/api/orders,/api/orders/**
           globalcors:
             cors-configurations:
               '[/**]':

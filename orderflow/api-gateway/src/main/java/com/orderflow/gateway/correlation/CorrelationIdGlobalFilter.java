@@ -37,7 +37,13 @@ public class CorrelationIdGlobalFilter implements GlobalFilter, WebFilter, Order
         String correlationId = CorrelationIdValidator.validateOrGenerate(
                 exchange.getRequest().getHeaders().getFirst(CorrelationHeaders.CORRELATION_ID));
         ServerHttpRequest request = exchange.getRequest().mutate()
-                .headers(headers -> headers.set(CorrelationHeaders.CORRELATION_ID, correlationId))
+                .headers(headers -> {
+                    headers.set(CorrelationHeaders.CORRELATION_ID, correlationId);
+                    headers.remove("X-User-ID");
+                    headers.remove("X-Customer-ID");
+                    headers.remove("X-Vendor-ID");
+                    headers.remove("X-Roles");
+                })
                 .build();
         ServerWebExchange correlatedExchange = exchange.mutate().request(request).build();
         correlatedExchange.getAttributes().put(
