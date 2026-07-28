@@ -20,11 +20,14 @@
 
     <modules>
         <module>platform-contracts</module>
+        <module>event-contracts</module>
         <module>service-registry</module>
         <module>api-gateway</module>
         <module>auth-service</module>
         <module>product-service</module>
         <module>cart-service</module>
+        <module>inventory-service</module>
+        <module>order-service</module>
     </modules>
 
     <properties>
