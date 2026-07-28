@@ -80,7 +80,7 @@ services:
       start_period: 20s
     restart: unless-stopped
 
-  product-db-bootstrap:
+  database-bootstrap:
     image: postgres:16-alpine
     environment:
       POSTGRES_HOST: postgres
@@ -91,6 +91,12 @@ services:
       PRODUCT_POSTGRES_DB: ${PRODUCT_POSTGRES_DB:-orderflow_product}
       PRODUCT_POSTGRES_USER: ${PRODUCT_POSTGRES_USER:-orderflow_product}
       PRODUCT_POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD:-orderflow_product_local_password}
+      INVENTORY_POSTGRES_DB: ${INVENTORY_POSTGRES_DB:-orderflow_inventory}
+      INVENTORY_POSTGRES_USER: ${INVENTORY_POSTGRES_USER:-orderflow_inventory}
+      INVENTORY_POSTGRES_PASSWORD: ${INVENTORY_POSTGRES_PASSWORD:-orderflow_inventory_local_password}
+      ORDER_POSTGRES_DB: ${ORDER_POSTGRES_DB:-orderflow_order}
+      ORDER_POSTGRES_USER: ${ORDER_POSTGRES_USER:-orderflow_order}
+      ORDER_POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD:-orderflow_order_local_password}
     volumes:
       - ./scripts/bootstrap-product-database.sh:/opt/orderflow/bootstrap-product-database.sh:ro
     entrypoint:
@@ -193,7 +199,7 @@ services:
       APP_CATALOG_SEARCH_CACHE_TTL: ${APP_CATALOG_SEARCH_CACHE_TTL:-2m}
       APP_CATALOG_CATEGORY_CACHE_TTL: ${APP_CATALOG_CATEGORY_CACHE_TTL:-10m}
     depends_on:
-      product-db-bootstrap:
+      database-bootstrap:
         condition: service_completed_successfully
       redis:
         condition: service_healthy
@@ -258,6 +264,125 @@ services:
       start_period: 30s
     restart: unless-stopped
 
+  inventory-service:
+    build:
+      context: .
+      dockerfile: inventory-service/Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      INVENTORY_POSTGRES_HOST: postgres
+      INVENTORY_POSTGRES_PORT: 5432
+      INVENTORY_POSTGRES_DB: ${INVENTORY_POSTGRES_DB:-orderflow_inventory}
+      INVENTORY_POSTGRES_USER: ${INVENTORY_POSTGRES_USER:-orderflow_inventory}
+      INVENTORY_POSTGRES_PASSWORD: ${INVENTORY_POSTGRES_PASSWORD:-orderflow_inventory_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_PRODUCT_CLIENT_BASE_URL: http://PRODUCT-SERVICE
+      APP_PRODUCT_CLIENT_CONNECT_TIMEOUT: ${APP_PRODUCT_CLIENT_CONNECT_TIMEOUT:-2s}
+      APP_PRODUCT_CLIENT_READ_TIMEOUT: ${APP_PRODUCT_CLIENT_READ_TIMEOUT:-3s}
+      APP_ORDER_EVENTS_TOPIC: ${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}
+      APP_INVENTORY_EVENTS_TOPIC: ${APP_INVENTORY_EVENTS_TOPIC:-orderflow.inventory-events.v1}
+      APP_ORDER_EVENTS_DLT: ${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}
+      APP_INVENTORY_EVENTS_DLT: ${APP_INVENTORY_EVENTS_DLT:-orderflow.inventory-events.v1.DLT}
+      APP_INVENTORY_RESERVATION_TTL: ${APP_INVENTORY_RESERVATION_TTL:-15m}
+      APP_INVENTORY_EXPIRATION_POLL_DELAY: ${APP_INVENTORY_EXPIRATION_POLL_DELAY:-30s}
+      APP_INVENTORY_EXPIRATION_BATCH_SIZE: ${APP_INVENTORY_EXPIRATION_BATCH_SIZE:-50}
+      APP_OUTBOX_POLL_DELAY: ${APP_OUTBOX_POLL_DELAY:-500ms}
+      APP_OUTBOX_BATCH_SIZE: ${APP_OUTBOX_BATCH_SIZE:-50}
+      APP_OUTBOX_MAX_ATTEMPTS: ${APP_OUTBOX_MAX_ATTEMPTS:-10}
+      APP_OUTBOX_LOCK_TIMEOUT: ${APP_OUTBOX_LOCK_TIMEOUT:-2m}
+      APP_OUTBOX_RETRY_BASE_DELAY: ${APP_OUTBOX_RETRY_BASE_DELAY:-2s}
+    depends_on:
+      database-bootstrap:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      product-service:
+        condition: service_healthy
+    ports:
+      - "${INVENTORY_SERVICE_PORT:-8084}:8084"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8084/actuator/health/readiness
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  order-service:
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      ORDER_POSTGRES_HOST: postgres
+      ORDER_POSTGRES_PORT: 5432
+      ORDER_POSTGRES_DB: ${ORDER_POSTGRES_DB:-orderflow_order}
+      ORDER_POSTGRES_USER: ${ORDER_POSTGRES_USER:-orderflow_order}
+      ORDER_POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD:-orderflow_order_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_CART_CLIENT_BASE_URL: http://CART-SERVICE
+      APP_CART_CLIENT_CONNECT_TIMEOUT: ${APP_CART_CLIENT_CONNECT_TIMEOUT:-2s}
+      APP_CART_CLIENT_READ_TIMEOUT: ${APP_CART_CLIENT_READ_TIMEOUT:-3s}
+      APP_ORDER_EVENTS_TOPIC: ${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}
+      APP_INVENTORY_EVENTS_TOPIC: ${APP_INVENTORY_EVENTS_TOPIC:-orderflow.inventory-events.v1}
+      APP_ORDER_EVENTS_DLT: ${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}
+      APP_INVENTORY_EVENTS_DLT: ${APP_INVENTORY_EVENTS_DLT:-orderflow.inventory-events.v1.DLT}
+      APP_OUTBOX_POLL_DELAY: ${APP_OUTBOX_POLL_DELAY:-500ms}
+      APP_OUTBOX_BATCH_SIZE: ${APP_OUTBOX_BATCH_SIZE:-50}
+      APP_OUTBOX_MAX_ATTEMPTS: ${APP_OUTBOX_MAX_ATTEMPTS:-10}
+      APP_OUTBOX_LOCK_TIMEOUT: ${APP_OUTBOX_LOCK_TIMEOUT:-2m}
+      APP_OUTBOX_RETRY_BASE_DELAY: ${APP_OUTBOX_RETRY_BASE_DELAY:-2s}
+    depends_on:
+      database-bootstrap:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      cart-service:
+        condition: service_healthy
+    ports:
+      - "${ORDER_SERVICE_PORT:-8085}:8085"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8085/actuator/health/readiness
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
   api-gateway:
     build:
       context: .
@@ -281,6 +406,10 @@ services:
       product-service:
         condition: service_healthy
       cart-service:
+        condition: service_healthy
+      inventory-service:
+        condition: service_healthy
+      order-service:
         condition: service_healthy
     ports:
       - "${API_GATEWAY_PORT:-8080}:8080"

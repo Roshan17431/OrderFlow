@@ -1,0 +1,12 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://service-registry:8761/eureka/}
+
+app:
+  clients:
+    cart:
+      base-url: http://CART-SERVICE
+  security:
+    jwt:
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://auth-service:8081/api/auth/.well-known/jwks.json}

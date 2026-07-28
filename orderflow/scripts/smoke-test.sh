@@ -8,6 +8,8 @@ GATEWAY_URL="http://localhost:${API_GATEWAY_PORT:-8080}"
 AUTH_URL="http://localhost:${AUTH_SERVICE_PORT:-8081}"
 PRODUCT_URL="http://localhost:${PRODUCT_SERVICE_PORT:-8082}"
 CART_URL="http://localhost:${CART_SERVICE_PORT:-8083}"
+INVENTORY_URL="http://localhost:${INVENTORY_SERVICE_PORT:-8084}"
+ORDER_URL="http://localhost:${ORDER_SERVICE_PORT:-8085}"
 EUREKA_URL="http://localhost:${EUREKA_PORT:-8761}"
 KNOWN_ID="orderflow-smoke-test-123"
 TEMP_DIR="$(mktemp -d)"
@@ -125,15 +127,79 @@ assert_status() {
     fail "${operation} returned HTTP ${actual}; expected ${expected}"
 }
 
+wait_for_order_status() {
+  local token="$1"
+  local order_id="$2"
+  local expected="$3"
+  local label="$4"
+  local deadline=$((SECONDS + TIMEOUT_SECONDS))
+  local status
+  while true; do
+    status="$(request GET "/api/orders/${order_id}" \
+      "${TEMP_DIR}/${label}.json" "${TEMP_DIR}/${label}.headers" \
+      -H "Authorization: Bearer ${token}")"
+    if [[ "${status}" == "200" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "status")" == "${expected}" ]]; then
+      return
+    fi
+    if (( SECONDS >= deadline )); then
+      fail "timed out waiting for order ${order_id} to reach ${expected}"
+    fi
+    sleep 1
+  done
+}
+
+wait_for_inventory_quantities() {
+  local token="$1"
+  local product_id="$2"
+  local on_hand="$3"
+  local reserved="$4"
+  local available="$5"
+  local label="$6"
+  local deadline=$((SECONDS + TIMEOUT_SECONDS))
+  local status
+  while true; do
+    status="$(request GET "/api/inventory/products/${product_id}" \
+      "${TEMP_DIR}/${label}.json" "${TEMP_DIR}/${label}.headers" \
+      -H "Authorization: Bearer ${token}")"
+    if [[ "${status}" == "200" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "onHandQuantity")" == "${on_hand}" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "reservedQuantity")" == "${reserved}" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "availableQuantity")" == "${available}" ]]; then
+      return
+    fi
+    if (( SECONDS >= deadline )); then
+      fail "timed out waiting for expected inventory quantities"
+    fi
+    sleep 1
+  done
+}
+
+kafka_topic_end_offset() {
+  local topic="$1"
+  docker compose exec -T kafka \
+    /opt/kafka/bin/kafka-get-offsets.sh \
+    --bootstrap-server localhost:29092 \
+    --topic "${topic}" 2>/dev/null |
+    awk -F: '{total += $3} END {print total + 0}'
+}
+
 wait_for_url "service registry" "${EUREKA_URL}/actuator/health/readiness"
 wait_for_url "auth service" "${AUTH_URL}/actuator/health/readiness"
 wait_for_url "product service" "${PRODUCT_URL}/actuator/health/readiness"
 wait_for_url "cart service" "${CART_URL}/actuator/health/readiness"
+wait_for_url "inventory service" "${INVENTORY_URL}/actuator/health/readiness"
+wait_for_url "order service" "${ORDER_URL}/actuator/health/readiness"
 wait_for_url "API gateway" "${GATEWAY_URL}/actuator/health/readiness"
 wait_for_eureka_app "AUTH-SERVICE"
 wait_for_eureka_app "PRODUCT-SERVICE"
 wait_for_eureka_app "CART-SERVICE"
+wait_for_eureka_app "INVENTORY-SERVICE"
+wait_for_eureka_app "ORDER-SERVICE"
 wait_for_eureka_app "API-GATEWAY"
+
+ORDER_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.order-events.v1.DLT")"
+INVENTORY_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.inventory-events.v1.DLT")"
 
 # Preserve Phase 1 platform checks.
 PING_STATUS="$(request GET "/api/platform/ping" \
@@ -461,6 +527,235 @@ assert_status "${INVALID_QUANTITY_STATUS}" "400" "invalid cart quantity"
 [[ "$(json_value "${TEMP_DIR}/invalid-quantity.json" "code")" == "VALIDATION_ERROR" ]] ||
   fail "cart validation error was not standardized"
 
+# Phase 4: durable order creation and the real Kafka inventory workflow.
+ADJUST_STATUS="$(request POST "/api/inventory/products/${PRODUCT_ID}/adjustments" \
+  "${TEMP_DIR}/inventory-adjust.json" "${TEMP_DIR}/inventory-adjust.headers" \
+  -c "${COOKIE_JAR}" -b "${COOKIE_JAR}" \
+  -H "Authorization: Bearer ${VENDOR_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CSRF_TOKEN}" \
+  -H "X-Correlation-ID: phase4-stock-smoke" \
+  --data '{"quantityDelta":10,"reason":"SMOKE_TEST_STOCK","reference":"phase4"}')"
+assert_status "${ADJUST_STATUS}" "200" "initial stock adjustment"
+[[ "$(json_value "${TEMP_DIR}/inventory-adjust.json" "onHandQuantity")" == "10" ]] ||
+  fail "on-hand stock was not 10"
+[[ "$(json_value "${TEMP_DIR}/inventory-adjust.json" "reservedQuantity")" == "0" ]] ||
+  fail "initial reserved stock was not zero"
+[[ "$(json_value "${TEMP_DIR}/inventory-adjust.json" "availableQuantity")" == "10" ]] ||
+  fail "initial available stock was not 10"
+[[ "$(header_value "${TEMP_DIR}/inventory-adjust.headers" "X-Correlation-ID")" == \
+    "phase4-stock-smoke" ]] ||
+  fail "inventory correlation ID was not preserved"
+
+CUSTOMER_ADJUST_STATUS="$(request POST \
+  "/api/inventory/products/${PRODUCT_ID}/adjustments" \
+  "${TEMP_DIR}/customer-inventory-adjust.json" \
+  "${TEMP_DIR}/customer-inventory-adjust.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  --data '{"quantityDelta":1,"reason":"DENIED"}')"
+assert_status "${CUSTOMER_ADJUST_STATUS}" "403" "customer inventory adjustment denial"
+[[ "$(json_value "${TEMP_DIR}/customer-inventory-adjust.json" "code")" == \
+    "INSUFFICIENT_PERMISSIONS" ]] ||
+  fail "customer inventory denial was not standardized"
+
+PHASE4_CART_STATUS="$(request POST "/api/cart/items" \
+  "${TEMP_DIR}/phase4-cart.json" "${TEMP_DIR}/phase4-cart.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  --data "{\"productId\":\"${PRODUCT_ID}\",\"quantity\":3}")"
+assert_status "${PHASE4_CART_STATUS}" "200" "Phase 4 cart creation"
+PHASE4_CART_VERSION="$(json_value "${TEMP_DIR}/phase4-cart.json" "version")"
+[[ "${PHASE4_CART_VERSION}" =~ ^[0-9]+$ ]] ||
+  fail "Phase 4 cart version was invalid"
+
+CREATE_ORDER_KEY="create-${UNIQUE_SUFFIX}"
+CREATE_ORDER_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/order-create.json" "${TEMP_DIR}/order-create.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CREATE_ORDER_KEY}" \
+  -H "X-Correlation-ID: phase4-order-smoke" \
+  --data "{\"expectedCartVersion\":${PHASE4_CART_VERSION}}")"
+assert_status "${CREATE_ORDER_STATUS}" "202" "order creation"
+ORDER_ID="$(json_value "${TEMP_DIR}/order-create.json" "id")"
+[[ "${ORDER_ID}" =~ ^[0-9a-fA-F-]{36}$ ]] || fail "created order ID was invalid"
+[[ "$(header_value "${TEMP_DIR}/order-create.headers" "X-Correlation-ID")" == \
+    "phase4-order-smoke" ]] ||
+  fail "order correlation ID was not preserved"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${ORDER_ID}" \
+  "PAYMENT_PENDING" "order-payment-pending"
+wait_for_inventory_quantities "${VENDOR_TOKEN}" "${PRODUCT_ID}" \
+  "10" "3" "7" "inventory-reserved"
+
+CREATE_ORDER_REPEAT_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/order-create-repeat.json" "${TEMP_DIR}/order-create-repeat.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CREATE_ORDER_KEY}" \
+  --data "{\"expectedCartVersion\":${PHASE4_CART_VERSION}}")"
+assert_status "${CREATE_ORDER_REPEAT_STATUS}" "202" "idempotent order replay"
+[[ "$(json_value "${TEMP_DIR}/order-create-repeat.json" "id")" == "${ORDER_ID}" ]] ||
+  fail "idempotent order replay returned a different order"
+
+DIFFERENT_CART_VERSION=$((PHASE4_CART_VERSION + 1))
+CREATE_ORDER_CONFLICT_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/order-create-conflict.json" "${TEMP_DIR}/order-create-conflict.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CREATE_ORDER_KEY}" \
+  --data "{\"expectedCartVersion\":${DIFFERENT_CART_VERSION}}")"
+assert_status "${CREATE_ORDER_CONFLICT_STATUS}" "409" "idempotency-key conflict"
+[[ "$(json_value "${TEMP_DIR}/order-create-conflict.json" "code")" == \
+    "ORDER_IDEMPOTENCY_CONFLICT" ]] ||
+  fail "idempotency conflict was not standardized"
+
+# A second customer asks for eight units while only seven are available.
+CUSTOMER_TWO_COOKIE_JAR="${TEMP_DIR}/customer-two-cookies.txt"
+CUSTOMER_TWO_CSRF_STATUS="$(request GET "/api/auth/csrf" \
+  "${TEMP_DIR}/customer-two-csrf.json" "${TEMP_DIR}/customer-two-csrf.headers" \
+  -c "${CUSTOMER_TWO_COOKIE_JAR}" -b "${CUSTOMER_TWO_COOKIE_JAR}")"
+assert_status "${CUSTOMER_TWO_CSRF_STATUS}" "200" "second customer CSRF token"
+CUSTOMER_TWO_CSRF="$(json_value "${TEMP_DIR}/customer-two-csrf.json" "token")"
+CUSTOMER_TWO_EMAIL="order-two-${UNIQUE_SUFFIX}@example.com"
+CUSTOMER_TWO_REGISTER_BODY="$(printf \
+  '{"email":"%s","password":"Smoke password 123!","displayName":"Second Customer"}' \
+  "${CUSTOMER_TWO_EMAIL}")"
+CUSTOMER_TWO_REGISTER_STATUS="$(request POST "/api/auth/register" \
+  "${TEMP_DIR}/customer-two-register.json" \
+  "${TEMP_DIR}/customer-two-register.headers" \
+  -c "${CUSTOMER_TWO_COOKIE_JAR}" -b "${CUSTOMER_TWO_COOKIE_JAR}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_TWO_CSRF}" \
+  --data "${CUSTOMER_TWO_REGISTER_BODY}")"
+assert_status "${CUSTOMER_TWO_REGISTER_STATUS}" "201" "second customer registration"
+CUSTOMER_TWO_TOKEN="$(json_value "${TEMP_DIR}/customer-two-register.json" "accessToken")"
+CUSTOMER_TWO_ID="$(json_path "${TEMP_DIR}/customer-two-register.json" "user.id")"
+
+CUSTOMER_TWO_CART_STATUS="$(request POST "/api/cart/items" \
+  "${TEMP_DIR}/customer-two-cart.json" "${TEMP_DIR}/customer-two-cart.headers" \
+  -c "${CUSTOMER_TWO_COOKIE_JAR}" -b "${CUSTOMER_TWO_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TWO_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_TWO_CSRF}" \
+  --data "{\"productId\":\"${PRODUCT_ID}\",\"quantity\":8}")"
+assert_status "${CUSTOMER_TWO_CART_STATUS}" "200" "second customer cart"
+CUSTOMER_TWO_CART_VERSION="$(json_value "${TEMP_DIR}/customer-two-cart.json" "version")"
+
+CUSTOMER_TWO_ORDER_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/customer-two-order.json" "${TEMP_DIR}/customer-two-order.headers" \
+  -c "${CUSTOMER_TWO_COOKIE_JAR}" -b "${CUSTOMER_TWO_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TWO_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_TWO_CSRF}" \
+  -H "Idempotency-Key: create-two-${UNIQUE_SUFFIX}" \
+  --data "{\"expectedCartVersion\":${CUSTOMER_TWO_CART_VERSION}}")"
+assert_status "${CUSTOMER_TWO_ORDER_STATUS}" "202" "insufficient-stock order creation"
+CUSTOMER_TWO_ORDER_ID="$(json_value "${TEMP_DIR}/customer-two-order.json" "id")"
+wait_for_order_status "${CUSTOMER_TWO_TOKEN}" "${CUSTOMER_TWO_ORDER_ID}" \
+  "INVENTORY_REJECTED" "order-inventory-rejected"
+wait_for_inventory_quantities "${VENDOR_TOKEN}" "${PRODUCT_ID}" \
+  "10" "3" "7" "inventory-after-rejection"
+
+CANCEL_KEY="cancel-${UNIQUE_SUFFIX}"
+CANCEL_STATUS="$(request POST "/api/orders/${ORDER_ID}/cancel" \
+  "${TEMP_DIR}/order-cancel.json" "${TEMP_DIR}/order-cancel.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CANCEL_KEY}" \
+  -H "X-Correlation-ID: phase4-cancel-smoke" \
+  --data '{"reason":"CUSTOMER_REQUEST"}')"
+assert_status "${CANCEL_STATUS}" "202" "order cancellation"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${ORDER_ID}" \
+  "CANCELLED" "order-cancelled"
+wait_for_inventory_quantities "${VENDOR_TOKEN}" "${PRODUCT_ID}" \
+  "10" "0" "10" "inventory-released"
+
+CANCEL_REPEAT_STATUS="$(request POST "/api/orders/${ORDER_ID}/cancel" \
+  "${TEMP_DIR}/order-cancel-repeat.json" "${TEMP_DIR}/order-cancel-repeat.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CANCEL_KEY}" \
+  --data '{"reason":"CUSTOMER_REQUEST"}')"
+assert_status "${CANCEL_REPEAT_STATUS}" "202" "idempotent cancellation replay"
+[[ "$(json_value "${TEMP_DIR}/order-cancel-repeat.json" "id")" == "${ORDER_ID}" ]] ||
+  fail "idempotent cancellation returned a different order"
+
+# Promote the second local user after its customer order to verify product
+# ownership enforcement through product-service rather than shared tables.
+docker compose exec -T postgres sh -c \
+  'exec psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -c "$1"' \
+  sh \
+  "INSERT INTO user_roles (user_id, role) VALUES ('${CUSTOMER_TWO_ID}'::uuid, 'VENDOR') ON CONFLICT DO NOTHING" \
+  >/dev/null
+CUSTOMER_TWO_LOGIN_BODY="$(printf \
+  '{"email":"%s","password":"Smoke password 123!"}' "${CUSTOMER_TWO_EMAIL}")"
+CUSTOMER_TWO_LOGIN_STATUS="$(request POST "/api/auth/login" \
+  "${TEMP_DIR}/customer-two-login.json" "${TEMP_DIR}/customer-two-login.headers" \
+  -c "${CUSTOMER_TWO_COOKIE_JAR}" -b "${CUSTOMER_TWO_COOKIE_JAR}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_TWO_CSRF}" \
+  --data "${CUSTOMER_TWO_LOGIN_BODY}")"
+assert_status "${CUSTOMER_TWO_LOGIN_STATUS}" "200" "second vendor login"
+OTHER_VENDOR_TOKEN="$(json_value "${TEMP_DIR}/customer-two-login.json" "accessToken")"
+OTHER_VENDOR_ADJUST_STATUS="$(request POST \
+  "/api/inventory/products/${PRODUCT_ID}/adjustments" \
+  "${TEMP_DIR}/other-vendor-adjust.json" \
+  "${TEMP_DIR}/other-vendor-adjust.headers" \
+  -c "${CUSTOMER_TWO_COOKIE_JAR}" -b "${CUSTOMER_TWO_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${OTHER_VENDOR_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_TWO_CSRF}" \
+  --data '{"quantityDelta":1,"reason":"NOT_OWNER"}')"
+assert_status "${OTHER_VENDOR_ADJUST_STATUS}" "404" "other vendor inventory denial"
+
+# Wait for both outboxes to drain, then inspect trace metadata and DLT offsets.
+OUTBOX_DEADLINE=$((SECONDS + TIMEOUT_SECONDS))
+while true; do
+  ORDER_OUTBOX_PENDING="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM outbox_event WHERE status <> '\''PUBLISHED'\''"' \
+    sh "${ORDER_POSTGRES_DB:-orderflow_order}" | tr -d '[:space:]')"
+  INVENTORY_OUTBOX_PENDING="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM outbox_event WHERE status <> '\''PUBLISHED'\''"' \
+    sh "${INVENTORY_POSTGRES_DB:-orderflow_inventory}" | tr -d '[:space:]')"
+  if [[ "${ORDER_OUTBOX_PENDING}" == "0" && "${INVENTORY_OUTBOX_PENDING}" == "0" ]]; then
+    break
+  fi
+  if (( SECONDS >= OUTBOX_DEADLINE )); then
+    fail "outbox rows did not reach PUBLISHED"
+  fi
+  sleep 1
+done
+
+TRACE_EVENT_COUNT="$(docker compose exec -T postgres sh -c \
+  'psql -U "$POSTGRES_USER" -d "$1" -Atc "$2"' \
+  sh "${INVENTORY_POSTGRES_DB:-orderflow_inventory}" \
+  "SELECT count(*) FROM outbox_event WHERE aggregate_id = '${ORDER_ID}'::uuid AND correlation_id = 'phase4-order-smoke' AND causation_id IS NOT NULL" |
+  tr -d '[:space:]')"
+[[ "${TRACE_EVENT_COUNT}" -ge 1 ]] ||
+  fail "Kafka-derived inventory event did not preserve correlation and causation"
+
+ORDER_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.order-events.v1.DLT")"
+INVENTORY_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.inventory-events.v1.DLT")"
+[[ "${ORDER_DLT_OFFSET_AFTER}" == "${ORDER_DLT_OFFSET_BEFORE}" ]] ||
+  fail "an unexpected order event reached DLT"
+[[ "${INVENTORY_DLT_OFFSET_AFTER}" == "${INVENTORY_DLT_OFFSET_BEFORE}" ]] ||
+  fail "an unexpected inventory event reached DLT"
+
 echo "Smoke tests passed:"
 echo "  Phase 1 health, Eureka routing, metadata, and correlation checks passed."
 echo "  Registration, JWT claims, refresh-cookie issuance, and current-user checks passed."
@@ -468,3 +763,5 @@ echo "  Customer access and admin denial passed."
 echo "  Refresh rotation, reuse rejection, logout, and access revocation passed."
 echo "  Product lifecycle, public cache reads, ownership, and category checks passed."
 echo "  Cart snapshots, TTL-backed mutations, price validation, and security checks passed."
+echo "  Inventory adjustment, reservation, rejection, release, and ownership checks passed."
+echo "  Order creation, idempotency, cancellation, outbox, Kafka, and DLT checks passed."
