@@ -1,0 +1,9 @@
+package com.orderflow.events;
+
+public enum EventType {
+    ORDER_CREATED,
+    ORDER_CANCEL_REQUESTED,
+    INVENTORY_RESERVED,
+    INVENTORY_RESERVATION_FAILED,
+    INVENTORY_RELEASED
+}
