@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    discovery:
+      enabled: false
+  main:
+    banner-mode: off
+
+eureka:
+  client:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+
+app:
+  clients:
+    cart:
+      discovery-enabled: false
+      max-attempts: 1
+      retry-wait: 1ms
+  outbox:
+    poll-delay: 50ms
+    retry-base-delay: 25ms
+    send-timeout: 2s
+  security:
+    jwt:
+      issuer: https://issuer.test
+      jwk-set-uri: http://localhost:1/test-jwks
