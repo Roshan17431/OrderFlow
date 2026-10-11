@@ -1,0 +1,66 @@
+name: Release artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: Release identifier (for example v0.1.0)
+        required: true
+        type: string
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Validate release identifier
+        env:
+          RELEASE_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.release_version || github.ref_name }}
+        run: |
+          [[ "$RELEASE_ID" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]
+      - name: Full verification and release JARs
+        run: ./mvnw -B -ntp clean verify
+      - name: Security and topology gates
+        run: |
+          ./scripts/security-scan.sh
+          ./scripts/verify-log-redaction.sh
+          ./scripts/validate-monitoring.sh
+          ./scripts/validate-production-config.sh
+          docker compose config --quiet
+          docker compose -f docker-compose.yml -f docker-compose.production-like.yml config --quiet
+      - name: Build all images without publishing
+        run: |
+          for service in service-registry api-gateway auth-service product-service cart-service inventory-service order-service payment-service delivery-service notification-service operations-service; do
+            docker build --file "$service/Dockerfile" --tag "orderflow/$service:${GITHUB_REF_NAME}" .
+          done
+      - name: Produce artifact checksums
+        run: |
+          mkdir -p target/release
+          find . -path '*/target/app.jar' -type f -print0 | sort -z | xargs -0 sha256sum > target/release/SHA256SUMS
+          cp target/sbom/orderflow-sbom.json target/release/orderflow-sbom.json
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: orderflow-${{ github.ref_name }}
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            **/target/app.jar
+            target/release/SHA256SUMS
+            target/release/orderflow-sbom.json
