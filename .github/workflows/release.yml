@@ -11,12 +11,19 @@ on:
     tags:
       - 'v*'
 
+defaults:
+  run:
+    working-directory: orderflow
+
 permissions:
   contents: read
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
+
+env:
+  RELEASE_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.release_version || github.ref_name }}
 
 jobs:
   release:
@@ -29,9 +36,8 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
+          cache-dependency-path: orderflow/**/pom.xml
       - name: Validate release identifier
-        env:
-          RELEASE_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.release_version || github.ref_name }}
         run: |
           [[ "$RELEASE_ID" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]
       - name: Full verification and release JARs
@@ -47,7 +53,7 @@ jobs:
       - name: Build all images without publishing
         run: |
           for service in service-registry api-gateway auth-service product-service cart-service inventory-service order-service payment-service delivery-service notification-service operations-service; do
-            docker build --file "$service/Dockerfile" --tag "orderflow/$service:${GITHUB_REF_NAME}" .
+            docker build --file "$service/Dockerfile" --tag "orderflow/$service:${RELEASE_ID}" .
           done
       - name: Produce artifact checksums
         run: |
@@ -57,10 +63,10 @@ jobs:
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: orderflow-${{ github.ref_name }}
+          name: orderflow-${{ env.RELEASE_ID }}
           retention-days: 30
           if-no-files-found: error
           path: |
-            **/target/app.jar
-            target/release/SHA256SUMS
-            target/release/orderflow-sbom.json
+            orderflow/**/target/app.jar
+            orderflow/target/release/SHA256SUMS
+            orderflow/target/release/orderflow-sbom.json
