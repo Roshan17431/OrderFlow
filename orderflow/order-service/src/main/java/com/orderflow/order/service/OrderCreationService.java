@@ -54,7 +54,8 @@ public class OrderCreationService {
             String correlationId) {
         metrics.counter("orderflow_order_creation_attempts_total").increment();
         String key = keys.validate(idempotencyKey);
-        String hash = keys.hash("expectedCartVersion=" + request.expectedCartVersion());
+        String hash = keys.hash("expectedCartVersion=" + request.expectedCartVersion()
+                + ";shippingAddress=" + request.shippingAddress());
         OrderResponse previous = previous(customerId, key, hash);
         if (previous != null) {
             metrics.counter("orderflow_order_idempotency_total", "result", "hit").increment();
@@ -91,7 +92,8 @@ public class OrderCreationService {
         validateCart(validation);
         try {
             OrderResponse response =
-                    transaction.create(customerId, key, hash, validated, correlationId);
+                    transaction.create(customerId, key, hash, validated,
+                            request.shippingAddress().snapshot(), correlationId);
             metrics.counter("orderflow_order_creation_success_total").increment();
             return response;
         } catch (DataIntegrityViolationException exception) {

@@ -5,12 +5,17 @@ import com.orderflow.events.EventType;
 import com.orderflow.events.InventoryReleasedEvent;
 import com.orderflow.events.InventoryReservationFailedEvent;
 import com.orderflow.events.InventoryReservedEvent;
+import com.orderflow.events.PaymentCancelRequestedEvent;
+import com.orderflow.events.PaymentRequestedEvent;
+import com.orderflow.order.config.KafkaTopicProperties;
+import com.orderflow.order.config.OrderProperties;
 import com.orderflow.order.domain.CustomerOrder;
 import com.orderflow.order.domain.OrderStateMachine;
 import com.orderflow.order.domain.OrderStatus;
 import com.orderflow.order.domain.ProcessedEvent;
 import com.orderflow.order.repository.CustomerOrderRepository;
 import com.orderflow.order.repository.ProcessedEventRepository;
+import com.orderflow.order.outbox.OutboxStore;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Clock;
 import java.time.Instant;
@@ -29,6 +34,9 @@ public class OrderInventoryWorkflowService {
     private final ProcessedEventRepository processed;
     private final OrderStateMachine stateMachine;
     private final MeterRegistry metrics;
+    private final OutboxStore outbox;
+    private final KafkaTopicProperties topics;
+    private final OrderProperties properties;
     private final Clock clock;
 
     public OrderInventoryWorkflowService(
@@ -36,11 +44,17 @@ public class OrderInventoryWorkflowService {
             ProcessedEventRepository processed,
             OrderStateMachine stateMachine,
             MeterRegistry metrics,
+            OutboxStore outbox,
+            KafkaTopicProperties topics,
+            OrderProperties properties,
             Clock clock) {
         this.orders = orders;
         this.processed = processed;
         this.stateMachine = stateMachine;
         this.metrics = metrics;
+        this.outbox = outbox;
+        this.topics = topics;
+        this.properties = properties;
         this.clock = clock;
     }
 
@@ -67,6 +81,37 @@ public class OrderInventoryWorkflowService {
                     "PAYMENT_REQUIRED",
                     event.metadata(),
                     now);
+            Instant deadline = now.plus(properties.paymentWindow());
+            if (deadline.isAfter(event.expiresAt())) {
+                deadline = event.expiresAt();
+            }
+            if (order.getTotalAmount().signum() <= 0
+                    || !deadline.isAfter(now.plus(properties.minimumPaymentWindow()))) {
+                transition(
+                        order,
+                        OrderStatus.CANCEL_REQUESTED,
+                        "PAYMENT_WINDOW_UNAVAILABLE",
+                        event.metadata(),
+                        now);
+                enqueuePaymentCancel(
+                        order, "INVENTORY_EXPIRED", event.metadata(), now);
+            } else {
+                EventMetadata metadata = new EventMetadata(
+                        java.util.UUID.randomUUID(),
+                        EventType.PAYMENT_REQUESTED,
+                        PaymentRequestedEvent.VERSION,
+                        "ORDER",
+                        order.getId(),
+                        now,
+                        event.metadata().correlationId(),
+                        event.metadata().eventId(),
+                        "order-service");
+                PaymentRequestedEvent payment = new PaymentRequestedEvent(
+                        metadata, order.getId(), order.getCustomerId(),
+                        order.getTotalAmount(), order.getCurrency(), deadline,
+                        event.reservationId(), event.expiresAt());
+                outbox.enqueue(topics.orderEvents(), order.getId(), payment, metadata);
+            }
         } else if (order.getStatus() == OrderStatus.CANCEL_REQUESTED) {
             order.attachReservation(event.reservationId(), event.expiresAt(), now);
         }
@@ -112,6 +157,7 @@ public class OrderInventoryWorkflowService {
         CustomerOrder order = requireOrder(event.orderId());
         validateAggregate(event.metadata(), order);
         Instant now = Instant.now(clock);
+        order.inventoryReleased(event.releasedAt());
         if (order.getStatus() == OrderStatus.CANCEL_REQUESTED) {
             transition(
                     order,
@@ -119,22 +165,44 @@ public class OrderInventoryWorkflowService {
                     event.reason(),
                     event.metadata(),
                     now);
+        } else if (order.getStatus() == OrderStatus.PAYMENT_FAILED) {
+            // Payment failure is terminal even after inventory is released.
         } else if (order.getStatus() == OrderStatus.PAYMENT_PENDING
                 && "RESERVATION_EXPIRED".equals(event.reason())) {
-            transition(
-                    order,
-                    OrderStatus.CANCEL_REQUESTED,
-                    "RESERVATION_EXPIRED",
-                    event.metadata(),
-                    now);
             transition(
                     order,
                     OrderStatus.CANCELLED,
                     "RESERVATION_EXPIRED",
                     event.metadata(),
                     now);
+            enqueuePaymentCancel(order, "INVENTORY_EXPIRED", event.metadata(), now);
+        } else if ((order.getStatus() == OrderStatus.PAID
+                        || order.getStatus() == OrderStatus.PARTIALLY_REFUNDED)
+                && "RESERVATION_EXPIRED".equals(event.reason())) {
+            enqueuePaymentCancel(order, "SYSTEM_COMPENSATION", event.metadata(), now);
         }
         remember(event.metadata());
+    }
+
+    private void enqueuePaymentCancel(
+            CustomerOrder order, String reason, EventMetadata cause, Instant now) {
+        EventMetadata metadata = new EventMetadata(
+                java.util.UUID.randomUUID(),
+                EventType.PAYMENT_CANCEL_REQUESTED,
+                PaymentCancelRequestedEvent.VERSION,
+                "ORDER",
+                order.getId(),
+                now,
+                cause.correlationId(),
+                cause.eventId(),
+                "order-service");
+        outbox.enqueue(
+                topics.orderEvents(),
+                order.getId(),
+                new PaymentCancelRequestedEvent(
+                        metadata, order.getId(), order.getCustomerId(),
+                        order.getPaymentId(), reason, now),
+                metadata);
     }
 
     private void transition(

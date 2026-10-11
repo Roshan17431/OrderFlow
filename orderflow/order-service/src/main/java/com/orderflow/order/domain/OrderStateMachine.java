@@ -25,10 +25,23 @@ public class OrderStateMachine {
                 OrderStatus.INVENTORY_RESERVED,
                 EnumSet.of(OrderStatus.PAYMENT_PENDING, OrderStatus.CANCEL_REQUESTED));
         allowed.put(
-                OrderStatus.PAYMENT_PENDING, EnumSet.of(OrderStatus.CANCEL_REQUESTED));
+                OrderStatus.PAYMENT_PENDING,
+                EnumSet.of(
+                        OrderStatus.PAID,
+                        OrderStatus.PAYMENT_FAILED,
+                        OrderStatus.CANCEL_REQUESTED,
+                        OrderStatus.CANCELLED));
         allowed.put(OrderStatus.CANCEL_REQUESTED, EnumSet.of(OrderStatus.CANCELLED));
+        allowed.put(
+                OrderStatus.PAID,
+                EnumSet.of(OrderStatus.PARTIALLY_REFUNDED, OrderStatus.REFUNDED));
+        allowed.put(
+                OrderStatus.PARTIALLY_REFUNDED,
+                EnumSet.of(OrderStatus.PARTIALLY_REFUNDED, OrderStatus.REFUNDED));
+        allowed.put(OrderStatus.PAYMENT_FAILED, EnumSet.noneOf(OrderStatus.class));
+        allowed.put(OrderStatus.REFUNDED, EnumSet.noneOf(OrderStatus.class));
         allowed.put(OrderStatus.INVENTORY_REJECTED, EnumSet.noneOf(OrderStatus.class));
-        allowed.put(OrderStatus.CANCELLED, EnumSet.noneOf(OrderStatus.class));
+        allowed.put(OrderStatus.CANCELLED, EnumSet.of(OrderStatus.REFUNDED));
         transitions = Map.copyOf(allowed);
     }
 

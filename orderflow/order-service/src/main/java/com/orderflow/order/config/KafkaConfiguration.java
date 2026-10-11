@@ -34,6 +34,16 @@ public class KafkaConfiguration {
     }
 
     @Bean
+    NewTopic paymentEventsTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.paymentEvents()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic deliveryEventsTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.deliveryEvents()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
     NewTopic orderEventsDltTopic(KafkaTopicProperties topics) {
         return TopicBuilder.name(topics.orderEventsDlt()).partitions(3).replicas(1).build();
     }
@@ -41,6 +51,16 @@ public class KafkaConfiguration {
     @Bean
     NewTopic inventoryEventsDltTopic(KafkaTopicProperties topics) {
         return TopicBuilder.name(topics.inventoryEventsDlt()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic paymentEventsDltTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.paymentEventsDlt()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic deliveryEventsDltTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.deliveryEventsDlt()).partitions(3).replicas(1).build();
     }
 
     @Bean
@@ -56,12 +76,16 @@ public class KafkaConfiguration {
                                     "service",
                                     "order-service")
                             .increment();
+                    String dlt = record.topic().equals(topics.paymentEvents())
+                            ? topics.paymentEventsDlt()
+                            : record.topic().equals(topics.deliveryEvents())
+                                    ? topics.deliveryEventsDlt() : topics.inventoryEventsDlt();
                     LOGGER.error(
-                            "Publishing invalid inventory event to DLT topic={} partition={} offset={}",
-                            topics.inventoryEventsDlt(),
+                            "Publishing invalid workflow event to DLT topic={} partition={} offset={}",
+                            dlt,
                             record.partition(),
                             record.offset());
-                    return new TopicPartition(topics.inventoryEventsDlt(), record.partition());
+                    return new TopicPartition(dlt, record.partition());
                 });
         DefaultErrorHandler handler = new DefaultErrorHandler(recoverer, new FixedBackOff(500, 2));
         handler.setCommitRecovered(true);

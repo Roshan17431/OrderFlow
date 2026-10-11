@@ -3,6 +3,7 @@ package com.orderflow.order.service;
 import com.orderflow.events.EventMetadata;
 import com.orderflow.events.EventType;
 import com.orderflow.events.OrderCancelRequestedEvent;
+import com.orderflow.events.PaymentCancelRequestedEvent;
 import com.orderflow.order.config.KafkaTopicProperties;
 import com.orderflow.order.domain.CustomerOrder;
 import com.orderflow.order.domain.IdempotencyRecord;
@@ -105,6 +106,26 @@ public class OrderCancellationTransaction {
             OrderCancelRequestedEvent event = new OrderCancelRequestedEvent(
                     metadata, orderId, order.getCustomerId(), reason);
             outbox.enqueue(topics.orderEvents(), orderId, event, metadata);
+            EventMetadata paymentMetadata = new EventMetadata(
+                    UUID.randomUUID(),
+                    EventType.PAYMENT_CANCEL_REQUESTED,
+                    PaymentCancelRequestedEvent.VERSION,
+                    "ORDER",
+                    orderId,
+                    now,
+                    correlationId,
+                    metadata.eventId(),
+                    "order-service");
+            PaymentCancelRequestedEvent paymentCancellation =
+                    new PaymentCancelRequestedEvent(
+                            paymentMetadata,
+                            orderId,
+                            order.getCustomerId(),
+                            order.getPaymentId(),
+                            reason,
+                            now);
+            outbox.enqueue(
+                    topics.orderEvents(), orderId, paymentCancellation, paymentMetadata);
         }
         record.complete(orderId, 202, now);
         idempotency.save(record);

@@ -5,6 +5,7 @@ import com.orderflow.order.domain.CustomerOrder;
 import com.orderflow.order.dto.OrderHistoryResponse;
 import com.orderflow.order.dto.OrderItemResponse;
 import com.orderflow.order.dto.OrderResponse;
+import com.orderflow.order.dto.ShippingAddressResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,8 @@ public class OrderMapper {
                 order.getId(),
                 order.getCustomerId(),
                 order.getStatus(),
+                order.getFulfillmentStatus(),
+                address(order),
                 order.getCurrency(),
                 order.getSubtotal(),
                 order.getTotalAmount(),
@@ -22,6 +25,22 @@ public class OrderMapper {
                 order.getCancellationReason(),
                 order.getInventoryReservationId(),
                 order.getInventoryExpiresAt(),
+                order.getPaymentId(),
+                order.getPaidAt(),
+                order.getPaymentFailedAt(),
+                order.getPaymentFailureCode(),
+                order.getRefundedAmount(),
+                order.getRefundedAt(),
+                order.getInventoryReleasedAt(),
+                order.getDeliveryId(),
+                order.getDeliveryAgentId(),
+                order.getDeliveryRequestedAt(),
+                order.getDeliveryAssignedAt(),
+                order.getPickedUpAt(),
+                order.getOutForDeliveryAt(),
+                order.getDeliveredAt(),
+                order.getDeliveryFailedAt(),
+                order.getDeliveryCancelledAt(),
                 order.getItems().stream()
                         .map(item -> new OrderItemResponse(
                                 item.getProductId(),
@@ -35,6 +54,13 @@ public class OrderMapper {
                 order.getCreatedAt(),
                 order.getUpdatedAt(),
                 order.getVersion());
+    }
+
+    private ShippingAddressResponse address(CustomerOrder order) {
+        var value = order.getShippingAddress().snapshot();
+        return new ShippingAddressResponse(value.recipientName(), value.addressLine1(),
+                value.addressLine2(), value.city(), value.stateOrRegion(), value.postalCode(),
+                value.countryCode(), value.deliveryInstructions());
     }
 
     public OrderCreatedItem eventItem(com.orderflow.order.domain.OrderItem item) {

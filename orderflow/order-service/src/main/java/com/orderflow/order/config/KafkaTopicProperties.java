@@ -9,5 +9,9 @@ import org.springframework.validation.annotation.Validated;
 public record KafkaTopicProperties(
         @NotBlank String orderEvents,
         @NotBlank String inventoryEvents,
+        @NotBlank String paymentEvents,
+        @NotBlank String deliveryEvents,
         @NotBlank String orderEventsDlt,
-        @NotBlank String inventoryEventsDlt) {}
+        @NotBlank String inventoryEventsDlt,
+        @NotBlank String paymentEventsDlt,
+        @NotBlank String deliveryEventsDlt) {}

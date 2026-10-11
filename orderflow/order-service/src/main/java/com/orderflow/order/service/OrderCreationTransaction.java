@@ -3,10 +3,12 @@ package com.orderflow.order.service;
 import com.orderflow.events.EventMetadata;
 import com.orderflow.events.EventType;
 import com.orderflow.events.OrderCreatedEvent;
+import com.orderflow.events.ShippingAddressSnapshot;
 import com.orderflow.order.client.CartSnapshot;
 import com.orderflow.order.config.KafkaTopicProperties;
 import com.orderflow.order.domain.CustomerOrder;
 import com.orderflow.order.domain.IdempotencyRecord;
+import com.orderflow.order.domain.ShippingAddress;
 import com.orderflow.order.domain.IdempotencyScope;
 import com.orderflow.order.dto.OrderResponse;
 import com.orderflow.order.outbox.OutboxStore;
@@ -50,6 +52,7 @@ public class OrderCreationTransaction {
             String key,
             String requestHash,
             CartSnapshot cart,
+            ShippingAddressSnapshot shippingAddress,
             String correlationId) {
         Instant now = Instant.now(clock);
         IdempotencyRecord record = new IdempotencyRecord(
@@ -62,7 +65,8 @@ public class OrderCreationTransaction {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         UUID orderId = UUID.randomUUID();
         CustomerOrder order = CustomerOrder.create(
-                orderId, customerId, cart.currency(), total, cart.version(), now, correlationId);
+                orderId, customerId, cart.currency(), total, cart.version(),
+                new ShippingAddress(shippingAddress), now, correlationId);
         for (var item : cart.items()) {
             order.addItem(
                     item.productId(),
