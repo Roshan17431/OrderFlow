@@ -22,6 +22,10 @@ import org.springframework.security.oauth2.server.resource.authentication.Reacti
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.server.csrf.CsrfWebFilter;
+import org.springframework.security.web.server.util.matcher.AndServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -71,7 +75,13 @@ public class GatewaySecurityConfiguration {
         return http
                 .csrf(configurer -> configurer
                         .csrfTokenRepository(csrf)
-                        .csrfTokenRequestHandler(csrfHandler))
+                        .csrfTokenRequestHandler(csrfHandler)
+                        .requireCsrfProtectionMatcher(new AndServerWebExchangeMatcher(
+                                CsrfWebFilter.DEFAULT_CSRF_MATCHER,
+                                new NegatedServerWebExchangeMatcher(
+                                        new PathPatternParserServerWebExchangeMatcher(
+                                                "/api/payments/webhooks/simulator",
+                                                org.springframework.http.HttpMethod.POST)))))
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
@@ -92,6 +102,10 @@ public class GatewaySecurityConfiguration {
                                 "/api/auth/.well-known/jwks.json",
                                 "/oauth2/**",
                                 "/login/oauth2/**")
+                        .permitAll()
+                        .pathMatchers(
+                                org.springframework.http.HttpMethod.POST,
+                                "/api/payments/webhooks/simulator")
                         .permitAll()
                         .pathMatchers("/api/security/admin")
                         .hasRole("ADMIN")
@@ -116,11 +130,25 @@ public class GatewaySecurityConfiguration {
                         .authenticated()
                         .pathMatchers("/api/admin/orders", "/api/admin/orders/**")
                         .hasRole("ADMIN")
+                        .pathMatchers("/api/admin/payments", "/api/admin/payments/**")
+                        .hasRole("ADMIN")
+                        .pathMatchers("/api/admin/deliveries", "/api/admin/deliveries/**")
+                        .hasRole("ADMIN")
+                        .pathMatchers("/api/admin/operations", "/api/admin/operations/**")
+                        .hasRole("ADMIN")
+                        .pathMatchers("/api/delivery/agents", "/api/delivery/agents/**")
+                        .hasRole("DELIVERY_AGENT")
                         .pathMatchers("/api/inventory/reservations/**")
                         .hasRole("ADMIN")
                         .pathMatchers("/api/inventory", "/api/inventory/**")
                         .hasAnyRole("VENDOR", "ADMIN")
                         .pathMatchers("/api/orders", "/api/orders/**")
+                        .authenticated()
+                        .pathMatchers("/api/payments", "/api/payments/**")
+                        .authenticated()
+                        .pathMatchers("/api/deliveries", "/api/deliveries/**")
+                        .authenticated()
+                        .pathMatchers("/api/notifications", "/api/notifications/**")
                         .authenticated()
                         .anyExchange()
                         .authenticated())

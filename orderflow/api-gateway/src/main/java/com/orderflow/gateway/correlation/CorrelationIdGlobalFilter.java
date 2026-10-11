@@ -40,6 +40,11 @@ public class CorrelationIdGlobalFilter implements GlobalFilter, WebFilter, Order
                 .headers(headers -> {
                     headers.set(CorrelationHeaders.CORRELATION_ID, correlationId);
                     headers.remove("X-User-ID");
+                    headers.remove("X-User-Email");
+                    headers.remove("X-User-Roles");
+                    headers.remove("X-Authenticated-User-ID");
+                    headers.remove("X-Authenticated-User-Email");
+                    headers.remove("X-Authenticated-User-Roles");
                     headers.remove("X-Customer-ID");
                     headers.remove("X-Vendor-ID");
                     headers.remove("X-Roles");

@@ -36,17 +36,56 @@ spring:
               uri: lb://INVENTORY-SERVICE
               predicates:
                 - Path=/api/inventory,/api/inventory/**
+            - id: payment-webhook-api
+              uri: lb://PAYMENT-SERVICE
+              predicates:
+                - Path=/api/payments/webhooks/**
+              filters:
+                - RemoveRequestHeader=Cookie
+            - id: admin-payment-api
+              uri: lb://PAYMENT-SERVICE
+              predicates:
+                - Path=/api/admin/payments,/api/admin/payments/**
+            - id: payment-api
+              uri: lb://PAYMENT-SERVICE
+              predicates:
+                - Path=/api/payments,/api/payments/**
             - id: order-api
               uri: lb://ORDER-SERVICE
               predicates:
                 - Path=/api/orders,/api/orders/**
+            - id: delivery-agent-api
+              uri: lb://DELIVERY-SERVICE
+              predicates:
+                - Path=/api/delivery/agents,/api/delivery/agents/**
+            - id: admin-delivery-api
+              uri: lb://DELIVERY-SERVICE
+              predicates:
+                - Path=/api/admin/deliveries,/api/admin/deliveries/**
+            - id: delivery-api
+              uri: lb://DELIVERY-SERVICE
+              predicates:
+                - Path=/api/deliveries,/api/deliveries/**
+            - id: notification-api
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/api/notifications,/api/notifications/**
+            - id: operations-api
+              uri: lb://OPERATIONS-SERVICE
+              predicates:
+                - Path=/api/admin/operations,/api/admin/operations/**
           globalcors:
             cors-configurations:
               '[/**]':
                 allowedOrigins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
                 allowedMethods: GET,POST,PUT,PATCH,DELETE,OPTIONS
-                allowedHeaders: '*'
+                allowedHeaders: Authorization,Content-Type,X-XSRF-TOKEN,X-Correlation-ID,Idempotency-Key
+                exposedHeaders: X-Correlation-ID,Retry-After,X-RateLimit-Remaining
                 allowCredentials: true
+                maxAge: 3600
+  http:
+    codecs:
+      max-in-memory-size: ${APP_HTTP_MAX_REQUEST_SIZE:1MB}
   lifecycle:
     timeout-per-shutdown-phase: 20s
   data:
@@ -114,6 +153,31 @@ logging:
         service: ${spring.application.name}
 
 app:
+  http:
+    max-request-size: ${APP_HTTP_MAX_REQUEST_SIZE:1MB}
+  rate-limit:
+    enabled: ${APP_RATE_LIMIT_ENABLED:true}
+    namespace: ${APP_RATE_LIMIT_NAMESPACE:orderflow:gateway:rate-limit}
+    login:
+      requests: ${APP_RATE_LIMIT_LOGIN_REQUESTS:10}
+      window: ${APP_RATE_LIMIT_LOGIN_WINDOW:1m}
+    registration:
+      requests: ${APP_RATE_LIMIT_REGISTRATION_REQUESTS:5}
+      window: ${APP_RATE_LIMIT_REGISTRATION_WINDOW:1m}
+    refresh:
+      requests: ${APP_RATE_LIMIT_REFRESH_REQUESTS:30}
+      window: ${APP_RATE_LIMIT_REFRESH_WINDOW:1m}
+    order-creation:
+      requests: ${APP_RATE_LIMIT_ORDER_REQUESTS:20}
+      window: ${APP_RATE_LIMIT_ORDER_WINDOW:1m}
+    payment-confirmation:
+      requests: ${APP_RATE_LIMIT_PAYMENT_REQUESTS:10}
+      window: ${APP_RATE_LIMIT_PAYMENT_WINDOW:1m}
+    webhook:
+      requests: ${APP_RATE_LIMIT_WEBHOOK_REQUESTS:100}
+      window: ${APP_RATE_LIMIT_WEBHOOK_WINDOW:1m}
   security:
     issuer: ${APP_JWT_ISSUER:https://orderflow.local}
     jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
+    headers:
+      hsts-enabled: ${APP_SECURITY_HSTS_ENABLED:false}
