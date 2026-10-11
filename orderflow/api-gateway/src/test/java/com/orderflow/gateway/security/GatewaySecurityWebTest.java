@@ -6,7 +6,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.orderflow.gateway.config.GatewaySecurityProperties;
+import com.orderflow.gateway.config.GatewayRateLimitProperties;
+import com.orderflow.gateway.config.GatewayHttpProperties;
 import com.orderflow.gateway.correlation.CorrelationIdGlobalFilter;
+import com.orderflow.gateway.ratelimit.RateLimitStore;
+import java.time.Duration;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @WebFluxTest(controllers = GatewaySecurityWebTest.SecurityEndpoints.class)
-@EnableConfigurationProperties(GatewaySecurityProperties.class)
+@EnableConfigurationProperties({
+    GatewaySecurityProperties.class,
+    GatewayRateLimitProperties.class,
+    GatewayHttpProperties.class
+})
 @Import({
     GatewaySecurityConfiguration.class,
     GatewayAuthenticationEntryPoint.class,
@@ -42,8 +50,14 @@ class GatewaySecurityWebTest {
     @MockBean
     private GatewayRevocationWebFilter revocationFilter;
 
+    @MockBean
+    private RateLimitStore rateLimitStore;
+
     @BeforeEach
     void revocationStateIsCurrent() {
+        when(rateLimitStore.consume(any(), any(Integer.class), any(Duration.class)))
+                .thenReturn(Mono.just(new RateLimitStore.Decision(
+                        true, 100, Duration.ofMinutes(1))));
         when(revocationFilter.filter(any(), any())).thenAnswer(invocation -> {
             org.springframework.web.server.ServerWebExchange exchange =
                     invocation.getArgument(0);
@@ -205,6 +219,66 @@ class GatewaySecurityWebTest {
                 .expectStatus().isForbidden();
     }
 
+    @Test
+    void paymentWebhookIsPublicWithoutCsrfWhilePaymentAndRefundRoutesAreProtected() {
+        client.post()
+                .uri("/api/payments/webhooks/simulator")
+                .exchange()
+                .expectStatus().isOk();
+        client.get()
+                .uri("/api/payments/webhooks/simulator")
+                .exchange()
+                .expectStatus().isUnauthorized();
+        client.get()
+                .uri("/api/payments/orders/123")
+                .exchange()
+                .expectStatus().isUnauthorized();
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/payments/orders/123")
+                .exchange()
+                .expectStatus().isOk();
+        client.mutateWith(customerJwt())
+                .get()
+                .uri("/api/admin/payments")
+                .exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(adminJwt())
+                .get()
+                .uri("/api/admin/payments")
+                .exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
+    void phaseSixDeliveryAndNotificationRoutesAreProtected() {
+        client.get().uri("/api/deliveries/123").exchange()
+                .expectStatus().isUnauthorized();
+        client.get().uri("/api/notifications").exchange()
+                .expectStatus().isUnauthorized();
+        client.mutateWith(customerJwt()).get().uri("/api/deliveries/123").exchange()
+                .expectStatus().isOk();
+        client.mutateWith(customerJwt()).get().uri("/api/notifications").exchange()
+                .expectStatus().isOk();
+        client.mutateWith(customerJwt()).get().uri("/api/delivery/agents/me").exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(deliveryAgentJwt()).get().uri("/api/delivery/agents/me").exchange()
+                .expectStatus().isOk();
+        client.mutateWith(deliveryAgentJwt()).get().uri("/api/admin/deliveries/123/history").exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(adminJwt()).get().uri("/api/admin/deliveries/123/history").exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
+    void operationsRoutesRequireAdmin() {
+        client.get().uri("/api/admin/operations/overview").exchange().expectStatus().isUnauthorized();
+        client.mutateWith(customerJwt()).get().uri("/api/admin/operations/overview").exchange()
+                .expectStatus().isForbidden();
+        client.mutateWith(adminJwt()).get().uri("/api/admin/operations/overview").exchange()
+                .expectStatus().isOk();
+    }
+
     private org.springframework.security.test.web.reactive.server
             .SecurityMockServerConfigurers.JwtMutator customerJwt() {
         return mockJwt()
@@ -239,6 +313,18 @@ class GatewaySecurityWebTest {
                         .claim("roles", java.util.List.of("ADMIN"))
                         .claim("token_version", 0))
                 .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
+    private org.springframework.security.test.web.reactive.server
+            .SecurityMockServerConfigurers.JwtMutator deliveryAgentJwt() {
+        return mockJwt()
+                .jwt(jwt -> jwt
+                        .subject("delivery-agent-id")
+                        .claim("jti", "delivery-agent-jti")
+                        .claim("email", "agent@example.com")
+                        .claim("roles", java.util.List.of("DELIVERY_AGENT"))
+                        .claim("token_version", 0))
+                .authorities(new SimpleGrantedAuthority("ROLE_DELIVERY_AGENT"));
     }
 
     @RestController
@@ -300,6 +386,37 @@ class GatewaySecurityWebTest {
         @GetMapping("/api/admin/orders")
         Mono<Map<String, String>> adminOrders() {
             return Mono.just(Map.of("scope", "admin-orders"));
+        }
+
+        @PostMapping("/api/payments/webhooks/simulator")
+        Mono<Map<String, String>> paymentWebhook() {
+            return Mono.just(Map.of("scope", "payment-webhook"));
+        }
+
+        @GetMapping("/api/payments/webhooks/simulator")
+        Mono<Map<String, String>> paymentWebhookRead() {
+            return Mono.just(Map.of("scope", "payment-webhook-read"));
+        }
+
+        @GetMapping("/api/payments/orders/123")
+        Mono<Map<String, String>> payment() {
+            return Mono.just(Map.of("scope", "payment"));
+        }
+
+        @GetMapping("/api/admin/payments")
+        Mono<Map<String, String>> adminPayments() {
+            return Mono.just(Map.of("scope", "admin-payments"));
+        }
+
+        @GetMapping({
+            "/api/deliveries/123",
+            "/api/delivery/agents/me",
+            "/api/admin/deliveries/123/history",
+            "/api/notifications"
+            ,"/api/admin/operations/overview"
+        })
+        Mono<Map<String, String>> phaseSix() {
+            return Mono.just(Map.of("scope", "phase-six"));
         }
     }
 }
