@@ -1,0 +1,7 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+app:
+  payment:
+    simulator-enabled: ${APP_PAYMENT_SIMULATOR_ENABLED:false}

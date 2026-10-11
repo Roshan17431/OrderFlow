@@ -1,0 +1,178 @@
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: jdbc:postgresql://${PAYMENT_POSTGRES_HOST:localhost}:${PAYMENT_POSTGRES_PORT:5432}/${PAYMENT_POSTGRES_DB:orderflow_payment}
+    username: ${PAYMENT_POSTGRES_USER:orderflow_payment}
+    password: ${PAYMENT_POSTGRES_PASSWORD:orderflow_payment_local_password}
+    hikari:
+      initialization-fail-timeout: 60000
+  flyway:
+    enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: 3s
+      timeout: 3s
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      fail-fast: true
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+    consumer:
+      group-id: payment-service-order-events-v1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: record
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  port: 8086
+  shutdown: graceful
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+    healthcheck:
+      enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db,redis,kafka
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      rename:
+        '[@timestamp]': timestamp
+        logger_name: logger
+        thread_name: thread
+      add:
+        service: ${spring.application.name}
+
+resilience4j:
+  timelimiter:
+    configs:
+      payment-registration:
+        timeout-duration: ${APP_PAYMENT_PROVIDER_READ_TIMEOUT:5s}
+      payment-confirmation:
+        timeout-duration: ${APP_PAYMENT_PROVIDER_READ_TIMEOUT:5s}
+      payment-cancellation:
+        timeout-duration: ${APP_PAYMENT_PROVIDER_READ_TIMEOUT:5s}
+      payment-refund:
+        timeout-duration: ${APP_PAYMENT_PROVIDER_READ_TIMEOUT:5s}
+  circuitbreaker:
+    configs:
+      payment-registration:
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+      payment-confirmation:
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+      payment-cancellation:
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+      payment-refund:
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+
+app:
+  payment:
+    provider: ${APP_PAYMENT_PROVIDER:simulator}
+    simulator-enabled: ${APP_PAYMENT_SIMULATOR_ENABLED:true}
+    simulator-allow-in-production: ${APP_PAYMENT_SIMULATOR_ALLOW_IN_PRODUCTION:false}
+    simulator-webhook-secret: ${APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET:orderflow-local-simulator-secret-not-for-production}
+    webhook-tolerance: ${APP_PAYMENT_WEBHOOK_TOLERANCE:5m}
+    provider-connect-timeout: ${APP_PAYMENT_PROVIDER_CONNECT_TIMEOUT:2s}
+    provider-read-timeout: ${APP_PAYMENT_PROVIDER_READ_TIMEOUT:5s}
+    provider-retry-attempts: ${APP_PAYMENT_PROVIDER_RETRY_ATTEMPTS:2}
+    provider-retry-wait: ${APP_PAYMENT_PROVIDER_RETRY_WAIT:250ms}
+    max-page-size: ${APP_PAYMENT_MAX_PAGE_SIZE:100}
+    reconciliation:
+      enabled: ${APP_PAYMENT_RECONCILIATION_ENABLED:true}
+      delay: ${APP_PAYMENT_RECONCILIATION_DELAY:30s}
+      batch-size: ${APP_PAYMENT_RECONCILIATION_BATCH_SIZE:50}
+      lock-duration: ${APP_PAYMENT_RECONCILIATION_LOCK_DURATION:5m}
+      max-age: ${APP_PAYMENT_RECONCILIATION_MAX_AGE:30d}
+  kafka:
+    topics:
+      order-events: ${APP_ORDER_EVENTS_TOPIC:orderflow.order-events.v1}
+      payment-events: ${APP_PAYMENT_EVENTS_TOPIC:orderflow.payment-events.v1}
+      order-events-dlt: ${APP_ORDER_EVENTS_DLT:orderflow.order-events.v1.DLT}
+      payment-events-dlt: ${APP_PAYMENT_EVENTS_DLT:orderflow.payment-events.v1.DLT}
+  outbox:
+    poll-delay: ${APP_OUTBOX_POLL_DELAY:500ms}
+    batch-size: ${APP_OUTBOX_BATCH_SIZE:50}
+    max-attempts: ${APP_OUTBOX_MAX_ATTEMPTS:10}
+    lock-timeout: ${APP_OUTBOX_LOCK_TIMEOUT:2m}
+    retry-base-delay: ${APP_OUTBOX_RETRY_BASE_DELAY:2s}
+    send-timeout: ${APP_OUTBOX_SEND_TIMEOUT:10s}
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
+  scheduler:
+    instance-id: ${APP_SCHEDULER_INSTANCE_ID:${HOSTNAME:payment-local}}
