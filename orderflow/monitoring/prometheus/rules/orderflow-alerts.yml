@@ -1,0 +1,39 @@
+groups:
+  - name: orderflow-reliability
+    rules:
+      - alert: OrderFlowOutboxBacklogHigh
+        expr: sum(orderflow_outbox_backlog) > 100
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "OrderFlow outbox backlog is high"}
+      - alert: OrderFlowOutboxFailures
+        expr: sum(orderflow_outbox_failed) > 0
+        for: 1m
+        labels: {severity: critical}
+        annotations: {summary: "OrderFlow has permanently failed outbox records"}
+      - alert: OrderFlowDeadLetterEvents
+        expr: increase(orderflow_kafka_dlt_publications_total[5m]) > 0
+        labels: {severity: warning}
+        annotations: {summary: "Messages were published to a DLT"}
+      - alert: OrderFlowScheduledJobFailures
+        expr: increase(scheduler_job_failure_total[10m]) > 0
+        labels: {severity: warning}
+        annotations: {summary: "A scheduled job failed"}
+      - alert: OrderFlowPaymentReconciliationBacklog
+        expr: payment_overdue_total > 25
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "Overdue payment backlog is high"}
+      - alert: OrderFlowPendingDeliveriesHigh
+        expr: deliveries_pending_assignment > 25
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "Pending delivery backlog is high"}
+      - alert: OrderFlowNotificationFailureRateHigh
+        expr: increase(notification_reconciliation_failed_total[10m]) > 5
+        labels: {severity: warning}
+        annotations: {summary: "Notification recovery failures are elevated"}
+      - alert: OrderFlowInventoryReservationFailureRateHigh
+        expr: increase(operations_event_processing_total{eventType="INVENTORY_RESERVATION_FAILED"}[10m]) > 10
+        labels: {severity: warning}
+        annotations: {summary: "Inventory reservation failures are elevated"}
