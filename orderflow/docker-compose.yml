@@ -1,5 +1,8 @@
 name: orderflow
 
+x-java-environment: &java-environment
+  JAVA_TOOL_OPTIONS: ${ORDERFLOW_JAVA_TOOL_OPTIONS:--Xms32m -Xmx128m -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError}
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -51,6 +54,7 @@ services:
   kafka:
     image: apache/kafka:3.9.1
     environment:
+      KAFKA_HEAP_OPTS: ${KAFKA_HEAP_OPTS:--Xms128m -Xmx192m}
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_LISTENERS: CONTROLLER://:29093,INTERNAL://:29092,EXTERNAL://:9092
@@ -97,6 +101,18 @@ services:
       ORDER_POSTGRES_DB: ${ORDER_POSTGRES_DB:-orderflow_order}
       ORDER_POSTGRES_USER: ${ORDER_POSTGRES_USER:-orderflow_order}
       ORDER_POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD:-orderflow_order_local_password}
+      PAYMENT_POSTGRES_DB: ${PAYMENT_POSTGRES_DB:-orderflow_payment}
+      PAYMENT_POSTGRES_USER: ${PAYMENT_POSTGRES_USER:-orderflow_payment}
+      PAYMENT_POSTGRES_PASSWORD: ${PAYMENT_POSTGRES_PASSWORD:-orderflow_payment_local_password}
+      DELIVERY_POSTGRES_DB: ${DELIVERY_POSTGRES_DB:-orderflow_delivery}
+      DELIVERY_POSTGRES_USER: ${DELIVERY_POSTGRES_USER:-orderflow_delivery}
+      DELIVERY_POSTGRES_PASSWORD: ${DELIVERY_POSTGRES_PASSWORD:-orderflow_delivery_local_password}
+      NOTIFICATION_POSTGRES_DB: ${NOTIFICATION_POSTGRES_DB:-orderflow_notification}
+      NOTIFICATION_POSTGRES_USER: ${NOTIFICATION_POSTGRES_USER:-orderflow_notification}
+      NOTIFICATION_POSTGRES_PASSWORD: ${NOTIFICATION_POSTGRES_PASSWORD:-orderflow_notification_local_password}
+      OPERATIONS_POSTGRES_DB: ${OPERATIONS_POSTGRES_DB:-orderflow_operations}
+      OPERATIONS_POSTGRES_USER: ${OPERATIONS_POSTGRES_USER:-orderflow_operations}
+      OPERATIONS_POSTGRES_PASSWORD: ${OPERATIONS_POSTGRES_PASSWORD:-orderflow_operations_local_password}
     volumes:
       - ./scripts/bootstrap-product-database.sh:/opt/orderflow/bootstrap-product-database.sh:ro
     entrypoint:
@@ -112,6 +128,7 @@ services:
       context: .
       dockerfile: service-registry/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
     ports:
       - "${EUREKA_PORT:-8761}:8761"
@@ -125,7 +142,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 20
-      start_period: 20s
+      start_period: 120s
     restart: unless-stopped
 
   auth-service:
@@ -133,6 +150,7 @@ services:
       context: .
       dockerfile: auth-service/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
@@ -172,7 +190,7 @@ services:
       interval: 10s
       timeout: 8s
       retries: 30
-      start_period: 30s
+      start_period: 120s
     restart: unless-stopped
 
   product-service:
@@ -180,6 +198,7 @@ services:
       context: .
       dockerfile: product-service/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
       PRODUCT_POSTGRES_HOST: postgres
       PRODUCT_POSTGRES_PORT: 5432
@@ -219,7 +238,7 @@ services:
       interval: 10s
       timeout: 8s
       retries: 30
-      start_period: 30s
+      start_period: 120s
     restart: unless-stopped
 
   cart-service:
@@ -227,6 +246,7 @@ services:
       context: .
       dockerfile: cart-service/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -261,7 +281,7 @@ services:
       interval: 10s
       timeout: 8s
       retries: 30
-      start_period: 30s
+      start_period: 120s
     restart: unless-stopped
 
   inventory-service:
@@ -269,6 +289,7 @@ services:
       context: .
       dockerfile: inventory-service/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
       INVENTORY_POSTGRES_HOST: postgres
       INVENTORY_POSTGRES_PORT: 5432
@@ -287,8 +308,12 @@ services:
       APP_PRODUCT_CLIENT_READ_TIMEOUT: ${APP_PRODUCT_CLIENT_READ_TIMEOUT:-3s}
       APP_ORDER_EVENTS_TOPIC: ${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}
       APP_INVENTORY_EVENTS_TOPIC: ${APP_INVENTORY_EVENTS_TOPIC:-orderflow.inventory-events.v1}
+      APP_PAYMENT_EVENTS_TOPIC: ${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}
+      APP_DELIVERY_EVENTS_TOPIC: ${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}
       APP_ORDER_EVENTS_DLT: ${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}
       APP_INVENTORY_EVENTS_DLT: ${APP_INVENTORY_EVENTS_DLT:-orderflow.inventory-events.v1.DLT}
+      APP_PAYMENT_EVENTS_DLT: ${APP_PAYMENT_EVENTS_DLT:-orderflow.payment-events.v1.DLT}
+      APP_DELIVERY_EVENTS_DLT: ${APP_DELIVERY_EVENTS_DLT:-orderflow.delivery-events.v1.DLT}
       APP_INVENTORY_RESERVATION_TTL: ${APP_INVENTORY_RESERVATION_TTL:-15m}
       APP_INVENTORY_EXPIRATION_POLL_DELAY: ${APP_INVENTORY_EXPIRATION_POLL_DELAY:-30s}
       APP_INVENTORY_EXPIRATION_BATCH_SIZE: ${APP_INVENTORY_EXPIRATION_BATCH_SIZE:-50}
@@ -322,7 +347,7 @@ services:
       interval: 10s
       timeout: 8s
       retries: 30
-      start_period: 30s
+      start_period: 120s
     restart: unless-stopped
 
   order-service:
@@ -330,6 +355,7 @@ services:
       context: .
       dockerfile: order-service/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
       ORDER_POSTGRES_HOST: postgres
       ORDER_POSTGRES_PORT: 5432
@@ -348,8 +374,12 @@ services:
       APP_CART_CLIENT_READ_TIMEOUT: ${APP_CART_CLIENT_READ_TIMEOUT:-3s}
       APP_ORDER_EVENTS_TOPIC: ${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}
       APP_INVENTORY_EVENTS_TOPIC: ${APP_INVENTORY_EVENTS_TOPIC:-orderflow.inventory-events.v1}
+      APP_PAYMENT_EVENTS_TOPIC: ${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}
+      APP_DELIVERY_EVENTS_TOPIC: ${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}
       APP_ORDER_EVENTS_DLT: ${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}
       APP_INVENTORY_EVENTS_DLT: ${APP_INVENTORY_EVENTS_DLT:-orderflow.inventory-events.v1.DLT}
+      APP_PAYMENT_EVENTS_DLT: ${APP_PAYMENT_EVENTS_DLT:-orderflow.payment-events.v1.DLT}
+      APP_DELIVERY_EVENTS_DLT: ${APP_DELIVERY_EVENTS_DLT:-orderflow.delivery-events.v1.DLT}
       APP_OUTBOX_POLL_DELAY: ${APP_OUTBOX_POLL_DELAY:-500ms}
       APP_OUTBOX_BATCH_SIZE: ${APP_OUTBOX_BATCH_SIZE:-50}
       APP_OUTBOX_MAX_ATTEMPTS: ${APP_OUTBOX_MAX_ATTEMPTS:-10}
@@ -380,7 +410,175 @@ services:
       interval: 10s
       timeout: 8s
       retries: 30
-      start_period: 30s
+      start_period: 120s
+    restart: unless-stopped
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: payment-service/Dockerfile
+    environment:
+      <<: *java-environment
+      SPRING_PROFILES_ACTIVE: docker
+      PAYMENT_POSTGRES_HOST: postgres
+      PAYMENT_POSTGRES_PORT: 5432
+      PAYMENT_POSTGRES_DB: ${PAYMENT_POSTGRES_DB:-orderflow_payment}
+      PAYMENT_POSTGRES_USER: ${PAYMENT_POSTGRES_USER:-orderflow_payment}
+      PAYMENT_POSTGRES_PASSWORD: ${PAYMENT_POSTGRES_PASSWORD:-orderflow_payment_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_PAYMENT_PROVIDER: simulator
+      APP_PAYMENT_SIMULATOR_ENABLED: "true"
+      # Deliberately local-only simulator secret; never use this value outside local Docker.
+      APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET: ${APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET:-orderflow-local-simulator-secret-not-for-production}
+      APP_PAYMENT_WEBHOOK_TOLERANCE: ${APP_PAYMENT_WEBHOOK_TOLERANCE:-5m}
+      APP_PAYMENT_PROVIDER_CONNECT_TIMEOUT: ${APP_PAYMENT_PROVIDER_CONNECT_TIMEOUT:-2s}
+      APP_PAYMENT_PROVIDER_READ_TIMEOUT: ${APP_PAYMENT_PROVIDER_READ_TIMEOUT:-5s}
+      APP_PAYMENT_PROVIDER_RETRY_ATTEMPTS: ${APP_PAYMENT_PROVIDER_RETRY_ATTEMPTS:-2}
+      APP_PAYMENT_PROVIDER_RETRY_WAIT: ${APP_PAYMENT_PROVIDER_RETRY_WAIT:-250ms}
+      APP_ORDER_EVENTS_TOPIC: ${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}
+      APP_PAYMENT_EVENTS_TOPIC: ${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}
+      APP_ORDER_EVENTS_DLT: ${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}
+      APP_PAYMENT_EVENTS_DLT: ${APP_PAYMENT_EVENTS_DLT:-orderflow.payment-events.v1.DLT}
+      APP_OUTBOX_POLL_DELAY: ${APP_OUTBOX_POLL_DELAY:-500ms}
+      APP_OUTBOX_BATCH_SIZE: ${APP_OUTBOX_BATCH_SIZE:-50}
+      APP_OUTBOX_MAX_ATTEMPTS: ${APP_OUTBOX_MAX_ATTEMPTS:-10}
+      APP_OUTBOX_LOCK_TIMEOUT: ${APP_OUTBOX_LOCK_TIMEOUT:-2m}
+      APP_OUTBOX_RETRY_BASE_DELAY: ${APP_OUTBOX_RETRY_BASE_DELAY:-2s}
+    depends_on:
+      database-bootstrap:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "${PAYMENT_SERVICE_PORT:-8086}:8086"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - --fail
+        - --silent
+        - http://localhost:8086/actuator/health/readiness
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 120s
+    restart: unless-stopped
+
+  delivery-service:
+    build:
+      context: .
+      dockerfile: delivery-service/Dockerfile
+    environment:
+      <<: *java-environment
+      SPRING_PROFILES_ACTIVE: docker
+      DELIVERY_POSTGRES_HOST: postgres
+      DELIVERY_POSTGRES_PORT: 5432
+      DELIVERY_POSTGRES_DB: ${DELIVERY_POSTGRES_DB:-orderflow_delivery}
+      DELIVERY_POSTGRES_USER: ${DELIVERY_POSTGRES_USER:-orderflow_delivery}
+      DELIVERY_POSTGRES_PASSWORD: ${DELIVERY_POSTGRES_PASSWORD:-orderflow_delivery_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_DELIVERY_EVENTS_TOPIC: ${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}
+      APP_DELIVERY_EVENTS_DLT: ${APP_DELIVERY_EVENTS_DLT:-orderflow.delivery-events.v1.DLT}
+      APP_DELIVERY_ASSIGNMENT_STRATEGY: ${APP_DELIVERY_ASSIGNMENT_STRATEGY:-LEAST_RECENTLY_ASSIGNED}
+      APP_DELIVERY_MAX_PAGE_SIZE: ${APP_DELIVERY_MAX_PAGE_SIZE:-100}
+      APP_OUTBOX_POLL_DELAY: ${APP_OUTBOX_POLL_DELAY:-500ms}
+      APP_OUTBOX_BATCH_SIZE: ${APP_OUTBOX_BATCH_SIZE:-50}
+      APP_OUTBOX_MAX_ATTEMPTS: ${APP_OUTBOX_MAX_ATTEMPTS:-10}
+      APP_OUTBOX_LOCK_TIMEOUT: ${APP_OUTBOX_LOCK_TIMEOUT:-2m}
+      APP_OUTBOX_RETRY_BASE_DELAY: ${APP_OUTBOX_RETRY_BASE_DELAY:-2s}
+    depends_on:
+      database-bootstrap:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "${DELIVERY_SERVICE_PORT:-8087}:8087"
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://localhost:8087/actuator/health/readiness]
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 120s
+    restart: unless-stopped
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    environment:
+      <<: *java-environment
+      SPRING_PROFILES_ACTIVE: docker
+      NOTIFICATION_POSTGRES_HOST: postgres
+      NOTIFICATION_POSTGRES_PORT: 5432
+      NOTIFICATION_POSTGRES_DB: ${NOTIFICATION_POSTGRES_DB:-orderflow_notification}
+      NOTIFICATION_POSTGRES_USER: ${NOTIFICATION_POSTGRES_USER:-orderflow_notification}
+      NOTIFICATION_POSTGRES_PASSWORD: ${NOTIFICATION_POSTGRES_PASSWORD:-orderflow_notification_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+      APP_ORDER_EVENTS_TOPIC: ${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}
+      APP_PAYMENT_EVENTS_TOPIC: ${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}
+      APP_DELIVERY_EVENTS_TOPIC: ${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}
+      APP_NOTIFICATION_EVENTS_TOPIC: ${APP_NOTIFICATION_EVENTS_TOPIC:-orderflow.notification-events.v1}
+      APP_NOTIFICATION_EVENTS_DLT: ${APP_NOTIFICATION_EVENTS_DLT:-orderflow.notification-events.v1.DLT}
+      APP_NOTIFICATION_EMAIL_PROVIDER: simulator
+      APP_NOTIFICATION_SMS_PROVIDER: simulator
+      APP_NOTIFICATION_ASYNC_CORE_POOL_SIZE: ${APP_NOTIFICATION_ASYNC_CORE_POOL_SIZE:-2}
+      APP_NOTIFICATION_ASYNC_MAX_POOL_SIZE: ${APP_NOTIFICATION_ASYNC_MAX_POOL_SIZE:-8}
+      APP_NOTIFICATION_ASYNC_QUEUE_CAPACITY: ${APP_NOTIFICATION_ASYNC_QUEUE_CAPACITY:-200}
+      APP_NOTIFICATION_SSE_TIMEOUT: ${APP_NOTIFICATION_SSE_TIMEOUT:-30m}
+      APP_OUTBOX_POLL_DELAY: ${APP_OUTBOX_POLL_DELAY:-500ms}
+      APP_OUTBOX_BATCH_SIZE: ${APP_OUTBOX_BATCH_SIZE:-50}
+      APP_OUTBOX_MAX_ATTEMPTS: ${APP_OUTBOX_MAX_ATTEMPTS:-10}
+      APP_OUTBOX_LOCK_TIMEOUT: ${APP_OUTBOX_LOCK_TIMEOUT:-2m}
+      APP_OUTBOX_RETRY_BASE_DELAY: ${APP_OUTBOX_RETRY_BASE_DELAY:-2s}
+    depends_on:
+      database-bootstrap:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "${NOTIFICATION_SERVICE_PORT:-8088}:8088"
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://localhost:8088/actuator/health/readiness]
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 120s
     restart: unless-stopped
 
   api-gateway:
@@ -388,6 +586,7 @@ services:
       context: .
       dockerfile: api-gateway/Dockerfile
     environment:
+      <<: *java-environment
       SPRING_PROFILES_ACTIVE: docker
       EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
       REDIS_HOST: redis
@@ -411,6 +610,14 @@ services:
         condition: service_healthy
       order-service:
         condition: service_healthy
+      payment-service:
+        condition: service_healthy
+      delivery-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      operations-service:
+        condition: service_healthy
     ports:
       - "${API_GATEWAY_PORT:-8080}:8080"
     healthcheck:
@@ -423,7 +630,67 @@ services:
       interval: 10s
       timeout: 5s
       retries: 20
-      start_period: 20s
+      start_period: 120s
+    restart: unless-stopped
+
+  operations-service:
+    build:
+      context: .
+      dockerfile: operations-service/Dockerfile
+    environment:
+      <<: *java-environment
+      SPRING_PROFILES_ACTIVE: docker
+      OPERATIONS_POSTGRES_HOST: postgres
+      OPERATIONS_POSTGRES_PORT: 5432
+      OPERATIONS_POSTGRES_DB: ${OPERATIONS_POSTGRES_DB:-orderflow_operations}
+      OPERATIONS_POSTGRES_USER: ${OPERATIONS_POSTGRES_USER:-orderflow_operations}
+      OPERATIONS_POSTGRES_PASSWORD: ${OPERATIONS_POSTGRES_PASSWORD:-orderflow_operations_local_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_DEFAULT_ZONE: http://service-registry:8761/eureka/
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-https://orderflow.local}
+      APP_AUTH_JWK_SET_URI: http://auth-service:8081/api/auth/.well-known/jwks.json
+    depends_on:
+      database-bootstrap: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+      service-registry: {condition: service_healthy}
+      auth-service: {condition: service_healthy}
+    ports:
+      - "${OPERATIONS_SERVICE_PORT:-8089}:8089"
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://localhost:8089/actuator/health/readiness]
+      interval: 10s
+      timeout: 8s
+      retries: 30
+      start_period: 120s
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    profiles: [observability]
+    command: [--config.file=/etc/prometheus/prometheus.yml]
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus:ro
+    ports:
+      - "${PROMETHEUS_PORT:-9091}:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    profiles: [observability]
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-orderflow-local-only}
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    depends_on:
+      - prometheus
     restart: unless-stopped
 
 volumes:

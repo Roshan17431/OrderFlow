@@ -102,5 +102,25 @@ ensure_database \
   "${ORDER_POSTGRES_DB}" \
   "${ORDER_POSTGRES_USER}" \
   "${ORDER_POSTGRES_PASSWORD}"
+ensure_database \
+  "Payment" \
+  "${PAYMENT_POSTGRES_DB}" \
+  "${PAYMENT_POSTGRES_USER}" \
+  "${PAYMENT_POSTGRES_PASSWORD}"
+ensure_database \
+  "Delivery" \
+  "${DELIVERY_POSTGRES_DB}" \
+  "${DELIVERY_POSTGRES_USER}" \
+  "${DELIVERY_POSTGRES_PASSWORD}"
+ensure_database \
+  "Notification" \
+  "${NOTIFICATION_POSTGRES_DB}" \
+  "${NOTIFICATION_POSTGRES_USER}" \
+  "${NOTIFICATION_POSTGRES_PASSWORD}"
+ensure_database \
+  "Operations" \
+  "${OPERATIONS_POSTGRES_DB}" \
+  "${OPERATIONS_POSTGRES_USER}" \
+  "${OPERATIONS_POSTGRES_PASSWORD}"
 
 echo "All service databases are ready."

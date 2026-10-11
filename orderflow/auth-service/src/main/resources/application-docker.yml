@@ -11,7 +11,7 @@ spring:
 app:
   security:
     jwt:
-      allow-ephemeral-keys: true
+      allow-ephemeral-keys: ${APP_JWT_ALLOW_EPHEMERAL_KEYS:true}
 
 eureka:
   client:
