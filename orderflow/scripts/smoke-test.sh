@@ -18,7 +18,12 @@ EUREKA_URL="http://localhost:${EUREKA_PORT:-8761}"
 KNOWN_ID="orderflow-smoke-test-123"
 TEMP_DIR="$(mktemp -d)"
 COOKIE_JAR="${TEMP_DIR}/cookies.txt"
-trap 'rm -rf "${TEMP_DIR}"' EXIT
+KAFKA_PAUSED=false
+cleanup() {
+  if [[ "${KAFKA_PAUSED}" == "true" ]]; then docker compose unpause kafka >/dev/null || true; fi
+  rm -rf "${TEMP_DIR}"
+}
+trap cleanup EXIT
 
 cd "${REPOSITORY_ROOT}"
 
@@ -31,7 +36,7 @@ wait_for_url() {
   local name="$1"
   local url="$2"
   local deadline=$((SECONDS + TIMEOUT_SECONDS))
-  until curl --fail --silent --show-error "${url}" >/dev/null; do
+  until curl --connect-timeout 3 --max-time 10 --fail --silent --show-error "${url}" >/dev/null; do
     if (( SECONDS >= deadline )); then
       docker compose ps >&2 || true
       fail "timed out waiting for ${name}: ${url}"
@@ -45,7 +50,7 @@ wait_for_eureka_app() {
   local application_name="$1"
   local output_file="${TEMP_DIR}/eureka-${application_name}.json"
   local deadline=$((SECONDS + TIMEOUT_SECONDS))
-  until curl --fail --silent --show-error \
+  until curl --connect-timeout 3 --max-time 10 --fail --silent --show-error \
       -H "Accept: application/json" \
       "${EUREKA_URL}/eureka/apps/${application_name}" >"${output_file}" 2>/dev/null \
       && grep -q '"status":"UP"' "${output_file}"; do
@@ -114,7 +119,7 @@ request() {
   local output="$3"
   local headers="$4"
   shift 4
-  curl --silent --show-error \
+  curl --connect-timeout 3 --max-time "${SMOKE_HTTP_TIMEOUT_SECONDS:-30}" --silent --show-error \
     -X "${method}" \
     -D "${headers}" \
     -o "${output}" \
@@ -887,6 +892,12 @@ PAYMENT_PROVIDER_ID="sim_pay_${PAYMENT_ID}"
 PAYMENT_WEBHOOK_BODY="$(printf \
   '{"type":"payment.succeeded","providerPaymentId":"%s"}' \
   "${PAYMENT_PROVIDER_ID}")"
+if [[ "${AUDIT_KAFKA_RECOVERY:-false}" == "true" ]]; then
+  docker compose pause kafka >/dev/null
+  KAFKA_PAUSED=true
+  KAFKA_HEALTH_STATUS="$(curl --connect-timeout 3 --max-time 8 --silent --output /dev/null --write-out '%{http_code}' "${INVENTORY_URL}/actuator/health/readiness")"
+  assert_status "${KAFKA_HEALTH_STATUS}" "503" "bounded Kafka outage readiness"
+fi
 PAYMENT_WEBHOOK_STATUS="$(signed_webhook \
   "payment-success-${UNIQUE_SUFFIX}" "${PAYMENT_WEBHOOK_BODY}" \
   "${TEMP_DIR}/payment-webhook.json" "${TEMP_DIR}/payment-webhook.headers")"
@@ -896,6 +907,20 @@ PAYMENT_WEBHOOK_REPEAT_STATUS="$(signed_webhook \
   "${TEMP_DIR}/payment-webhook-repeat.json" \
   "${TEMP_DIR}/payment-webhook-repeat.headers")"
 assert_status "${PAYMENT_WEBHOOK_REPEAT_STATUS}" "200" "duplicate payment webhook"
+if [[ "${KAFKA_PAUSED}" == "true" ]]; then
+  RETRY_DEADLINE=$((SECONDS + 45))
+  while true; do
+    OUTBOX_RETRIES="$(docker compose exec -T postgres sh -c \
+      'psql -U "$POSTGRES_USER" -d "$1" -Atc "$2"' sh "${PAYMENT_POSTGRES_DB:-orderflow_payment}" \
+      "SELECT count(*) FROM outbox_event WHERE aggregate_id='${PAYMENT_ORDER_ID}' AND event_type='PAYMENT_SUCCEEDED' AND attempts > 0" | tr -d '[:space:]')"
+    [[ "${OUTBOX_RETRIES}" -ge 1 ]] && break
+    (( SECONDS < RETRY_DEADLINE )) || fail "Kafka outage did not record a publication retry"
+    sleep 1
+  done
+  docker compose unpause kafka >/dev/null
+  KAFKA_PAUSED=false
+  echo 'Kafka outage: bounded readiness and persisted publication retry verified; checking recovery.'
+fi
 wait_for_order_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
   "PAID" "payment-order-paid"
 wait_for_fulfillment_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
@@ -973,6 +998,8 @@ for transition in pickup out-for-delivery delivered; do
   wait_for_fulfillment_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
     "${EXPECTED_FULFILLMENT}" "fulfillment-${transition}"
 done
+wait_for_inventory_quantities "${VENDOR_TOKEN}" "${PRODUCT_ID}" \
+  7 0 7 "inventory-fulfilled"
 wait_for_agent_availability "${AGENT_TOKEN}" "AVAILABLE" "agent-released"
 
 # Leave the local smoke agent offline after verifying that delivery completion
@@ -1084,7 +1111,7 @@ OPERATIONS_CUSTOMER_STATUS="$(request GET "/api/admin/operations/overview" \
   "${TEMP_DIR}/operations-denied.json" "${TEMP_DIR}/operations-denied.headers" \
   -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
 assert_status "${OPERATIONS_CUSTOMER_STATUS}" "403" "operations customer denial"
-curl --fail --silent --show-error "${OPERATIONS_URL}/actuator/prometheus" | \
+curl --connect-timeout 3 --max-time 10 --fail --silent --show-error "${OPERATIONS_URL}/actuator/prometheus" | \
   grep -q "operations_event_processing" || fail "operations Prometheus metrics missing"
 
 REFUND_STATUS="$(request POST "/api/admin/payments/${PAYMENT_ID}/refunds" \
@@ -1106,6 +1133,24 @@ REFUND_WEBHOOK_STATUS="$(signed_webhook \
 assert_status "${REFUND_WEBHOOK_STATUS}" "200" "signed refund success webhook"
 wait_for_order_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
   "PARTIALLY_REFUNDED" "payment-order-partially-refunded"
+
+# Complete the remaining refund balance after delivery. Fulfilled stock must stay deducted.
+REMAINING_REFUND="$(jq -r '.totalAmount' "${TEMP_DIR}/payment-order.json" | awk '{printf "%.2f", $1 - 1.00}')"
+FULL_REFUND_STATUS="$(request POST "/api/admin/payments/${PAYMENT_ID}/refunds" \
+  "${TEMP_DIR}/full-refund.json" "${TEMP_DIR}/full-refund.headers" \
+  -c "${COOKIE_JAR}" -b "${COOKIE_JAR}" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}" \
+  -H "Content-Type: application/json" -H "X-XSRF-TOKEN: ${CSRF_TOKEN}" \
+  -H "Idempotency-Key: full-refund-${UNIQUE_SUFFIX}" \
+  --data "{\"amount\":${REMAINING_REFUND},\"reason\":\"CUSTOMER_REQUEST\"}")"
+assert_status "${FULL_REFUND_STATUS}" "202" "full refund request"
+FULL_REFUND_ID="$(json_value "${TEMP_DIR}/full-refund.json" "id")"
+FULL_REFUND_BODY="$(printf '{"type":"refund.succeeded","providerRefundId":"sim_ref_%s"}' "${FULL_REFUND_ID}")"
+FULL_REFUND_WEBHOOK_STATUS="$(signed_webhook "full-refund-${UNIQUE_SUFFIX}" "${FULL_REFUND_BODY}" \
+  "${TEMP_DIR}/full-refund-webhook.json" "${TEMP_DIR}/full-refund-webhook.headers")"
+assert_status "${FULL_REFUND_WEBHOOK_STATUS}" "200" "full refund webhook"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" "REFUNDED" "payment-order-fully-refunded"
+wait_for_inventory_quantities "${VENDOR_TOKEN}" "${PRODUCT_ID}" 7 0 7 "inventory-after-refund"
 
 # A separate payment demonstrates the stable HTTP 402 decline and automatic
 # inventory release while the order remains PAYMENT_FAILED.
@@ -1146,6 +1191,88 @@ assert_status "${DECLINE_CONFIRM_STATUS}" "402" "stable payment decline"
   fail "payment decline did not use PAYMENT_DECLINED"
 wait_for_order_status "${CUSTOMER_TOKEN}" "${DECLINE_ORDER_ID}" \
   "PAYMENT_FAILED" "decline-order-failed"
+
+# Failure before pickup releases committed inventory and requests a compensation refund.
+FAILURE_CART_STATUS="$(request GET "/api/cart" \
+  "${TEMP_DIR}/failure-cart.json" "${TEMP_DIR}/failure-cart.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${FAILURE_CART_STATUS}" "200" "delivery failure cart refresh"
+FAILURE_CART_VERSION="$(json_value "${TEMP_DIR}/failure-cart.json" "version")"
+FAILURE_ORDER_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/failure-order.json" "${TEMP_DIR}/failure-order.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" -H "Idempotency-Key: failure-order-${UNIQUE_SUFFIX}" \
+  --data "{\"expectedCartVersion\":${FAILURE_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
+assert_status "${FAILURE_ORDER_STATUS}" "202" "delivery failure order creation"
+FAILURE_ORDER_ID="$(json_value "${TEMP_DIR}/failure-order.json" "id")"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "PAYMENT_PENDING" "failure-order-pending"
+wait_for_payment_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "PENDING" "failure-payment-pending"
+FAILURE_PAYMENT_ID="$(json_value "${TEMP_DIR}/failure-payment-pending.json" "id")"
+FAILURE_CONFIRM_STATUS="$(request POST "/api/payments/orders/${FAILURE_ORDER_ID}/confirm" \
+  "${TEMP_DIR}/failure-confirm.json" "${TEMP_DIR}/failure-confirm.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" -H "Idempotency-Key: failure-confirm-${UNIQUE_SUFFIX}" \
+  --data '{"paymentMethodToken":"tok_success"}')"
+assert_status "${FAILURE_CONFIRM_STATUS}" "202" "delivery failure payment confirmation"
+FAILURE_PAYMENT_BODY="$(printf '{"type":"payment.succeeded","providerPaymentId":"sim_pay_%s"}' "${FAILURE_PAYMENT_ID}")"
+FAILURE_WEBHOOK_STATUS="$(signed_webhook "failure-payment-${UNIQUE_SUFFIX}" "${FAILURE_PAYMENT_BODY}" \
+  "${TEMP_DIR}/failure-webhook.json" "${TEMP_DIR}/failure-webhook.headers")"
+assert_status "${FAILURE_WEBHOOK_STATUS}" "200" "delivery failure payment webhook"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "PAID" "failure-order-paid"
+wait_for_delivery_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "PENDING_ASSIGNMENT" "failure-delivery-pending"
+FAILURE_DELIVERY_ID="$(json_value "${TEMP_DIR}/failure-delivery-pending.json" "id")"
+FAILURE_AGENT_STATUS="$(request PUT "/api/delivery/agents/me/availability" \
+  "${TEMP_DIR}/failure-agent.json" "${TEMP_DIR}/failure-agent.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${AGENT_TOKEN}" -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${AGENT_CSRF}" --data '{"availability":"AVAILABLE"}')"
+assert_status "${FAILURE_AGENT_STATUS}" "200" "failure delivery agent availability"
+wait_for_delivery_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "ASSIGNED" "failure-delivery-assigned"
+FAILED_STATUS="$(request POST "/api/delivery/agents/me/deliveries/${FAILURE_DELIVERY_ID}/failed" \
+  "${TEMP_DIR}/failed-delivery.json" "${TEMP_DIR}/failed-delivery.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${AGENT_TOKEN}" -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${AGENT_CSRF}" --data '{"failureCode":"VEHICLE_PROBLEM"}')"
+assert_status "${FAILED_STATUS}" "200" "delivery failure before pickup"
+wait_for_fulfillment_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "DELIVERY_FAILED" "failure-fulfillment"
+wait_for_inventory_quantities "${VENDOR_TOKEN}" "${PRODUCT_ID}" 7 0 7 "inventory-after-failure"
+wait_for_agent_availability "${AGENT_TOKEN}" "AVAILABLE" "agent-after-failure"
+# The simulator's refund is completed by its signed webhook, as with normal refunds.
+COMPENSATION_DEADLINE=$((SECONDS + TIMEOUT_SECONDS))
+while true; do
+  COMPENSATION_REFUND_ID="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "$2"' sh "${PAYMENT_POSTGRES_DB:-orderflow_payment}" \
+    "SELECT id FROM refund WHERE payment_id='${FAILURE_PAYMENT_ID}' AND reason_code='SYSTEM_COMPENSATION' LIMIT 1" | tr -d '[:space:]')"
+  [[ -n "${COMPENSATION_REFUND_ID}" ]] && break
+  (( SECONDS < COMPENSATION_DEADLINE )) || fail "compensation refund was not created"
+  sleep 1
+done
+COMPENSATION_BODY="$(printf '{"type":"refund.succeeded","providerRefundId":"sim_ref_%s"}' "${COMPENSATION_REFUND_ID}")"
+COMPENSATION_STATUS="$(signed_webhook "failure-compensation-${UNIQUE_SUFFIX}" "${COMPENSATION_BODY}" \
+  "${TEMP_DIR}/compensation-webhook.json" "${TEMP_DIR}/compensation-webhook.headers")"
+assert_status "${COMPENSATION_STATUS}" "200" "compensation refund webhook"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${FAILURE_ORDER_ID}" "REFUNDED" "failure-order-refunded"
+AGENT_CLEANUP_STATUS="$(request PUT "/api/delivery/agents/me/availability" \
+  "${TEMP_DIR}/failure-agent-offline.json" "${TEMP_DIR}/failure-agent-offline.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${AGENT_TOKEN}" -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${AGENT_CSRF}" --data '{"availability":"OFFLINE"}')"
+assert_status "${AGENT_CLEANUP_STATUS}" "200" "delivery failure agent cleanup"
+
+OPERATIONS_DEADLINE=$((SECONDS + TIMEOUT_SECONDS))
+while true; do
+  OPERATIONS_FINAL_STATUS="$(request GET "/api/admin/operations/overview" \
+    "${TEMP_DIR}/operations-final.json" "${TEMP_DIR}/operations-final.headers" \
+    -H "Authorization: Bearer ${ADMIN_TOKEN}")"
+  if [[ "${OPERATIONS_FINAL_STATUS}" == "200" ]] && jq -e \
+    '.ordersCreated >= 1 and .paymentsSucceeded >= 2 and .paymentsFailed >= 1 and .deliveriesCompleted >= 1 and .deliveriesFailed >= 1' \
+    "${TEMP_DIR}/operations-final.json" >/dev/null; then break; fi
+  (( SECONDS < OPERATIONS_DEADLINE )) || fail "operations read model did not reflect the completed journeys"
+  sleep 1
+done
 
 # Promote the second local user after its customer order to verify product
 # ownership enforcement through product-service rather than shared tables.

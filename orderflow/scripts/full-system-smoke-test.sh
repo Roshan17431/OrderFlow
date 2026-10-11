@@ -10,21 +10,21 @@ trap 'rm -rf "${temp_dir}"' EXIT
 echo 'Running the Phase 1-7 end-to-end regression journey...'
 ./scripts/smoke-test.sh
 
-status="$(curl --silent --output "${temp_dir}/unauthorized.json" --write-out '%{http_code}' \
+status="$(curl --connect-timeout 3 --max-time 10 --silent --output "${temp_dir}/unauthorized.json" --write-out '%{http_code}' \
   "${gateway_url}/api/cart")"
 [[ "${status}" == "401" ]] || {
   echo "Full smoke: expected unauthorized cart request to return 401, got ${status}"
   exit 1
 }
 
-status="$(curl --silent --output "${temp_dir}/invalid-jwt.json" --write-out '%{http_code}' \
+status="$(curl --connect-timeout 3 --max-time 10 --silent --output "${temp_dir}/invalid-jwt.json" --write-out '%{http_code}' \
   -H 'Authorization: Bearer not-a-jwt' "${gateway_url}/api/orders")"
 [[ "${status}" == "401" ]] || {
   echo "Full smoke: expected malformed JWT to return 401, got ${status}"
   exit 1
 }
 
-curl --silent --dump-header "${temp_dir}/security.headers" \
+curl --connect-timeout 3 --max-time 10 --silent --dump-header "${temp_dir}/security.headers" \
   --output /dev/null "${gateway_url}/api/products"
 for expected in \
   'X-Content-Type-Options: nosniff' \
@@ -37,7 +37,7 @@ for expected in \
   }
 done
 
-cors_status="$(curl --silent --output /dev/null \
+cors_status="$(curl --connect-timeout 3 --max-time 10 --silent --output /dev/null \
   --dump-header "${temp_dir}/cors-allowed.headers" --write-out '%{http_code}' \
   -X OPTIONS -H 'Origin: http://localhost:3000' \
   -H 'Access-Control-Request-Method: GET' "${gateway_url}/api/products")"
@@ -50,7 +50,7 @@ grep -qi '^Access-Control-Allow-Origin: http://localhost:3000' \
   echo 'Full smoke: configured CORS origin was not returned exactly'
   exit 1
 }
-curl --silent --output /dev/null --dump-header "${temp_dir}/cors-denied.headers" \
+curl --connect-timeout 3 --max-time 10 --silent --output /dev/null --dump-header "${temp_dir}/cors-denied.headers" \
   -X OPTIONS -H 'Origin: https://untrusted.invalid' \
   -H 'Access-Control-Request-Method: GET' "${gateway_url}/api/products"
 if grep -qi '^Access-Control-Allow-Origin:' "${temp_dir}/cors-denied.headers"; then
@@ -62,7 +62,7 @@ fi
 # payloads exercises the gateway limiter without changing payment state.
 rate_status=''
 for request_number in $(seq 1 105); do
-  rate_status="$(curl --silent \
+  rate_status="$(curl --connect-timeout 3 --max-time 10 --silent \
     --dump-header "${temp_dir}/rate.headers" \
     --output "${temp_dir}/rate.json" \
     --write-out '%{http_code}' \
@@ -84,7 +84,7 @@ grep -q '"code":"RATE_LIMIT_EXCEEDED"' "${temp_dir}/rate.json" || {
   exit 1
 }
 
-./scripts/validate-monitoring.sh
+REQUIRE_LIVE_MONITORING=true ./scripts/validate-monitoring.sh
 
 cat <<'SUMMARY'
 OrderFlow Full System Smoke Test
