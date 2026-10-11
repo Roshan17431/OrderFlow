@@ -1,0 +1,102 @@
+spring:
+  application:
+    name: delivery-service
+  datasource:
+    url: jdbc:postgresql://${DELIVERY_POSTGRES_HOST:localhost}:${DELIVERY_POSTGRES_PORT:5432}/${DELIVERY_POSTGRES_DB:orderflow_delivery}
+    username: ${DELIVERY_POSTGRES_USER:orderflow_delivery}
+    password: ${DELIVERY_POSTGRES_PASSWORD:orderflow_delivery_local_password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+server:
+  port: ${DELIVERY_SERVICE_PORT:8087}
+  shutdown: graceful
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db,redis,kafka
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+  build:
+    time: '@maven.build.timestamp@'
+  java:
+    version: '@java.version@'
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      add:
+        service: ${spring.application.name}
+app:
+  delivery:
+    assignment-strategy: ${APP_DELIVERY_ASSIGNMENT_STRATEGY:LEAST_RECENTLY_ASSIGNED}
+    max-page-size: ${APP_DELIVERY_MAX_PAGE_SIZE:100}
+    assignment-job:
+      enabled: ${APP_DELIVERY_ASSIGNMENT_JOB_ENABLED:true}
+      delay: ${APP_DELIVERY_ASSIGNMENT_JOB_DELAY:30s}
+      batch-size: ${APP_DELIVERY_ASSIGNMENT_JOB_BATCH_SIZE:50}
+      lock-duration: ${APP_DELIVERY_ASSIGNMENT_JOB_LOCK_DURATION:5m}
+  kafka:
+    topics:
+      delivery-events: ${APP_DELIVERY_EVENTS_TOPIC:orderflow.delivery-events.v1}
+      delivery-events-dlt: ${APP_DELIVERY_EVENTS_DLT:orderflow.delivery-events.v1.DLT}
+  outbox:
+    poll-delay: ${APP_OUTBOX_POLL_DELAY:500ms}
+    batch-size: ${APP_OUTBOX_BATCH_SIZE:50}
+    max-attempts: ${APP_OUTBOX_MAX_ATTEMPTS:10}
+    lock-timeout: ${APP_OUTBOX_LOCK_TIMEOUT:2m}
+    retry-base-delay: ${APP_OUTBOX_RETRY_BASE_DELAY:2s}
+    send-timeout: ${APP_OUTBOX_SEND_TIMEOUT:10s}
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
+  scheduler:
+    instance-id: ${APP_SCHEDULER_INSTANCE_ID:${HOSTNAME:delivery-local}}

@@ -1,0 +1,1 @@
+package com.orderflow.delivery.correlation;public final class DeliveryRequestAttributes{public static final String CORRELATION_ID=DeliveryRequestAttributes.class.getName()+".correlationId";private DeliveryRequestAttributes(){}}
