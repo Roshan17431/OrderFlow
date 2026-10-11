@@ -124,6 +124,8 @@ app:
       inventory-events: ${APP_INVENTORY_EVENTS_TOPIC:orderflow.inventory-events.v1}
       order-events-dlt: ${APP_ORDER_EVENTS_DLT:orderflow.order-events.v1.DLT}
       inventory-events-dlt: ${APP_INVENTORY_EVENTS_DLT:orderflow.inventory-events.v1.DLT}
+      delivery-events: ${APP_DELIVERY_EVENTS_TOPIC:orderflow.delivery-events.v1}
+      delivery-events-dlt: ${APP_DELIVERY_EVENTS_DLT:orderflow.delivery-events.v1.DLT}
   outbox:
     poll-delay: ${APP_OUTBOX_POLL_DELAY:500ms}
     batch-size: ${APP_OUTBOX_BATCH_SIZE:50}

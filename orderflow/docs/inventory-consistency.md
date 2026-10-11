@@ -39,3 +39,18 @@ Reservations have a configurable expiry. The optional bounded poller uses
 with reason `RESERVATION_EXPIRED`. A later scheduling phase may improve
 cross-instance orchestration, but multiple current instances cannot claim the
 same locked row concurrently.
+
+## Paid inventory and fulfillment
+
+`PAYMENT_SUCCEEDED` causes order-service to request `INVENTORY_COMMIT_REQUESTED`.
+Inventory locks the reservation and transitions `RESERVED` to `COMMITTED`,
+then acknowledges `INVENTORY_COMMITTED`. Order-service requests delivery only
+when that acknowledgement arrives for a paid order. If commitment is no longer
+possible, inventory emits a release reason that triggers payment compensation.
+
+Only `RESERVED` reservations expire. `COMMITTED` reservations retain their
+reserved quantity until pickup or cancellation. `DELIVERY_PICKED_UP` deducts
+both on-hand and reserved quantity, then marks the reservation `FULFILLED`.
+Duplicate pickup events cannot deduct stock again. Cancellation or failure
+before pickup releases reserved stock; cancellation after pickup never restores
+physical stock. Delivery returns require a separate business workflow.

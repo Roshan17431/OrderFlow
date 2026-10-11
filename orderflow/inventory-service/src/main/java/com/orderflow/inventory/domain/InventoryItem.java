@@ -98,6 +98,16 @@ public class InventoryItem {
         }
     }
 
+    public void fulfill(long quantity, Instant now) {
+        requirePositive(quantity);
+        if (reservedQuantity < quantity) {
+            throw new IllegalStateException("Fulfillment exceeds reserved stock");
+        }
+        onHandQuantity -= quantity;
+        reservedQuantity -= quantity;
+        updatedAt = Objects.requireNonNull(now);
+    }
+
     public UUID getId() {
         return id;
     }

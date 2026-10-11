@@ -5,6 +5,9 @@ import com.orderflow.events.EventType;
 import com.orderflow.events.InventoryReleasedEvent;
 import com.orderflow.events.InventoryReservationFailedEvent;
 import com.orderflow.events.InventoryReservedEvent;
+import com.orderflow.events.InventoryCommittedEvent;
+import com.orderflow.events.DeliveryRequestedEvent;
+import com.orderflow.order.domain.FulfillmentStatus;
 import com.orderflow.events.PaymentCancelRequestedEvent;
 import com.orderflow.events.PaymentRequestedEvent;
 import com.orderflow.order.config.KafkaTopicProperties;
@@ -119,6 +122,31 @@ public class OrderInventoryWorkflowService {
     }
 
     @Transactional
+    public void committed(InventoryCommittedEvent event) {
+        event.metadata().require(EventType.INVENTORY_COMMITTED, InventoryCommittedEvent.VERSION);
+        if (duplicate(event.metadata())) return;
+        CustomerOrder order = requireOrder(event.orderId());
+        validateAggregate(event.metadata(), order);
+        if (!event.reservationId().equals(order.getInventoryReservationId())) {
+            throw new IllegalArgumentException("Commit does not match order reservation");
+        }
+        Instant now = Instant.now(clock);
+        if ((order.getStatus() == OrderStatus.PAID || order.getStatus() == OrderStatus.PARTIALLY_REFUNDED)
+                && order.getInventoryReleasedAt() == null
+                && order.getFulfillmentStatus() == FulfillmentStatus.NOT_REQUESTED) {
+            order.requestDelivery(now);
+            EventMetadata metadata = new EventMetadata(java.util.UUID.randomUUID(),
+                    EventType.DELIVERY_REQUESTED, DeliveryRequestedEvent.VERSION,
+                    "ORDER", order.getId(), now, event.metadata().correlationId(),
+                    event.metadata().eventId(), "order-service");
+            outbox.enqueue(topics.deliveryEvents(), order.getId(),
+                    new DeliveryRequestedEvent(metadata, order.getId(), order.getCustomerId(),
+                            order.getShippingAddress().snapshot(), now), metadata);
+        }
+        remember(event.metadata());
+    }
+
+    @Transactional
     public void failed(InventoryReservationFailedEvent event) {
         event.metadata().require(
                 EventType.INVENTORY_RESERVATION_FAILED,
@@ -178,7 +206,9 @@ public class OrderInventoryWorkflowService {
             enqueuePaymentCancel(order, "INVENTORY_EXPIRED", event.metadata(), now);
         } else if ((order.getStatus() == OrderStatus.PAID
                         || order.getStatus() == OrderStatus.PARTIALLY_REFUNDED)
-                && "RESERVATION_EXPIRED".equals(event.reason())) {
+                && ("RESERVATION_EXPIRED".equals(event.reason())
+                        || "INVENTORY_COMMIT_UNAVAILABLE".equals(event.reason())
+                        || "DELIVERY_FAILED_BEFORE_PICKUP".equals(event.reason()))) {
             enqueuePaymentCancel(order, "SYSTEM_COMPENSATION", event.metadata(), now);
         }
         remember(event.metadata());

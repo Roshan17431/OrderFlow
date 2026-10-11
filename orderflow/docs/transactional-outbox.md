@@ -33,3 +33,13 @@ publication failures are exposed as low-cardinality metrics.
 A crash after Kafka acceptance but before `PUBLISHED` can publish a row again.
 The design therefore guarantees durable at-least-once intent, not exactly-once
 delivery. Processed-event tables make duplicate delivery harmless.
+
+## Ordering across publishers
+
+The five outbox-owning services assign a database `event_sequence`. A claim
+selects only the first unpublished row for each `(topic, message_key)`, including
+when an earlier row is in progress, waiting for retry, or permanently failed.
+This prevents another publisher from overtaking it. Independent aggregate keys
+can proceed in the same bounded batch. A failed head row intentionally blocks
+later events for that key until an operator resolves it. Consumers still enforce
+business idempotency; this does not provide exactly-once delivery.

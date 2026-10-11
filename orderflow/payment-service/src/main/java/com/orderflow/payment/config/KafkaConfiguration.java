@@ -59,11 +59,17 @@ public class KafkaConfiguration {
     HealthIndicator kafkaHealthIndicator(KafkaAdmin kafkaAdmin) {
         Map<String, Object> configuration = kafkaAdmin.getConfigurationProperties();
         return () -> {
-            try (AdminClient client = AdminClient.create(configuration)) {
-                client.listTopics().names().get();
+            AdminClient client = AdminClient.create(configuration);
+            try {
+                client.listTopics().names().get(3, java.util.concurrent.TimeUnit.SECONDS);
                 return Health.up().build();
+            } catch (InterruptedException exception) {
+                Thread.currentThread().interrupt();
+                return Health.down().build();
             } catch (Exception exception) {
                 return Health.down().build();
+            } finally {
+                client.close(java.time.Duration.ZERO);
             }
         };
     }

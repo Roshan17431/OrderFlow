@@ -159,7 +159,7 @@ class InventoryFlowIT {
             throws Exception {
         assertThat(jdbc.queryForObject(
                         "select count(*) from flyway_schema_history where success", Integer.class))
-                .isEqualTo(2);
+                .isEqualTo(4);
         assertThat(jdbc.queryForObject(
                         """
                         select count(*) from information_schema.tables
@@ -358,6 +358,81 @@ class InventoryFlowIT {
                         where event_type = 'INVENTORY_RESERVATION_FAILED'
                         """))
                 .isEqualTo(1);
+    }
+
+    @Test
+    void paidReservationSurvivesExpiryAndPickupDeductsStockExactlyOnce() throws Exception {
+        inventory.save(InventoryItem.create(PRODUCT_ID, 10, Instant.now()));
+        UUID orderId = UUID.randomUUID();
+        workflows.reserve(createdEvent(UUID.randomUUID(), orderId, PRODUCT_ID, 3, "commit-it"));
+        UUID reservationId = reservations.findByOrderId(orderId).orElseThrow().getId();
+        var commit = new com.orderflow.events.InventoryCommitRequestedEvent(
+                metadata(UUID.randomUUID(), EventType.INVENTORY_COMMIT_REQUESTED, orderId,
+                        "commit-it", null, "order-service"), orderId, reservationId, Instant.now());
+        publish(ORDER_TOPIC, orderId, EventType.INVENTORY_COMMIT_REQUESTED, commit);
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() ->
+                assertThat(reservations.findByOrderId(orderId).orElseThrow().getStatus())
+                        .isEqualTo(ReservationStatus.COMMITTED));
+        jdbc.update("update inventory_reservation set expires_at = now() - interval '1 minute' where order_id = ?", orderId);
+        assertThat(reservations.findExpiredForUpdate(Instant.now(), 50)).isEmpty();
+        var pickup = new com.orderflow.events.DeliveryPickedUpEvent(
+                metadata(UUID.randomUUID(), EventType.DELIVERY_PICKED_UP, orderId,
+                        "pickup-it", null, "delivery-service"), UUID.randomUUID(), orderId,
+                CUSTOMER_ID, UUID.randomUUID(), Instant.now());
+        publish("orderflow.delivery-events.v1", orderId, EventType.DELIVERY_PICKED_UP, pickup);
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() -> {
+            var item = inventory.findByProductId(PRODUCT_ID).orElseThrow();
+            assertThat(item.getOnHandQuantity()).isEqualTo(7);
+            assertThat(item.getReservedQuantity()).isZero();
+            assertThat(reservations.findByOrderId(orderId).orElseThrow().getStatus())
+                    .isEqualTo(ReservationStatus.FULFILLED);
+        });
+        // Replay the same event and an independently retried business event.
+        workflows.pickedUp(pickup);
+        workflows.pickedUp(new com.orderflow.events.DeliveryPickedUpEvent(
+                metadata(UUID.randomUUID(), EventType.DELIVERY_PICKED_UP, orderId,
+                        "pickup-retry", null, "delivery-service"), pickup.deliveryId(), orderId,
+                CUSTOMER_ID, pickup.deliveryAgentId(), Instant.now()));
+        workflows.release(cancelEvent(UUID.randomUUID(), orderId, "after-pickup"));
+        assertThat(inventory.findByProductId(PRODUCT_ID).orElseThrow().getOnHandQuantity()).isEqualTo(7);
+        assertThat(inventory.findByProductId(PRODUCT_ID).orElseThrow().getReservedQuantity()).isZero();
+    }
+
+    @Test
+    void refundBeforePickupReleasesCommittedStockOnce() {
+        inventory.save(InventoryItem.create(PRODUCT_ID, 10, Instant.now()));
+        UUID orderId = UUID.randomUUID();
+        workflows.reserve(createdEvent(UUID.randomUUID(), orderId, PRODUCT_ID, 3, "refund-it"));
+        UUID reservationId = reservations.findByOrderId(orderId).orElseThrow().getId();
+        workflows.commit(new com.orderflow.events.InventoryCommitRequestedEvent(
+                metadata(UUID.randomUUID(), EventType.INVENTORY_COMMIT_REQUESTED, orderId,
+                        "refund-it", null, "order-service"), orderId, reservationId, Instant.now()));
+        var cancelled = new com.orderflow.events.DeliveryCancelledEvent(
+                metadata(UUID.randomUUID(), EventType.DELIVERY_CANCELLED, orderId,
+                        "refund-it", null, "delivery-service"), UUID.randomUUID(), orderId,
+                CUSTOMER_ID, null, "FULL_REFUND", Instant.now());
+        workflows.deliveryCancelled(cancelled);
+        workflows.deliveryCancelled(cancelled);
+        var item = inventory.findByProductId(PRODUCT_ID).orElseThrow();
+        assertThat(item.getOnHandQuantity()).isEqualTo(10);
+        assertThat(item.getReservedQuantity()).isZero();
+        assertThat(reservations.findByOrderId(orderId).orElseThrow().getStatus()).isEqualTo(ReservationStatus.RELEASED);
+    }
+
+    @Test
+    void expiredReservationCannotCommitAndReportsCompensationTrigger() {
+        inventory.save(InventoryItem.create(PRODUCT_ID, 10, Instant.now()));
+        UUID orderId = UUID.randomUUID();
+        workflows.reserve(createdEvent(UUID.randomUUID(), orderId, PRODUCT_ID, 3, "late-it"));
+        UUID reservationId = reservations.findByOrderId(orderId).orElseThrow().getId();
+        jdbc.update("update inventory_reservation set expires_at = now() - interval '1 minute' where order_id = ?", orderId);
+        workflows.commit(new com.orderflow.events.InventoryCommitRequestedEvent(
+                metadata(UUID.randomUUID(), EventType.INVENTORY_COMMIT_REQUESTED, orderId,
+                        "late-it", null, "order-service"), orderId, reservationId, Instant.now()));
+        assertThat(reservations.findByOrderId(orderId).orElseThrow().getStatus()).isEqualTo(ReservationStatus.EXPIRED);
+        assertThat(inventory.findByProductId(PRODUCT_ID).orElseThrow().getReservedQuantity()).isZero();
+        assertThat(count("select count(*) from outbox_event where aggregate_id = ? and event_type = 'INVENTORY_COMMITTED'", orderId)).isZero();
+        assertThat(count("select count(*) from outbox_event where aggregate_id = ? and payload->>'reason' = 'INVENTORY_COMMIT_UNAVAILABLE'", orderId)).isEqualTo(1);
     }
 
     @Test

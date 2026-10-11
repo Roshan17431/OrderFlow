@@ -154,4 +154,31 @@ class OrderDomainTest {
         assertThatThrownBy(() -> order.requestDeliveryCancellation(NOW.plusSeconds(7)))
                 .isInstanceOf(IllegalStateException.class);
     }
+    @Test
+    void cancellationInFlightCanObserveAssignmentAndPickupWithoutLosingCancellation() {
+        CustomerOrder order = CustomerOrder.create(UUID.randomUUID(), UUID.randomUUID(), "USD",
+                BigDecimal.TEN, 1, NOW, "cancel-race");
+        order.requestDelivery(NOW);
+        order.requestDeliveryCancellation(NOW);
+        UUID delivery = UUID.randomUUID();
+        order.deliveryAssigned(delivery, UUID.randomUUID(), NOW.plusSeconds(1));
+        order.deliveryPickedUp(NOW.plusSeconds(2));
+        assertThat(order.getDeliveryId()).isEqualTo(delivery);
+        assertThat(order.getFulfillmentStatus()).isEqualTo(FulfillmentStatus.DELIVERY_CANCEL_REQUESTED);
+        order.deliveryCancelled(NOW.plusSeconds(3));
+        assertThat(order.getFulfillmentStatus()).isEqualTo(FulfillmentStatus.DELIVERY_CANCELLED);
+    }
+
+    @Test
+    void cancellationThatArrivesAfterHandoffReflectsActualDeliveryProgress() {
+        CustomerOrder order = CustomerOrder.create(UUID.randomUUID(), UUID.randomUUID(), "USD",
+                BigDecimal.TEN, 1, NOW, "cancel-race");
+        order.requestDelivery(NOW);
+        order.deliveryAssigned(UUID.randomUUID(), UUID.randomUUID(), NOW);
+        order.requestDeliveryCancellation(NOW);
+        order.deliveryOutForDelivery(NOW.plusSeconds(1));
+        order.deliveryDelivered(NOW.plusSeconds(2));
+        assertThat(order.getFulfillmentStatus()).isEqualTo(FulfillmentStatus.DELIVERED);
+    }
+
 }

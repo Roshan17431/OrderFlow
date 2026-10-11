@@ -234,15 +234,28 @@ public class CustomerOrder {
     }
 
     public void deliveryAssigned(UUID deliveryId, UUID agentId, Instant at) {
-        requireFulfillment(FulfillmentStatus.DELIVERY_PENDING);
+        boolean cancelling = fulfillmentStatus == FulfillmentStatus.DELIVERY_CANCEL_REQUESTED;
+        if (!cancelling) requireFulfillment(FulfillmentStatus.DELIVERY_PENDING);
         this.deliveryId = deliveryId; this.deliveryAgentId = agentId;
-        fulfillmentStatus = FulfillmentStatus.DELIVERY_ASSIGNED; deliveryAssignedAt = at; updatedAt = at;
+        if (!cancelling) fulfillmentStatus = FulfillmentStatus.DELIVERY_ASSIGNED;
+        deliveryAssignedAt = at; updatedAt = at;
     }
 
-    public void deliveryPickedUp(Instant at) { requireFulfillment(FulfillmentStatus.DELIVERY_ASSIGNED); fulfillmentStatus = FulfillmentStatus.PICKED_UP; pickedUpAt = at; updatedAt = at; }
-    public void deliveryOutForDelivery(Instant at) { requireFulfillment(FulfillmentStatus.PICKED_UP); fulfillmentStatus = FulfillmentStatus.OUT_FOR_DELIVERY; outForDeliveryAt = at; updatedAt = at; }
-    public void deliveryDelivered(Instant at) { requireFulfillment(FulfillmentStatus.OUT_FOR_DELIVERY); fulfillmentStatus = FulfillmentStatus.DELIVERED; deliveredAt = at; updatedAt = at; }
-    public void deliveryFailed(Instant at) { if (!Set.of(FulfillmentStatus.DELIVERY_ASSIGNED, FulfillmentStatus.PICKED_UP, FulfillmentStatus.OUT_FOR_DELIVERY).contains(fulfillmentStatus)) throw new IllegalStateException("Invalid fulfillment transition"); fulfillmentStatus = FulfillmentStatus.DELIVERY_FAILED; deliveryFailedAt = at; updatedAt = at; }
+    public void deliveryPickedUp(Instant at) {
+        boolean cancelling = fulfillmentStatus == FulfillmentStatus.DELIVERY_CANCEL_REQUESTED;
+        if (!cancelling) requireFulfillment(FulfillmentStatus.DELIVERY_ASSIGNED);
+        if (!cancelling) fulfillmentStatus = FulfillmentStatus.PICKED_UP;
+        pickedUpAt = at; updatedAt = at;
+    }
+    public void deliveryOutForDelivery(Instant at) {
+        if (fulfillmentStatus != FulfillmentStatus.DELIVERY_CANCEL_REQUESTED) requireFulfillment(FulfillmentStatus.PICKED_UP);
+        fulfillmentStatus = FulfillmentStatus.OUT_FOR_DELIVERY; outForDeliveryAt = at; updatedAt = at;
+    }
+    public void deliveryDelivered(Instant at) {
+        if (fulfillmentStatus != FulfillmentStatus.DELIVERY_CANCEL_REQUESTED) requireFulfillment(FulfillmentStatus.OUT_FOR_DELIVERY);
+        fulfillmentStatus = FulfillmentStatus.DELIVERED; deliveredAt = at; updatedAt = at;
+    }
+    public void deliveryFailed(Instant at) { if (!Set.of(FulfillmentStatus.DELIVERY_ASSIGNED, FulfillmentStatus.PICKED_UP, FulfillmentStatus.OUT_FOR_DELIVERY, FulfillmentStatus.DELIVERY_CANCEL_REQUESTED).contains(fulfillmentStatus)) throw new IllegalStateException("Invalid fulfillment transition"); fulfillmentStatus = FulfillmentStatus.DELIVERY_FAILED; deliveryFailedAt = at; updatedAt = at; }
     public void requestDeliveryCancellation(Instant at) { if (!Set.of(FulfillmentStatus.DELIVERY_PENDING, FulfillmentStatus.DELIVERY_ASSIGNED, FulfillmentStatus.PICKED_UP).contains(fulfillmentStatus)) throw new IllegalStateException("Delivery cannot be cancelled"); fulfillmentStatus = FulfillmentStatus.DELIVERY_CANCEL_REQUESTED; updatedAt = at; }
     public void deliveryCancelled(Instant at) { if (!Set.of(FulfillmentStatus.DELIVERY_CANCEL_REQUESTED, FulfillmentStatus.DELIVERY_PENDING).contains(fulfillmentStatus)) throw new IllegalStateException("Invalid fulfillment transition"); fulfillmentStatus = FulfillmentStatus.DELIVERY_CANCELLED; deliveryCancelledAt = at; updatedAt = at; }
     private void requireFulfillment(FulfillmentStatus required) { if (fulfillmentStatus != required) throw new IllegalStateException("Invalid fulfillment transition"); }

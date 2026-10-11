@@ -150,7 +150,7 @@ class OrderFlowIT {
             throws Exception {
         assertThat(jdbc.queryForObject(
                         "select count(*) from flyway_schema_history where success", Integer.class))
-                .isEqualTo(4);
+                .isEqualTo(5);
         assertThat(jdbc.queryForObject(
                         """
                         select count(*) from information_schema.tables

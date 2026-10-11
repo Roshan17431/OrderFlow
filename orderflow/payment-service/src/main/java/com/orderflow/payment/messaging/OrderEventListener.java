@@ -32,7 +32,7 @@ public class OrderEventListener {
                     workflow.create(objectMapper.readValue(payload, PaymentRequestedEvent.class));
             case PAYMENT_CANCEL_REQUESTED -> workflow.cancel(
                     objectMapper.readValue(payload, PaymentCancelRequestedEvent.class));
-            case ORDER_CREATED, ORDER_CANCEL_REQUESTED -> {
+            case ORDER_CREATED, ORDER_CANCEL_REQUESTED, INVENTORY_COMMIT_REQUESTED -> {
                 // These order-topic event types belong to the inventory consumer.
             }
             default -> throw new IllegalArgumentException("Unsupported payment order event type");

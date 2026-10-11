@@ -101,7 +101,7 @@ class NotificationFlowIT {
     @Test
     void realKafkaCreatesDeduplicatedPersistentAndSimulatedEmailNotifications() throws Exception {
         assertThat(jdbc.queryForObject(
-                "select count(*) from flyway_schema_history where success", Integer.class)).isEqualTo(2);
+                "select count(*) from flyway_schema_history where success", Integer.class)).isEqualTo(3);
         mockMvc.perform(put("/api/notifications/preferences")
                         .with(token(USER))
                         .contentType(MediaType.APPLICATION_JSON)

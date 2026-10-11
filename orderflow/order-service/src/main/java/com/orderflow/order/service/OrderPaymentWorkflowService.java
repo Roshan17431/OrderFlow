@@ -4,6 +4,7 @@ import com.orderflow.events.EventMetadata;
 import com.orderflow.events.EventType;
 import com.orderflow.events.DeliveryCancelRequestedEvent;
 import com.orderflow.events.DeliveryRequestedEvent;
+import com.orderflow.events.InventoryCommitRequestedEvent;
 import com.orderflow.events.OrderCancelRequestedEvent;
 import com.orderflow.events.PaymentCancelRequestedEvent;
 import com.orderflow.events.PaymentCancelledEvent;
@@ -65,8 +66,11 @@ public class OrderPaymentWorkflowService {
         if (order.getStatus() == OrderStatus.PAYMENT_PENDING) {
             order.paymentSucceeded(event.paymentId(), event.succeededAt());
             transition(order, OrderStatus.PAID, "PAYMENT_SUCCEEDED", event.metadata(), now);
-            order.requestDelivery(now);
-            enqueueDeliveryRequest(order, event.metadata(), now);
+            EventMetadata commit = metadata(EventType.INVENTORY_COMMIT_REQUESTED,
+                    InventoryCommitRequestedEvent.VERSION, order, event.metadata(), now);
+            outbox.enqueue(topics.orderEvents(), order.getId(),
+                    new InventoryCommitRequestedEvent(commit, order.getId(),
+                            order.getInventoryReservationId(), event.succeededAt()), commit);
         } else if (Set.of(OrderStatus.CANCEL_REQUESTED, OrderStatus.CANCELLED)
                 .contains(order.getStatus())) {
             order.paymentSucceeded(event.paymentId(), event.succeededAt());
@@ -125,6 +129,10 @@ public class OrderPaymentWorkflowService {
                     event.metadata(),
                     now);
             if (event.fullRefund()
+                    && order.getFulfillmentStatus()
+                            == com.orderflow.order.domain.FulfillmentStatus.NOT_REQUESTED) {
+                enqueueInventoryRelease(order, "FULL_REFUND", event.metadata(), now);
+            } else if (event.fullRefund()
                     && Set.of(com.orderflow.order.domain.FulfillmentStatus.DELIVERY_PENDING,
                             com.orderflow.order.domain.FulfillmentStatus.DELIVERY_ASSIGNED,
                             com.orderflow.order.domain.FulfillmentStatus.PICKED_UP)
@@ -165,15 +173,6 @@ public class OrderPaymentWorkflowService {
                 new OrderCancelRequestedEvent(
                         metadata, order.getId(), order.getCustomerId(), reason),
                 metadata);
-    }
-
-    private void enqueueDeliveryRequest(
-            CustomerOrder order, EventMetadata cause, Instant now) {
-        EventMetadata metadata = metadata(EventType.DELIVERY_REQUESTED,
-                DeliveryRequestedEvent.VERSION, order, cause, now);
-        outbox.enqueue(topics.deliveryEvents(), order.getId(),
-                new DeliveryRequestedEvent(metadata, order.getId(), order.getCustomerId(),
-                        order.getShippingAddress().snapshot(), now), metadata);
     }
 
     private void enqueueDeliveryCancellation(

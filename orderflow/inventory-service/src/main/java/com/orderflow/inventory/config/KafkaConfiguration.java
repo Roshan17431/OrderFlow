@@ -44,6 +44,16 @@ public class KafkaConfiguration {
     }
 
     @Bean
+    NewTopic deliveryEventsTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.deliveryEvents()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    NewTopic deliveryEventsDltTopic(KafkaTopicProperties topics) {
+        return TopicBuilder.name(topics.deliveryEventsDlt()).partitions(3).replicas(1).build();
+    }
+
+    @Bean
     DefaultErrorHandler inventoryKafkaErrorHandler(
             KafkaTemplate<String, String> template,
             KafkaTopicProperties topics,
@@ -51,6 +61,8 @@ public class KafkaConfiguration {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
                 template,
                 (record, exception) -> {
+                    String dlt = record.topic().equals(topics.deliveryEvents())
+                            ? topics.deliveryEventsDlt() : topics.orderEventsDlt();
                     metrics.counter(
                                     "orderflow_kafka_dlt_publications_total",
                                     "service",
@@ -58,10 +70,10 @@ public class KafkaConfiguration {
                             .increment();
                     LOGGER.error(
                             "Publishing invalid order event to DLT topic={} partition={} offset={}",
-                            topics.orderEventsDlt(),
+                            dlt,
                             record.partition(),
                             record.offset());
-                    return new TopicPartition(topics.orderEventsDlt(), record.partition());
+                    return new TopicPartition(dlt, record.partition());
                 });
         DefaultErrorHandler handler = new DefaultErrorHandler(recoverer, new FixedBackOff(500, 2));
         handler.setCommitRecovered(true);
@@ -72,11 +84,17 @@ public class KafkaConfiguration {
     HealthIndicator kafkaHealthIndicator(KafkaAdmin kafkaAdmin) {
         Map<String, Object> configuration = kafkaAdmin.getConfigurationProperties();
         return () -> {
-            try (AdminClient client = AdminClient.create(configuration)) {
-                client.listTopics().names().get();
+            AdminClient client = AdminClient.create(configuration);
+            try {
+                client.listTopics().names().get(3, java.util.concurrent.TimeUnit.SECONDS);
                 return Health.up().build();
+            } catch (InterruptedException exception) {
+                Thread.currentThread().interrupt();
+                return Health.down().build();
             } catch (Exception exception) {
                 return Health.down().build();
+            } finally {
+                client.close(java.time.Duration.ZERO);
             }
         };
     }

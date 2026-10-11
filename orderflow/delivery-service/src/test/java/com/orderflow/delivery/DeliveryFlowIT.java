@@ -83,9 +83,11 @@ class DeliveryFlowIT {
     @Autowired KafkaTemplate<String, String> kafka;
     @Autowired DeliveryRepository deliveries;
     @Autowired DeliveryAgentRepository agents;
+    @Autowired com.orderflow.delivery.service.DeliveryAssignmentService assignments;
 
     @BeforeEach
     void reset() {
+        jdbc.update("delete from delivery_cancellation");
         jdbc.update("delete from delivery_status_history");
         jdbc.update("delete from processed_event");
         jdbc.update("delete from outbox_event");
@@ -100,7 +102,7 @@ class DeliveryFlowIT {
     @Test
     void requestedEventAssignmentLifecycleIdempotencyAndOwnershipUseRealKafka() throws Exception {
         assertThat(jdbc.queryForObject(
-                "select count(*) from flyway_schema_history where success", Integer.class)).isEqualTo(2);
+                "select count(*) from flyway_schema_history where success", Integer.class)).isEqualTo(4);
         UUID orderId = UUID.randomUUID();
         DeliveryRequestedEvent requested = requested(orderId, "phase6-it");
         publish(requested);
@@ -201,6 +203,54 @@ class DeliveryFlowIT {
                 .andExpect(status().isConflict());
         assertThat(count("select count(*) from outbox_event where event_type='DELIVERY_FAILED'"))
                 .isEqualTo(1);
+    }
+
+    @Test
+    void cancellationBeforeCreationIsDurableAndPreventsAssignment() throws Exception {
+        UUID orderId = UUID.randomUUID();
+        Instant now = Instant.now();
+        var cancelled = new com.orderflow.events.DeliveryCancelRequestedEvent(
+                new EventMetadata(UUID.randomUUID(), EventType.DELIVERY_CANCEL_REQUESTED, 1,
+                        "ORDER", orderId, now, "cancel-before-create", null, "order-service"),
+                orderId, CUSTOMER, null, "FULL_REFUND", now);
+        var record = new ProducerRecord<String, String>("orderflow.delivery-events.v1",
+                orderId.toString(), mapper.writeValueAsString(cancelled));
+        record.headers().add(new RecordHeader("eventType",
+                EventType.DELIVERY_CANCEL_REQUESTED.name().getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        kafka.send(record).get();
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() ->
+                assertThat(jdbc.queryForObject("select count(*) from delivery_cancellation where order_id = ?", Integer.class, orderId)).isEqualTo(1));
+        publish(requested(orderId, "late-create"));
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() -> {
+            assertThat(deliveries.findByOrderId(orderId).orElseThrow().getStatus()).isEqualTo(DeliveryStatus.CANCELLED);
+            assertThat(deliveries.findByOrderId(orderId).orElseThrow().getDeliveryAgentId()).isNull();
+            assertThat(jdbc.queryForObject("select count(*) from outbox_event where aggregate_id = ? and event_type = 'DELIVERY_CANCELLED'", Integer.class, orderId)).isEqualTo(1);
+        });
+    }
+
+    @Test
+    void concurrentAssignmentsCannotUseOneAgentForTwoDeliveries() throws Exception {
+        UUID firstOrder = UUID.randomUUID(), secondOrder = UUID.randomUUID();
+        publish(requested(firstOrder, "concurrent-assignment"));
+        publish(requested(secondOrder, "concurrent-assignment"));
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() -> assertThat(deliveries.count()).isEqualTo(2));
+        var agent = com.orderflow.delivery.domain.DeliveryAgentProfile.register(AGENT, Instant.now());
+        agent.setUserAvailability(DeliveryAgentAvailability.AVAILABLE, Instant.now());
+        agents.saveAndFlush(agent);
+        UUID first = deliveries.findByOrderId(firstOrder).orElseThrow().getId();
+        UUID second = deliveries.findByOrderId(secondOrder).orElseThrow().getId();
+        var start = new java.util.concurrent.CountDownLatch(1);
+        try (var pool = java.util.concurrent.Executors.newFixedThreadPool(2)) {
+            var a = pool.submit(() -> { start.await(); return assignments.autoAssign(first, "concurrent-assignment", null); });
+            var b = pool.submit(() -> { start.await(); return assignments.autoAssign(second, "concurrent-assignment", null); });
+            start.countDown();
+            int assigned = (a.get(20, java.util.concurrent.TimeUnit.SECONDS) ? 1 : 0)
+                    + (b.get(20, java.util.concurrent.TimeUnit.SECONDS) ? 1 : 0);
+            assertThat(assigned).isEqualTo(1);
+        }
+        assertThat(deliveries.countByStatus(DeliveryStatus.ASSIGNED)).isEqualTo(1);
+        assertThat(deliveries.countByStatus(DeliveryStatus.PENDING_ASSIGNMENT)).isEqualTo(1);
+        assertThat(agents.findByUserId(AGENT).orElseThrow().getAvailability()).isEqualTo(DeliveryAgentAvailability.BUSY);
     }
 
     private void transition(UUID id, String operation, String status) throws Exception {

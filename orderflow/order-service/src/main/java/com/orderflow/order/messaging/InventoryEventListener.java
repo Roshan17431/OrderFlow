@@ -6,6 +6,7 @@ import com.orderflow.events.EventType;
 import com.orderflow.events.InventoryReleasedEvent;
 import com.orderflow.events.InventoryReservationFailedEvent;
 import com.orderflow.events.InventoryReservedEvent;
+import com.orderflow.events.InventoryCommittedEvent;
 import com.orderflow.order.service.OrderInventoryWorkflowService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -36,6 +37,8 @@ public class InventoryEventListener {
                     objectMapper.readValue(payload, InventoryReservationFailedEvent.class));
             case INVENTORY_RELEASED -> workflows.released(
                     objectMapper.readValue(payload, InventoryReleasedEvent.class));
+            case INVENTORY_COMMITTED -> workflows.committed(
+                    objectMapper.readValue(payload, InventoryCommittedEvent.class));
             default -> throw new IllegalArgumentException("Unsupported inventory event type");
         }
     }

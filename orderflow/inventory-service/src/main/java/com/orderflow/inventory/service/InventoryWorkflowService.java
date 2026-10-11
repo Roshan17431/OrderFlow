@@ -7,6 +7,11 @@ import com.orderflow.events.InventoryReservationFailedEvent;
 import com.orderflow.events.InventoryReservationFailure;
 import com.orderflow.events.InventoryReservedEvent;
 import com.orderflow.events.InventoryReservedItem;
+import com.orderflow.events.InventoryCommitRequestedEvent;
+import com.orderflow.events.InventoryCommittedEvent;
+import com.orderflow.events.DeliveryPickedUpEvent;
+import com.orderflow.events.DeliveryCancelledEvent;
+import com.orderflow.events.DeliveryFailedEvent;
 import com.orderflow.events.OrderCancelRequestedEvent;
 import com.orderflow.events.OrderCreatedEvent;
 import com.orderflow.inventory.config.InventoryProperties;
@@ -182,7 +187,8 @@ public class InventoryWorkflowService {
             reservation.release(now, false);
             reservations.save(reservation);
             emitReleased(reservation, event.metadata(), "NO_RESERVATION", false, now);
-        } else if (reservation.getStatus() == ReservationStatus.RESERVED) {
+        } else if (reservation.getStatus() == ReservationStatus.RESERVED
+                || reservation.getStatus() == ReservationStatus.COMMITTED) {
             releaseStock(reservation, now);
             reservation.release(now, false);
             emitReleased(reservation, event.metadata(), "ORDER_CANCELLED", true, now);
@@ -191,6 +197,98 @@ public class InventoryWorkflowService {
             emitReleased(reservation, event.metadata(), "RESERVATION_REJECTED", false, now);
         }
         remember(event.metadata(), ORDER_CANCEL_CONSUMER);
+    }
+
+    @Transactional
+    public void commit(InventoryCommitRequestedEvent event) {
+        event.metadata().require(EventType.INVENTORY_COMMIT_REQUESTED, event.VERSION);
+        String consumer = "inventory-commit-v1";
+        if (duplicate(event.metadata(), consumer)) return;
+        InventoryReservation reservation = reservations.findByOrderIdForUpdate(event.orderId())
+                .orElseThrow(() -> new IllegalArgumentException("Reservation does not exist"));
+        if (!reservation.getId().equals(event.reservationId())) {
+            throw new IllegalArgumentException("Commit does not match reservation");
+        }
+        Instant now = Instant.now(clock);
+        if (reservation.getStatus() == ReservationStatus.RESERVED
+                && reservation.getExpiresAt().isAfter(now)
+                && reservation.getExpiresAt().isAfter(event.paidAt())) {
+            reservation.commit(now);
+        }
+        if (reservation.getStatus() == ReservationStatus.COMMITTED
+                || reservation.getStatus() == ReservationStatus.FULFILLED) {
+            InventoryCommittedEvent committed = new InventoryCommittedEvent(
+                    metadata(EventType.INVENTORY_COMMITTED, event.orderId(),
+                            event.metadata().correlationId(), event.metadata().eventId()),
+                    event.orderId(), reservation.getId(), now);
+            outbox.enqueue(topics.inventoryEvents(), event.orderId(), committed, committed.metadata());
+        } else {
+            boolean released = reservation.getStatus() == ReservationStatus.RESERVED;
+            if (released) {
+                releaseStock(reservation, now);
+                reservation.release(now, true);
+            }
+            emitReleased(reservation, event.metadata(), "INVENTORY_COMMIT_UNAVAILABLE", released, now);
+        }
+        remember(event.metadata(), consumer);
+    }
+
+    @Transactional
+    public void pickedUp(DeliveryPickedUpEvent event) {
+        event.metadata().require(EventType.DELIVERY_PICKED_UP, event.VERSION);
+        String consumer = "inventory-delivery-v1";
+        if (duplicate(event.metadata(), consumer)) return;
+        InventoryReservation reservation = reservations.findByOrderIdForUpdate(event.orderId())
+                .orElseThrow(() -> new IllegalArgumentException("Delivery reservation does not exist"));
+        Instant now = Instant.now(clock);
+        if (reservation.getStatus() == ReservationStatus.COMMITTED) {
+            List<UUID> ids = reservation.getItems().stream().map(i -> i.getProductId()).sorted().toList();
+            Map<UUID, InventoryItem> locked = inventory.findAllByProductIdForUpdate(ids).stream()
+                    .collect(Collectors.toMap(InventoryItem::getProductId, Function.identity()));
+            for (var item : reservation.getItems()) {
+                InventoryItem stock = locked.get(item.getProductId());
+                if (stock == null) throw new IllegalStateException("Committed inventory row is missing");
+                stock.fulfill(item.getQuantity(), now);
+            }
+            inventory.saveAll(locked.values());
+            reservation.fulfill(now);
+        } else if (reservation.getStatus() != ReservationStatus.FULFILLED) {
+            throw new IllegalStateException("Pickup requires committed inventory");
+        }
+        remember(event.metadata(), consumer);
+    }
+
+    @Transactional
+    public void deliveryCancelled(DeliveryCancelledEvent event) {
+        event.metadata().require(EventType.DELIVERY_CANCELLED, event.VERSION);
+        String consumer = "inventory-delivery-v1";
+        if (duplicate(event.metadata(), consumer)) return;
+        InventoryReservation reservation = reservations.findByOrderIdForUpdate(event.orderId())
+                .orElseThrow(() -> new IllegalArgumentException("Delivery reservation does not exist"));
+        if (reservation.getStatus() == ReservationStatus.COMMITTED) {
+            Instant now = Instant.now(clock);
+            releaseStock(reservation, now);
+            reservation.release(now, false);
+            emitReleased(reservation, event.metadata(), "DELIVERY_CANCELLED", true, now);
+        }
+        // Picked-up stock is already deducted. Refunds do not restock shipped goods.
+        remember(event.metadata(), consumer);
+    }
+
+    @Transactional
+    public void deliveryFailed(DeliveryFailedEvent event) {
+        event.metadata().require(EventType.DELIVERY_FAILED, DeliveryFailedEvent.VERSION);
+        String consumer = "inventory-delivery-v1";
+        if (duplicate(event.metadata(), consumer)) return;
+        InventoryReservation reservation = reservations.findByOrderIdForUpdate(event.orderId())
+                .orElseThrow(() -> new IllegalArgumentException("Delivery reservation does not exist"));
+        if (reservation.getStatus() == ReservationStatus.COMMITTED) {
+            Instant now = Instant.now(clock);
+            releaseStock(reservation, now);
+            reservation.release(now, false);
+            emitReleased(reservation, event.metadata(), "DELIVERY_FAILED_BEFORE_PICKUP", true, now);
+        }
+        remember(event.metadata(), consumer);
     }
 
     @Transactional

@@ -43,7 +43,17 @@ public class OrderDeliveryWorkflowService {
                 .orElseThrow(() -> new IllegalArgumentException("Delivery order does not exist"));
         if (!order.getCustomerId().equals(customerId) || !metadata.aggregateId().equals(orderId))
             throw new IllegalArgumentException("Delivery event does not match order");
-        action.accept(order);
+        var current = order.getFulfillmentStatus();
+        boolean terminal = java.util.Set.of(com.orderflow.order.domain.FulfillmentStatus.DELIVERED,
+                com.orderflow.order.domain.FulfillmentStatus.DELIVERY_CANCELLED,
+                com.orderflow.order.domain.FulfillmentStatus.DELIVERY_FAILED).contains(current);
+        boolean alreadyObserved = switch (metadata.eventType()) {
+            case DELIVERY_ASSIGNED -> order.getDeliveryAssignedAt() != null;
+            case DELIVERY_PICKED_UP -> order.getPickedUpAt() != null;
+            case DELIVERY_OUT_FOR_DELIVERY -> order.getOutForDeliveryAt() != null;
+            default -> false;
+        };
+        if (!terminal && !alreadyObserved) action.accept(order);
         order.recordWorkflowEvent(metadata.eventType().name(), metadata.eventId(),
                 metadata.correlationId(), Instant.now(clock));
         processed.save(new ProcessedEvent(metadata.eventId(), metadata.eventType().name(), orderId,

@@ -86,7 +86,11 @@ public class InventoryReservation {
     }
 
     public boolean release(Instant now, boolean expired) {
-        if (status == ReservationStatus.RELEASED || status == ReservationStatus.EXPIRED) {
+        if (status == ReservationStatus.RELEASED || status == ReservationStatus.EXPIRED
+                || status == ReservationStatus.FULFILLED) {
+            return false;
+        }
+        if (expired && status == ReservationStatus.COMMITTED) {
             return false;
         }
         if (status == ReservationStatus.REJECTED) {
@@ -99,6 +103,22 @@ public class InventoryReservation {
         releasedAt = now;
         updatedAt = now;
         return true;
+    }
+
+    public void commit(Instant now) {
+        if (status != ReservationStatus.RESERVED) {
+            throw new IllegalStateException("Only reserved inventory can be committed");
+        }
+        status = ReservationStatus.COMMITTED;
+        updatedAt = now;
+    }
+
+    public void fulfill(Instant now) {
+        if (status != ReservationStatus.COMMITTED) {
+            throw new IllegalStateException("Only committed inventory can be fulfilled");
+        }
+        status = ReservationStatus.FULFILLED;
+        updatedAt = now;
     }
 
     public UUID getId() {

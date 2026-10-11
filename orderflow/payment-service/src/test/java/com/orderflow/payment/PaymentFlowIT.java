@@ -134,7 +134,7 @@ class PaymentFlowIT {
             throws Exception {
         assertThat(jdbc.queryForObject(
                 "select count(*) from flyway_schema_history where success", Integer.class))
-                .isEqualTo(2);
+                .isEqualTo(3);
         assertThat(jdbc.queryForObject(
                 """
                 select count(*) from information_schema.tables

@@ -10,4 +10,6 @@ public record KafkaTopicProperties(
         @NotBlank String orderEvents,
         @NotBlank String inventoryEvents,
         @NotBlank String orderEventsDlt,
-        @NotBlank String inventoryEventsDlt) {}
+        @NotBlank String inventoryEventsDlt,
+        @NotBlank String deliveryEvents,
+        @NotBlank String deliveryEventsDlt) {}

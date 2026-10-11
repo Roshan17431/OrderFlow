@@ -22,11 +22,17 @@ public class KafkaConfiguration {
     @Bean HealthIndicator kafkaHealthIndicator(KafkaAdmin kafkaAdmin) {
         Map<String, Object> configuration = kafkaAdmin.getConfigurationProperties();
         return () -> {
-            try (AdminClient client = AdminClient.create(configuration)) {
+            AdminClient client = AdminClient.create(configuration);
+            try {
                 client.describeCluster().clusterId().get(3, TimeUnit.SECONDS);
                 return Health.up().build();
+            } catch (InterruptedException exception) {
+                Thread.currentThread().interrupt();
+                return Health.down().build();
             } catch (Exception exception) {
                 return Health.down().build();
+            } finally {
+                client.close(java.time.Duration.ZERO);
             }
         };
     }

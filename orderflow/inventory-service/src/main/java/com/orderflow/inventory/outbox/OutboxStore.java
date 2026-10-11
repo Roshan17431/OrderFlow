@@ -73,10 +73,16 @@ public class OutboxStore {
                 """
                 SELECT id, topic, message_key, event_type, event_version,
                        payload::text, attempts
-                FROM outbox_event
-                WHERE (status = 'NEW' AND available_at <= ?)
-                   OR (status = 'IN_PROGRESS' AND locked_at < ?)
-                ORDER BY created_at, id
+                FROM outbox_event current_event
+                WHERE ((status = 'NEW' AND available_at <= ?)
+                   OR (status = 'IN_PROGRESS' AND locked_at < ?))
+                  AND NOT EXISTS (
+                    SELECT 1 FROM outbox_event earlier
+                    WHERE earlier.topic = current_event.topic
+                      AND earlier.message_key = current_event.message_key
+                      AND earlier.event_sequence < current_event.event_sequence
+                      AND earlier.status <> 'PUBLISHED')
+                ORDER BY event_sequence
                 FOR UPDATE SKIP LOCKED
                 LIMIT ?
                 """,

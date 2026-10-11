@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orderflow.events.EventType;
 import com.orderflow.events.OrderCancelRequestedEvent;
 import com.orderflow.events.OrderCreatedEvent;
+import com.orderflow.events.InventoryCommitRequestedEvent;
 import com.orderflow.inventory.service.InventoryWorkflowService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -32,6 +33,8 @@ public class OrderEventListener {
                     workflows.reserve(objectMapper.readValue(payload, OrderCreatedEvent.class));
             case ORDER_CANCEL_REQUESTED -> workflows.release(
                     objectMapper.readValue(payload, OrderCancelRequestedEvent.class));
+            case INVENTORY_COMMIT_REQUESTED -> workflows.commit(
+                    objectMapper.readValue(payload, InventoryCommitRequestedEvent.class));
             case PAYMENT_REQUESTED, PAYMENT_CANCEL_REQUESTED -> {
                 // These order-topic events belong to the payment consumer group.
             }
