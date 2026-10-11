@@ -1,0 +1,163 @@
+name: orderflow-production-like
+
+# Local production-like override. It intentionally contains no credentials.
+# Create the two external Docker secrets before starting this topology.
+x-production-service: &production-service
+  restart: unless-stopped
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  mem_limit: 256m
+  environment: &production-environment
+    JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=20.0 -XX:MaxRAMPercentage=65.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError
+    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info,prometheus
+
+services:
+  postgres:
+    ports: !reset []
+    networks: [internal]
+    mem_limit: 384m
+
+  redis:
+    ports: !reset []
+    networks: [internal]
+    mem_limit: 192m
+
+  kafka:
+    ports: !reset []
+    networks: [internal]
+    mem_limit: 384m
+    environment:
+      KAFKA_HEAP_OPTS: -Xms128m -Xmx256m
+
+  database-bootstrap:
+    networks: [internal]
+
+  service-registry:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    mem_limit: 192m
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+
+  auth-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    secrets:
+      - orderflow-jwt-private
+      - orderflow-jwt-public
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+      APP_JWT_ALLOW_EPHEMERAL_KEYS: "false"
+      APP_JWT_PRIVATE_KEY_LOCATION: /run/secrets/orderflow-jwt-private
+      APP_JWT_PUBLIC_KEY_LOCATION: /run/secrets/orderflow-jwt-public
+      APP_AUTH_REFRESH_COOKIE_SECURE: "true"
+      APP_AUTH_REFRESH_COOKIE_SAME_SITE: Strict
+      APP_BOOTSTRAP_ADMIN_ENABLED: "false"
+
+  product-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+
+  cart-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+
+  inventory-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+
+  order-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+
+  payment-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,prod,production
+      APP_PAYMENT_SIMULATOR_ENABLED: "false"
+      APP_PAYMENT_SIMULATOR_ALLOW_IN_PRODUCTION: "false"
+      APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET: ""
+
+  delivery-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: production
+
+  notification-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: production
+
+  operations-service:
+    <<: *production-service
+    ports: !reset []
+    networks: [internal]
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: production
+
+  api-gateway:
+    <<: *production-service
+    networks: [edge, internal]
+    mem_limit: 320m
+    ports:
+      - "${API_GATEWAY_PORT:-8080}:8080"
+    environment:
+      <<: *production-environment
+      SPRING_PROFILES_ACTIVE: docker,production
+      APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-https://orderflow.invalid}
+      APP_SECURITY_HSTS_ENABLED: "true"
+      APP_RATE_LIMIT_ENABLED: "true"
+
+  prometheus:
+    ports: !reset []
+    networks: [internal, observability]
+    mem_limit: 256m
+
+  grafana:
+    ports: !reset []
+    networks: [observability]
+    mem_limit: 256m
+
+networks:
+  edge:
+  internal:
+    internal: true
+  observability:
+    internal: true
+
+secrets:
+  orderflow-jwt-private:
+    external: true
+  orderflow-jwt-public:
+    external: true
