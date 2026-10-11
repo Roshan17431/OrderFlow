@@ -10,6 +10,10 @@ PRODUCT_URL="http://localhost:${PRODUCT_SERVICE_PORT:-8082}"
 CART_URL="http://localhost:${CART_SERVICE_PORT:-8083}"
 INVENTORY_URL="http://localhost:${INVENTORY_SERVICE_PORT:-8084}"
 ORDER_URL="http://localhost:${ORDER_SERVICE_PORT:-8085}"
+PAYMENT_URL="http://localhost:${PAYMENT_SERVICE_PORT:-8086}"
+DELIVERY_URL="http://localhost:${DELIVERY_SERVICE_PORT:-8087}"
+NOTIFICATION_URL="http://localhost:${NOTIFICATION_SERVICE_PORT:-8088}"
+OPERATIONS_URL="http://localhost:${OPERATIONS_SERVICE_PORT:-8089}"
 EUREKA_URL="http://localhost:${EUREKA_PORT:-8761}"
 KNOWN_ID="orderflow-smoke-test-123"
 TEMP_DIR="$(mktemp -d)"
@@ -119,6 +123,32 @@ request() {
     "${GATEWAY_URL}${path}"
 }
 
+simulator_signature() {
+  local timestamp="$1"
+  local body="$2"
+  local secret="${APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET:-orderflow-local-simulator-secret-not-for-production}"
+  printf '%s.%s' "${timestamp}" "${body}" |
+    openssl dgst -sha256 -hmac "${secret}" |
+    awk '{print $NF}'
+}
+
+signed_webhook() {
+  local event_id="$1"
+  local body="$2"
+  local output="$3"
+  local headers="$4"
+  local timestamp
+  local signature
+  timestamp="$(date +%s)"
+  signature="$(simulator_signature "${timestamp}" "${body}")"
+  request POST "/api/payments/webhooks/simulator" "${output}" "${headers}" \
+    -H "Content-Type: application/json" \
+    -H "X-Payment-Timestamp: ${timestamp}" \
+    -H "X-Payment-Event-ID: ${event_id}" \
+    -H "X-Payment-Signature: ${signature}" \
+    --data-binary "${body}"
+}
+
 assert_status() {
   local actual="$1"
   local expected="$2"
@@ -145,6 +175,76 @@ wait_for_order_status() {
     if (( SECONDS >= deadline )); then
       fail "timed out waiting for order ${order_id} to reach ${expected}"
     fi
+    sleep 1
+  done
+}
+
+wait_for_payment_status() {
+  local token="$1"
+  local order_id="$2"
+  local expected="$3"
+  local label="$4"
+  local deadline=$((SECONDS + TIMEOUT_SECONDS))
+  local status
+  while true; do
+    status="$(request GET "/api/payments/orders/${order_id}" \
+      "${TEMP_DIR}/${label}.json" "${TEMP_DIR}/${label}.headers" \
+      -H "Authorization: Bearer ${token}")"
+    if [[ "${status}" == "200" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "status")" == "${expected}" ]]; then
+      return
+    fi
+    if (( SECONDS >= deadline )); then
+      fail "timed out waiting for order ${order_id} payment to reach ${expected}"
+    fi
+    sleep 1
+  done
+}
+
+wait_for_fulfillment_status() {
+  local token="$1" order_id="$2" expected="$3" label="$4"
+  local deadline=$((SECONDS + TIMEOUT_SECONDS)) status
+  while true; do
+    status="$(request GET "/api/orders/${order_id}" \
+      "${TEMP_DIR}/${label}.json" "${TEMP_DIR}/${label}.headers" \
+      -H "Authorization: Bearer ${token}")"
+    if [[ "${status}" == "200" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "fulfillmentStatus")" == "${expected}" ]]; then
+      return
+    fi
+    (( SECONDS < deadline )) || fail "timed out waiting for fulfillment ${expected}"
+    sleep 1
+  done
+}
+
+wait_for_delivery_status() {
+  local token="$1" order_id="$2" expected="$3" label="$4"
+  local deadline=$((SECONDS + TIMEOUT_SECONDS)) status
+  while true; do
+    status="$(request GET "/api/deliveries/orders/${order_id}" \
+      "${TEMP_DIR}/${label}.json" "${TEMP_DIR}/${label}.headers" \
+      -H "Authorization: Bearer ${token}")"
+    if [[ "${status}" == "200" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "status")" == "${expected}" ]]; then
+      return
+    fi
+    (( SECONDS < deadline )) || fail "timed out waiting for delivery ${expected}"
+    sleep 1
+  done
+}
+
+wait_for_agent_availability() {
+  local token="$1" expected="$2" label="$3"
+  local deadline=$((SECONDS + TIMEOUT_SECONDS)) status
+  while true; do
+    status="$(request GET "/api/delivery/agents/me" \
+      "${TEMP_DIR}/${label}.json" "${TEMP_DIR}/${label}.headers" \
+      -H "Authorization: Bearer ${token}")"
+    if [[ "${status}" == "200" ]] &&
+        [[ "$(json_value "${TEMP_DIR}/${label}.json" "availability")" == "${expected}" ]]; then
+      return
+    fi
+    (( SECONDS < deadline )) || fail "timed out waiting for agent ${expected}"
     sleep 1
   done
 }
@@ -190,16 +290,27 @@ wait_for_url "product service" "${PRODUCT_URL}/actuator/health/readiness"
 wait_for_url "cart service" "${CART_URL}/actuator/health/readiness"
 wait_for_url "inventory service" "${INVENTORY_URL}/actuator/health/readiness"
 wait_for_url "order service" "${ORDER_URL}/actuator/health/readiness"
+wait_for_url "payment service" "${PAYMENT_URL}/actuator/health/readiness"
+wait_for_url "delivery service" "${DELIVERY_URL}/actuator/health/readiness"
+wait_for_url "notification service" "${NOTIFICATION_URL}/actuator/health/readiness"
+wait_for_url "operations service" "${OPERATIONS_URL}/actuator/health/readiness"
 wait_for_url "API gateway" "${GATEWAY_URL}/actuator/health/readiness"
 wait_for_eureka_app "AUTH-SERVICE"
 wait_for_eureka_app "PRODUCT-SERVICE"
 wait_for_eureka_app "CART-SERVICE"
 wait_for_eureka_app "INVENTORY-SERVICE"
 wait_for_eureka_app "ORDER-SERVICE"
+wait_for_eureka_app "PAYMENT-SERVICE"
+wait_for_eureka_app "DELIVERY-SERVICE"
+wait_for_eureka_app "NOTIFICATION-SERVICE"
+wait_for_eureka_app "OPERATIONS-SERVICE"
 wait_for_eureka_app "API-GATEWAY"
 
 ORDER_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.order-events.v1.DLT")"
 INVENTORY_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.inventory-events.v1.DLT")"
+PAYMENT_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.payment-events.v1.DLT")"
+DELIVERY_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.delivery-events.v1.DLT")"
+NOTIFICATION_DLT_OFFSET_BEFORE="$(kafka_topic_end_offset "orderflow.notification-events.v1.DLT")"
 
 # Preserve Phase 1 platform checks.
 PING_STATUS="$(request GET "/api/platform/ping" \
@@ -227,6 +338,7 @@ CSRF_TOKEN="$(json_value "${TEMP_DIR}/csrf.json" "token")"
 [[ -n "${CSRF_TOKEN}" ]] || fail "CSRF token was empty"
 
 UNIQUE_SUFFIX="$(date +%s)-$$"
+SHIPPING_ADDRESS_JSON=',"shippingAddress":{"recipientName":"Smoke Recipient","addressLine1":"10 Example Street","city":"Kochi","stateOrRegion":"Kerala","postalCode":"682001","countryCode":"IN"}'
 TEST_EMAIL="smoke-${UNIQUE_SUFFIX}@example.com"
 REGISTER_BODY="$(printf \
   '{"email":"%s","password":"Smoke password 123!","displayName":"Smoke User"}' \
@@ -428,6 +540,17 @@ CUSTOMER_REGISTER_STATUS="$(request POST "/api/auth/register" \
   --data "${CUSTOMER_REGISTER_BODY}")"
 assert_status "${CUSTOMER_REGISTER_STATUS}" "201" "separate customer registration"
 CUSTOMER_TOKEN="$(json_value "${TEMP_DIR}/customer-register.json" "accessToken")"
+CUSTOMER_ID="$(json_path "${TEMP_DIR}/customer-register.json" "user.id")"
+
+PREFERENCE_STATUS="$(request PUT "/api/notifications/preferences" \
+  "${TEMP_DIR}/notification-preference.json" \
+  "${TEMP_DIR}/notification-preference.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  --data "{\"emailEnabled\":true,\"emailAddress\":\"${CUSTOMER_EMAIL}\",\"smsEnabled\":false}")"
+assert_status "${PREFERENCE_STATUS}" "200" "notification preference update"
 
 ADD_CART_STATUS="$(request POST "/api/cart/items" \
   "${TEMP_DIR}/cart-add.json" "${TEMP_DIR}/cart-add.headers" \
@@ -582,7 +705,7 @@ CREATE_ORDER_STATUS="$(request POST "/api/orders" \
   -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
   -H "Idempotency-Key: ${CREATE_ORDER_KEY}" \
   -H "X-Correlation-ID: phase4-order-smoke" \
-  --data "{\"expectedCartVersion\":${PHASE4_CART_VERSION}}")"
+  --data "{\"expectedCartVersion\":${PHASE4_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
 assert_status "${CREATE_ORDER_STATUS}" "202" "order creation"
 ORDER_ID="$(json_value "${TEMP_DIR}/order-create.json" "id")"
 [[ "${ORDER_ID}" =~ ^[0-9a-fA-F-]{36}$ ]] || fail "created order ID was invalid"
@@ -601,7 +724,7 @@ CREATE_ORDER_REPEAT_STATUS="$(request POST "/api/orders" \
   -H "Content-Type: application/json" \
   -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
   -H "Idempotency-Key: ${CREATE_ORDER_KEY}" \
-  --data "{\"expectedCartVersion\":${PHASE4_CART_VERSION}}")"
+  --data "{\"expectedCartVersion\":${PHASE4_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
 assert_status "${CREATE_ORDER_REPEAT_STATUS}" "202" "idempotent order replay"
 [[ "$(json_value "${TEMP_DIR}/order-create-repeat.json" "id")" == "${ORDER_ID}" ]] ||
   fail "idempotent order replay returned a different order"
@@ -614,7 +737,7 @@ CREATE_ORDER_CONFLICT_STATUS="$(request POST "/api/orders" \
   -H "Content-Type: application/json" \
   -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
   -H "Idempotency-Key: ${CREATE_ORDER_KEY}" \
-  --data "{\"expectedCartVersion\":${DIFFERENT_CART_VERSION}}")"
+  --data "{\"expectedCartVersion\":${DIFFERENT_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
 assert_status "${CREATE_ORDER_CONFLICT_STATUS}" "409" "idempotency-key conflict"
 [[ "$(json_value "${TEMP_DIR}/order-create-conflict.json" "code")" == \
     "ORDER_IDEMPOTENCY_CONFLICT" ]] ||
@@ -659,7 +782,7 @@ CUSTOMER_TWO_ORDER_STATUS="$(request POST "/api/orders" \
   -H "Content-Type: application/json" \
   -H "X-XSRF-TOKEN: ${CUSTOMER_TWO_CSRF}" \
   -H "Idempotency-Key: create-two-${UNIQUE_SUFFIX}" \
-  --data "{\"expectedCartVersion\":${CUSTOMER_TWO_CART_VERSION}}")"
+  --data "{\"expectedCartVersion\":${CUSTOMER_TWO_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
 assert_status "${CUSTOMER_TWO_ORDER_STATUS}" "202" "insufficient-stock order creation"
 CUSTOMER_TWO_ORDER_ID="$(json_value "${TEMP_DIR}/customer-two-order.json" "id")"
 wait_for_order_status "${CUSTOMER_TWO_TOKEN}" "${CUSTOMER_TWO_ORDER_ID}" \
@@ -694,6 +817,335 @@ CANCEL_REPEAT_STATUS="$(request POST "/api/orders/${ORDER_ID}/cancel" \
 assert_status "${CANCEL_REPEAT_STATUS}" "202" "idempotent cancellation replay"
 [[ "$(json_value "${TEMP_DIR}/order-cancel-repeat.json" "id")" == "${ORDER_ID}" ]] ||
   fail "idempotent cancellation returned a different order"
+
+# Phase 5: a fresh order is confirmed asynchronously and completed by an
+# exact-byte signed simulator webhook.
+PAYMENT_CART_STATUS="$(request GET "/api/cart" \
+  "${TEMP_DIR}/payment-cart.json" "${TEMP_DIR}/payment-cart.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${PAYMENT_CART_STATUS}" "200" "payment cart refresh"
+PAYMENT_CART_VERSION="$(json_value "${TEMP_DIR}/payment-cart.json" "version")"
+[[ "${PAYMENT_CART_VERSION}" =~ ^[0-9]+$ ]] ||
+  fail "payment cart version was invalid"
+
+PAYMENT_ORDER_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/payment-order.json" "${TEMP_DIR}/payment-order.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: payment-order-${UNIQUE_SUFFIX}" \
+  --data "{\"expectedCartVersion\":${PAYMENT_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
+assert_status "${PAYMENT_ORDER_STATUS}" "202" "payment order creation"
+PAYMENT_ORDER_ID="$(json_value "${TEMP_DIR}/payment-order.json" "id")"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "PAYMENT_PENDING" "payment-order-pending"
+wait_for_payment_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "PENDING" "payment-pending"
+PAYMENT_ID="$(json_value "${TEMP_DIR}/payment-pending.json" "id")"
+
+NON_OWNER_PAYMENT_STATUS="$(request GET "/api/payments/orders/${PAYMENT_ORDER_ID}" \
+  "${TEMP_DIR}/payment-non-owner.json" "${TEMP_DIR}/payment-non-owner.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TWO_TOKEN}")"
+assert_status "${NON_OWNER_PAYMENT_STATUS}" "404" "non-owner payment privacy"
+
+CONFIRM_KEY="confirm-${UNIQUE_SUFFIX}"
+CONFIRM_STATUS="$(request POST "/api/payments/orders/${PAYMENT_ORDER_ID}/confirm" \
+  "${TEMP_DIR}/payment-confirm.json" "${TEMP_DIR}/payment-confirm.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CONFIRM_KEY}" \
+  --data '{"paymentMethodToken":"tok_success"}')"
+assert_status "${CONFIRM_STATUS}" "202" "payment confirmation"
+[[ "$(json_value "${TEMP_DIR}/payment-confirm.json" "status")" == "PROCESSING" ]] ||
+  fail "successful simulator token did not enter PROCESSING"
+
+CONFIRM_REPEAT_STATUS="$(request POST "/api/payments/orders/${PAYMENT_ORDER_ID}/confirm" \
+  "${TEMP_DIR}/payment-confirm-repeat.json" \
+  "${TEMP_DIR}/payment-confirm-repeat.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: ${CONFIRM_KEY}" \
+  --data '{"paymentMethodToken":"tok_success"}')"
+assert_status "${CONFIRM_REPEAT_STATUS}" "202" "payment confirmation replay"
+
+INVALID_WEBHOOK_STATUS="$(request POST "/api/payments/webhooks/simulator" \
+  "${TEMP_DIR}/invalid-webhook.json" "${TEMP_DIR}/invalid-webhook.headers" \
+  -H "Content-Type: application/json" \
+  -H "X-Payment-Timestamp: $(date +%s)" \
+  -H "X-Payment-Event-ID: invalid-${UNIQUE_SUFFIX}" \
+  -H "X-Payment-Signature: 00" \
+  --data '{"type":"payment.succeeded"}')"
+assert_status "${INVALID_WEBHOOK_STATUS}" "401" "invalid webhook signature"
+
+PAYMENT_PROVIDER_ID="sim_pay_${PAYMENT_ID}"
+PAYMENT_WEBHOOK_BODY="$(printf \
+  '{"type":"payment.succeeded","providerPaymentId":"%s"}' \
+  "${PAYMENT_PROVIDER_ID}")"
+PAYMENT_WEBHOOK_STATUS="$(signed_webhook \
+  "payment-success-${UNIQUE_SUFFIX}" "${PAYMENT_WEBHOOK_BODY}" \
+  "${TEMP_DIR}/payment-webhook.json" "${TEMP_DIR}/payment-webhook.headers")"
+assert_status "${PAYMENT_WEBHOOK_STATUS}" "200" "signed payment success webhook"
+PAYMENT_WEBHOOK_REPEAT_STATUS="$(signed_webhook \
+  "payment-success-${UNIQUE_SUFFIX}" "${PAYMENT_WEBHOOK_BODY}" \
+  "${TEMP_DIR}/payment-webhook-repeat.json" \
+  "${TEMP_DIR}/payment-webhook-repeat.headers")"
+assert_status "${PAYMENT_WEBHOOK_REPEAT_STATUS}" "200" "duplicate payment webhook"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "PAID" "payment-order-paid"
+wait_for_fulfillment_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "DELIVERY_PENDING" "payment-fulfillment-pending"
+wait_for_delivery_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "PENDING_ASSIGNMENT" "delivery-pending"
+DELIVERY_ID="$(json_value "${TEMP_DIR}/delivery-pending.json" "id")"
+
+# Phase 6: create a local-only delivery agent, assign the oldest pending
+# delivery, and drive the complete lifecycle through protected APIs.
+AGENT_COOKIE_JAR="${TEMP_DIR}/agent-cookies.txt"
+AGENT_CSRF_STATUS="$(request GET "/api/auth/csrf" \
+  "${TEMP_DIR}/agent-csrf.json" "${TEMP_DIR}/agent-csrf.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}")"
+assert_status "${AGENT_CSRF_STATUS}" "200" "delivery-agent CSRF token"
+AGENT_CSRF="$(json_value "${TEMP_DIR}/agent-csrf.json" "token")"
+AGENT_EMAIL="agent-${UNIQUE_SUFFIX}@example.com"
+AGENT_REGISTER_STATUS="$(request POST "/api/auth/register" \
+  "${TEMP_DIR}/agent-register.json" "${TEMP_DIR}/agent-register.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Content-Type: application/json" -H "X-XSRF-TOKEN: ${AGENT_CSRF}" \
+  --data "{\"email\":\"${AGENT_EMAIL}\",\"password\":\"Smoke password 123!\",\"displayName\":\"Delivery Agent\"}")"
+assert_status "${AGENT_REGISTER_STATUS}" "201" "delivery-agent registration"
+AGENT_USER_ID="$(json_path "${TEMP_DIR}/agent-register.json" "user.id")"
+docker compose exec -T postgres sh -c \
+  'exec psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -c "$1"' \
+  sh "INSERT INTO user_roles (user_id, role) VALUES ('${AGENT_USER_ID}'::uuid, 'DELIVERY_AGENT') ON CONFLICT DO NOTHING" \
+  >/dev/null
+AGENT_LOGIN_STATUS="$(request POST "/api/auth/login" \
+  "${TEMP_DIR}/agent-login.json" "${TEMP_DIR}/agent-login.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Content-Type: application/json" -H "X-XSRF-TOKEN: ${AGENT_CSRF}" \
+  --data "{\"email\":\"${AGENT_EMAIL}\",\"password\":\"Smoke password 123!\"}")"
+assert_status "${AGENT_LOGIN_STATUS}" "200" "delivery-agent login"
+AGENT_TOKEN="$(json_value "${TEMP_DIR}/agent-login.json" "accessToken")"
+
+CUSTOMER_AGENT_STATUS="$(request GET "/api/delivery/agents/me" \
+  "${TEMP_DIR}/customer-agent-denied.json" "${TEMP_DIR}/customer-agent-denied.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${CUSTOMER_AGENT_STATUS}" "403" "customer delivery-agent denial"
+CUSTOMER_ADMIN_DELIVERY_STATUS="$(request GET "/api/admin/deliveries/${DELIVERY_ID}/history" \
+  "${TEMP_DIR}/customer-admin-delivery.json" "${TEMP_DIR}/customer-admin-delivery.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${CUSTOMER_ADMIN_DELIVERY_STATUS}" "403" "customer admin-delivery denial"
+NON_OWNER_DELIVERY_STATUS="$(request GET "/api/deliveries/orders/${PAYMENT_ORDER_ID}" \
+  "${TEMP_DIR}/delivery-non-owner.json" "${TEMP_DIR}/delivery-non-owner.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TWO_TOKEN}")"
+assert_status "${NON_OWNER_DELIVERY_STATUS}" "404" "non-owner delivery privacy"
+
+AGENT_AVAILABLE_STATUS="$(request PUT "/api/delivery/agents/me/availability" \
+  "${TEMP_DIR}/agent-available.json" "${TEMP_DIR}/agent-available.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${AGENT_TOKEN}" \
+  -H "Content-Type: application/json" -H "X-XSRF-TOKEN: ${AGENT_CSRF}" \
+  -H "X-Correlation-ID: phase6-delivery-smoke" \
+  --data '{"availability":"AVAILABLE"}')"
+assert_status "${AGENT_AVAILABLE_STATUS}" "200" "delivery-agent availability"
+wait_for_delivery_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "ASSIGNED" "delivery-assigned"
+wait_for_agent_availability "${AGENT_TOKEN}" "BUSY" "agent-busy"
+wait_for_fulfillment_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "DELIVERY_ASSIGNED" "fulfillment-assigned"
+
+for transition in pickup out-for-delivery delivered; do
+  TRANSITION_STATUS="$(request POST "/api/delivery/agents/me/deliveries/${DELIVERY_ID}/${transition}" \
+    "${TEMP_DIR}/delivery-${transition}.json" "${TEMP_DIR}/delivery-${transition}.headers" \
+    -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+    -H "Authorization: Bearer ${AGENT_TOKEN}" -H "X-XSRF-TOKEN: ${AGENT_CSRF}")"
+  assert_status "${TRANSITION_STATUS}" "200" "delivery ${transition} transition"
+  case "${transition}" in
+    pickup) EXPECTED_FULFILLMENT="PICKED_UP" ;;
+    out-for-delivery) EXPECTED_FULFILLMENT="OUT_FOR_DELIVERY" ;;
+    delivered) EXPECTED_FULFILLMENT="DELIVERED" ;;
+  esac
+  wait_for_fulfillment_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+    "${EXPECTED_FULFILLMENT}" "fulfillment-${transition}"
+done
+wait_for_agent_availability "${AGENT_TOKEN}" "AVAILABLE" "agent-released"
+
+# Leave the local smoke agent offline after verifying that delivery completion
+# released it. This keeps a subsequent smoke run from auto-assigning the next
+# delivery before that run can assert the PENDING_ASSIGNMENT boundary.
+AGENT_OFFLINE_STATUS="$(request PUT "/api/delivery/agents/me/availability" \
+  "${TEMP_DIR}/agent-offline.json" "${TEMP_DIR}/agent-offline.headers" \
+  -c "${AGENT_COOKIE_JAR}" -b "${AGENT_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${AGENT_TOKEN}" \
+  -H "Content-Type: application/json" -H "X-XSRF-TOKEN: ${AGENT_CSRF}" \
+  --data '{"availability":"OFFLINE"}')"
+assert_status "${AGENT_OFFLINE_STATUS}" "200" "delivery-agent smoke cleanup"
+wait_for_agent_availability "${AGENT_TOKEN}" "OFFLINE" "agent-offline"
+
+OTHER_AGENT_DELIVERY_STATUS="$(request GET "/api/delivery/agents/me/deliveries/00000000-0000-0000-0000-000000000001" \
+  "${TEMP_DIR}/agent-other-delivery.json" "${TEMP_DIR}/agent-other-delivery.headers" \
+  -H "Authorization: Bearer ${AGENT_TOKEN}")"
+assert_status "${OTHER_AGENT_DELIVERY_STATUS}" "404" "agent other-delivery privacy"
+
+# Persistent notifications must contain each expected event exactly once.
+NOTIFICATION_DEADLINE=$((SECONDS + TIMEOUT_SECONDS))
+while true; do
+  NOTIFICATION_LIST_STATUS="$(request GET "/api/notifications?size=100" \
+    "${TEMP_DIR}/notifications.json" "${TEMP_DIR}/notifications.headers" \
+    -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+  if [[ "${NOTIFICATION_LIST_STATUS}" == "200" ]] &&
+      grep -q '"type":"PAYMENT_SUCCEEDED"' "${TEMP_DIR}/notifications.json" &&
+      grep -q '"type":"DELIVERY_ASSIGNED"' "${TEMP_DIR}/notifications.json" &&
+      grep -q '"type":"DELIVERY_OUT_FOR_DELIVERY"' "${TEMP_DIR}/notifications.json" &&
+      grep -q '"type":"DELIVERY_DELIVERED"' "${TEMP_DIR}/notifications.json"; then
+    break
+  fi
+  (( SECONDS < NOTIFICATION_DEADLINE )) || fail "timed out waiting for Phase 6 notifications"
+  sleep 1
+done
+for notification_type in PAYMENT_SUCCEEDED DELIVERY_ASSIGNED DELIVERY_OUT_FOR_DELIVERY DELIVERY_DELIVERED; do
+  [[ "$(grep -o "\"type\":\"${notification_type}\"" "${TEMP_DIR}/notifications.json" | wc -l | tr -d ' ')" == "1" ]] ||
+    fail "notification ${notification_type} was missing or duplicated"
+done
+
+UNREAD_STATUS="$(request GET "/api/notifications/unread-count" \
+  "${TEMP_DIR}/unread-before.json" "${TEMP_DIR}/unread-before.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${UNREAD_STATUS}" "200" "notification unread count"
+UNREAD_BEFORE="$(json_value "${TEMP_DIR}/unread-before.json" "count")"
+FIRST_NOTIFICATION_ID="$(json_path "${TEMP_DIR}/notifications.json" "content.0.id")"
+READ_ONE_STATUS="$(request PATCH "/api/notifications/${FIRST_NOTIFICATION_ID}/read" \
+  "${TEMP_DIR}/read-one.json" "${TEMP_DIR}/read-one.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}")"
+assert_status "${READ_ONE_STATUS}" "200" "mark notification read"
+UNREAD_AFTER_ONE_STATUS="$(request GET "/api/notifications/unread-count" \
+  "${TEMP_DIR}/unread-after-one.json" "${TEMP_DIR}/unread-after-one.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${UNREAD_AFTER_ONE_STATUS}" "200" "unread count after mark-read"
+[[ "$(json_value "${TEMP_DIR}/unread-after-one.json" "count")" -lt "${UNREAD_BEFORE}" ]] ||
+  fail "mark-read did not reduce unread count"
+READ_ALL_STATUS="$(request PATCH "/api/notifications/read-all" \
+  "${TEMP_DIR}/read-all.json" "${TEMP_DIR}/read-all.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}")"
+assert_status "${READ_ALL_STATUS}" "200" "mark all notifications read"
+[[ "$(json_value "${TEMP_DIR}/read-all.json" "count")" == "0" ]] ||
+  fail "read-all did not clear unread count"
+
+EMAIL_DEADLINE=$((SECONDS + TIMEOUT_SECONDS))
+while true; do
+  EMAIL_SENT_COUNT="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "$2"' sh \
+    "${NOTIFICATION_POSTGRES_DB:-orderflow_notification}" \
+    "SELECT count(*) FROM notification_delivery d JOIN notification n ON n.id=d.notification_id WHERE n.user_id='${CUSTOMER_ID}'::uuid AND d.channel='EMAIL' AND d.status='SENT'" | tr -d '[:space:]')"
+  [[ "${EMAIL_SENT_COUNT}" -ge 1 ]] && break
+  (( SECONDS < EMAIL_DEADLINE )) || fail "simulated email delivery did not reach SENT"
+  sleep 1
+done
+
+CUSTOMER_REFUND_STATUS="$(request POST \
+  "/api/admin/payments/${PAYMENT_ID}/refunds" \
+  "${TEMP_DIR}/customer-refund.json" "${TEMP_DIR}/customer-refund.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: denied-refund-${UNIQUE_SUFFIX}" \
+  --data '{"amount":1.00,"reason":"CUSTOMER_REQUEST"}')"
+assert_status "${CUSTOMER_REFUND_STATUS}" "403" "customer refund denial"
+
+# Promote the existing local vendor through the database-only smoke fixture,
+# then obtain a fresh JWT containing ADMIN for the protected refund API.
+docker compose exec -T postgres sh -c \
+  'exec psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -c "$1"' \
+  sh \
+  "INSERT INTO user_roles (user_id, role) VALUES ('${VENDOR_USER_ID}'::uuid, 'ADMIN') ON CONFLICT DO NOTHING" \
+  >/dev/null
+ADMIN_LOGIN_STATUS="$(request POST "/api/auth/login" \
+  "${TEMP_DIR}/admin-login.json" "${TEMP_DIR}/admin-login.headers" \
+  -c "${COOKIE_JAR}" -b "${COOKIE_JAR}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CSRF_TOKEN}" \
+  --data "${VENDOR_LOGIN_BODY}")"
+assert_status "${ADMIN_LOGIN_STATUS}" "200" "admin login after local role promotion"
+ADMIN_TOKEN="$(json_value "${TEMP_DIR}/admin-login.json" "accessToken")"
+
+OPERATIONS_ADMIN_STATUS="$(request GET "/api/admin/operations/overview" \
+  "${TEMP_DIR}/operations-overview.json" "${TEMP_DIR}/operations-overview.headers" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}")"
+assert_status "${OPERATIONS_ADMIN_STATUS}" "200" "operations admin overview"
+OPERATIONS_CUSTOMER_STATUS="$(request GET "/api/admin/operations/overview" \
+  "${TEMP_DIR}/operations-denied.json" "${TEMP_DIR}/operations-denied.headers" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${OPERATIONS_CUSTOMER_STATUS}" "403" "operations customer denial"
+curl --fail --silent --show-error "${OPERATIONS_URL}/actuator/prometheus" | \
+  grep -q "operations_event_processing" || fail "operations Prometheus metrics missing"
+
+REFUND_STATUS="$(request POST "/api/admin/payments/${PAYMENT_ID}/refunds" \
+  "${TEMP_DIR}/refund.json" "${TEMP_DIR}/refund.headers" \
+  -c "${COOKIE_JAR}" -b "${COOKIE_JAR}" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CSRF_TOKEN}" \
+  -H "Idempotency-Key: refund-${UNIQUE_SUFFIX}" \
+  --data '{"amount":1.00,"reason":"CUSTOMER_REQUEST"}')"
+assert_status "${REFUND_STATUS}" "202" "partial refund request"
+REFUND_ID="$(json_value "${TEMP_DIR}/refund.json" "id")"
+REFUND_WEBHOOK_BODY="$(printf \
+  '{"type":"refund.succeeded","providerRefundId":"sim_ref_%s"}' \
+  "${REFUND_ID}")"
+REFUND_WEBHOOK_STATUS="$(signed_webhook \
+  "refund-success-${UNIQUE_SUFFIX}" "${REFUND_WEBHOOK_BODY}" \
+  "${TEMP_DIR}/refund-webhook.json" "${TEMP_DIR}/refund-webhook.headers")"
+assert_status "${REFUND_WEBHOOK_STATUS}" "200" "signed refund success webhook"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${PAYMENT_ORDER_ID}" \
+  "PARTIALLY_REFUNDED" "payment-order-partially-refunded"
+
+# A separate payment demonstrates the stable HTTP 402 decline and automatic
+# inventory release while the order remains PAYMENT_FAILED.
+DECLINE_CART_STATUS="$(request GET "/api/cart" \
+  "${TEMP_DIR}/decline-cart.json" "${TEMP_DIR}/decline-cart.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}")"
+assert_status "${DECLINE_CART_STATUS}" "200" "decline cart refresh"
+DECLINE_CART_VERSION="$(json_value "${TEMP_DIR}/decline-cart.json" "version")"
+[[ "${DECLINE_CART_VERSION}" =~ ^[0-9]+$ ]] ||
+  fail "decline cart version was invalid"
+
+DECLINE_ORDER_STATUS="$(request POST "/api/orders" \
+  "${TEMP_DIR}/decline-order.json" "${TEMP_DIR}/decline-order.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: decline-order-${UNIQUE_SUFFIX}" \
+  --data "{\"expectedCartVersion\":${DECLINE_CART_VERSION}${SHIPPING_ADDRESS_JSON}}")"
+assert_status "${DECLINE_ORDER_STATUS}" "202" "decline order creation"
+DECLINE_ORDER_ID="$(json_value "${TEMP_DIR}/decline-order.json" "id")"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${DECLINE_ORDER_ID}" \
+  "PAYMENT_PENDING" "decline-order-pending"
+wait_for_payment_status "${CUSTOMER_TOKEN}" "${DECLINE_ORDER_ID}" \
+  "PENDING" "decline-payment-pending"
+DECLINE_CONFIRM_STATUS="$(request POST \
+  "/api/payments/orders/${DECLINE_ORDER_ID}/confirm" \
+  "${TEMP_DIR}/decline-confirm.json" "${TEMP_DIR}/decline-confirm.headers" \
+  -c "${CUSTOMER_COOKIE_JAR}" -b "${CUSTOMER_COOKIE_JAR}" \
+  -H "Authorization: Bearer ${CUSTOMER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-XSRF-TOKEN: ${CUSTOMER_CSRF}" \
+  -H "Idempotency-Key: decline-confirm-${UNIQUE_SUFFIX}" \
+  --data '{"paymentMethodToken":"tok_declined"}')"
+assert_status "${DECLINE_CONFIRM_STATUS}" "402" "stable payment decline"
+[[ "$(json_value "${TEMP_DIR}/decline-confirm.json" "code")" == "PAYMENT_DECLINED" ]] ||
+  fail "payment decline did not use PAYMENT_DECLINED"
+wait_for_order_status "${CUSTOMER_TOKEN}" "${DECLINE_ORDER_ID}" \
+  "PAYMENT_FAILED" "decline-order-failed"
 
 # Promote the second local user after its customer order to verify product
 # ownership enforcement through product-service rather than shared tables.
@@ -732,7 +1184,20 @@ while true; do
   INVENTORY_OUTBOX_PENDING="$(docker compose exec -T postgres sh -c \
     'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM outbox_event WHERE status <> '\''PUBLISHED'\''"' \
     sh "${INVENTORY_POSTGRES_DB:-orderflow_inventory}" | tr -d '[:space:]')"
-  if [[ "${ORDER_OUTBOX_PENDING}" == "0" && "${INVENTORY_OUTBOX_PENDING}" == "0" ]]; then
+  PAYMENT_OUTBOX_PENDING="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM outbox_event WHERE status <> '\''PUBLISHED'\''"' \
+    sh "${PAYMENT_POSTGRES_DB:-orderflow_payment}" | tr -d '[:space:]')"
+  DELIVERY_OUTBOX_PENDING="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM outbox_event WHERE status <> '\''PUBLISHED'\''"' \
+    sh "${DELIVERY_POSTGRES_DB:-orderflow_delivery}" | tr -d '[:space:]')"
+  NOTIFICATION_OUTBOX_PENDING="$(docker compose exec -T postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM outbox_event WHERE status <> '\''PUBLISHED'\''"' \
+    sh "${NOTIFICATION_POSTGRES_DB:-orderflow_notification}" | tr -d '[:space:]')"
+  if [[ "${ORDER_OUTBOX_PENDING}" == "0" &&
+        "${INVENTORY_OUTBOX_PENDING}" == "0" &&
+        "${PAYMENT_OUTBOX_PENDING}" == "0" &&
+        "${DELIVERY_OUTBOX_PENDING}" == "0" &&
+        "${NOTIFICATION_OUTBOX_PENDING}" == "0" ]]; then
     break
   fi
   if (( SECONDS >= OUTBOX_DEADLINE )); then
@@ -751,10 +1216,29 @@ TRACE_EVENT_COUNT="$(docker compose exec -T postgres sh -c \
 
 ORDER_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.order-events.v1.DLT")"
 INVENTORY_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.inventory-events.v1.DLT")"
+PAYMENT_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.payment-events.v1.DLT")"
+DELIVERY_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.delivery-events.v1.DLT")"
+NOTIFICATION_DLT_OFFSET_AFTER="$(kafka_topic_end_offset "orderflow.notification-events.v1.DLT")"
 [[ "${ORDER_DLT_OFFSET_AFTER}" == "${ORDER_DLT_OFFSET_BEFORE}" ]] ||
   fail "an unexpected order event reached DLT"
 [[ "${INVENTORY_DLT_OFFSET_AFTER}" == "${INVENTORY_DLT_OFFSET_BEFORE}" ]] ||
   fail "an unexpected inventory event reached DLT"
+[[ "${PAYMENT_DLT_OFFSET_AFTER}" == "${PAYMENT_DLT_OFFSET_BEFORE}" ]] ||
+  fail "an unexpected payment event reached DLT"
+[[ "${DELIVERY_DLT_OFFSET_AFTER}" == "${DELIVERY_DLT_OFFSET_BEFORE}" ]] ||
+  fail "an unexpected delivery event reached DLT"
+[[ "${NOTIFICATION_DLT_OFFSET_AFTER}" == "${NOTIFICATION_DLT_OFFSET_BEFORE}" ]] ||
+  fail "an unexpected notification event reached DLT"
+
+SCHEDULER_RUNS="$(docker compose exec -T postgres sh -c \
+  'psql -U "$POSTGRES_USER" -d "$1" -Atc "SELECT count(*) FROM scheduled_job_run"' \
+  sh "${INVENTORY_POSTGRES_DB:-orderflow_inventory}" | tr -d '[:space:]')"
+[[ "${SCHEDULER_RUNS}" -ge 1 ]] || fail "scheduler run history was not recorded"
+
+if [[ ",${COMPOSE_PROFILES:-}," == *",observability,"* ]]; then
+  wait_for_url "Prometheus" "http://localhost:${PROMETHEUS_PORT:-9091}/-/healthy"
+  wait_for_url "Grafana" "http://localhost:${GRAFANA_PORT:-3000}/api/health"
+fi
 
 echo "Smoke tests passed:"
 echo "  Phase 1 health, Eureka routing, metadata, and correlation checks passed."
@@ -765,3 +1249,7 @@ echo "  Product lifecycle, public cache reads, ownership, and category checks pa
 echo "  Cart snapshots, TTL-backed mutations, price validation, and security checks passed."
 echo "  Inventory adjustment, reservation, rejection, release, and ownership checks passed."
 echo "  Order creation, idempotency, cancellation, outbox, Kafka, and DLT checks passed."
+echo "  Payment creation, confirmation, signed webhooks, replay, decline, refund, compensation boundaries, and payment DLT checks passed."
+echo "  Delivery assignment, agent lifecycle, fulfillment propagation, ownership, outbox, and delivery DLT checks passed."
+echo "  Durable notifications, preferences, unread/read flows, simulator email, deduplication, outbox, and notification DLT checks passed."
+echo "  Cluster-safe scheduler history, operations ADMIN APIs, read model, reports, and Prometheus endpoint checks passed."
