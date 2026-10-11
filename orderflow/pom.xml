@@ -21,6 +21,7 @@
     <modules>
         <module>platform-contracts</module>
         <module>event-contracts</module>
+        <module>scheduler-support</module>
         <module>service-registry</module>
         <module>api-gateway</module>
         <module>auth-service</module>
@@ -28,6 +29,10 @@
         <module>cart-service</module>
         <module>inventory-service</module>
         <module>order-service</module>
+        <module>payment-service</module>
+        <module>delivery-service</module>
+        <module>notification-service</module>
+        <module>operations-service</module>
     </modules>
 
     <properties>
@@ -36,6 +41,13 @@
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.outputTimestamp>2026-01-01T00:00:00Z</project.build.outputTimestamp>
+        <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
+        <cyclonedx-maven-plugin.version>2.9.1</cyclonedx-maven-plugin.version>
+        <!-- 13.0.0 regresses anonymous NVD updates by treating the absent API
+             key as an invalid empty key. Keep the latest pre-regression release
+             so local and forked CI builds never require a committed secret. -->
+        <dependency-check-maven.version>12.2.2</dependency-check-maven.version>
         <!-- 2025.0.2.1 is not a published Spring Cloud BOM; 2025.0.2 is the
              latest compatible 2025.0.x GA artifact available from Maven Central. -->
         <spring-cloud.version>2025.0.2</spring-cloud.version>
@@ -105,12 +117,94 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-build-environment</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[21,)</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.9.0,)</version>
+                                </requireMavenVersion>
+                                <banDuplicatePomDependencyVersions/>
+                                <requireReleaseDeps>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
+                                </requireReleaseDeps>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <version>${cyclonedx-maven-plugin.version}</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>aggregate-sbom</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                        <configuration>
+                            <schemaVersion>1.6</schemaVersion>
+                            <outputFormat>json</outputFormat>
+                            <outputName>orderflow-sbom</outputName>
+                            <outputDirectory>${project.build.directory}/sbom</outputDirectory>
+                            <includeTestScope>false</includeTestScope>
+                            <outputReactorProjects>false</outputReactorProjects>
+                            <skipAttach>true</skipAttach>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>security-scan</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>${dependency-check-maven.version}</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>aggregate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <formats>
+                                <format>HTML</format>
+                                <format>JSON</format>
+                            </formats>
+                            <failBuildOnCVSS>9</failBuildOnCVSS>
+                            <outputDirectory>${project.build.directory}/dependency-check</outputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
