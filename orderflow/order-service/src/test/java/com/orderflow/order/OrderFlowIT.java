@@ -72,6 +72,7 @@ import org.testcontainers.utility.DockerImageName;
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class OrderFlowIT {
+    private static final String SHIPPING = ",\"shippingAddress\":{\"recipientName\":\"Test Recipient\",\"addressLine1\":\"10 Example Street\",\"city\":\"Kochi\",\"stateOrRegion\":\"Kerala\",\"postalCode\":\"682001\",\"countryCode\":\"IN\"}";
 
     private static final String INVENTORY_TOPIC = "orderflow.inventory-events.v1";
     private static final String INVENTORY_DLT = "orderflow.inventory-events.v1.DLT";
@@ -149,7 +150,7 @@ class OrderFlowIT {
             throws Exception {
         assertThat(jdbc.queryForObject(
                         "select count(*) from flyway_schema_history where success", Integer.class))
-                .isEqualTo(1);
+                .isEqualTo(4);
         assertThat(jdbc.queryForObject(
                         """
                         select count(*) from information_schema.tables
@@ -166,7 +167,7 @@ class OrderFlowIT {
                         .header("Idempotency-Key", "create-order-it")
                         .header("X-Correlation-ID", "order-workflow-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":4}"))
+                        .content("{\"expectedCartVersion\":4" + SHIPPING + "}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.customerId").value(CUSTOMER_ID.toString()))
                 .andExpect(jsonPath("$.status").value("INVENTORY_PENDING"))
@@ -217,7 +218,7 @@ class OrderFlowIT {
                         .with(customerToken())
                         .header("Idempotency-Key", "create-order-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":4}"))
+                        .content("{\"expectedCartVersion\":4" + SHIPPING + "}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id").value(orderId.toString()));
         assertThat(CART.callCount()).isEqualTo(2);
@@ -225,7 +226,7 @@ class OrderFlowIT {
                         .with(customerToken())
                         .header("Idempotency-Key", "create-order-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":5}"))
+                        .content("{\"expectedCartVersion\":5" + SHIPPING + "}"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("ORDER_IDEMPOTENCY_CONFLICT"));
 
@@ -366,13 +367,45 @@ class OrderFlowIT {
     }
 
     @Test
+    void staleOutboxClaimIsRecoveredAfterPublisherCrashWindow() throws Exception {
+        UUID orderId = UUID.fromString(json(create("outbox-recovery-it", 4))
+                .path("id")
+                .asText());
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() ->
+                assertThat(jdbc.queryForObject(
+                        "select status from outbox_event where aggregate_id = ?",
+                        String.class,
+                        orderId)).isEqualTo("PUBLISHED"));
+
+        jdbc.update(
+                """
+                update outbox_event
+                   set status='IN_PROGRESS', published_at=null,
+                       locked_at=now() - interval '10 minutes',
+                       locked_by='stopped-publisher-instance'
+                 where aggregate_id=? and event_type='ORDER_CREATED'
+                """,
+                orderId);
+
+        await().atMost(Duration.ofSeconds(20)).untilAsserted(() -> {
+            assertThat(jdbc.queryForObject(
+                    "select status from outbox_event where aggregate_id = ?",
+                    String.class,
+                    orderId)).isEqualTo("PUBLISHED");
+            assertThat(count(
+                    "select count(*) from outbox_event where aggregate_id = ? and event_type='ORDER_CREATED'",
+                    orderId)).isEqualTo(1);
+        });
+    }
+
+    @Test
     void rejectedCartsAndDownstreamFailuresDoNotCreateOrders() throws Exception {
         CART.empty();
         mockMvc.perform(post("/api/orders")
                         .with(customerToken())
                         .header("Idempotency-Key", "empty-cart-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":4}"))
+                        .content("{\"expectedCartVersion\":4" + SHIPPING + "}"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("ORDER_CART_EMPTY"));
         assertThat(count("select count(*) from customer_order")).isZero();
@@ -382,7 +415,7 @@ class OrderFlowIT {
                         .with(customerToken())
                         .header("Idempotency-Key", "version-conflict-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":3}"))
+                        .content("{\"expectedCartVersion\":3" + SHIPPING + "}"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("ORDER_CART_VERSION_CONFLICT"));
 
@@ -391,7 +424,7 @@ class OrderFlowIT {
                         .with(customerToken())
                         .header("Idempotency-Key", "invalid-cart-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":4}"))
+                        .content("{\"expectedCartVersion\":4" + SHIPPING + "}"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("ORDER_CART_INVALID"));
 
@@ -400,7 +433,7 @@ class OrderFlowIT {
                         .with(customerToken())
                         .header("Idempotency-Key", "cart-unavailable-it")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":4}"))
+                        .content("{\"expectedCartVersion\":4" + SHIPPING + "}"))
                 .andExpect(status().isServiceUnavailable())
                 .andExpect(jsonPath("$.code").value("CART_SERVICE_UNAVAILABLE"));
         assertThat(count("select count(*) from customer_order")).isZero();
@@ -486,7 +519,7 @@ class OrderFlowIT {
                         .with(customerToken())
                         .header("Idempotency-Key", key)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"expectedCartVersion\":" + version + "}"))
+                        .content("{\"expectedCartVersion\":" + version + SHIPPING + "}"))
                 .andReturn();
     }
 
