@@ -1,7 +1,7 @@
 name: orderflow
 
 x-java-environment: &java-environment
-  JAVA_TOOL_OPTIONS: ${ORDERFLOW_JAVA_TOOL_OPTIONS:--Xms32m -Xmx128m -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError}
+  JAVA_TOOL_OPTIONS: ${ORDERFLOW_JAVA_TOOL_OPTIONS:--Xms32m -Xmx128m -XX:+UseSerialGC -XX:ActiveProcessorCount=2 -XX:TieredStopAtLevel=1 -XX:+ExitOnOutOfMemoryError}
 
 services:
   postgres:

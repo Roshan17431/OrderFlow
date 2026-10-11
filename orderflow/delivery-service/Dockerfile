@@ -1,7 +1,7 @@
 FROM maven:3.9.11-eclipse-temurin-21 AS build
 WORKDIR /workspace
 COPY . .
-RUN unset MAVEN_CONFIG && ./mvnw -B -ntp -pl delivery-service -am clean package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 unset MAVEN_CONFIG && ./mvnw -B -ntp -pl delivery-service -am clean package -DskipTests -Dcyclonedx.skip=true
 FROM eclipse-temurin:21-jre-alpine
 RUN apk add --no-cache curl && addgroup -S orderflow && adduser -S -G orderflow -h /app orderflow
 WORKDIR /app

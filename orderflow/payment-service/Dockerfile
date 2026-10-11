@@ -1,8 +1,8 @@
 FROM maven:3.9.11-eclipse-temurin-21 AS build
 WORKDIR /workspace
 COPY . .
-RUN unset MAVEN_CONFIG \
-    && ./mvnw -B -ntp -pl payment-service -am clean package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 unset MAVEN_CONFIG \
+    && ./mvnw -B -ntp -pl payment-service -am clean package -DskipTests -Dcyclonedx.skip=true
 
 FROM eclipse-temurin:21-jre-alpine
 RUN apk add --no-cache curl \

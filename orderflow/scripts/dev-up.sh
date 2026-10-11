@@ -6,14 +6,19 @@ REPOSITORY_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
 TIMEOUT_SECONDS="${STARTUP_TIMEOUT_SECONDS:-300}"
 
 cd "${REPOSITORY_ROOT}"
-docker compose up -d --build
+# Keep build JVMs from competing with application startup on smaller Docker hosts.
+for service in service-registry api-gateway auth-service product-service cart-service \
+    inventory-service order-service payment-service delivery-service notification-service operations-service; do
+  docker compose build "${service}"
+done
+docker compose up -d
 
 wait_for_url() {
   local name="$1"
   local url="$2"
   local deadline=$((SECONDS + TIMEOUT_SECONDS))
   echo "Waiting for ${name}: ${url}"
-  until curl --fail --silent --show-error "${url}" >/dev/null; do
+  until curl --connect-timeout 3 --max-time 10 --fail --silent --show-error "${url}" >/dev/null; do
     if (( SECONDS >= deadline )); then
       echo "${name} did not become healthy within ${TIMEOUT_SECONDS}s" >&2
       docker compose ps >&2
@@ -33,6 +38,7 @@ wait_for_url "order service" "http://localhost:${ORDER_SERVICE_PORT:-8085}/actua
 wait_for_url "payment service" "http://localhost:${PAYMENT_SERVICE_PORT:-8086}/actuator/health/readiness"
 wait_for_url "delivery service" "http://localhost:${DELIVERY_SERVICE_PORT:-8087}/actuator/health/readiness"
 wait_for_url "notification service" "http://localhost:${NOTIFICATION_SERVICE_PORT:-8088}/actuator/health/readiness"
+wait_for_url "operations service" "http://localhost:${OPERATIONS_SERVICE_PORT:-8089}/actuator/health/readiness"
 wait_for_url "API gateway" "http://localhost:${API_GATEWAY_PORT:-8080}/actuator/health/readiness"
 wait_for_url "gateway discovery route" "http://localhost:${API_GATEWAY_PORT:-8080}/api/platform/ping"
 wait_for_url "gateway product route" "http://localhost:${API_GATEWAY_PORT:-8080}/api/categories"
@@ -47,4 +53,5 @@ echo "  Order service:    http://localhost:${ORDER_SERVICE_PORT:-8085}"
 echo "  Payment service:  http://localhost:${PAYMENT_SERVICE_PORT:-8086}"
 echo "  Delivery service: http://localhost:${DELIVERY_SERVICE_PORT:-8087}"
 echo "  Notification svc: http://localhost:${NOTIFICATION_SERVICE_PORT:-8088}"
+echo "  Operations svc:   http://localhost:${OPERATIONS_SERVICE_PORT:-8089}"
 echo "  Eureka dashboard: http://localhost:${EUREKA_PORT:-8761}"
