@@ -1,0 +1,1 @@
+package com.orderflow.notification.correlation;public final class NotificationRequestAttributes{public static final String CORRELATION_ID=NotificationRequestAttributes.class.getName()+".correlationId";private NotificationRequestAttributes(){}}

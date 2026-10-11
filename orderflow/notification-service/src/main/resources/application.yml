@@ -1,0 +1,113 @@
+spring:
+  application:
+    name: notification-service
+  datasource:
+    url: jdbc:postgresql://${NOTIFICATION_POSTGRES_HOST:localhost}:${NOTIFICATION_POSTGRES_PORT:5432}/${NOTIFICATION_POSTGRES_DB:orderflow_notification}
+    username: ${NOTIFICATION_POSTGRES_USER:orderflow_notification}
+    password: ${NOTIFICATION_POSTGRES_PASSWORD:orderflow_notification_local_password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+server:
+  port: ${NOTIFICATION_SERVICE_PORT:8088}
+  shutdown: graceful
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db,redis,kafka
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+  build:
+    time: '@maven.build.timestamp@'
+  java:
+    version: '@java.version@'
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      add:
+        service: ${spring.application.name}
+app:
+  notification:
+    email-provider: ${APP_NOTIFICATION_EMAIL_PROVIDER:simulator}
+    sms-provider: ${APP_NOTIFICATION_SMS_PROVIDER:simulator}
+    max-page-size: ${APP_NOTIFICATION_MAX_PAGE_SIZE:100}
+    sse-timeout: ${APP_NOTIFICATION_SSE_TIMEOUT:30m}
+    async:
+      core-pool-size: ${APP_NOTIFICATION_ASYNC_CORE_POOL_SIZE:2}
+      max-pool-size: ${APP_NOTIFICATION_ASYNC_MAX_POOL_SIZE:8}
+      queue-capacity: ${APP_NOTIFICATION_ASYNC_QUEUE_CAPACITY:200}
+    reconciliation:
+      enabled: ${APP_NOTIFICATION_RECONCILIATION_ENABLED:true}
+      delay: ${APP_NOTIFICATION_RECONCILIATION_DELAY:30s}
+      batch-size: ${APP_NOTIFICATION_RECONCILIATION_BATCH_SIZE:50}
+      stale-threshold: ${APP_NOTIFICATION_RECONCILIATION_STALE_THRESHOLD:5m}
+      max-attempts: ${APP_NOTIFICATION_RECONCILIATION_MAX_ATTEMPTS:5}
+      lock-duration: ${APP_NOTIFICATION_RECONCILIATION_LOCK_DURATION:5m}
+  kafka:
+    topics:
+      order-events: ${APP_ORDER_EVENTS_TOPIC:orderflow.order-events.v1}
+      payment-events: ${APP_PAYMENT_EVENTS_TOPIC:orderflow.payment-events.v1}
+      delivery-events: ${APP_DELIVERY_EVENTS_TOPIC:orderflow.delivery-events.v1}
+      notification-events: ${APP_NOTIFICATION_EVENTS_TOPIC:orderflow.notification-events.v1}
+      notification-events-dlt: ${APP_NOTIFICATION_EVENTS_DLT:orderflow.notification-events.v1.DLT}
+  outbox:
+    poll-delay: ${APP_OUTBOX_POLL_DELAY:500ms}
+    batch-size: ${APP_OUTBOX_BATCH_SIZE:50}
+    max-attempts: ${APP_OUTBOX_MAX_ATTEMPTS:10}
+    lock-timeout: ${APP_OUTBOX_LOCK_TIMEOUT:2m}
+    retry-base-delay: ${APP_OUTBOX_RETRY_BASE_DELAY:2s}
+    send-timeout: ${APP_OUTBOX_SEND_TIMEOUT:10s}
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
+  scheduler:
+    instance-id: ${APP_SCHEDULER_INSTANCE_ID:${HOSTNAME:notification-local}}
