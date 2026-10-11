@@ -44,17 +44,25 @@ else
 fi
 
 prometheus_url="${PROMETHEUS_URL:-http://localhost:${PROMETHEUS_PORT:-9091}}"
-if curl --fail --silent --max-time 2 "${prometheus_url}/-/healthy" >/dev/null 2>&1; then
-  targets="$(curl --fail --silent "${prometheus_url}/api/v1/targets")"
+if curl --connect-timeout 3 --max-time 10 --fail --silent --max-time 2 "${prometheus_url}/-/healthy" >/dev/null 2>&1; then
+  targets="$(curl --connect-timeout 3 --max-time 10 --fail --silent "${prometheus_url}/api/v1/targets")"
+  jq -e '.status == "success" and (.data.activeTargets | length >= 11)' <<<"${targets}" >/dev/null || {
+    echo 'Monitoring validation: FAIL (expected service targets are missing)'
+    exit 1
+  }
   down="$(jq '[.data.activeTargets[] | select(.health != "up")] | length' <<<"${targets}")"
   [[ "${down}" == "0" ]] || {
     echo "Monitoring validation: FAIL (${down} Prometheus target(s) are down)"
     exit 1
   }
-  rules="$(curl --fail --silent "${prometheus_url}/api/v1/rules")"
-  jq -e '.status == "success" and all(.data.groups[]?.rules[]?; .health == "ok")' \
+  rules="$(curl --connect-timeout 3 --max-time 10 --fail --silent "${prometheus_url}/api/v1/rules")"
+  jq -e '.status == "success" and (.data.groups | length > 0) and all(.data.groups[]?.rules[]?; .health == "ok")' \
     <<<"${rules}" >/dev/null
   echo 'Monitoring validation: PASS (static assets, rules, and live targets)'
 else
-  echo 'Monitoring validation: PASS (static assets and Prometheus rule syntax; live endpoint unavailable)'
+  if [[ "${REQUIRE_LIVE_MONITORING:-false}" == "true" ]]; then
+    echo 'Monitoring validation: FAIL (required live endpoint unavailable)'
+    exit 1
+  fi
+  echo 'Monitoring validation: PASS (static assets and rule syntax); live targets: NOT RUN'
 fi

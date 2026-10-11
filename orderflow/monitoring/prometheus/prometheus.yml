@@ -8,6 +8,7 @@ scrape_configs:
     metrics_path: /actuator/prometheus
     static_configs:
       - targets:
+          - service-registry:8761
           - api-gateway:8080
           - auth-service:8081
           - product-service:8082

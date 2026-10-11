@@ -112,6 +112,10 @@ eureka:
     lease-expiration-duration-in-seconds: 30
 
 management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
   endpoints:
     web:
       exposure:
