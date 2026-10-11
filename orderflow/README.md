@@ -1,8 +1,13 @@
 # OrderFlow
 
-OrderFlow is a Java 21 and Spring Boot microservice platform. Phase 4 adds
-authoritative inventory, durable orders, and reliable Kafka workflows to the
-Phase 1 platform, Phase 2 authentication, and Phase 3 product/cart foundation.
+Phase 7 adds PostgreSQL-leased, cluster-safe reconciliation jobs, an event-driven
+operations service on port 8089, daily UTC reporting, conservative retention,
+and an optional Prometheus/Grafana profile. See [Phase 7 operations](docs/phase-7-operations.md).
+
+OrderFlow is a Java 21 and Spring Boot microservice platform. Phase 6 adds
+delivery-agent workflows, fulfillment tracking, durable in-app notifications,
+simulated email/SMS dispatch, and authenticated SSE to the existing payment,
+authentication, catalog, cart, inventory, and order workflows.
 
 ## Architecture
 
@@ -13,10 +18,16 @@ flowchart LR
     Gateway -->|"authenticated cart API"| Cart["Cart service :8083"]
     Gateway -->|"vendor/admin inventory API"| Inventory["Inventory service :8084"]
     Gateway -->|"customer/admin order API"| Order["Order service :8085"]
+    Gateway -->|"payment, refund, signed webhook APIs"| Payment["Payment service :8086"]
+    Gateway -->|"customer, agent, admin delivery APIs"| Delivery["Delivery service :8087"]
+    Gateway -->|"notification and SSE APIs"| Notification["Notification service :8088"]
     Gateway --> Auth["Auth service :8081"]
     Product --> ProductDB[("orderflow_product")]
     Inventory --> InventoryDB[("orderflow_inventory")]
     Order --> OrderDB[("orderflow_order")]
+    Payment --> PaymentDB[("orderflow_payment")]
+    Delivery --> DeliveryDB[("orderflow_delivery")]
+    Notification --> NotificationDB[("orderflow_notification")]
     Product --> Redis[("Redis :6379")]
     Cart --> Redis
     Inventory --> Redis
@@ -28,6 +39,13 @@ flowchart LR
     Kafka --> Inventory
     Inventory -->|"inventory events + orderId key"| Kafka
     Kafka --> Order
+    Order -->|"payment requests + orderId key"| Kafka
+    Kafka --> Payment
+    Payment -->|"payment results + orderId key"| Kafka
+    Order -->|"delivery request + orderId key"| Kafka
+    Kafka --> Delivery
+    Delivery -->|"delivery lifecycle + orderId key"| Kafka
+    Kafka --> Notification
     Auth --> AuthDB[("orderflow_auth")]
     Auth --> Redis
     Auth -. "optional audit transport" .-> Kafka
@@ -37,6 +55,9 @@ flowchart LR
     Cart --> Eureka
     Inventory --> Eureka
     Order --> Eureka
+    Payment --> Eureka
+    Delivery --> Eureka
+    Notification --> Eureka
 ```
 
 Every protected service independently validates RS256 access tokens, issuer,
@@ -57,6 +78,9 @@ are stripped by the gateway and never determine product or cart ownership.
 | `cart-service` | 8083 | JWT-owned Redis carts, Lua mutations, product snapshot validation |
 | `inventory-service` | 8084 | Stock adjustments, reservations, releases, expiration |
 | `order-service` | 8085 | Durable orders, idempotency, lifecycle, Kafka coordination |
+| `payment-service` | 8086 | Provider-neutral payments, signed webhooks, refunds, compensation |
+| `delivery-service` | 8087 | Delivery lifecycle, agent availability/assignment, status history |
+| `notification-service` | 8088 | In-app notifications, preferences, simulated email/SMS, SSE |
 
 PostgreSQL is exposed on 5432, Redis on 6379, and Kafka's host listener on 9092.
 
@@ -180,14 +204,61 @@ stateDiagram-v2
 ```
 
 `PAYMENT_PENDING` means only that inventory is reserved; it is not paid or
-completed. Phase 4 deliberately leaves the cart unchanged.
+completed. Phase 5 moves it to `PAID`, `PAYMENT_FAILED`, `CANCELLED`,
+`PARTIALLY_REFUNDED`, or `REFUNDED` only from durable payment events.
+
+## Payments, webhooks, and refunds
+
+Order-service writes `PAYMENT_REQUESTED` to its outbox after inventory is
+reserved. Payment-service creates one payment per order in its own PostgreSQL
+database and accepts only opaque simulator tokens (`tok_success`,
+`tok_declined`, `tok_requires_action`, `tok_timeout`, and
+`tok_temporary_failure`). It rejects raw card-shaped fields and never persists
+or logs payment-method tokens. Amount, currency, order, and customer identity
+always come from the signed-in actor and the versioned order event.
+
+Confirmation and cancellation require `Idempotency-Key`. Refund creation is
+`ADMIN`-only and separately idempotent. The simulator returns asynchronous
+processing for success and refund operations; a signed webhook confirms the
+final result. The exact public webhook path verifies HMAC-SHA256 over the
+timestamp plus exact raw bytes, enforces a five-minute default tolerance, uses
+constant-time comparison, hashes rather than stores payloads, and rejects an
+event ID reused with different content.
+
+```mermaid
+sequenceDiagram
+    participant O as Order service
+    participant K as Kafka
+    participant P as Payment service
+    participant S as Provider simulator
+    O->>K: PAYMENT_REQUESTED (outbox, orderId key)
+    K->>P: create one PENDING payment
+    P->>S: confirm with opaque token + idempotency reference
+    S-->>P: PROCESSING
+    S->>P: signed payment.succeeded webhook
+    P->>K: PAYMENT_SUCCEEDED (outbox)
+    K->>O: transition PAYMENT_PENDING to PAID
+```
+
+Payment failure emits `PAYMENT_FAILED`; order-service then emits
+`ORDER_CANCEL_REQUESTED` so inventory is released while the order remains
+`PAYMENT_FAILED`. A cancellation that races payment creation leaves a durable
+tombstone. A late success after cancellation or inventory expiry starts a
+full `SYSTEM_COMPENSATION` refund. Refund events never restock inventory;
+returns and restocking belong to a later workflow.
 
 Order-service publishes `ORDER_CREATED` and `ORDER_CANCEL_REQUESTED` to
-`orderflow.order-events.v1`. Inventory-service publishes
+`orderflow.order-events.v1`, together with `PAYMENT_REQUESTED` and
+`PAYMENT_CANCEL_REQUESTED`. Inventory-service publishes
 `INVENTORY_RESERVED`, `INVENTORY_RESERVATION_FAILED`, and
 `INVENTORY_RELEASED` to `orderflow.inventory-events.v1`. Every message uses
 `orderId` as its Kafka key. Derived events preserve the correlation ID and use
 the triggering event ID as `causationId`.
+
+Payment-service publishes `PAYMENT_SUCCEEDED`, `PAYMENT_FAILED`,
+`PAYMENT_CANCELLED`, `PAYMENT_REFUNDED`, and `PAYMENT_REFUND_FAILED` to
+`orderflow.payment-events.v1`. Its payment database has its own outbox and
+processed-event ledger; order-service has a separate processed-event ledger.
 
 Both services use PostgreSQL transactional outboxes, bounded
 `FOR UPDATE SKIP LOCKED` claims, exponential retry, and inspectable failed
@@ -201,6 +272,35 @@ Service database ownership is strict: auth, product, inventory, and order each
 have separate logical databases and credentials. Local Compose hosts those
 databases on one PostgreSQL server, while production may isolate servers
 without changing service code. No service reads another service's tables.
+
+## Delivery and notifications
+
+Order creation snapshots the recipient and postal address; downstream services
+never query another service's tables for it. Once payment succeeds, financial
+status remains `PAID` while fulfillment independently moves from
+`DELIVERY_PENDING` through `DELIVERY_ASSIGNED`, `PICKED_UP`,
+`OUT_FOR_DELIVERY`, and `DELIVERED`. A full refund may request cancellation only
+while fulfillment is still safely cancellable.
+
+Delivery agents move between `OFFLINE`, `AVAILABLE`, and service-controlled
+`BUSY`. Assignment locks the oldest pending delivery and least recently
+assigned available agent with PostgreSQL `FOR UPDATE SKIP LOCKED`. Making an
+agent available immediately handles pending work; completion releases the agent.
+Every transition is historized and published by a transactional outbox to
+`orderflow.delivery-events.v1`, with bounded retry and a matching DLT.
+
+Notification-service consumes payment and delivery events exactly once at the
+business level using a processed-event ledger and deduplication keys. In-app
+records are durable even if optional email/SMS dispatch fails. Provider-neutral
+simulators exercise successful, temporary, and permanent delivery outcomes;
+they send nothing externally. Authenticated SSE uses a bounded Spring Async
+executor and isolates failed/dead connections from the committed notification.
+See [Phase 6](docs/phase-6-delivery-notifications.md),
+[delivery lifecycle](docs/delivery-lifecycle.md),
+[agent assignment](docs/delivery-agent-assignment.md),
+[notification architecture](docs/notification-architecture.md),
+[notification reliability](docs/notification-reliability.md), and
+[real-time notifications](docs/realtime-notifications.md).
 
 ## Build, test, and run
 
@@ -224,6 +324,7 @@ Focused verification:
 ./mvnw -B -pl api-gateway -am test
 ./mvnw -B -pl inventory-service -am verify
 ./mvnw -B -pl order-service -am verify
+./mvnw -B -pl payment-service -am verify
 ```
 
 The smoke test preserves Phase 1–3 checks, then creates stock and two orders,
@@ -252,15 +353,17 @@ Important Phase 4 variables in addition to the Phase 1–3 settings:
 | `APP_CATALOG_PRODUCT_CACHE_TTL`, `APP_CATALOG_SEARCH_CACHE_TTL`, `APP_CATALOG_CATEGORY_CACHE_TTL` | Cache TTLs |
 | `APP_CART_TTL`, `APP_CART_MAX_DISTINCT_ITEMS`, `APP_CART_MAX_QUANTITY_PER_ITEM` | Cart expiration and limits |
 | `APP_PRODUCT_CLIENT_CONNECT_TIMEOUT`, `APP_PRODUCT_CLIENT_READ_TIMEOUT` | Cart downstream timeouts |
-| `INVENTORY_POSTGRES_*`, `ORDER_POSTGRES_*` | Service-owned database locations and credentials |
+| `INVENTORY_POSTGRES_*`, `ORDER_POSTGRES_*`, `PAYMENT_POSTGRES_*` | Service-owned database locations and credentials |
 | `KAFKA_BOOTSTRAP_SERVERS` | Kafka brokers used by consumers and outbox publishers |
-| `APP_ORDER_EVENTS_TOPIC`, `APP_INVENTORY_EVENTS_TOPIC` | Workflow topics |
-| `APP_ORDER_EVENTS_DLT`, `APP_INVENTORY_EVENTS_DLT` | Dead-letter topics |
+| `APP_ORDER_EVENTS_TOPIC`, `APP_INVENTORY_EVENTS_TOPIC`, `APP_PAYMENT_EVENTS_TOPIC` | Workflow topics |
+| `APP_ORDER_EVENTS_DLT`, `APP_INVENTORY_EVENTS_DLT`, `APP_PAYMENT_EVENTS_DLT` | Dead-letter topics |
 | `APP_INVENTORY_RESERVATION_TTL` | Reservation lifetime |
 | `APP_INVENTORY_EXPIRATION_POLL_DELAY`, `APP_INVENTORY_EXPIRATION_BATCH_SIZE` | Bounded expiration polling |
 | `APP_CART_CLIENT_CONNECT_TIMEOUT`, `APP_CART_CLIENT_READ_TIMEOUT` | Order-to-cart timeouts |
 | `APP_OUTBOX_POLL_DELAY`, `APP_OUTBOX_BATCH_SIZE`, `APP_OUTBOX_MAX_ATTEMPTS` | Outbox polling and retry bounds |
 | `APP_OUTBOX_LOCK_TIMEOUT`, `APP_OUTBOX_RETRY_BASE_DELAY` | Stale-claim recovery and backoff |
+| `APP_PAYMENT_PROVIDER`, `APP_PAYMENT_SIMULATOR_ENABLED` | Explicit local provider selection |
+| `APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET`, `APP_PAYMENT_WEBHOOK_TOLERANCE` | Local-only signing secret and replay window |
 
 All handled failures use the shared `ApiError` and preserve
 `X-Correlation-ID`. Health, liveness, readiness, info, metrics, and Prometheus
@@ -268,6 +371,12 @@ are exposed; secret-bearing actuator endpoints are not.
 
 Detailed design:
 
+- [Phase 5 payments](docs/phase-5-payments.md)
+- [Payment lifecycle](docs/payment-lifecycle.md)
+- [Provider abstraction](docs/payment-provider-abstraction.md)
+- [Webhook security](docs/payment-webhook-security.md)
+- [Payment idempotency](docs/payment-idempotency.md)
+- [Refunds and compensation](docs/refunds-and-compensation.md)
 - [Phase 4 orders and inventory](docs/phase-4-orders-inventory.md)
 - [Inventory consistency](docs/inventory-consistency.md)
 - [Order lifecycle](docs/order-lifecycle.md)
@@ -282,10 +391,21 @@ Detailed design:
 - [JWT and key management](docs/jwt-and-key-management.md)
 - [API error contract](docs/api-error-contract.md)
 
-## Phase 5 preview
+## Phase 8 production-readiness resources
 
-Phase 5 can consume the existing `PAYMENT_PENDING` state and versioned event
-contracts to add payment authorization and completion without restructuring
-orders or inventory. Payment failure, refunds, provider integration, and safe
-post-payment cart clearing are intentionally deferred, as are delivery,
-notifications, coupons, reviews, recommendations, and product media.
+- [Quality gate](docs/phase-8-quality-gate.md)
+- [Full-system smoke test](docs/full-system-smoke-test.md)
+- [Production-like Compose](docs/production-like-compose.md)
+- [Resilience and monotonic state policy](docs/resilience-and-state-policy.md)
+- [Event versioning](docs/event-versioning-policy.md)
+- [API versioning](docs/api-versioning-policy.md)
+- [Observability](docs/observability.md)
+- [Database backup and restore](docs/database-backup-restore.md)
+- [Kafka recovery](docs/kafka-recovery.md)
+- [Disaster recovery](docs/disaster-recovery.md)
+- [Operational runbooks](docs/runbooks/)
+
+Delivery, notifications, operations reporting, reconciliation, scheduling,
+Prometheus, and Grafana are implemented. Returns/restocking, coupons, reviews,
+recommendations, product media, and any real payment-provider adapter remain
+out of scope. All simulators are explicitly local/test-only.
