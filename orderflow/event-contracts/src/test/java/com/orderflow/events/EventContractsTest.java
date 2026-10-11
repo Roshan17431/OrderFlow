@@ -11,6 +11,20 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class EventContractsTest {
+    @Test
+    void deliveryContractsValidateAddressAndAggregate() {
+        UUID orderId = UUID.randomUUID();
+        EventMetadata metadata = new EventMetadata(UUID.randomUUID(),
+                EventType.DELIVERY_REQUESTED, 1, "ORDER", orderId, Instant.now(),
+                "phase6-contract", null, "order-service");
+        DeliveryRequestedEvent event = new DeliveryRequestedEvent(metadata, orderId,
+                UUID.randomUUID(), new ShippingAddressSnapshot("Recipient", "10 Street", null,
+                "Kochi", "Kerala", "682001", "IN", null), Instant.now());
+        assertThat(event.metadata().eventVersion()).isEqualTo(1);
+        assertThatThrownBy(() -> new ShippingAddressSnapshot("Recipient", "Bad\nAddress", null,
+                "Kochi", "Kerala", "682001", "IN", null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 
     @Test
     void recordsValidateVersionsMoneyAndDefensivelyCopyLists() {
@@ -52,6 +66,46 @@ class EventContractsTest {
                         "USD",
                         new BigDecimal("20.00"),
                         event.items()))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void paymentEventsUseOrderAggregateAndValidateMoneyDeadlinesAndRefundTotals() {
+        UUID orderId = UUID.randomUUID();
+        UUID customerId = UUID.randomUUID();
+        Instant expiry = Instant.now().plusSeconds(900);
+        PaymentRequestedEvent request = new PaymentRequestedEvent(
+                metadata(orderId, EventType.PAYMENT_REQUESTED, 1),
+                orderId,
+                customerId,
+                new BigDecimal("149.97"),
+                "USD",
+                expiry.minusSeconds(60),
+                UUID.randomUUID(),
+                expiry);
+        assertThat(request.amount()).isEqualByComparingTo("149.97");
+        assertThatThrownBy(() -> new PaymentRequestedEvent(
+                        metadata(orderId, EventType.PAYMENT_REQUESTED, 1),
+                        orderId, customerId, BigDecimal.ZERO, "USD",
+                        expiry.minusSeconds(60), UUID.randomUUID(), expiry))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new PaymentRequestedEvent(
+                        metadata(orderId, EventType.PAYMENT_REQUESTED, 1),
+                        orderId, customerId, BigDecimal.ONE, "USD",
+                        expiry.plusSeconds(1), UUID.randomUUID(), expiry))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        PaymentRefundedEvent full = new PaymentRefundedEvent(
+                metadata(orderId, EventType.PAYMENT_REFUNDED, 1),
+                UUID.randomUUID(), UUID.randomUUID(), orderId, customerId,
+                new BigDecimal("149.97"), new BigDecimal("149.97"),
+                new BigDecimal("149.97"), "USD", true, Instant.now());
+        assertThat(full.fullRefund()).isTrue();
+        assertThatThrownBy(() -> new PaymentRefundedEvent(
+                        metadata(orderId, EventType.PAYMENT_REFUNDED, 1),
+                        UUID.randomUUID(), UUID.randomUUID(), orderId, customerId,
+                        BigDecimal.TEN, BigDecimal.TEN,
+                        new BigDecimal("149.97"), "USD", true, Instant.now()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
