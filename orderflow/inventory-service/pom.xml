@@ -12,6 +12,7 @@
     <name>OrderFlow Inventory Service</name>
 
     <dependencies>
+        <dependency><groupId>com.orderflow</groupId><artifactId>scheduler-support</artifactId><version>${project.version}</version></dependency>
         <dependency>
             <groupId>com.orderflow</groupId>
             <artifactId>platform-contracts</artifactId>

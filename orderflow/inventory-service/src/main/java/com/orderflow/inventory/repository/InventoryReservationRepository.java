@@ -1,6 +1,7 @@
 package com.orderflow.inventory.repository;
 
 import com.orderflow.inventory.domain.InventoryReservation;
+import com.orderflow.inventory.domain.ReservationStatus;
 import jakarta.persistence.LockModeType;
 import java.time.Instant;
 import java.util.List;
@@ -35,4 +36,5 @@ public interface InventoryReservationRepository
             nativeQuery = true)
     List<InventoryReservation> findExpiredForUpdate(
             @Param("now") Instant now, @Param("limit") int limit);
+    long countByStatusAndExpiresAtLessThanEqual(ReservationStatus status, Instant now);
 }

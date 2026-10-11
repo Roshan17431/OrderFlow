@@ -105,7 +105,8 @@ logging:
 app:
   inventory:
     reservation-ttl: ${APP_INVENTORY_RESERVATION_TTL:15m}
-    expiration-poll-delay: ${APP_INVENTORY_EXPIRATION_POLL_DELAY:30s}
+    expiration-poll-delay: ${APP_INVENTORY_EXPIRATION_DELAY:${APP_INVENTORY_EXPIRATION_POLL_DELAY:30s}}
+    expiration-lock-duration: ${APP_INVENTORY_EXPIRATION_LOCK_DURATION:5m}
     expiration-batch-size: ${APP_INVENTORY_EXPIRATION_BATCH_SIZE:50}
     expiration-enabled: ${APP_INVENTORY_EXPIRATION_ENABLED:true}
     max-history-page-size: ${APP_INVENTORY_MAX_HISTORY_PAGE_SIZE:100}
@@ -134,3 +135,5 @@ app:
     jwt:
       issuer: ${APP_JWT_ISSUER:https://orderflow.local}
       jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
+  scheduler:
+    instance-id: ${APP_SCHEDULER_INSTANCE_ID:${HOSTNAME:inventory-local}}

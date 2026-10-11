@@ -195,6 +195,11 @@ public class InventoryWorkflowService {
 
     @Transactional
     public int expireDueReservations() {
+        return expireDueReservations("reservation-expiration-" + UUID.randomUUID());
+    }
+
+    @Transactional
+    public int expireDueReservations(String correlationId) {
         if (!properties.expirationEnabled()) {
             return 0;
         }
@@ -211,7 +216,7 @@ public class InventoryWorkflowService {
                     "ORDER",
                     reservation.getOrderId(),
                     now,
-                    "reservation-expiration-" + reservation.getId(),
+                    correlationId,
                     null,
                     "inventory-service");
             InventoryReleasedEvent released = new InventoryReleasedEvent(

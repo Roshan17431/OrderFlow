@@ -32,6 +32,9 @@ public class OrderEventListener {
                     workflows.reserve(objectMapper.readValue(payload, OrderCreatedEvent.class));
             case ORDER_CANCEL_REQUESTED -> workflows.release(
                     objectMapper.readValue(payload, OrderCancelRequestedEvent.class));
+            case PAYMENT_REQUESTED, PAYMENT_CANCEL_REQUESTED -> {
+                // These order-topic events belong to the payment consumer group.
+            }
             default -> throw new IllegalArgumentException("Unsupported order event type");
         }
     }

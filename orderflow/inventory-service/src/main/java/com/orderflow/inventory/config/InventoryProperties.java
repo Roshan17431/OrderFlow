@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 public record InventoryProperties(
         @NotNull Duration reservationTtl,
         @NotNull Duration expirationPollDelay,
+        @NotNull Duration expirationLockDuration,
         @Min(1) int expirationBatchSize,
         boolean expirationEnabled,
         @Min(1) int maxHistoryPageSize) {}
