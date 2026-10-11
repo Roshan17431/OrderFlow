@@ -1,0 +1,1 @@
+package com.orderflow.delivery.dto;import com.orderflow.delivery.domain.DeliveryStatus;import java.time.Instant;import java.util.UUID;public record HistoryResponse(DeliveryStatus previousStatus,DeliveryStatus newStatus,UUID actorUserId,UUID sourceEventId,String correlationId,Instant changedAt){}

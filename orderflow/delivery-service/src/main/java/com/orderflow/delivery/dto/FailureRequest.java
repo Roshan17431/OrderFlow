@@ -1,0 +1,1 @@
+package com.orderflow.delivery.dto;import jakarta.validation.constraints.NotBlank;import jakarta.validation.constraints.Pattern;public record FailureRequest(@NotBlank @Pattern(regexp="CUSTOMER_UNAVAILABLE|ADDRESS_PROBLEM|PACKAGE_DAMAGED|VEHICLE_PROBLEM|OTHER") String failureCode){}

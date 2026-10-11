@@ -1,0 +1,1 @@
+package com.orderflow.delivery.dto;import com.orderflow.delivery.domain.DeliveryAgentAvailability;import jakarta.validation.constraints.NotNull;public record AvailabilityRequest(@NotNull DeliveryAgentAvailability availability){}
