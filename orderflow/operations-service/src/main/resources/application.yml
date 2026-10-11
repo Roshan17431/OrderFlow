@@ -1,0 +1,104 @@
+spring:
+  application:
+    name: operations-service
+  datasource:
+    url: jdbc:postgresql://${OPERATIONS_POSTGRES_HOST:localhost}:${OPERATIONS_POSTGRES_PORT:5432}/${OPERATIONS_POSTGRES_DB:orderflow_operations}
+    username: ${OPERATIONS_POSTGRES_USER:orderflow_operations}
+    password: ${OPERATIONS_POSTGRES_PASSWORD:orderflow_operations_local_password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+server:
+  port: ${OPERATIONS_SERVICE_PORT:8089}
+  shutdown: graceful
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db,redis,kafka
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: ${spring.application.name}
+    version: '@project.version@'
+  build:
+    time: '@maven.build.timestamp@'
+  java:
+    version: '@java.version@'
+logging:
+  structured:
+    format:
+      console: logstash
+    json:
+      add:
+        service: ${spring.application.name}
+app:
+  operations:
+    max-page-size: ${APP_OPERATIONS_MAX_PAGE_SIZE:100}
+    reporting:
+      enabled: ${APP_OPERATIONS_DAILY_REPORT_ENABLED:true}
+      cron: ${APP_OPERATIONS_DAILY_REPORT_CRON:0 5 0 * * *}
+      zone: ${APP_OPERATIONS_DAILY_REPORT_ZONE:UTC}
+      lock-duration: ${APP_OPERATIONS_DAILY_REPORT_LOCK_DURATION:10m}
+      max-catchup-days: ${APP_OPERATIONS_REPORT_MAX_CATCHUP_DAYS:7}
+  scheduler:
+    instance-id: ${APP_SCHEDULER_INSTANCE_ID:${HOSTNAME:operations-local}}
+    retention-delay: ${APP_RETENTION_DELAY:24h}
+    retention-lock-duration: ${APP_RETENTION_LOCK_DURATION:10m}
+    processed-event-retention: ${APP_RETENTION_PROCESSED_EVENT:90d}
+    job-history-retention: ${APP_RETENTION_JOB_HISTORY:30d}
+    retention-batch-size: ${APP_RETENTION_BATCH_SIZE:1000}
+  kafka:
+    topics:
+      order-events: ${APP_ORDER_EVENTS_TOPIC:orderflow.order-events.v1}
+      inventory-events: ${APP_INVENTORY_EVENTS_TOPIC:orderflow.inventory-events.v1}
+      payment-events: ${APP_PAYMENT_EVENTS_TOPIC:orderflow.payment-events.v1}
+      delivery-events: ${APP_DELIVERY_EVENTS_TOPIC:orderflow.delivery-events.v1}
+      notification-events: ${APP_NOTIFICATION_EVENTS_TOPIC:orderflow.notification-events.v1}
+      operations-dlt: ${APP_OPERATIONS_EVENTS_DLT:orderflow.operations-events.v1.DLT}
+  security:
+    jwt:
+      issuer: ${APP_JWT_ISSUER:https://orderflow.local}
+      jwk-set-uri: ${APP_AUTH_JWK_SET_URI:http://localhost:8081/api/auth/.well-known/jwks.json}
