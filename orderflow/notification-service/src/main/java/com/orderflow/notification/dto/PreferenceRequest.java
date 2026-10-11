@@ -1,0 +1,1 @@
+package com.orderflow.notification.dto;import jakarta.validation.constraints.*;public record PreferenceRequest(boolean emailEnabled,@Size(max=254)String emailAddress,boolean smsEnabled,@Size(max=32)String phoneNumber){}

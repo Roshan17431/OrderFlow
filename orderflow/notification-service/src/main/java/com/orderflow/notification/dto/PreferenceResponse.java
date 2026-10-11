@@ -1,0 +1,1 @@
+package com.orderflow.notification.dto;import java.time.Instant;public record PreferenceResponse(boolean emailEnabled,String emailAddress,boolean smsEnabled,String phoneNumber,Instant updatedAt,long version){}
