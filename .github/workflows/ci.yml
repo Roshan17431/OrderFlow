@@ -116,3 +116,45 @@ jobs:
           tags: orderflow/${{ matrix.service }}:ci
           cache-from: type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
+
+  frontend:
+    name: Frontend quality and fixture browsers
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: orderflow/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: orderflow/frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: docker/setup-buildx-action@v3
+      - name: Build frontend standalone container
+        uses: docker/build-push-action@v6
+        with:
+          context: orderflow/frontend
+          file: orderflow/frontend/Dockerfile
+          push: false
+          tags: orderflow/frontend:ci
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+      - name: Upload frontend browser reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-browser-reports
+          retention-days: 14
+          if-no-files-found: ignore
+          path: |
+            orderflow/frontend/playwright-report/**
+            orderflow/frontend/test-results/**

@@ -4,6 +4,23 @@ x-java-environment: &java-environment
   JAVA_TOOL_OPTIONS: ${ORDERFLOW_JAVA_TOOL_OPTIONS:--Xms32m -Xmx128m -XX:+UseSerialGC -XX:ActiveProcessorCount=2 -XX:TieredStopAtLevel=1 -XX:+ExitOnOutOfMemoryError}
 
 services:
+  frontend:
+    profiles: [frontend]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8080}
+        NEXT_PUBLIC_OAUTH_PROVIDERS: ${NEXT_PUBLIC_OAUTH_PROVIDERS:-}
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    restart: unless-stopped
   postgres:
     image: postgres:16-alpine
     environment:
