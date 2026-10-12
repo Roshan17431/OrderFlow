@@ -139,6 +139,13 @@ class DeliverySecurityMvcTest {
                 .authorities(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
+    @Test
+    void detailedAddressRequiresAgentRole() throws Exception {
+        String path = "/api/delivery/agents/me/deliveries/" + UUID.randomUUID() + "/address";
+        mockMvc.perform(get(path).with(token("CUSTOMER"))).andExpect(status().isForbidden());
+        mockMvc.perform(get(path).with(token("ADMIN"))).andExpect(status().isForbidden());
+    }
+
     @TestConfiguration
     static class JwtTestConfiguration {
         @Bean

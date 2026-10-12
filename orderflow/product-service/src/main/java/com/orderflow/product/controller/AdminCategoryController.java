@@ -27,6 +27,14 @@ public class AdminCategoryController {
         this.categories = categories;
     }
 
+    @org.springframework.web.bind.annotation.GetMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public com.orderflow.product.dto.PageResponse<CategoryResponse> list(
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "0") int page,
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "20") int size) {
+        return categories.list(page, size);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse create(@Valid @RequestBody CreateCategoryRequest request) {

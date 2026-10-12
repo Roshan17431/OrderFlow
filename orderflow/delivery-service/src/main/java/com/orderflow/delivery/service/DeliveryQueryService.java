@@ -5,7 +5,15 @@ import com.orderflow.delivery.config.DeliveryProperties;import com.orderflow.del
  @Transactional(readOnly=true)public DeliveryResponse byId(UUID id,UUID user,boolean admin,boolean agent){Delivery d=deliveries.findById(id).orElseThrow(this::notFound);boolean ownCustomer=d.getCustomerId().equals(user);boolean ownAgent=agent&&agents.findByUserId(user).map(a->a.getId().equals(d.getDeliveryAgentId())).orElse(false);if(!admin&&!ownCustomer&&!ownAgent)throw notFound();return mapper.response(d);}
  @Transactional(readOnly=true)public PageResponse<DeliveryResponse> agentDeliveries(UUID user,int page,int size){DeliveryAgentProfile a=agents.findByUserId(user).orElseThrow(this::notFound);Page<Delivery>d=deliveries.findByDeliveryAgentId(a.getId(),PageRequest.of(page,limit(size),Sort.by(Sort.Direction.DESC,"createdAt")));return page(d);}
  @Transactional(readOnly=true)public DeliveryResponse agentDelivery(UUID user,UUID id){return byId(id,user,false,true);}
- @Transactional(readOnly=true)public AgentResponse agent(UUID user){DeliveryAgentProfile a=agents.findByUserId(user).orElseThrow(this::notFound);UUID active=deliveries.findByDeliveryAgentId(a.getId(),PageRequest.of(0,20)).stream().filter(d->!java.util.Set.of(DeliveryStatus.DELIVERED,DeliveryStatus.FAILED,DeliveryStatus.CANCELLED).contains(d.getStatus())).map(Delivery::getId).findFirst().orElse(null);return new AgentResponse(user,a.getAvailability(),active,a.getUpdatedAt());}
+ @Transactional(readOnly=true)public AgentDeliveryAddressResponse agentAddress(UUID user,UUID id){
+  Delivery delivery=deliveries.findById(id).orElseThrow(this::notFound);
+  DeliveryAgentProfile agent=agents.findByUserId(user).orElseThrow(this::notFound);
+  if(!agent.getId().equals(delivery.getDeliveryAgentId()))throw notFound();
+  var a=delivery.address();
+  return new AgentDeliveryAddressResponse(a.recipientName(),a.addressLine1(),a.addressLine2(),
+    a.city(),a.stateOrRegion(),a.postalCode(),a.countryCode(),a.deliveryInstructions());
+ }
+ @Transactional(readOnly=true)public AgentResponse agent(UUID user){DeliveryAgentProfile a=agents.findByUserId(user).orElseThrow(this::notFound);UUID active=deliveries.findByDeliveryAgentId(a.getId(),PageRequest.of(0,20)).stream().filter(d->!java.util.Set.of(DeliveryStatus.DELIVERED,DeliveryStatus.FAILED,DeliveryStatus.CANCELLED).contains(d.getStatus())).map(Delivery::getId).findFirst().orElse(null);return new AgentResponse(user,a.getAvailability(),active,a.getUpdatedAt(),a.getId());}
  @Transactional(readOnly=true)public PageResponse<HistoryResponse> history(UUID id,int page,int size){if(!deliveries.existsById(id))throw notFound();var h=history.findByDeliveryId(id,PageRequest.of(page,limit(size),Sort.by("changedAt")));return new PageResponse<>(h.map(mapper::history).getContent(),h.getNumber(),h.getSize(),h.getTotalElements(),h.getTotalPages());}
  private int limit(int s){return Math.max(1,Math.min(s,props.maxPageSize()));}private PageResponse<DeliveryResponse> page(Page<Delivery>p){return new PageResponse<>(p.map(mapper::response).getContent(),p.getNumber(),p.getSize(),p.getTotalElements(),p.getTotalPages());}private DeliveryDomainException notFound(){return new DeliveryDomainException(HttpStatus.NOT_FOUND,ErrorCode.DELIVERY_NOT_FOUND,"Delivery not found");}
 }

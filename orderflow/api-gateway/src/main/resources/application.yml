@@ -8,6 +8,10 @@ spring:
       server:
         webflux:
           routes:
+            - id: auth-oauth
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/oauth2/**,/login/oauth2/**
             - id: auth-platform
               uri: lb://AUTH-SERVICE
               predicates:

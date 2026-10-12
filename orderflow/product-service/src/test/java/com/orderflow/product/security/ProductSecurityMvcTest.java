@@ -172,6 +172,16 @@ class ProductSecurityMvcTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    void inactiveCategoryManagementReadRequiresAdmin() throws Exception {
+        when(categories.list(0, 20)).thenReturn(new com.orderflow.product.dto.PageResponse<>(
+                List.of(), 0, 20, 0, 0, "name,asc"));
+        mockMvc.perform(get("/api/admin/categories").with(token("VENDOR")))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/admin/categories").with(token("ADMIN")))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.items").isArray());
+    }
+
     private org.springframework.test.web.servlet.request.RequestPostProcessor token(String role) {
         return jwt()
                 .jwt(builder -> builder

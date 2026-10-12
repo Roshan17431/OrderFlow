@@ -166,7 +166,7 @@ class ApiGatewayApplicationTest {
         assertThat(routes).isNotNull();
         assertThat(routes).extracting(route -> route.getId())
                 .containsExactlyInAnyOrderElementsOf(Set.of(
-                        "auth-platform", "auth-api", "security-api", "product-api", "cart-api",
+                        "auth-oauth", "auth-platform", "auth-api", "security-api", "product-api", "cart-api",
                         "admin-order-api", "inventory-api", "payment-webhook-api",
                         "admin-payment-api", "payment-api", "order-api", "delivery-agent-api",
                         "admin-delivery-api", "delivery-api", "notification-api", "operations-api"));

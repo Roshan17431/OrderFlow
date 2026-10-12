@@ -46,6 +46,17 @@ public class CategoryManagementService {
         this.clock = clock;
     }
 
+    @Transactional(readOnly = true)
+    public com.orderflow.product.dto.PageResponse<CategoryResponse> list(int page, int size) {
+        if (page < 0 || size < 1 || size > 100) {
+            throw new ProductDomainException(HttpStatus.BAD_REQUEST, ErrorCode.VALIDATION_ERROR,
+                    "Page and size must be within the configured bounds.");
+        }
+        return com.orderflow.product.dto.PageResponse.from(categories.findAll(
+                org.springframework.data.domain.PageRequest.of(page, size,
+                        org.springframework.data.domain.Sort.by("name"))).map(mapper::category), "name,asc");
+    }
+
     @Transactional
     public CategoryResponse create(CreateCategoryRequest request) {
         String name = request.name().trim().replaceAll("\\s+", " ");
