@@ -1,5 +1,7 @@
 # OrderFlow
 
+Phase 9 adds the complete Next.js web application at [frontend/](frontend/README.md): a public storefront, customer checkout and tracking, vendor products/inventory, delivery-agent workflow and administrator operations. Run it at http://localhost:3000 against the existing API Gateway. The optional `frontend` Compose profile builds a non-root standalone container. See [frontend verification](frontend/docs/phase9-verification.md) for executed checks and remaining provider limitations.
+
 Phase 7 adds PostgreSQL-leased, cluster-safe reconciliation jobs, an event-driven
 operations service on port 8089, daily UTC reporting, conservative retention,
 and an optional Prometheus/Grafana profile. See [Phase 7 operations](docs/phase-7-operations.md).
@@ -69,6 +71,7 @@ are stripped by the gateway and never determine product or cart ownership.
 
 | Module | Port | Responsibility |
 | --- | ---: | --- |
+| `frontend` | 3000 | Next.js role-based web application (optional Compose profile) |
 | `platform-contracts` | — | Shared `ApiError`, error codes, and correlation contracts |
 | `event-contracts` | — | Framework-light, immutable, versioned workflow events |
 | `service-registry` | 8761 | Eureka registry |
