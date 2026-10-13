@@ -1,0 +1,15 @@
+{
+  "applicationStartup": "NOT RUN",
+  "checks": [
+    "pg_restore schema/data",
+    "owner-role authenticated SQL connectivity",
+    "Flyway SQL checksum/history",
+    "table counts",
+    "representative record hashes"
+  ],
+  "container": "orderflow-restore-ddc3849ada50",
+  "databases": 8,
+  "liveRecovery": "NOT RUN",
+  "status": "PASS",
+  "verifiedAt": "2026-10-13T01:25:12.635982+00:00"
+}
