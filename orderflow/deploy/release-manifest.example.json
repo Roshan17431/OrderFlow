@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "v1.0.0",
+  "gitSha": "<FULL_GIT_SHA>",
+  "builtAt": "<UTC_BUILD_TIMESTAMP>",
+  "platform": "linux/amd64",
+  "awsAccountId": "<APPROVED_ACCOUNT_ID>",
+  "awsRegion": "<APPROVED_REGION>",
+  "environment": "cloud-demo",
+  "images": {
+    "service-registry": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/service-registry@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "api-gateway": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/api-gateway@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "auth-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/auth-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "product-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/product-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "cart-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/cart-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "inventory-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/inventory-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "order-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/order-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "payment-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/payment-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "delivery-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/delivery-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "notification-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/notification-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "operations-service": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/operations-service@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    },
+    "frontend": {
+      "uri": "<APPROVED_ECR_REGISTRY>/orderflow/frontend@sha256:<VERIFIED_DIGEST>",
+      "digest": "sha256:<VERIFIED_DIGEST>"
+    }
+  },
+  "migrationCompatibility": {
+    "backwardCompatible": false,
+    "files": {
+      "<OWNER>-service/src/main/resources/db/migration/<MIGRATION>.sql": "<VERIFIED_FILE_SHA256>"
+    }
+  }
+}

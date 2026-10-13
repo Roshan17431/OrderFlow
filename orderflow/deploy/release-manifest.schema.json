@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OrderFlow immutable release manifest",
+  "description": "Runtime validation additionally binds each URI to the selected account/region and validates archive SQL hashes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "releaseVersion",
+    "gitSha",
+    "builtAt",
+    "platform",
+    "awsAccountId",
+    "awsRegion",
+    "environment",
+    "images",
+    "migrationCompatibility"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "releaseVersion": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "gitSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "builtAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "platform": {
+      "enum": [
+        "linux/amd64",
+        "linux/arm64"
+      ]
+    },
+    "awsAccountId": {
+      "type": "string",
+      "pattern": "^[0-9]{12}$"
+    },
+    "awsRegion": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(?:-[a-z]+)+-[0-9]$"
+    },
+    "environment": {
+      "const": "cloud-demo"
+    },
+    "images": {
+      "type": "object",
+      "required": [
+        "service-registry",
+        "api-gateway",
+        "auth-service",
+        "product-service",
+        "cart-service",
+        "inventory-service",
+        "order-service",
+        "payment-service",
+        "delivery-service",
+        "notification-service",
+        "operations-service",
+        "frontend"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "service-registry": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/service-registry@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "api-gateway": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/api-gateway@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "auth-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/auth-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "product-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/product-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "cart-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/cart-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "inventory-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/inventory-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "order-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/order-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "payment-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/payment-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "delivery-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/delivery-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "notification-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/notification-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "operations-service": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/operations-service@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "frontend": {
+          "type": "object",
+          "required": [
+            "uri",
+            "digest"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "uri": {
+              "type": "string",
+              "pattern": "^[0-9]{12}\\.dkr\\.ecr\\.[a-z0-9-]+\\.amazonaws\\.com/orderflow/frontend@sha256:[0-9a-f]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "migrationCompatibility": {
+      "type": "object",
+      "required": [
+        "backwardCompatible",
+        "files"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "backwardCompatible": {
+          "type": "boolean"
+        },
+        "files": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[^/]+/src/main/resources/db/migration/[^/]+\\.sql$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}
