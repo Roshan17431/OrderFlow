@@ -1,0 +1,583 @@
+name: orderflow-cloud
+
+# Compose >= 2.24.4: !override replaces maps and !reset clears inherited local ports/builds.
+x-cloud: &cloud
+  restart: unless-stopped
+  init: true
+  stop_grace_period: 45s
+  networks: [private]
+  security_opt: [no-new-privileges:true]
+  logging: &logs
+    driver: json-file
+    options: {max-size: "10m", max-file: "3"}
+
+services:
+  service-registry:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_SERVICE_REGISTRY:?IMAGE_SERVICE_REGISTRY must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 320m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+  api-gateway:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_API_GATEWAY:?IMAGE_API_GATEWAY must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 640m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    networks: {edge: {ipv4_address: 172.31.250.3, aliases: [api-gateway-edge]}, private: {}}
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_CORS_ALLOWED_ORIGINS: "https://${DOMAIN_NAME}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+      APP_SECURITY_HSTS_ENABLED: "true"
+      APP_RATE_LIMIT_ENABLED: "true"
+      SERVER_FORWARD_HEADERS_STRATEGY: "none"
+      APP_PROXY_TRUSTED_ADDRESS: "172.31.250.2"
+      SPRING_CLOUD_GATEWAY_SERVER_WEBFLUX_TRUSTED_PROXIES: "172\\.31\\.250\\.2"
+  auth-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_AUTH_SERVICE:?IMAGE_AUTH_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 640m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    volumes: !override [{type: bind, source: "${CONFIG_ROOT:-/opt/orderflow/config}/jwt-private.pem", target: /run/secrets/orderflow-jwt-private, read_only: true, bind: {create_host_path: false}}, {type: bind, source: "${CONFIG_ROOT:-/opt/orderflow/config}/jwt-public.pem", target: /run/secrets/orderflow-jwt-public, read_only: true, bind: {create_host_path: false}}]
+    depends_on: !override {database-bootstrap: {condition: service_completed_successfully}, redis: {condition: service_healthy}, service-registry: {condition: service_healthy}}
+    environment: !override
+      APP_AUTH_LOGIN_ATTEMPT_WINDOW: "${APP_AUTH_LOGIN_ATTEMPT_WINDOW:-15m}"
+      APP_AUTH_LOGIN_MAX_ATTEMPTS: "${APP_AUTH_LOGIN_MAX_ATTEMPTS:-5}"
+      APP_AUTH_REFRESH_COOKIE_NAME: "${APP_AUTH_REFRESH_COOKIE_NAME:-ORDERFLOW_REFRESH}"
+      APP_AUTH_REFRESH_COOKIE_SAME_SITE: "${APP_AUTH_REFRESH_COOKIE_SAME_SITE:-Strict}"
+      APP_AUTH_REFRESH_COOKIE_SECURE: "true"
+      APP_AUTH_REFRESH_TOKEN_TTL: "${APP_AUTH_REFRESH_TOKEN_TTL:-14d}"
+      APP_JWT_ALLOW_EPHEMERAL_KEYS: "false"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_JWT_KEY_ID: "${APP_JWT_KEY_ID:?APP_JWT_KEY_ID must be supplied in protected runtime.env}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      POSTGRES_DB: "${AUTH_POSTGRES_DB:?AUTH_POSTGRES_DB must be supplied in protected runtime.env}"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PASSWORD: "${AUTH_POSTGRES_PASSWORD:?AUTH_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: "${AUTH_POSTGRES_USER:?AUTH_POSTGRES_USER must be supplied in protected runtime.env}"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "${AUTH_SPRING_PROFILES_ACTIVE:-docker,cloud-demo}"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+      APP_JWT_PRIVATE_KEY_LOCATION: "file:/run/secrets/orderflow-jwt-private"
+      APP_JWT_PUBLIC_KEY_LOCATION: "file:/run/secrets/orderflow-jwt-public"
+      APP_BOOTSTRAP_ADMIN_ENABLED: "false"
+      SERVER_FORWARD_HEADERS_STRATEGY: "framework"
+      APP_OAUTH2_SUCCESS_REDIRECT_URI: "https://${DOMAIN_NAME}/oauth2/success"
+      APP_OAUTH2_FAILURE_REDIRECT_URI: "https://${DOMAIN_NAME}/oauth2/failure"
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID:-}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET:-}"
+      GITHUB_CLIENT_ID: "${GITHUB_CLIENT_ID:-}"
+      GITHUB_CLIENT_SECRET: "${GITHUB_CLIENT_SECRET:-}"
+  product-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_PRODUCT_SERVICE:?IMAGE_PRODUCT_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 640m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_CATALOG_CATEGORY_CACHE_TTL: "${APP_CATALOG_CATEGORY_CACHE_TTL:-10m}"
+      APP_CATALOG_DEFAULT_CURRENCY: "${APP_CATALOG_DEFAULT_CURRENCY:-USD}"
+      APP_CATALOG_MAX_PAGE_SIZE: "${APP_CATALOG_MAX_PAGE_SIZE:-100}"
+      APP_CATALOG_PRODUCT_CACHE_TTL: "${APP_CATALOG_PRODUCT_CACHE_TTL:-5m}"
+      APP_CATALOG_SEARCH_CACHE_TTL: "${APP_CATALOG_SEARCH_CACHE_TTL:-2m}"
+      APP_CATALOG_SUPPORTED_CURRENCIES: "${APP_CATALOG_SUPPORTED_CURRENCIES:-USD,EUR,GBP,INR}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      PRODUCT_POSTGRES_DB: "${PRODUCT_POSTGRES_DB:?PRODUCT_POSTGRES_DB must be supplied in protected runtime.env}"
+      PRODUCT_POSTGRES_HOST: "postgres"
+      PRODUCT_POSTGRES_PASSWORD: "${PRODUCT_POSTGRES_PASSWORD:?PRODUCT_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      PRODUCT_POSTGRES_PORT: 5432
+      PRODUCT_POSTGRES_USER: "${PRODUCT_POSTGRES_USER:?PRODUCT_POSTGRES_USER must be supplied in protected runtime.env}"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  cart-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_CART_SERVICE:?IMAGE_CART_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 640m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_CART_MAX_DISTINCT_ITEMS: "${APP_CART_MAX_DISTINCT_ITEMS:-100}"
+      APP_CART_MAX_QUANTITY_PER_ITEM: "${APP_CART_MAX_QUANTITY_PER_ITEM:-99}"
+      APP_CART_TTL: "${APP_CART_TTL:-30d}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_PRODUCT_CLIENT_BASE_URL: "http://PRODUCT-SERVICE"
+      APP_PRODUCT_CLIENT_CONNECT_TIMEOUT: "${APP_PRODUCT_CLIENT_CONNECT_TIMEOUT:-2s}"
+      APP_PRODUCT_CLIENT_READ_TIMEOUT: "${APP_PRODUCT_CLIENT_READ_TIMEOUT:-3s}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  inventory-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_INVENTORY_SERVICE:?IMAGE_INVENTORY_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 1g
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_DELIVERY_EVENTS_DLT: "${APP_DELIVERY_EVENTS_DLT:-orderflow.delivery-events.v1.DLT}"
+      APP_DELIVERY_EVENTS_TOPIC: "${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}"
+      APP_INVENTORY_EVENTS_DLT: "${APP_INVENTORY_EVENTS_DLT:-orderflow.inventory-events.v1.DLT}"
+      APP_INVENTORY_EVENTS_TOPIC: "${APP_INVENTORY_EVENTS_TOPIC:-orderflow.inventory-events.v1}"
+      APP_INVENTORY_EXPIRATION_BATCH_SIZE: "${APP_INVENTORY_EXPIRATION_BATCH_SIZE:-50}"
+      APP_INVENTORY_EXPIRATION_POLL_DELAY: "${APP_INVENTORY_EXPIRATION_POLL_DELAY:-30s}"
+      APP_INVENTORY_RESERVATION_TTL: "${APP_INVENTORY_RESERVATION_TTL:-15m}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_ORDER_EVENTS_DLT: "${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}"
+      APP_ORDER_EVENTS_TOPIC: "${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}"
+      APP_OUTBOX_BATCH_SIZE: "${APP_OUTBOX_BATCH_SIZE:-50}"
+      APP_OUTBOX_LOCK_TIMEOUT: "${APP_OUTBOX_LOCK_TIMEOUT:-2m}"
+      APP_OUTBOX_MAX_ATTEMPTS: "${APP_OUTBOX_MAX_ATTEMPTS:-10}"
+      APP_OUTBOX_POLL_DELAY: "${APP_OUTBOX_POLL_DELAY:-500ms}"
+      APP_OUTBOX_RETRY_BASE_DELAY: "${APP_OUTBOX_RETRY_BASE_DELAY:-2s}"
+      APP_PAYMENT_EVENTS_DLT: "${APP_PAYMENT_EVENTS_DLT:-orderflow.payment-events.v1.DLT}"
+      APP_PAYMENT_EVENTS_TOPIC: "${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}"
+      APP_PRODUCT_CLIENT_BASE_URL: "http://PRODUCT-SERVICE"
+      APP_PRODUCT_CLIENT_CONNECT_TIMEOUT: "${APP_PRODUCT_CLIENT_CONNECT_TIMEOUT:-2s}"
+      APP_PRODUCT_CLIENT_READ_TIMEOUT: "${APP_PRODUCT_CLIENT_READ_TIMEOUT:-3s}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      INVENTORY_POSTGRES_DB: "${INVENTORY_POSTGRES_DB:?INVENTORY_POSTGRES_DB must be supplied in protected runtime.env}"
+      INVENTORY_POSTGRES_HOST: "postgres"
+      INVENTORY_POSTGRES_PASSWORD: "${INVENTORY_POSTGRES_PASSWORD:?INVENTORY_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      INVENTORY_POSTGRES_PORT: 5432
+      INVENTORY_POSTGRES_USER: "${INVENTORY_POSTGRES_USER:?INVENTORY_POSTGRES_USER must be supplied in protected runtime.env}"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  order-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_ORDER_SERVICE:?IMAGE_ORDER_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 1g
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_CART_CLIENT_BASE_URL: "http://CART-SERVICE"
+      APP_CART_CLIENT_CONNECT_TIMEOUT: "${APP_CART_CLIENT_CONNECT_TIMEOUT:-2s}"
+      APP_CART_CLIENT_READ_TIMEOUT: "${APP_CART_CLIENT_READ_TIMEOUT:-3s}"
+      APP_DELIVERY_EVENTS_DLT: "${APP_DELIVERY_EVENTS_DLT:-orderflow.delivery-events.v1.DLT}"
+      APP_DELIVERY_EVENTS_TOPIC: "${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}"
+      APP_INVENTORY_EVENTS_DLT: "${APP_INVENTORY_EVENTS_DLT:-orderflow.inventory-events.v1.DLT}"
+      APP_INVENTORY_EVENTS_TOPIC: "${APP_INVENTORY_EVENTS_TOPIC:-orderflow.inventory-events.v1}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_ORDER_EVENTS_DLT: "${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}"
+      APP_ORDER_EVENTS_TOPIC: "${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}"
+      APP_OUTBOX_BATCH_SIZE: "${APP_OUTBOX_BATCH_SIZE:-50}"
+      APP_OUTBOX_LOCK_TIMEOUT: "${APP_OUTBOX_LOCK_TIMEOUT:-2m}"
+      APP_OUTBOX_MAX_ATTEMPTS: "${APP_OUTBOX_MAX_ATTEMPTS:-10}"
+      APP_OUTBOX_POLL_DELAY: "${APP_OUTBOX_POLL_DELAY:-500ms}"
+      APP_OUTBOX_RETRY_BASE_DELAY: "${APP_OUTBOX_RETRY_BASE_DELAY:-2s}"
+      APP_PAYMENT_EVENTS_DLT: "${APP_PAYMENT_EVENTS_DLT:-orderflow.payment-events.v1.DLT}"
+      APP_PAYMENT_EVENTS_TOPIC: "${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      ORDER_POSTGRES_DB: "${ORDER_POSTGRES_DB:?ORDER_POSTGRES_DB must be supplied in protected runtime.env}"
+      ORDER_POSTGRES_HOST: "postgres"
+      ORDER_POSTGRES_PASSWORD: "${ORDER_POSTGRES_PASSWORD:?ORDER_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      ORDER_POSTGRES_PORT: 5432
+      ORDER_POSTGRES_USER: "${ORDER_POSTGRES_USER:?ORDER_POSTGRES_USER must be supplied in protected runtime.env}"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  payment-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_PAYMENT_SERVICE:?IMAGE_PAYMENT_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 1g
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_ORDER_EVENTS_DLT: "${APP_ORDER_EVENTS_DLT:-orderflow.order-events.v1.DLT}"
+      APP_ORDER_EVENTS_TOPIC: "${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}"
+      APP_OUTBOX_BATCH_SIZE: "${APP_OUTBOX_BATCH_SIZE:-50}"
+      APP_OUTBOX_LOCK_TIMEOUT: "${APP_OUTBOX_LOCK_TIMEOUT:-2m}"
+      APP_OUTBOX_MAX_ATTEMPTS: "${APP_OUTBOX_MAX_ATTEMPTS:-10}"
+      APP_OUTBOX_POLL_DELAY: "${APP_OUTBOX_POLL_DELAY:-500ms}"
+      APP_OUTBOX_RETRY_BASE_DELAY: "${APP_OUTBOX_RETRY_BASE_DELAY:-2s}"
+      APP_PAYMENT_EVENTS_DLT: "${APP_PAYMENT_EVENTS_DLT:-orderflow.payment-events.v1.DLT}"
+      APP_PAYMENT_EVENTS_TOPIC: "${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}"
+      APP_PAYMENT_PROVIDER: "simulator"
+      APP_PAYMENT_PROVIDER_CONNECT_TIMEOUT: "${APP_PAYMENT_PROVIDER_CONNECT_TIMEOUT:-2s}"
+      APP_PAYMENT_PROVIDER_READ_TIMEOUT: "${APP_PAYMENT_PROVIDER_READ_TIMEOUT:-5s}"
+      APP_PAYMENT_PROVIDER_RETRY_ATTEMPTS: "${APP_PAYMENT_PROVIDER_RETRY_ATTEMPTS:-2}"
+      APP_PAYMENT_PROVIDER_RETRY_WAIT: "${APP_PAYMENT_PROVIDER_RETRY_WAIT:-250ms}"
+      APP_PAYMENT_SIMULATOR_ENABLED: "true"
+      APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET: "${APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET:?APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET must be supplied in protected runtime.env}"
+      APP_PAYMENT_WEBHOOK_TOLERANCE: "${APP_PAYMENT_WEBHOOK_TOLERANCE:-5m}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      PAYMENT_POSTGRES_DB: "${PAYMENT_POSTGRES_DB:?PAYMENT_POSTGRES_DB must be supplied in protected runtime.env}"
+      PAYMENT_POSTGRES_HOST: "postgres"
+      PAYMENT_POSTGRES_PASSWORD: "${PAYMENT_POSTGRES_PASSWORD:?PAYMENT_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      PAYMENT_POSTGRES_PORT: 5432
+      PAYMENT_POSTGRES_USER: "${PAYMENT_POSTGRES_USER:?PAYMENT_POSTGRES_USER must be supplied in protected runtime.env}"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+      APP_PAYMENT_DEMO_COMPLETION_ENABLED: "true"
+      APP_PAYMENT_SIMULATOR_ALLOW_IN_PRODUCTION: "false"
+  delivery-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_DELIVERY_SERVICE:?IMAGE_DELIVERY_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 1g
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_DELIVERY_ASSIGNMENT_STRATEGY: "${APP_DELIVERY_ASSIGNMENT_STRATEGY:-LEAST_RECENTLY_ASSIGNED}"
+      APP_DELIVERY_EVENTS_DLT: "${APP_DELIVERY_EVENTS_DLT:-orderflow.delivery-events.v1.DLT}"
+      APP_DELIVERY_EVENTS_TOPIC: "${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}"
+      APP_DELIVERY_MAX_PAGE_SIZE: "${APP_DELIVERY_MAX_PAGE_SIZE:-100}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_OUTBOX_BATCH_SIZE: "${APP_OUTBOX_BATCH_SIZE:-50}"
+      APP_OUTBOX_LOCK_TIMEOUT: "${APP_OUTBOX_LOCK_TIMEOUT:-2m}"
+      APP_OUTBOX_MAX_ATTEMPTS: "${APP_OUTBOX_MAX_ATTEMPTS:-10}"
+      APP_OUTBOX_POLL_DELAY: "${APP_OUTBOX_POLL_DELAY:-500ms}"
+      APP_OUTBOX_RETRY_BASE_DELAY: "${APP_OUTBOX_RETRY_BASE_DELAY:-2s}"
+      DELIVERY_POSTGRES_DB: "${DELIVERY_POSTGRES_DB:?DELIVERY_POSTGRES_DB must be supplied in protected runtime.env}"
+      DELIVERY_POSTGRES_HOST: "postgres"
+      DELIVERY_POSTGRES_PASSWORD: "${DELIVERY_POSTGRES_PASSWORD:?DELIVERY_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      DELIVERY_POSTGRES_PORT: 5432
+      DELIVERY_POSTGRES_USER: "${DELIVERY_POSTGRES_USER:?DELIVERY_POSTGRES_USER must be supplied in protected runtime.env}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  notification-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_NOTIFICATION_SERVICE:?IMAGE_NOTIFICATION_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 1g
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_DELIVERY_EVENTS_TOPIC: "${APP_DELIVERY_EVENTS_TOPIC:-orderflow.delivery-events.v1}"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      APP_NOTIFICATION_ASYNC_CORE_POOL_SIZE: "${APP_NOTIFICATION_ASYNC_CORE_POOL_SIZE:-2}"
+      APP_NOTIFICATION_ASYNC_MAX_POOL_SIZE: "${APP_NOTIFICATION_ASYNC_MAX_POOL_SIZE:-8}"
+      APP_NOTIFICATION_ASYNC_QUEUE_CAPACITY: "${APP_NOTIFICATION_ASYNC_QUEUE_CAPACITY:-200}"
+      APP_NOTIFICATION_EMAIL_PROVIDER: "simulator"
+      APP_NOTIFICATION_EVENTS_DLT: "${APP_NOTIFICATION_EVENTS_DLT:-orderflow.notification-events.v1.DLT}"
+      APP_NOTIFICATION_EVENTS_TOPIC: "${APP_NOTIFICATION_EVENTS_TOPIC:-orderflow.notification-events.v1}"
+      APP_NOTIFICATION_SMS_PROVIDER: "simulator"
+      APP_NOTIFICATION_SSE_TIMEOUT: "${APP_NOTIFICATION_SSE_TIMEOUT:-30m}"
+      APP_ORDER_EVENTS_TOPIC: "${APP_ORDER_EVENTS_TOPIC:-orderflow.order-events.v1}"
+      APP_OUTBOX_BATCH_SIZE: "${APP_OUTBOX_BATCH_SIZE:-50}"
+      APP_OUTBOX_LOCK_TIMEOUT: "${APP_OUTBOX_LOCK_TIMEOUT:-2m}"
+      APP_OUTBOX_MAX_ATTEMPTS: "${APP_OUTBOX_MAX_ATTEMPTS:-10}"
+      APP_OUTBOX_POLL_DELAY: "${APP_OUTBOX_POLL_DELAY:-500ms}"
+      APP_OUTBOX_RETRY_BASE_DELAY: "${APP_OUTBOX_RETRY_BASE_DELAY:-2s}"
+      APP_PAYMENT_EVENTS_TOPIC: "${APP_PAYMENT_EVENTS_TOPIC:-orderflow.payment-events.v1}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      NOTIFICATION_POSTGRES_DB: "${NOTIFICATION_POSTGRES_DB:?NOTIFICATION_POSTGRES_DB must be supplied in protected runtime.env}"
+      NOTIFICATION_POSTGRES_HOST: "postgres"
+      NOTIFICATION_POSTGRES_PASSWORD: "${NOTIFICATION_POSTGRES_PASSWORD:?NOTIFICATION_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      NOTIFICATION_POSTGRES_PORT: 5432
+      NOTIFICATION_POSTGRES_USER: "${NOTIFICATION_POSTGRES_USER:?NOTIFICATION_POSTGRES_USER must be supplied in protected runtime.env}"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  operations-service:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_OPERATIONS_SERVICE:?IMAGE_OPERATIONS_SERVICE must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 640m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    environment: !override
+      APP_AUTH_JWK_SET_URI: "http://auth-service:8081/api/auth/.well-known/jwks.json"
+      APP_JWT_ISSUER: "https://${DOMAIN_NAME:?DOMAIN_NAME is required}"
+      EUREKA_DEFAULT_ZONE: "http://service-registry:8761/eureka/"
+      JAVA_TOOL_OPTIONS: "-XX:InitialRAMPercentage=15.0 -XX:MaxRAMPercentage=50.0 -XX:+UseSerialGC -XX:+ExitOnOutOfMemoryError"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      OPERATIONS_POSTGRES_DB: "${OPERATIONS_POSTGRES_DB:?OPERATIONS_POSTGRES_DB must be supplied in protected runtime.env}"
+      OPERATIONS_POSTGRES_HOST: "postgres"
+      OPERATIONS_POSTGRES_PASSWORD: "${OPERATIONS_POSTGRES_PASSWORD:?OPERATIONS_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      OPERATIONS_POSTGRES_PORT: 5432
+      OPERATIONS_POSTGRES_USER: "${OPERATIONS_POSTGRES_USER:?OPERATIONS_POSTGRES_USER must be supplied in protected runtime.env}"
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: "docker,cloud-demo"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
+  frontend:
+    <<: *cloud
+    build: !reset null
+    image: "${IMAGE_FRONTEND:?IMAGE_FRONTEND must be supplied in protected runtime.env}"
+    ports: !reset []
+    profiles: !override []
+    mem_limit: 512m
+    read_only: true
+    tmpfs: ["/tmp:size=64m,mode=1777", "/app/.next/cache:size=64m,mode=1777"]
+    environment: !override
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: "production"
+      ORDERFLOW_INTERNAL_GATEWAY_URL: "http://api-gateway:8080"
+      NODE_OPTIONS: "--max-old-space-size=384"
+  postgres:
+    <<: *cloud
+    ports: !reset []
+    mem_limit: 1g
+    environment: !override
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "${POSTGRES_USER:?POSTGRES_USER must be supplied in protected runtime.env}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+  redis:
+    <<: *cloud
+    ports: !reset []
+    mem_limit: 384m
+    command: !override ["/bin/sh", "-ec", "exec redis-server --appendonly yes --appendfsync everysec --requirepass \"$$REDIS_PASSWORD\" --maxmemory 256mb --maxmemory-policy noeviction"]
+    healthcheck: {test: [CMD-SHELL, "REDISCLI_AUTH=\"$$REDIS_PASSWORD\" redis-cli ping | grep -qx PONG"], interval: 10s, timeout: 5s, retries: 20}
+    environment: !override
+      REDIS_PASSWORD: "${REDIS_PASSWORD:?REDIS_PASSWORD must be supplied in protected runtime.env}"
+  kafka:
+    <<: *cloud
+    ports: !reset []
+    mem_limit: 1g
+    environment: !override
+      CLUSTER_ID: "${KAFKA_CLUSTER_ID:?KAFKA_CLUSTER_ID must be supplied in protected runtime.env}"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:29093"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_HEAP_OPTS: "-Xms256m -Xmx512m"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+      KAFKA_LISTENERS: "CONTROLLER://:29093,INTERNAL://:29092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT"
+      KAFKA_LOG_DIRS: "/var/lib/kafka/data"
+      KAFKA_NODE_ID: 1
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_LOG_RETENTION_BYTES: "1073741824"
+  database-bootstrap:
+    <<: *cloud
+    restart: "no"
+    volumes: !override [{type: bind, source: ./infrastructure/bootstrap/bootstrap-databases.sh, target: /opt/orderflow/bootstrap-databases.sh, read_only: true}]
+    entrypoint: !override [/bin/sh, /opt/orderflow/bootstrap-databases.sh]
+    environment: !override
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "${POSTGRES_USER:?POSTGRES_USER must be supplied in protected runtime.env}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      AUTH_POSTGRES_DB: "${AUTH_POSTGRES_DB:?AUTH_POSTGRES_DB must be supplied in protected runtime.env}"
+      AUTH_POSTGRES_USER: "${AUTH_POSTGRES_USER:?AUTH_POSTGRES_USER must be supplied in protected runtime.env}"
+      AUTH_POSTGRES_PASSWORD: "${AUTH_POSTGRES_PASSWORD:?AUTH_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      PRODUCT_POSTGRES_DB: "${PRODUCT_POSTGRES_DB:?PRODUCT_POSTGRES_DB must be supplied in protected runtime.env}"
+      PRODUCT_POSTGRES_USER: "${PRODUCT_POSTGRES_USER:?PRODUCT_POSTGRES_USER must be supplied in protected runtime.env}"
+      PRODUCT_POSTGRES_PASSWORD: "${PRODUCT_POSTGRES_PASSWORD:?PRODUCT_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      INVENTORY_POSTGRES_DB: "${INVENTORY_POSTGRES_DB:?INVENTORY_POSTGRES_DB must be supplied in protected runtime.env}"
+      INVENTORY_POSTGRES_USER: "${INVENTORY_POSTGRES_USER:?INVENTORY_POSTGRES_USER must be supplied in protected runtime.env}"
+      INVENTORY_POSTGRES_PASSWORD: "${INVENTORY_POSTGRES_PASSWORD:?INVENTORY_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      ORDER_POSTGRES_DB: "${ORDER_POSTGRES_DB:?ORDER_POSTGRES_DB must be supplied in protected runtime.env}"
+      ORDER_POSTGRES_USER: "${ORDER_POSTGRES_USER:?ORDER_POSTGRES_USER must be supplied in protected runtime.env}"
+      ORDER_POSTGRES_PASSWORD: "${ORDER_POSTGRES_PASSWORD:?ORDER_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      PAYMENT_POSTGRES_DB: "${PAYMENT_POSTGRES_DB:?PAYMENT_POSTGRES_DB must be supplied in protected runtime.env}"
+      PAYMENT_POSTGRES_USER: "${PAYMENT_POSTGRES_USER:?PAYMENT_POSTGRES_USER must be supplied in protected runtime.env}"
+      PAYMENT_POSTGRES_PASSWORD: "${PAYMENT_POSTGRES_PASSWORD:?PAYMENT_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      DELIVERY_POSTGRES_DB: "${DELIVERY_POSTGRES_DB:?DELIVERY_POSTGRES_DB must be supplied in protected runtime.env}"
+      DELIVERY_POSTGRES_USER: "${DELIVERY_POSTGRES_USER:?DELIVERY_POSTGRES_USER must be supplied in protected runtime.env}"
+      DELIVERY_POSTGRES_PASSWORD: "${DELIVERY_POSTGRES_PASSWORD:?DELIVERY_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      NOTIFICATION_POSTGRES_DB: "${NOTIFICATION_POSTGRES_DB:?NOTIFICATION_POSTGRES_DB must be supplied in protected runtime.env}"
+      NOTIFICATION_POSTGRES_USER: "${NOTIFICATION_POSTGRES_USER:?NOTIFICATION_POSTGRES_USER must be supplied in protected runtime.env}"
+      NOTIFICATION_POSTGRES_PASSWORD: "${NOTIFICATION_POSTGRES_PASSWORD:?NOTIFICATION_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+      OPERATIONS_POSTGRES_DB: "${OPERATIONS_POSTGRES_DB:?OPERATIONS_POSTGRES_DB must be supplied in protected runtime.env}"
+      OPERATIONS_POSTGRES_USER: "${OPERATIONS_POSTGRES_USER:?OPERATIONS_POSTGRES_USER must be supplied in protected runtime.env}"
+      OPERATIONS_POSTGRES_PASSWORD: "${OPERATIONS_POSTGRES_PASSWORD:?OPERATIONS_POSTGRES_PASSWORD must be supplied in protected runtime.env}"
+  caddy:
+    <<: *cloud
+    image: caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
+    ports: !override ["80:80", "443:443"]
+    networks: {edge: {ipv4_address: 172.31.250.2}, private: {}}
+    mem_limit: 192m
+    volumes: [./infrastructure/caddy/Caddyfile:/etc/caddy/Caddyfile:ro, caddy-data:/data, caddy-config:/config, caddy-logs:/var/log/caddy]
+    depends_on: {frontend: {condition: service_healthy}, api-gateway: {condition: service_healthy}}
+    healthcheck: {test: [CMD, wget, --spider, -q, http://127.0.0.1:8080/healthz], interval: 20s, timeout: 5s, retries: 5}
+    environment: !override
+      DOMAIN_NAME: "${DOMAIN_NAME:?DOMAIN_NAME must be supplied in protected runtime.env}"
+      ACME_EMAIL: "${ACME_EMAIL:?ACME_EMAIL must be supplied in protected runtime.env}"
+  prometheus:
+    <<: *cloud
+    healthcheck: {test: [CMD, wget, --spider, -q, "http://127.0.0.1:9090/-/healthy"], interval: 20s, timeout: 5s, retries: 10, start_period: 30s}
+    ports: !override ["127.0.0.1:9090:9090"]
+    mem_limit: 512m
+    volumes: !override [./infrastructure/cloud/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro, ./monitoring/prometheus/rules:/etc/prometheus/rules:ro, ./infrastructure/cloud/monitoring/cloud-alerts.yml:/etc/prometheus/cloud-alerts.yml:ro, prometheus-data:/prometheus]
+    command: !override [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.retention.time=15d, --storage.tsdb.retention.size=2GB]
+    environment: !override {}
+  grafana:
+    <<: *cloud
+    healthcheck: {test: [CMD, wget, --spider, -q, "http://127.0.0.1:3000/api/health"], interval: 20s, timeout: 5s, retries: 10, start_period: 30s}
+    ports: !override ["127.0.0.1:3001:3000"]
+    mem_limit: 384m
+    volumes: !override [./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro, ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro, grafana-data:/var/lib/grafana]
+    environment: !override
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:?GRAFANA_ADMIN_USER must be supplied in protected runtime.env}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD must be supplied in protected runtime.env}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_SERVER_ROOT_URL: "http://localhost:3001"
+  node-exporter:
+    <<: *cloud
+    healthcheck: {test: [CMD, wget, --spider, -q, "http://127.0.0.1:9100/metrics"], interval: 20s, timeout: 5s, retries: 10, start_period: 30s}
+    image: prom/node-exporter:v1.9.1
+    profiles: [observability]
+    ports: []
+    pid: host
+    read_only: true
+    command: [--path.rootfs=/host, --collector.textfile.directory=/textfile]
+    volumes: ["/:/host:ro,rslave", "${DATA_ROOT:-/opt/orderflow/data}/node-exporter:/textfile:ro"]
+    mem_limit: 64m
+    environment: !override {}
+  blackbox-exporter:
+    <<: *cloud
+    healthcheck: {test: [CMD, wget, --spider, -q, "http://127.0.0.1:9115/-/healthy"], interval: 20s, timeout: 5s, retries: 10, start_period: 30s}
+    image: prom/blackbox-exporter:v0.26.0
+    profiles: [observability]
+    ports: []
+    command: [--config.file=/etc/blackbox/config.yml]
+    volumes: [./infrastructure/cloud/monitoring/blackbox.yml:/etc/blackbox/config.yml:ro]
+    mem_limit: 64m
+    environment: !override {}
+
+networks:
+  private:
+    driver: bridge
+  edge:
+    driver: bridge
+    ipam:
+      config: [{subnet: 172.31.250.0/24}]
+
+volumes:
+  postgres-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/postgres"
+  redis-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/redis"
+  kafka-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/kafka"
+  caddy-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/caddy/data"
+  caddy-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/caddy/config"
+  caddy-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/caddy/logs"
+  prometheus-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/prometheus"
+  grafana-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${DATA_ROOT:-/opt/orderflow/data}/grafana"
