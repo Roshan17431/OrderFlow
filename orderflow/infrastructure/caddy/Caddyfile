@@ -1,0 +1,101 @@
+{
+	admin off
+	email {$ACME_EMAIL}
+	grace_period 30s
+	servers {
+		protocols h1 h2
+		timeouts {
+			read_header 10s
+			read_body 30s
+			idle 2m
+		}
+		max_header_size 32KB
+	}
+	# Error logs can include a complete URI. Keep runtime error logging at
+	# FATAL; redacted access logs below record HTTP errors without query secrets.
+	log default {
+		level FATAL
+	}
+}
+
+(proxy_headers) {
+	header_up -Forwarded
+	header_up -X-Real-IP
+	header_up -True-Client-IP
+	header_up -CF-Connecting-IP
+	header_up X-Forwarded-For {http.request.remote.host}
+	header_up X-Forwarded-Proto https
+	header_up X-Forwarded-Host {$DOMAIN_NAME}
+	header_up Host {$DOMAIN_NAME}
+}
+
+{$DOMAIN_NAME} {
+	log {
+		output file /var/log/caddy/access.json {
+			roll_size 10MiB
+			roll_keep 3
+			roll_keep_for 72h
+		}
+		format filter {
+			wrap json
+			fields {
+				request>uri delete
+				request>headers delete
+				resp_headers delete
+			}
+		}
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+	request_body {
+		max_size 2MB
+	}
+	# Sanitise BEFORE the reverse_proxy defaults build forwarding headers.
+	request_header -Forwarded
+	request_header -X-Forwarded-*
+	request_header -X-Real-IP
+	request_header -True-Client-IP
+	request_header -CF-Connecting-IP
+	@internal path /actuator /actuator/* /eureka /eureka/* /internal /internal/* /api/*/actuator /api/*/actuator/* /api/*/internal /api/*/internal/*
+	handle @internal {
+		respond 404
+	}
+	@backend path /api /api/* /oauth2/authorization/* /login/oauth2/code/*
+	handle @backend {
+		reverse_proxy api-gateway-edge:8080 {
+			import proxy_headers
+			flush_interval -1
+			stream_timeout 35m
+			transport http {
+				dial_timeout 5s
+				response_header_timeout 35s
+			}
+		}
+	}
+	handle {
+		reverse_proxy frontend:3000 {
+			import proxy_headers
+			transport http {
+				dial_timeout 5s
+				response_header_timeout 35s
+				read_timeout 60s
+				write_timeout 30s
+			}
+		}
+	}
+}
+
+# Private liveness and metrics listener; this port is never published.
+:8080 {
+	@health path /healthz
+	handle @health {
+		respond "ok" 200
+	}
+	handle {
+		respond 404
+	}
+}
