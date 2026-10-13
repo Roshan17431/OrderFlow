@@ -9,3 +9,5 @@ test-results
 output
 *.tsbuildinfo
 *.log
+**/runtime.env
+**/cloud-accounts.json

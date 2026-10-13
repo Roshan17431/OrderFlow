@@ -1,4 +1,4 @@
-FROM maven:3.9.11-eclipse-temurin-21 AS build
+FROM --platform=$BUILDPLATFORM maven:3.9.11-eclipse-temurin-21 AS build
 WORKDIR /workspace
 COPY . .
 RUN --mount=type=cache,target=/root/.m2 unset MAVEN_CONFIG \
@@ -6,8 +6,8 @@ RUN --mount=type=cache,target=/root/.m2 unset MAVEN_CONFIG \
 
 FROM eclipse-temurin:21-jre-alpine
 RUN apk add --no-cache curl \
-    && addgroup -S orderflow \
-    && adduser -S -G orderflow -h /app orderflow
+    && addgroup -S -g 10001 orderflow \
+    && adduser -S -u 10001 -G orderflow -h /app orderflow
 WORKDIR /app
 COPY --from=build --chown=orderflow:orderflow /workspace/auth-service/target/app.jar /app/app.jar
 USER orderflow
