@@ -3,6 +3,7 @@ import { randomBytes } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import type { Role, Authentication } from "../../types/contracts";
+import { safeApi } from "./safe-api";
 export const gateway =
   process.env.ORDERFLOW_GATEWAY_URL ?? "http://localhost:8080";
 export const composeRoot = path.resolve(import.meta.dirname, "../../..");
@@ -21,7 +22,7 @@ export async function roleUser(role: Role, run: string): Promise<FixtureUser> {
     throw new Error(
       "Real E2E fixture creation requires explicit local-only opt-in.",
     );
-  const api = await request.newContext({ baseURL: gateway, timeout: 20000 });
+  const api = safeApi(await request.newContext({ baseURL: gateway, timeout: 20000 }));
   const email = `phase9-${role.toLowerCase()}-${run}@example.test`,
     password = randomBytes(20).toString("hex"),
     displayName = `Phase 9 ${role}`;
@@ -68,14 +69,14 @@ export async function roleUser(role: Role, run: string): Promise<FixtureUser> {
   const csrf3 = (await (await api.get("/api/auth/csrf")).json()) as {
     token: string;
   };
-  const authenticated = await request.newContext({
+  const authenticated = safeApi(await request.newContext({
     baseURL: gateway,
     timeout: 20000,
     extraHTTPHeaders: {
       Authorization: `Bearer ${current.accessToken}`,
       "X-XSRF-TOKEN": csrf3.token,
     },
-  });
+  }));
   await api.dispose();
   return { email, password, displayName, userId, api: authenticated };
 }

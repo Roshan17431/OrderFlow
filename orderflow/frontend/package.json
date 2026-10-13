@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test --project=fixtures",
-    "test:e2e:real": "playwright test --project=real-backend"
+    "test:e2e:real": "playwright test --project=real-backend",
+    "test:e2e:cloud": "playwright test --project=cloud-backend"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.0",

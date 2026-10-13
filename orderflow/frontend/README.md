@@ -71,6 +71,20 @@ COMPOSE_PROJECT_NAME=orderflow-phase9 ORDERFLOW_REAL_E2E=true npm run test:e2e:r
 
 Set `PLAYWRIGHT_EXTERNAL_SERVER=true` when testing an already-running production frontend. Real tests disable trace/video recording and form-value failure snapshots, generate unique accounts, assert HttpOnly cookies and empty browser storage, and complete signed simulator callbacks from a trusted Node CLI. No external provider credentials are required. Native Playwright launches are one worker to respect local memory limits. Run Java integration tests separately from the full stack/Chromium on small Docker hosts.
 
+For Phase 10, build with `NEXT_PUBLIC_API_BASE_URL=` to use the same HTTPS origin. An authorized demo/staging browser check uses existing private operator accounts and the backend's signed demo worker:
+
+```sh
+ORDERFLOW_CLOUD_E2E=true ORDERFLOW_TARGET_ENVIRONMENT=cloud-demo \
+AWS_ACCOUNT_ID=<approved-12-digit-account> \
+E2E_BASE_URL=https://<owned-domain> \
+ORDERFLOW_CLOUD_ACCOUNTS_FILE=<protected-mode0600-account-file> \
+npm run test:e2e:cloud
+```
+
+The account file contains distinct synthetic `example.test` VENDOR, DELIVERY_AGENT and ADMIN identities. Provision their roles through trusted administration before running the test; public registration remains CUSTOMER only. Never publish account passwords or place signing secrets in browser configuration. The test creates synthetic commerce records, requires an idle dedicated delivery agent, and leaves existing data intact. Public certificate checks stay enabled. The explicit localhost CA exception used by the isolated local simulation does not establish public TLS or AWS deployment. See [Phase 10 verification](../docs/phase-10-readiness.md) and [cloud configuration](../docs/cloud-configuration.md).
+
+The shared real journey refuses unrelated pending deliveries and checks the exact synthetic order/delivery before transitions. Its API transport does not follow redirects and replaces private Playwright transport call logs with sanitized failures. Traces/videos remain disabled; cleanup errors are reported without replacing the primary test failure.
+
 See [testing](docs/testing.md), [architecture](docs/frontend-architecture.md), [authentication](docs/authentication.md), [simulator payments](docs/payment-simulator.md), [backend contracts](docs/backend-api-mapping.md) and [verification report](docs/phase9-verification.md). These distinguish executed checks from unavailable external integrations.
 
 ## Backend gaps represented honestly
