@@ -33,13 +33,12 @@ public class SecurityConfiguration {
             RestAccessDeniedHandler accessDeniedHandler,
             RevocationValidationFilter revocationFilter,
             Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter,
+            CookieProperties cookies,
             ObjectProvider<OAuth2SuccessHandler> oauthSuccess,
             ObjectProvider<OAuth2FailureHandler> oauthFailure,
             ObjectProvider<VerifiedEmailOAuth2UserService> oauthUserService)
             throws Exception {
-        CookieCsrfTokenRepository csrfRepository =
-                CookieCsrfTokenRepository.withHttpOnlyFalse();
-        csrfRepository.setCookiePath("/");
+        CookieCsrfTokenRepository csrfRepository = csrfRepository(cookies);
         CsrfTokenRequestAttributeHandler csrfHandler = new CsrfTokenRequestAttributeHandler();
         csrfHandler.setCsrfRequestAttributeName("_csrf");
 
@@ -89,5 +88,12 @@ public class SecurityConfiguration {
                     .failureHandler(oauthFailure.getObject()));
         }
         return http.build();
+    }
+
+    static CookieCsrfTokenRepository csrfRepository(CookieProperties cookies) {
+        CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        repository.setCookiePath("/");
+        repository.setCookieCustomizer(cookie -> cookie.secure(cookies.secure()).sameSite(cookies.sameSite()));
+        return repository;
     }
 }

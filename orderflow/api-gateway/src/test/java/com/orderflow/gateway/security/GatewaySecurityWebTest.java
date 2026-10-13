@@ -10,6 +10,7 @@ import com.orderflow.gateway.config.GatewayRateLimitProperties;
 import com.orderflow.gateway.config.GatewayHttpProperties;
 import com.orderflow.gateway.correlation.CorrelationIdGlobalFilter;
 import com.orderflow.gateway.ratelimit.RateLimitStore;
+import com.orderflow.gateway.proxy.TrustedClientAddress;
 import java.time.Duration;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,7 @@ import reactor.core.publisher.Mono;
     GatewayAuthenticationEntryPoint.class,
     GatewayAccessDeniedHandler.class,
     GatewaySecurityErrorWriter.class,
+    TrustedClientAddress.class,
     CorrelationIdGlobalFilter.class,
     GatewaySecurityWebTest.SecurityEndpoints.class
 })

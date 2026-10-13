@@ -96,6 +96,18 @@ class GatewayRateLimitWebFilterTest {
     }
 
     @Test
+    void actualOrderPaymentConfirmationRouteConsumesItsRateLimit() {
+        when(store.consume(any(), eq(2), eq(Duration.ofMinutes(1))))
+                .thenReturn(Mono.just(new RateLimitStore.Decision(true, 1, Duration.ofSeconds(60))));
+        var exchange = MockServerWebExchange.from(MockServerHttpRequest
+                .post("/api/payments/orders/00000000-0000-4000-8000-000000000001/confirm")
+                .remoteAddress(new InetSocketAddress("192.0.2.10", 12345)).build());
+        StepVerifier.create(filter.filter(exchange, chain)).verifyComplete();
+        verify(store).consume(any(), eq(2), eq(Duration.ofMinutes(1)));
+        assertThat(exchange.getResponse().getHeaders().getFirst("X-RateLimit-Remaining")).isEqualTo("1");
+    }
+
+    @Test
     void redisFailureFailsClosedForHighRiskRoutes() {
         when(store.consume(any(), eq(2), eq(Duration.ofMinutes(1))))
                 .thenReturn(Mono.error(new IllegalStateException("redis unavailable")));

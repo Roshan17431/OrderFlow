@@ -53,8 +53,8 @@ services:
       <<: *production-environment
       SPRING_PROFILES_ACTIVE: docker,production
       APP_JWT_ALLOW_EPHEMERAL_KEYS: "false"
-      APP_JWT_PRIVATE_KEY_LOCATION: /run/secrets/orderflow-jwt-private
-      APP_JWT_PUBLIC_KEY_LOCATION: /run/secrets/orderflow-jwt-public
+      APP_JWT_PRIVATE_KEY_LOCATION: file:/run/secrets/orderflow-jwt-private
+      APP_JWT_PUBLIC_KEY_LOCATION: file:/run/secrets/orderflow-jwt-public
       APP_AUTH_REFRESH_COOKIE_SECURE: "true"
       APP_AUTH_REFRESH_COOKIE_SAME_SITE: Strict
       APP_BOOTSTRAP_ADMIN_ENABLED: "false"

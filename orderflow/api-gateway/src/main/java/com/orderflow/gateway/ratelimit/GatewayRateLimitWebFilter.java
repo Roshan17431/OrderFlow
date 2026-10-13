@@ -3,8 +3,9 @@ package com.orderflow.gateway.ratelimit;
 import com.orderflow.gateway.config.GatewayRateLimitProperties;
 import com.orderflow.gateway.config.GatewayRateLimitProperties.Policy;
 import com.orderflow.gateway.security.GatewaySecurityErrorWriter;
+import com.orderflow.gateway.proxy.TrustedClientAddress;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.orderflow.platform.error.ErrorCode;
-import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,14 +30,25 @@ public class GatewayRateLimitWebFilter implements WebFilter, Ordered {
     private final GatewayRateLimitProperties properties;
     private final RateLimitStore store;
     private final GatewaySecurityErrorWriter errors;
+    private final TrustedClientAddress addresses;
 
     public GatewayRateLimitWebFilter(
             GatewayRateLimitProperties properties,
             RateLimitStore store,
             GatewaySecurityErrorWriter errors) {
+        this(properties, store, errors, new TrustedClientAddress(""));
+    }
+
+    @Autowired
+    public GatewayRateLimitWebFilter(
+            GatewayRateLimitProperties properties,
+            RateLimitStore store,
+            GatewaySecurityErrorWriter errors,
+            TrustedClientAddress addresses) {
         this.properties = properties;
         this.store = store;
         this.errors = errors;
+        this.addresses = addresses;
     }
 
     @Override
@@ -91,7 +103,7 @@ public class GatewayRateLimitWebFilter implements WebFilter, Ordered {
         if (path.equals("/api/orders")) {
             return matched("order", properties.orderCreation(), true);
         }
-        if (path.matches("/api/payments/[^/]+/confirm")) {
+        if (path.matches("/api/payments/orders/[^/]+/confirm")) {
             return matched("payment-confirmation", properties.paymentConfirmation(), true);
         }
         if (path.startsWith("/api/payments/webhooks/")) {
@@ -109,8 +121,7 @@ public class GatewayRateLimitWebFilter implements WebFilter, Ordered {
     }
 
     private String clientKey(ServerWebExchange exchange) {
-        InetSocketAddress remoteAddress = exchange.getRequest().getRemoteAddress();
-        return remoteAddress == null ? "unknown" : remoteAddress.getAddress().getHostAddress();
+        return addresses.resolve(exchange.getRequest());
     }
 
     private String hash(String value) {

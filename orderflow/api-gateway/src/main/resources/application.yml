@@ -161,6 +161,8 @@ logging:
         service: ${spring.application.name}
 
 app:
+  proxy:
+    trusted-address: ${APP_PROXY_TRUSTED_ADDRESS:}
   http:
     max-request-size: ${APP_HTTP_MAX_REQUEST_SIZE:1MB}
   rate-limit:
