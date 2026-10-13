@@ -52,6 +52,13 @@
              latest compatible 2025.0.x GA artifact available from Maven Central. -->
         <spring-cloud.version>2025.0.2</spring-cloud.version>
         <testcontainers.version>1.21.3</testcontainers.version>
+        <!-- Compatible patch/minor overrides verified against vendor advisories
+             and Maven Central on2026-10-13; retain the requested Boot3.5 line. -->
+        <tomcat.version>10.1.61</tomcat.version>
+        <netty.version>4.1.139.Final</netty.version>
+        <freemarker.version>2.3.35</freemarker.version>
+        <httpclient5.version>5.6.5</httpclient5.version>
+        <httpcore5.version>5.4.4</httpcore5.version>
     </properties>
 
     <dependencyManagement>
@@ -200,6 +207,9 @@
                                 <format>JSON</format>
                             </formats>
                             <failBuildOnCVSS>9</failBuildOnCVSS>
+                            <!-- Official NVD bulk feeds avoid anonymous API
+                                 throttling while keeping updates and TLS on. -->
+                            <nvdDatafeedUrl>https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-{0}.json.gz</nvdDatafeedUrl>
                             <outputDirectory>${project.build.directory}/dependency-check</outputDirectory>
                         </configuration>
                     </plugin>

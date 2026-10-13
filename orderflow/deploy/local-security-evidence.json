@@ -1,0 +1,72 @@
+{
+  "status": "FAIL",
+  "verifiedAt": "2026-10-13T15:19:06.726230+00:00",
+  "engineVersion": "12.2.2",
+  "source": "official NVD JSON2.0 bulk feed; strict TLS",
+  "threshold": 9,
+  "initialDistinctFindingsAtThreshold": 20,
+  "remainingDistinctFindingsAtThreshold": 7,
+  "findings": [
+    {
+      "id": "CVE-2026-47884",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-47890",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-47891",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-47892",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-59313",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-59283",
+      "scannerScore": 9.1,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-59270",
+      "scannerScore": 9.1,
+      "artifacts": [
+        "spring-security-core-6.5.11.jar",
+        "spring-security-oauth2-resource-server-6.5.11.jar"
+      ]
+    }
+  ],
+  "decision": "Keep requested Spring Boot3.5; document remaining findings; no suppression/threshold bypass",
+  "versions": {
+    "springBoot": "3.5.16",
+    "springFramework": "6.2.19",
+    "springSecurity": "6.5.11",
+    "tomcat": "10.1.61",
+    "netty": "4.1.139.Final",
+    "freemarker": "2.3.35",
+    "httpclient5": "5.6.5",
+    "httpcore5": "5.4.4"
+  }
+}
