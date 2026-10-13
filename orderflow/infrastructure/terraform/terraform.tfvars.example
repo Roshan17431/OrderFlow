@@ -1,0 +1,32 @@
+# EXAMPLE ONLY: replace the account placeholder after access/cost authorization.
+# Real *.tfvars files are ignored. Never put runtime secret values here.
+expected_account_id = "REPLACE_WITH_AUTHORIZED_12_DIGIT_ACCOUNT_ID"
+project_name        = "orderflow"
+environment         = "cloud-demo"
+aws_region          = "us-east-1"
+instance_type       = "t3.xlarge"
+instance_architecture = "x86_64" # linux/amd64 release images
+root_volume_size    = 30
+data_volume_size    = 100
+
+# Populate an owned domain after DNS authorization; external DNS is supported.
+domain_name          = ""
+enable_route53       = false
+route53_zone_id       = ""
+enable_elastic_ip     = false
+# Reuse account's existing GitHub provider ARN if present, otherwise leave null.
+github_oidc_provider_arn   = null
+github_repository          = "Roshan17431/OrderFlow"
+github_publish_environment = "cloud-demo-publish"
+github_deploy_environment  = "cloud-demo"
+
+# All require explicit cost/recipient authorization before enabling.
+enable_observability       = false
+alarm_notification_email   = ""
+enable_budget_alerts       = false
+budget_notification_email  = ""
+monthly_budget_usd         = 150 # alert threshold, not a verified cost estimate
+backup_retention_days      = 30 # backups/ only; versions retained another 90 days
+# Use existing CMKs if required; never key material.
+ebs_kms_key_arn     = null
+runtime_kms_key_arn = null

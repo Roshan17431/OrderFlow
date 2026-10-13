@@ -1,0 +1,12 @@
+# Copy to ignored backend.tf ONLY after an existing/authorized backend is ready.
+# Replace every placeholder; do not put credentials in backend configuration.
+terraform {
+  backend "s3" {
+    bucket              = "REPLACE_WITH_AUTHORIZED_STATE_BUCKET"
+    key                 = "orderflow/cloud-demo/terraform.tfstate"
+    region              = "us-east-1"
+    encrypt             = true
+    use_lockfile        = true
+    allowed_account_ids = ["REPLACE_WITH_AUTHORIZED_12_DIGIT_ACCOUNT_ID"]
+  }
+}

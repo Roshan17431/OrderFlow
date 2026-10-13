@@ -2,3 +2,23 @@
 # IntelliJ IDEA
 .idea/
 *.iml
+
+# Terraform working data and state; retain the reviewed provider lockfile.
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.*
+**/*.tfplan
+**/*.tfvars
+**/*.tfvars.json
+**/backend.tf
+**/*.tfbackend
+**/crash.log
+**/crash.*.log
+
+# Local Python verification caches.
+__pycache__/
+*.py[cod]
+
+# Private cloud runtime files; examples remain reviewable.
+runtime.env
+cloud-accounts.json
