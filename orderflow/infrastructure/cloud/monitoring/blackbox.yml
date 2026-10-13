@@ -1,0 +1,15 @@
+modules:
+  http_private:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: ip4
+      valid_status_codes: [200]
+      follow_redirects: false
+  https_public:
+    prober: http
+    timeout: 10s
+    http:
+      preferred_ip_protocol: ip4
+      valid_status_codes: [200]
+      fail_if_not_ssl: true
