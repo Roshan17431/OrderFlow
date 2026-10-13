@@ -1,0 +1,167 @@
+OrderFlow Phase10 pre-publication Git inventory
+Recorded UTC: 2026-10-13T16:48:06.988175+00:00
+Branch: master
+HEAD: b8a0dcf78270e934b9e985b42c66a409f7a49ad3
+Modified tracked files: 37
+Untracked files: 119
+At this historical assessment, commits/branches/PRs/pushes created: 0/0/0/0
+Subsequent owner authorization: push the Phase10 changes in at most13 commits; exclude .vscode/.
+Pre-existing .vscode/ preserved; no history rewrite or user data deletion.
+
+Porcelain status (expanded untracked files):
+ M .github/workflows/ci.yml
+ M .github/workflows/release.yml
+ M .gitignore
+ M README.md
+ M orderflow/.dockerignore
+ M orderflow/README.md
+ M orderflow/api-gateway/Dockerfile
+ M orderflow/api-gateway/src/main/java/com/orderflow/gateway/ratelimit/GatewayRateLimitWebFilter.java
+ M orderflow/api-gateway/src/main/resources/application.yml
+ M orderflow/api-gateway/src/test/java/com/orderflow/gateway/ratelimit/GatewayRateLimitWebFilterTest.java
+ M orderflow/api-gateway/src/test/java/com/orderflow/gateway/security/GatewaySecurityWebTest.java
+ M orderflow/auth-service/Dockerfile
+ M orderflow/auth-service/src/main/java/com/orderflow/auth/config/SecurityConfiguration.java
+ M orderflow/cart-service/Dockerfile
+ M orderflow/delivery-service/Dockerfile
+ M orderflow/docker-compose.production-like.yml
+ M orderflow/frontend/.dockerignore
+ M orderflow/frontend/README.md
+ M orderflow/frontend/docs/payment-simulator.md
+ M orderflow/frontend/e2e/real-backend.spec.ts
+ M orderflow/frontend/e2e/support/real-fixtures.ts
+ M orderflow/frontend/features/payments/payment-panel.tsx
+ M orderflow/frontend/package.json
+ M orderflow/frontend/playwright.config.ts
+ M orderflow/frontend/tests/customer-components.test.tsx
+ M orderflow/inventory-service/Dockerfile
+ M orderflow/notification-service/Dockerfile
+ M orderflow/operations-service/Dockerfile
+ M orderflow/order-service/Dockerfile
+ M orderflow/payment-service/Dockerfile
+ M orderflow/payment-service/src/main/java/com/orderflow/payment/config/SimulatorSafetyConfiguration.java
+ M orderflow/payment-service/src/main/java/com/orderflow/payment/repository/PaymentRepository.java
+ M orderflow/payment-service/src/main/java/com/orderflow/payment/repository/RefundRepository.java
+ M orderflow/payment-service/src/main/resources/application.yml
+ M orderflow/pom.xml
+ M orderflow/product-service/Dockerfile
+ M orderflow/service-registry/Dockerfile
+?? .github/workflows/build-images.yml
+?? .github/workflows/deploy.yml
+?? .vscode/settings.json
+?? orderflow/api-gateway/src/main/java/com/orderflow/gateway/proxy/TrustedClientAddress.java
+?? orderflow/api-gateway/src/test/java/com/orderflow/gateway/proxy/TrustedClientAddressTest.java
+?? orderflow/auth-service/src/test/java/com/orderflow/auth/config/CloudCsrfCookieTest.java
+?? orderflow/deploy/README.md
+?? orderflow/deploy/local-image-evidence.json
+?? orderflow/deploy/local-restore-evidence.json
+?? orderflow/deploy/local-runtime-evidence.json
+?? orderflow/deploy/local-security-evidence.json
+?? orderflow/deploy/release-manifest.example.json
+?? orderflow/deploy/release-manifest.schema.json
+?? orderflow/docker-compose.cloud.yml
+?? orderflow/docs/adr/0030-single-server-ec2-cloud-demo.md
+?? orderflow/docs/adr/0031-ecr-immutable-release-images.md
+?? orderflow/docs/adr/0032-terraform-managed-aws-infrastructure.md
+?? orderflow/docs/adr/0033-caddy-single-origin-https.md
+?? orderflow/docs/adr/0034-github-oidc.md
+?? orderflow/docs/adr/0035-persistent-signing-keys-and-secrets.md
+?? orderflow/docs/adr/0036-cloud-demo-simulator-isolation.md
+?? orderflow/docs/adr/0037-encrypted-backups-and-isolated-restores.md
+?? orderflow/docs/adr/0038-release-rollback.md
+?? orderflow/docs/aws-setup.md
+?? orderflow/docs/cloud-architecture.md
+?? orderflow/docs/cloud-backup-restore.md
+?? orderflow/docs/cloud-ci-cd.md
+?? orderflow/docs/cloud-configuration.md
+?? orderflow/docs/cloud-cost-management.md
+?? orderflow/docs/cloud-disaster-recovery.md
+?? orderflow/docs/cloud-monitoring.md
+?? orderflow/docs/cloud-release-checklist.md
+?? orderflow/docs/cloud-security-review.md
+?? orderflow/docs/https-and-domain.md
+?? orderflow/docs/phase-10-cloud-deployment.md
+?? orderflow/docs/phase-10-git-status.txt
+?? orderflow/docs/phase-10-readiness.md
+?? orderflow/docs/runbooks/cloud-database-recovery.md
+?? orderflow/docs/runbooks/cloud-deployment.md
+?? orderflow/docs/runbooks/cloud-kafka-recovery.md
+?? orderflow/docs/runbooks/cloud-rollback.md
+?? orderflow/docs/runbooks/ec2-unavailable.md
+?? orderflow/docs/runbooks/https-certificate-failure.md
+?? orderflow/docs/secrets-management.md
+?? orderflow/docs/superpowers/plans/2026-10-12-phase10-aws.md
+?? orderflow/frontend/e2e/cloud-backend.spec.ts
+?? orderflow/frontend/e2e/support/cloud-fixtures.ts
+?? orderflow/frontend/e2e/support/cloud-target.ts
+?? orderflow/frontend/e2e/support/commerce-journey.ts
+?? orderflow/frontend/e2e/support/delivery-guard.ts
+?? orderflow/frontend/e2e/support/safe-api.ts
+?? orderflow/frontend/tests/cloud-target.test.ts
+?? orderflow/frontend/tests/delivery-guard.test.ts
+?? orderflow/frontend/tests/safe-api.test.ts
+?? orderflow/infrastructure/bootstrap/bootstrap-databases.sh
+?? orderflow/infrastructure/bootstrap/bootstrap-ec2.sh
+?? orderflow/infrastructure/caddy/Caddyfile
+?? orderflow/infrastructure/cloud/monitoring/blackbox.yml
+?? orderflow/infrastructure/cloud/monitoring/cloud-alerts.yml
+?? orderflow/infrastructure/cloud/monitoring/prometheus.yml
+?? orderflow/infrastructure/cloud/runtime.env.example
+?? orderflow/infrastructure/cloud/tests/database_integration.py
+?? orderflow/infrastructure/cloud/tests/kafka-native-health.sh
+?? orderflow/infrastructure/cloud/tests/prepare_full_stack.py
+?? orderflow/infrastructure/cloud/tests/proxy_integration.py
+?? orderflow/infrastructure/cloud/tests/test_runtime.py
+?? orderflow/infrastructure/terraform/.terraform.lock.hcl
+?? orderflow/infrastructure/terraform/README.md
+?? orderflow/infrastructure/terraform/backend.tf.example
+?? orderflow/infrastructure/terraform/compute.tf
+?? orderflow/infrastructure/terraform/dns.tf
+?? orderflow/infrastructure/terraform/ecr.tf
+?? orderflow/infrastructure/terraform/iam.tf
+?? orderflow/infrastructure/terraform/locals.tf
+?? orderflow/infrastructure/terraform/main.tf
+?? orderflow/infrastructure/terraform/monitoring.tf
+?? orderflow/infrastructure/terraform/network.tf
+?? orderflow/infrastructure/terraform/outputs.tf
+?? orderflow/infrastructure/terraform/providers.tf
+?? orderflow/infrastructure/terraform/secrets.tf
+?? orderflow/infrastructure/terraform/security.tf
+?? orderflow/infrastructure/terraform/storage.tf
+?? orderflow/infrastructure/terraform/terraform.tfvars.example
+?? orderflow/infrastructure/terraform/tests/security.tftest.hcl
+?? orderflow/infrastructure/terraform/variables.tf
+?? orderflow/infrastructure/terraform/versions.tf
+?? orderflow/payment-service/src/main/java/com/orderflow/payment/demo/DemoCompletionWorker.java
+?? orderflow/payment-service/src/test/java/com/orderflow/payment/config/CloudDemoSafetyTest.java
+?? orderflow/payment-service/src/test/java/com/orderflow/payment/demo/DemoCompletionWorkerTest.java
+?? orderflow/scripts/backup/backup-databases.sh
+?? orderflow/scripts/backup/backup.py
+?? orderflow/scripts/backup/restore-to-test.sh
+?? orderflow/scripts/backup/test-isolated-restore.py
+?? orderflow/scripts/backup/verify-backup.sh
+?? orderflow/scripts/cloud/cloud_common.py
+?? orderflow/scripts/cloud/performance-smoke.sh
+?? orderflow/scripts/cloud/performance_smoke.py
+?? orderflow/scripts/cloud/seed-demo.sh
+?? orderflow/scripts/cloud/seed_demo.py
+?? orderflow/scripts/cloud/tests/test_https_transport.py
+?? orderflow/scripts/cloud/tests/test_safety.py
+?? orderflow/scripts/cloud/tests/test_tools.py
+?? orderflow/scripts/cloud/verify-journey.sh
+?? orderflow/scripts/cloud/verify_journey.py
+?? orderflow/scripts/deploy/backup-predeploy.sh
+?? orderflow/scripts/deploy/check-health.sh
+?? orderflow/scripts/deploy/cloud.py
+?? orderflow/scripts/deploy/deploy-release.sh
+?? orderflow/scripts/deploy/fetch-secrets.sh
+?? orderflow/scripts/deploy/generate-release.sh
+?? orderflow/scripts/deploy/preflight.sh
+?? orderflow/scripts/deploy/pull-images.sh
+?? orderflow/scripts/deploy/remote-deploy.sh
+?? orderflow/scripts/deploy/remote-entrypoint.sh
+?? orderflow/scripts/deploy/rollback-release.sh
+?? orderflow/scripts/deploy/tests/test_backup.py
+?? orderflow/scripts/deploy/tests/test_cloud.py
+?? orderflow/scripts/deploy/tests/test_initial_seed.py
+?? orderflow/scripts/deploy/verify-release.sh

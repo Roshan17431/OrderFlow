@@ -1,0 +1,244 @@
+{
+  "status": "FAIL",
+  "reason": "Complete local browser/API runtime gates did not pass",
+  "deployedCloud": "NOT RUN",
+  "verifiedAt": "2026-10-13T16:42:23.652861+00:00",
+  "scope": "isolated local Docker/CA/fake data; no AWS",
+  "applicationPlatform": "linux/arm64",
+  "physicalHostMemoryGiB": 8,
+  "dockerVmMemoryGiB": 4,
+  "fullBrowserJourney": {
+    "status": "FAIL",
+    "attempts": 3,
+    "reason": "resource-related service unavailability; inventory OOM confirmed by Docker event"
+  },
+  "apiJourney": {
+    "status": "FAIL",
+    "reason": "all eleven application scrapes not up; failed before API mutations"
+  },
+  "boundedReducedNativeMemoryRestart": {
+    "status": "FAIL",
+    "reason": "240-second local restart bound exceeded; experimental JVM options not retained in preparation helper"
+  },
+  "privateMetricsFinalPreflight": {
+    "status": "FAIL",
+    "reason": "All eleven application scrapes must be up"
+  },
+  "authKeyRestart": {
+    "result": "PASS",
+    "scope": "local-native-ARM64-HTTPS",
+    "checks": [
+      "stable JWKS after auth restart",
+      "pre-restart bearer accepted",
+      "pre-restart refresh cookie accepted and rotated",
+      "Secure HttpOnly SameSiteStrict refresh cookie",
+      "logout bearer revoked through Redis",
+      "non-root JWT bind mount10001:10001/0400"
+    ]
+  },
+  "fullStackProxy": {
+    "scope": "local CA and loopback only",
+    "checks": [
+      {
+        "path": "/",
+        "status": 200,
+        "expected": 200,
+        "tls": true,
+        "redirectTarget": null
+      },
+      {
+        "path": "/api/products",
+        "status": 200,
+        "expected": 200,
+        "tls": true,
+        "redirectTarget": null
+      },
+      {
+        "path": "/actuator/health",
+        "status": 404,
+        "expected": 404,
+        "tls": true,
+        "redirectTarget": null
+      },
+      {
+        "path": "/eureka/apps",
+        "status": 404,
+        "expected": 404,
+        "tls": true,
+        "redirectTarget": null
+      },
+      {
+        "path": "/",
+        "status": 308,
+        "expected": 308,
+        "tls": false,
+        "redirectTarget": "https://localhost:8443/"
+      }
+    ],
+    "status": "PASS"
+  },
+  "ownedFixtureRecovery": {
+    "result": "PASS",
+    "scope": "only the existing synthetic failed browser fixture",
+    "orderId": "d526b47f-942e-4eed-8d51-e14131ff6830",
+    "deliveryId": "dbe3d322-60ff-46c4-95c9-b78633deb2e7",
+    "fulfillmentStatus": "DELIVERED",
+    "dataDeleted": false,
+    "stockReset": false
+  },
+  "initialPerformance": {
+    "result": "PASS",
+    "scope": "local-verified-TLS-simulation",
+    "requests": 12,
+    "concurrency": 2,
+    "errors": 0,
+    "durationSeconds": 8.432,
+    "p50Ms": 39.621,
+    "p95Ms": 8236.885,
+    "p99Ms": 8236.885,
+    "interpretation": "Bounded availability/timing smoke sample; no capacity or production latency claim"
+  },
+  "statesBeforeStop": [
+    {
+      "service": "api-gateway",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "order-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "inventory-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "cart-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "notification-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "delivery-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "product-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "payment-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "operations-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "auth-service",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "service-registry",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "frontend",
+      "status": "running",
+      "health": "unhealthy",
+      "restartCount": 0
+    },
+    {
+      "service": "node-exporter",
+      "status": "exited",
+      "health": "unhealthy",
+      "restartCount": 0
+    },
+    {
+      "service": "kafka",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "caddy",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "grafana",
+      "status": "exited",
+      "health": "unhealthy",
+      "restartCount": 0
+    },
+    {
+      "service": "database-bootstrap",
+      "status": "exited",
+      "health": null,
+      "restartCount": 0
+    },
+    {
+      "service": "prometheus",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "postgres",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "redis",
+      "status": "running",
+      "health": "healthy",
+      "restartCount": 0
+    },
+    {
+      "service": "blackbox-exporter",
+      "status": "exited",
+      "health": "unhealthy",
+      "restartCount": 0
+    }
+  ],
+  "optionalMonitoringPausedDuringTest": [
+    "grafana",
+    "node-exporter",
+    "blackbox-exporter"
+  ],
+  "cloudContainerLimitMiB": 12800,
+  "proposedCloudHostMiB": 16384,
+  "cloudHostReserveMiB": 3584,
+  "awsCreatedResources": 0,
+  "cleanup": {
+    "action": "stop only owned Compose project; retain containers and data",
+    "status": "PASS",
+    "deletedVolumes": 0,
+    "deletedData": false
+  }
+}

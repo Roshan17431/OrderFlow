@@ -1,0 +1,198 @@
+{
+  "status": "PASS",
+  "scope": "local build/inspection only; no ECR publication",
+  "images": [
+    {
+      "service": "service-registry",
+      "platform": "linux/amd64",
+      "id": "sha256:f8733d99efa0c73f22469a26b5019176dcd75fa94307f4513d891507380e6081",
+      "user": "orderflow",
+      "seconds": 16.7,
+      "patchedDependencies": true
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/amd64",
+      "id": "sha256:15d0a93543017cb42bfc0af906c0579942501d1dff7668960df50c9909790f1e",
+      "user": "orderflow",
+      "seconds": 10.0,
+      "patchedDependencies": true
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/amd64",
+      "id": "sha256:9685cbc24d6ef32e3f0a88145dc7f20fe605438cc13fc52e9543ba7e8b6e07fe",
+      "user": "orderflow",
+      "seconds": 10.2,
+      "patchedDependencies": true
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/amd64",
+      "id": "sha256:2169c6921d466e01e7d4c3c8d7d682c471aec924e8e0b156ed6f9149cdec4806",
+      "user": "orderflow",
+      "seconds": 7.0,
+      "patchedDependencies": true
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/amd64",
+      "id": "sha256:7b6a86823479c59675b1677940a1754408589b4f8ac78796476ce3c1787951e7",
+      "user": "orderflow",
+      "seconds": 8.2,
+      "patchedDependencies": true
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/amd64",
+      "id": "sha256:1688a20b19b6bc14cb500bbb09ab3cc27f11056b3e2b37c02148c53a75fa08b2",
+      "user": "orderflow",
+      "seconds": 8.8,
+      "patchedDependencies": true
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/amd64",
+      "id": "sha256:535bdff54cc7d06e5d128e07107cdcc85de59bbef8f8874c0d7b58346fb08fd9",
+      "user": "orderflow",
+      "seconds": 15.6,
+      "patchedDependencies": true
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/amd64",
+      "id": "sha256:76ef7af1d29a5b4e7419f62bf84f386494c41dff76623b273817da7a1c3d8a89",
+      "user": "orderflow",
+      "seconds": 8.5,
+      "patchedDependencies": true
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/amd64",
+      "id": "sha256:d261d0c3d01a3271b78615b0d150edeb9905da578e3c39f511edd2ea94f76ab7",
+      "user": "orderflow",
+      "seconds": 9.2,
+      "patchedDependencies": true
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/amd64",
+      "id": "sha256:46cb5410fee2a47677c968e37ac41f479518c60dfd6faf337d2e1fdefbca4439",
+      "user": "orderflow",
+      "seconds": 8.8,
+      "patchedDependencies": true
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/amd64",
+      "id": "sha256:3dde8a895bd8147e6dc36ba073c4f87aaccdfe87125fe904ae7849da189a6db7",
+      "user": "orderflow",
+      "seconds": 8.6,
+      "patchedDependencies": true
+    },
+    {
+      "service": "frontend",
+      "platform": "linux/amd64",
+      "id": "sha256:0db311d3d5fdf5af41b84f787fe8acb872e87851dba35052e70a2627a2eb9e79",
+      "user": "orderflow",
+      "seconds": 38.2,
+      "patchedDependencies": true
+    },
+    {
+      "service": "service-registry",
+      "platform": "linux/arm64",
+      "id": "sha256:7f5f3aa1941a73487f8134bef0edb63ac2c708610ed834a9d84f7b4246f857a0",
+      "user": "orderflow",
+      "seconds": 3.6,
+      "patchedDependencies": true
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/arm64",
+      "id": "sha256:34dbbade860ccb88e90fc10c4345122aa38260e3ea30daf9205d0c34dc584c67",
+      "user": "orderflow",
+      "seconds": 1.8,
+      "patchedDependencies": true
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/arm64",
+      "id": "sha256:c22876f10f11f847c22f70fdda66ad486ad57b712c12e8202d9d74a8af179027",
+      "user": "orderflow",
+      "seconds": 2.4,
+      "patchedDependencies": true
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/arm64",
+      "id": "sha256:11946c2124a2e13a986f0b40831be52aa74fb8da1cebf68c9af1842afc15425e",
+      "user": "orderflow",
+      "seconds": 2.1,
+      "patchedDependencies": true
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/arm64",
+      "id": "sha256:8f23492e740b9ca7eab6f9d4fddeea3a5ad41ffdb2a94ffbb1d702fe8585d454",
+      "user": "orderflow",
+      "seconds": 1.9,
+      "patchedDependencies": true
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/arm64",
+      "id": "sha256:6db36a1cc9e0865842a59a3505eb813c92d5412a580d5f95e0f8aae2925669b5",
+      "user": "orderflow",
+      "seconds": 2.1,
+      "patchedDependencies": true
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/arm64",
+      "id": "sha256:41bc651944212f285fd76c24fc719f48faefe1f8cf6978da8b7c43556ddccbbe",
+      "user": "orderflow",
+      "seconds": 2.1,
+      "patchedDependencies": true
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/arm64",
+      "id": "sha256:9d804a521b6a9a2780ac91b044ec19f6deba5fa6e64a81e0e6985312fb6501df",
+      "user": "orderflow",
+      "seconds": 3.6,
+      "patchedDependencies": true
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/arm64",
+      "id": "sha256:f222643b092f0cd48d23f14a16deb7d7f5393df08d0f6bca9c896a5da0f37dd8",
+      "user": "orderflow",
+      "seconds": 5.8,
+      "patchedDependencies": true
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/arm64",
+      "id": "sha256:f8c2aab5d7ca9aa4d0e22a8735e4482fa90dc30c1d03f8d845180f6caf99723b",
+      "user": "orderflow",
+      "seconds": 4.6,
+      "patchedDependencies": true
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/arm64",
+      "id": "sha256:c79cfb685221bd0d0a25bfe79244ab76645dfe6cef15e4707f37d4330aab1fbf",
+      "user": "orderflow",
+      "seconds": 2.7,
+      "patchedDependencies": true
+    },
+    {
+      "service": "frontend",
+      "platform": "linux/arm64",
+      "id": "sha256:90b18bd6502400ef510f6ca0236563836ebfd20e36de9794930b3e71625d78af",
+      "user": "orderflow",
+      "seconds": 21.3,
+      "patchedDependencies": true
+    }
+  ]
+}

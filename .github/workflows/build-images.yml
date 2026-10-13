@@ -1,0 +1,118 @@
+name: Build immutable release images
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: Semantic version such as v1.0.0
+        required: true
+        type: string
+      platform:
+        description: Must match the EC2 architecture
+        required: true
+        type: choice
+        options: [linux/amd64, linux/arm64]
+      backward_compatible:
+        description: Reviewed expand/migrate compatibility with the previously healthy release
+        required: true
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      release_version:
+        required: true
+        type: string
+      platform:
+        required: true
+        type: string
+      backward_compatible:
+        required: true
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: publish-${{ inputs.release_version }}
+  cancel-in-progress: false
+jobs:
+  quality:
+    uses: ./.github/workflows/ci.yml
+    with:
+      skip-container-builds: true
+  publish:
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: cloud-demo-publish
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+      DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+      RELEASE_VERSION: ${{ inputs.release_version }}
+      TARGET_PLATFORM: ${{ inputs.platform }}
+      COMPATIBILITY: ${{ inputs.backward_compatible }}
+      NEXT_PUBLIC_OAUTH_PROVIDERS: ${{ vars.NEXT_PUBLIC_OAUTH_PROVIDERS }}
+    defaults:
+      run:
+        working-directory: orderflow
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate explicit publication target
+        run: |
+          python3 - <<'PY'
+          import os,re
+          for key,pattern in {'AWS_ACCOUNT_ID':r'[0-9]{12}','AWS_REGION':r'[a-z]{2}(?:-[a-z]+)+-[0-9]','RELEASE_VERSION':r'v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?','TARGET_PLATFORM':r'linux/(?:amd64|arm64)'}.items():
+              assert re.fullmatch(pattern,os.environ[key]), f'explicit valid {key} required'
+          assert os.environ['ROLE_ARN'].startswith('arn:aws:iam::'+os.environ['AWS_ACCOUNT_ID']+':role/')
+          assert os.environ['DOMAIN_NAME']
+          provider_names=os.environ.get('NEXT_PUBLIC_OAUTH_PROVIDERS','')
+          providers=provider_names.split(',') if provider_names else []
+          assert set(providers)<= {'google','github'} and len(providers)==len(set(providers)), 'NEXT_PUBLIC_OAUTH_PROVIDERS must be blank or distinct comma-separated google/github names'
+          PY
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Verify authenticated AWS target account
+        run: test "$(aws sts get-caller-identity --query Account --output text)" = "$AWS_ACCOUNT_ID"
+      - uses: aws-actions/amazon-ecr-login@v2
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - name: Build and publish twelve exact-SHA images after complete quality gates
+        run: |
+          set -euo pipefail
+          for service in service-registry api-gateway auth-service product-service cart-service inventory-service order-service payment-service delivery-service notification-service operations-service frontend; do
+            repository="orderflow/$service"
+            aws ecr describe-repositories --repository-names "$repository" --query 'repositories[0].imageTagMutability' --output text | grep -qx IMMUTABLE
+            context=. dockerfile="$service/Dockerfile"
+            extra=()
+            if [ "$service" = frontend ]; then
+              context=frontend dockerfile=frontend/Dockerfile
+              extra=(--build-arg NEXT_PUBLIC_API_BASE_URL= --build-arg "NEXT_PUBLIC_OAUTH_PROVIDERS=$NEXT_PUBLIC_OAUTH_PROVIDERS")
+            fi
+            docker buildx build --platform "$TARGET_PLATFORM" --file "$dockerfile" \
+              --tag "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$repository:$RELEASE_VERSION-$GITHUB_SHA" \
+              --cache-from "type=gha,scope=release-$service" --cache-to "type=gha,mode=max,scope=release-$service" \
+              --provenance=mode=min --sbom=true --push "${extra[@]}" "$context"
+          done
+      - name: Generate immutable digest manifest and source release bundle
+        run: |
+          ./scripts/deploy/generate-release.sh --account "$AWS_ACCOUNT_ID" --region "$AWS_REGION" \
+            --environment cloud-demo --domain "$DOMAIN_NAME" --release "$RELEASE_VERSION" \
+            --platform "$TARGET_PLATFORM" --compatibility "$COMPATIBILITY" --manifest deploy/release-manifest.json
+          mkdir -p /tmp/orderflow-release
+          git archive "$GITHUB_SHA:orderflow" | tar -x -C /tmp/orderflow-release
+          cp deploy/release-manifest.json /tmp/orderflow-release/deploy/release-manifest.json
+          tar -czf deploy/release.tar.gz -C /tmp/orderflow-release .
+          sha256sum deploy/release.tar.gz > deploy/release.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: orderflow-${{ inputs.release_version }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            orderflow/deploy/release-manifest.json
+            orderflow/deploy/release.tar.gz
+            orderflow/deploy/release.tar.gz.sha256

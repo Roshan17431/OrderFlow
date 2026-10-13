@@ -1,6 +1,11 @@
 name: CI
 
 on:
+  workflow_call:
+    inputs:
+      skip-container-builds:
+        type: boolean
+        default: false
   push:
     branches: [master, main]
   pull_request:
@@ -85,6 +90,7 @@ jobs:
             orderflow/**/target/surefire-reports/**
 
   containers:
+    if: ${{ !inputs.skip-container-builds }}
     name: Container - ${{ matrix.service }}
     runs-on: ubuntu-latest
     timeout-minutes: 35
@@ -140,6 +146,7 @@ jobs:
       - run: npm run test:e2e
       - uses: docker/setup-buildx-action@v3
       - name: Build frontend standalone container
+        if: ${{ !inputs.skip-container-builds }}
         uses: docker/build-push-action@v6
         with:
           context: orderflow/frontend
@@ -158,3 +165,50 @@ jobs:
           path: |
             orderflow/frontend/playwright-report/**
             orderflow/frontend/test-results/**
+
+  cloud-configuration:
+    name: Cloud configuration and deployment safety
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.16.5'
+      - name: Deployment and backup safety contracts
+        run: python3 -m unittest discover -s scripts/deploy/tests -v
+      - name: Cloud journey safety and actual local TLS transport contracts
+        run: |
+          command -v openssl >/dev/null
+          timeout 180s python3 -m unittest discover -s scripts/cloud/tests -v
+      - name: Deployment, backup, cloud and bootstrap shell syntax
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' script; do
+            bash -n "$script"
+          done < <(rg --files -g '*.sh' -0 scripts infrastructure)
+      - name: Cloud runtime policy contracts
+        run: python3 -m unittest discover -s infrastructure/cloud/tests -v
+      - name: Terraform formatting and provider validation
+        working-directory: orderflow/infrastructure/terraform
+        run: |
+          terraform fmt -check -recursive
+          terraform init -backend=false -input=false
+          terraform validate
+          timeout 300s terraform test -no-color
+      - name: Validate actual Caddy configuration without ACME issuance
+        run: |
+          timeout 180s docker run --rm --network none --memory 128m \
+            -e DOMAIN_NAME=orderflow.example.invalid -e ACME_EMAIL=operator@example.invalid \
+            -v "$PWD/infrastructure/caddy/Caddyfile:/etc/caddy/Caddyfile:ro" \
+            caddy:2.11.7-alpine caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - name: Validate cloud Prometheus configuration and alert rules
+        run: |
+          timeout 180s docker run --rm --network none --memory 128m --entrypoint promtool \
+            -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" \
+            -v "$PWD/infrastructure/cloud/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro" \
+            -v "$PWD/infrastructure/cloud/monitoring/cloud-alerts.yml:/etc/prometheus/cloud-alerts.yml:ro" \
+            prom/prometheus:v3.5.0 check config /etc/prometheus/prometheus.yml
+      - name: Validate workflow expressions and structure
+        working-directory: .
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.11 -color

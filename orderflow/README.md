@@ -412,3 +412,9 @@ Delivery, notifications, operations reporting, reconciliation, scheduling,
 Prometheus, and Grafana are implemented. Returns/restocking, coupons, reviews,
 recommendations, product media, and any real payment-provider adapter remain
 out of scope. All simulators are explicitly local/test-only.
+
+## Phase 10 AWS deployment
+
+The [cloud deployment guide](docs/phase-10-cloud-deployment.md), [Terraform project](infrastructure/terraform/README.md), [readiness report](docs/phase-10-readiness.md), [CI/CD](docs/cloud-ci-cd.md) and [cost worksheet](docs/cloud-cost-management.md) describe the reproducible single-EC2 portfolio deployment. Only Caddy exposes HTTP/HTTPS; service databases, Redis, Kafka, Eureka and infrastructure administration stay private. Runtime images are immutable, secrets/signing keys persist outside Git, and rollback never overwrites newer business data.
+
+**Live deployment is not yet authorized or verified.** An AWS account/region, owned domain/DNS access, reviewed infrastructure plan and explicit spending approval are required. Payment, email and SMS providers remain simulators. Local TLS fixtures and mocked Terraform tests do not demonstrate public AWS HTTPS.

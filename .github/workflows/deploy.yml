@@ -1,0 +1,99 @@
+name: Deploy approved cloud demo release
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        required: true
+        description: Exact immutable release version
+        type: string
+      artifact_run_id:
+        required: true
+        description: Successful Build immutable release images or Release run ID
+        type: string
+      initial_demo_seed:
+        required: true
+        description: Explicit FIRST cloud-demo deployment only; register new synthetic fixture role accounts on the trusted host
+        type: boolean
+        default: false
+      environment:
+        required: true
+        type: choice
+        options: [cloud-demo]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+      INSTANCE_ID: ${{ vars.AWS_INSTANCE_ID }}
+      ARTIFACT_BUCKET: ${{ vars.AWS_ARTIFACT_BUCKET }}
+      DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+      RELEASE_VERSION: ${{ inputs.release_version }}
+      TARGET_ENVIRONMENT: ${{ inputs.environment }}
+      ARTIFACT_RUN_ID: ${{ inputs.artifact_run_id }}
+      INITIAL_DEMO_SEED: ${{ inputs.initial_demo_seed }}
+      GH_TOKEN: ${{ github.token }}
+    defaults:
+      run:
+        working-directory: orderflow
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require successful trusted source workflow
+        run: |
+          python3 - <<'PY'
+          import json,os,re,subprocess
+          run_id=os.environ['ARTIFACT_RUN_ID']
+          assert re.fullmatch(r'[0-9]+',run_id),'numeric artifact run ID required'
+          run=json.loads(subprocess.check_output(['gh','api','repos/Roshan17431/OrderFlow/actions/runs/'+run_id]))
+          assert run['conclusion']=='success','artifact workflow did not succeed'
+          assert run['path'] in ('.github/workflows/build-images.yml','.github/workflows/release.yml'),'untrusted artifact producer'
+          assert run['head_repository']['full_name']=='Roshan17431/OrderFlow','fork artifacts forbidden'
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.artifact_run_id }}
+          name: orderflow-${{ inputs.release_version }}
+          path: orderflow/deploy/download
+      - name: Validate artifact integrity and manifest
+        run: |
+          cd deploy/download
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          record=pathlib.Path('release.tar.gz.sha256').read_text().split()[0]
+          assert hashlib.sha256(pathlib.Path('release.tar.gz').read_bytes()).hexdigest()==record,'release archive integrity failed'
+          data=json.loads(pathlib.Path('release-manifest.json').read_text())
+          assert data['releaseVersion']==os.environ['RELEASE_VERSION']
+          assert data['awsAccountId']==os.environ['AWS_ACCOUNT_ID']
+          assert data['awsRegion']==os.environ['AWS_REGION']
+          assert data['environment']==os.environ['TARGET_ENVIRONMENT']
+          assert os.environ['ROLE_ARN'].startswith('arn:aws:iam::'+os.environ['AWS_ACCOUNT_ID']+':role/')
+          PY
+          python3 ../../scripts/deploy/cloud.py validate --manifest release-manifest.json
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Verify authenticated AWS target account
+        run: test "$(aws sts get-caller-identity --query Account --output text)" = "$AWS_ACCOUNT_ID"
+      - name: Deliver private immutable release through S3 and wait for truthful SSM result
+        run: |
+          seed_args=()
+          if [ "$INITIAL_DEMO_SEED" = true ]; then seed_args+=(--initial-demo-seed); fi
+          ./scripts/deploy/remote-deploy.sh "${seed_args[@]}" --account "$AWS_ACCOUNT_ID" --region "$AWS_REGION" \
+            --environment "$TARGET_ENVIRONMENT" --domain "$DOMAIN_NAME" --release "$RELEASE_VERSION" \
+            --manifest deploy/download/release-manifest.json --artifact deploy/download/release.tar.gz \
+            --instance-id "$INSTANCE_ID" --artifact-bucket "$ARTIFACT_BUCKET" --timeout 1200
