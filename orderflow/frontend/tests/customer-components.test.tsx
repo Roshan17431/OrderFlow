@@ -280,7 +280,7 @@ describe("real customer components", () => {
       screen.getByRole("button", { name: "Confirm simulated payment" }),
     );
     expect(await screen.findByText("Processing")).toBeVisible();
-    expect(screen.getByText(/trusted.*webhook/i)).toBeVisible();
+    expect(screen.getByText(/payment stays processing.*backend confirms the final outcome/i)).toBeVisible();
     expect(screen.queryByText("Payment succeeded")).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Confirm simulated payment" }),
@@ -300,7 +300,7 @@ describe("real customer components", () => {
       />,
     );
     expect(await screen.findByText("Requires action")).toBeVisible();
-    expect(screen.getByText(/authentication.*required/i)).toBeVisible();
+    expect(screen.getByText(/additional confirmation.*demo operator/i)).toBeVisible();
     expect(
       screen.queryByRole("button", { name: "Confirm simulated payment" }),
     ).not.toBeInTheDocument();

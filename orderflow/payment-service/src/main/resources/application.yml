@@ -141,6 +141,10 @@ resilience4j:
 
 app:
   payment:
+    demo-completion:
+      enabled: ${APP_PAYMENT_DEMO_COMPLETION_ENABLED:false}
+      delay: 5s
+      initial-delay: 15s
     provider: ${APP_PAYMENT_PROVIDER:simulator}
     simulator-enabled: ${APP_PAYMENT_SIMULATOR_ENABLED:true}
     simulator-allow-in-production: ${APP_PAYMENT_SIMULATOR_ALLOW_IN_PRODUCTION:false}

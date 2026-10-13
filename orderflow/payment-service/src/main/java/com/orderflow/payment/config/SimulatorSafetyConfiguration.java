@@ -14,8 +14,9 @@ public class SimulatorSafetyConfiguration {
         if (!properties.simulatorEnabled()) {
             throw new IllegalStateException("The selected simulator provider is disabled");
         }
-        boolean production = Arrays.asList(environment.getActiveProfiles()).contains("prod");
-        if (production && !properties.simulatorAllowInProduction()) {
+        boolean production = Arrays.stream(environment.getActiveProfiles())
+                .anyMatch(profile -> "prod".equals(profile) || "production".equals(profile));
+        if (production) {
             throw new IllegalStateException(
                     "The payment simulator is prohibited in the production profile");
         }

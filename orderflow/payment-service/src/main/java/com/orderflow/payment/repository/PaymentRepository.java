@@ -14,6 +14,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface PaymentRepository
         extends JpaRepository<Payment, UUID>, JpaSpecificationExecutor<Payment> {
+    @Query("select p from Payment p where p.status = com.orderflow.payment.domain.PaymentStatus.PROCESSING "
+            + "and p.provider = 'SIMULATOR' and p.providerPaymentId is not null "
+            + "and p.paymentDeadline > :now order by p.createdAt, p.id")
+    List<Payment> findDemoProcessing(@Param("now") Instant now, org.springframework.data.domain.Pageable page);
     Optional<Payment> findByOrderId(UUID orderId);
     Optional<Payment> findByProviderPaymentId(String providerPaymentId);
 

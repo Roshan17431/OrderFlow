@@ -171,14 +171,14 @@ export function PaymentPanel({
           )}
           {payment.data.status === "PROCESSING" && (
             <Alert tone="info">
-              The simulator accepted this attempt. Payment stays processing
-              until a trusted backend webhook confirms the outcome.
+              The demo processor accepted this attempt. Payment stays processing
+              until the backend confirms the final outcome.
             </Alert>
           )}
           {payment.data.status === "REQUIRES_ACTION" && (
             <Alert>
-              Authentication is required by this simulator outcome. Complete the
-              simulator event using trusted backend tooling, then reload.
+              This test outcome needs an additional confirmation. Ask the demo
+              operator to resolve the attempt, then reload.
             </Alert>
           )}
           {payment.data.status === "SUCCEEDED" && (
@@ -211,7 +211,7 @@ export function PaymentPanel({
             )}
           {canConfirm && (
             <>
-              <p className="eyebrow">Local payment simulator</p>
+              <p className="eyebrow">Demo payment — no real money charged</p>
               <p className="small muted">
                 These are test outcomes. No card or banking details are
                 collected.
@@ -271,14 +271,12 @@ export function PaymentPanel({
           {payment.data.provider === "SIMULATOR" && (
             <details style={{ marginTop: 20 }}>
               <summary className="small">
-                How simulator completion works
+                About demo payments
               </summary>
               <p className="small muted" style={{ marginTop: 12 }}>
-                Success and authentication outcomes require the signed simulator
-                webhook from trusted backend tooling. A customer browser cannot
-                finalize that event. See{" "}
-                <code>frontend/docs/payment-simulator.md</code> for the local
-                developer workflow.
+                These outcomes are simulated. No real money is charged and no
+                card or banking details are collected. A processing status changes
+                only after the demo backend confirms the result.
               </p>
             </details>
           )}
