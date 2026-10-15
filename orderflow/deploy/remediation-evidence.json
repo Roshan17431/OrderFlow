@@ -1,0 +1,449 @@
+{
+  "status": "FAIL",
+  "assessmentDate": "2026-10-14",
+  "baselineGitSha": "8540d58fc512e98d93d171e37f6bf041a79af117",
+  "springBoot": "3.5.16",
+  "changes": {
+    "springCloud": {
+      "before": "2025.0.2",
+      "after": "2025.0.3"
+    },
+    "ciMonitoringMount": "mount rules directory and individual cloud files, avoiding read-only parent mount",
+    "frontendSourceChanges": false
+  },
+  "maven": {
+    "tests": 264,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xmlReports": 88
+  },
+  "matchingSourceFiles": 761,
+  "javaChecks": [
+    {
+      "check": "affected-tests",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-pl",
+        "service-registry,api-gateway,auth-service,notification-service",
+        "-am",
+        "-Dcyclonedx.skip=true",
+        "test"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 35.047,
+      "log": "/tmp/orderflow-remediation-clean-affected-tests.log",
+      "sourceRoot": "/Users/roshan/.cache/orderflow-remediation/2026-10-14/verification-source/orderflow",
+      "verifiedAt": "2026-10-14T01:44:43.088747+00:00"
+    },
+    {
+      "check": "maven-verify",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "verify"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 219.576,
+      "log": "/tmp/orderflow-remediation-clean-maven-verify.log",
+      "sourceRoot": "/Users/roshan/.cache/orderflow-remediation/2026-10-14/verification-source/orderflow",
+      "verifiedAt": "2026-10-14T01:48:22.669655+00:00"
+    },
+    {
+      "check": "runtime-tree",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "dependency:tree",
+        "-Dscope=runtime",
+        "-DoutputType=json",
+        "-DoutputFile=target/remediation-runtime-tree.json"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.217,
+      "log": "/tmp/orderflow-remediation-clean-runtime-tree.log",
+      "sourceRoot": "/Users/roshan/.cache/orderflow-remediation/2026-10-14/verification-source/orderflow",
+      "verifiedAt": "2026-10-14T01:48:24.887605+00:00"
+    }
+  ],
+  "runtimeVersions": {
+    "org.springframework:spring-core": "6.2.19",
+    "org.springframework:spring-web": "6.2.19",
+    "org.springframework:spring-webmvc": "6.2.19",
+    "org.springframework:spring-webflux": "6.2.19",
+    "org.springframework:spring-expression": "6.2.19",
+    "org.springframework.security:spring-security-core": "6.5.11",
+    "org.springframework.security:spring-security-ldap": null,
+    "com.unboundid:unboundid-ldapsdk": null,
+    "com.fasterxml:aalto-xml": null,
+    "org.springframework.cloud:spring-cloud-gateway-server-webflux": "4.3.5",
+    "org.springframework.cloud:spring-cloud-netflix-eureka-client": "4.3.3",
+    "org.springframework.cloud:spring-cloud-commons": "4.3.3"
+  },
+  "vulnerableClassPresence": {
+    "XsltView": true,
+    "SimpleEvaluationContext": true,
+    "Jaxb2XmlDecoder": true,
+    "UnboundIdContainer": false
+  },
+  "spelCompilerDefault": "OFF",
+  "frontendChecks": [
+    {
+      "check": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 12.943,
+      "log": "/tmp/orderflow-remediation-frontend-final-build.log"
+    },
+    {
+      "check": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.523,
+      "log": "/tmp/orderflow-remediation-frontend-final-lint.log"
+    },
+    {
+      "check": "types",
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.614,
+      "log": "/tmp/orderflow-remediation-frontend-final-types.log"
+    },
+    {
+      "check": "tests",
+      "command": [
+        "npm",
+        "run",
+        "test"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 9.988,
+      "log": "/tmp/orderflow-remediation-frontend-final-tests.log"
+    }
+  ],
+  "frontendAuditChecks": [
+    {
+      "check": "types-after-fixtures",
+      "exitCode": 0,
+      "log": "/tmp/orderflow-remediation-frontend-final-types-after-fixtures.log"
+    },
+    {
+      "check": "audit",
+      "exitCode": 1,
+      "log": "/tmp/orderflow-remediation-frontend-final-audit.log"
+    },
+    {
+      "check": "production-audit",
+      "exitCode": 0,
+      "log": "/tmp/orderflow-remediation-frontend-final-production-audit.log"
+    }
+  ],
+  "fixtureBrowser": {
+    "status": "PASS",
+    "tests": 10,
+    "exitCode": 0,
+    "durationSeconds": 21.015
+  },
+  "vitest": {
+    "status": "PASS",
+    "tests": 138
+  },
+  "npmAudit": {
+    "status": "FAIL",
+    "highDevelopmentFindings": 4,
+    "underlyingAdvisory": "CVE-2026-93687",
+    "productionFindings": 0,
+    "patchedBracesVersionAvailable": false
+  },
+  "terraform": [
+    {
+      "check": "fmt",
+      "exitCode": 0,
+      "durationSeconds": 1.815,
+      "log": "/tmp/orderflow-remediation-terraform-fmt.log"
+    },
+    {
+      "check": "init",
+      "exitCode": 0,
+      "durationSeconds": 1.108,
+      "log": "/tmp/orderflow-remediation-terraform-init.log"
+    },
+    {
+      "check": "validate",
+      "exitCode": 0,
+      "durationSeconds": 1.844,
+      "log": "/tmp/orderflow-remediation-terraform-validate.log"
+    },
+    {
+      "check": "mocked-tests",
+      "exitCode": 0,
+      "durationSeconds": 1.574,
+      "log": "/tmp/orderflow-remediation-terraform-mocked-tests.log"
+    }
+  ],
+  "composeAndStatic": {
+    "baseComposeExitCode": 0,
+    "shellScripts": 32,
+    "shellSyntax": "PASS",
+    "unrelatedWorkUnchanged": true
+  },
+  "otherChecks": {
+    "runtimePolicyTests": {
+      "status": "PASS",
+      "count": 12
+    },
+    "releaseSafetyTests": {
+      "status": "PASS",
+      "count": 35
+    },
+    "cloudToolAndTlsTests": {
+      "status": "PASS",
+      "count": 41
+    },
+    "productionComposeGuard": "PASS",
+    "sourceSecretScan": "PASS",
+    "caddyValidation": "PASS",
+    "baseMonitoringRules": {
+      "status": "PASS",
+      "count": 8
+    },
+    "cloudMonitoringOriginal": "FAIL - read-only parent bind mount, exit125",
+    "cloudMonitoringFixed": {
+      "status": "PASS",
+      "count": 15
+    },
+    "actionlint": "PASS",
+    "logRedaction": {
+      "status": "PASS",
+      "exitCode": 0,
+      "durationSeconds": 11.797
+    }
+  },
+  "newImages": [
+    {
+      "service": "api-gateway",
+      "exitCode": 0,
+      "durationSeconds": 13.285,
+      "log": "/tmp/orderflow-remediation-image-api-gateway.log",
+      "platform": "linux/amd64",
+      "id": "sha256:fc93e4af27808e71e31b4bbd56215b35779c8379c4d0dc7576525d10ed1510b0",
+      "user": "orderflow"
+    },
+    {
+      "service": "service-registry",
+      "exitCode": 0,
+      "durationSeconds": 6.327,
+      "log": "/tmp/orderflow-remediation-image-service-registry.log",
+      "platform": "linux/amd64",
+      "id": "sha256:152cd6f822a1ce3db69e1869689036a8591e8dde99589feec42fa166dc8da00b",
+      "user": "orderflow"
+    }
+  ],
+  "realEndToEnd": {
+    "status": "NOT RUN",
+    "reason": "8GiB physical host/4GiB Docker VM; owner confirmed no larger existing host",
+    "historicalStatus": "2026-10-13 FAIL due OOM and unhealthy scrapes"
+  },
+  "resources": {
+    "physicalHostGiB": 8,
+    "dockerVmBytes": 4108632064,
+    "configuredCloudContainersMiB": 12800,
+    "minimumEvaluationHostGiB": 16,
+    "recommendedVerificationHostGiB": "24-32",
+    "minimumCpu": 4,
+    "recommendedCpu": 8,
+    "applicationHeapReduction": false,
+    "dockerMemorySettingChanged": false
+  },
+  "preservedNextCache": "/Users/roshan/.cache/orderflow-remediation/2026-10-14/next-cache-before-regeneration-4ee7bd2a",
+  "git": {
+    "newBranches": 0,
+    "newCommits": 0,
+    "newPushes": 0,
+    "unrelatedWorkUnchanged": true,
+    "publishedPhase10FilesReviewed": 155
+  },
+  "awsResourcesCreated": 0,
+  "dnsChanges": 0,
+  "dependencyCheck": {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-DskipTests",
+      "verify",
+      "-Psecurity-scan",
+      "-DdataDirectory=/Users/roshan/.cache/orderflow-remediation/security-cache"
+    ],
+    "exitCode": 124,
+    "timedOut": true,
+    "durationSeconds": 1200.088,
+    "verifiedAt": "2026-10-14T02:36:34.801488+00:00",
+    "log": "/tmp/orderflow-remediation-dependency-check-retry.log",
+    "reportsRoot": "/Users/roshan/.cache/orderflow-remediation/2026-10-14/verification-source/orderflow/target/dependency-check",
+    "threshold": 9,
+    "automaticUpdates": true,
+    "tlsValidation": true,
+    "priorAttempt": "TIMEOUT after25min during NVD update",
+    "status": "FAIL",
+    "outcome": "ASSESSMENT_UPDATE_TIMEOUT",
+    "freshFindingsCount": null,
+    "lastCompleteAssessmentDate": "2026-10-13",
+    "lastCompleteAssessmentThresholdFindings": 7,
+    "unchangedGatePassed": false,
+    "suppressionAdded": false,
+    "reason": "Official NVD feed transfer timed out; first attempt25min and retry20min did not complete",
+    "independentTransportProbe": {
+      "status": "FAIL",
+      "curlExitCode": 28,
+      "httpStatus": 200,
+      "bytesReceived": 1258491,
+      "expectedBytes": 4185659,
+      "boundSeconds": 30
+    }
+  },
+  "historicalSevenSpringFindings": [
+    {
+      "id": "CVE-2026-47884",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-47890",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-47891",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-47892",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-59313",
+      "scannerScore": 9.8,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-59283",
+      "scannerScore": 9.1,
+      "artifacts": [
+        "spring-core-6.2.19.jar"
+      ]
+    },
+    {
+      "id": "CVE-2026-59270",
+      "scannerScore": 9.1,
+      "artifacts": [
+        "spring-security-core-6.5.11.jar",
+        "spring-security-oauth2-resource-server-6.5.11.jar"
+      ]
+    }
+  ],
+  "fixedArtifactPublicAvailability": {
+    "spring-core": {
+      "url": "https://repo.maven.apache.org/maven2/org/springframework/spring-core/6.2.20/spring-core-6.2.20.pom",
+      "httpStatus": 404
+    },
+    "spring-security-core": {
+      "url": "https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-core/6.5.12/spring-security-core-6.5.12.pom",
+      "httpStatus": 404
+    }
+  },
+  "affectedTests": {
+    "tests": 97,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "vendorAffectedRanges": {
+    "CVE-2026-47884": [
+      "7.0.0-7.0.8",
+      "6.2.0-6.2.19",
+      "6.1.0-6.1.28",
+      "6.0.0-6.0.30",
+      "5.3.0-5.3.49",
+      "5.2.25.RELEASE and earlier"
+    ],
+    "CVE-2026-47890": [
+      "7.0.0-7.0.8",
+      "6.2.0-6.2.19"
+    ],
+    "CVE-2026-47891": [
+      "7.0.0-7.0.8",
+      "6.2.0-6.2.19",
+      "6.1.0-6.1.28",
+      "6.0.0-6.0.30",
+      "5.3.0-5.3.49",
+      "5.2.25.RELEASE and earlier"
+    ],
+    "CVE-2026-47892": [
+      "7.0.0-7.0.8",
+      "6.2.0-6.2.19",
+      "6.1.0-6.1.28",
+      "6.0.0-6.0.30",
+      "5.3.0-5.3.49",
+      "5.2.5.RELEASE-5.2.25.RELEASE"
+    ],
+    "CVE-2026-59313": [
+      "7.0.0-7.0.8",
+      "6.2.0-6.2.19",
+      "6.1.0-6.1.28",
+      "6.0.0-6.0.30",
+      "5.3.0-5.3.49"
+    ],
+    "CVE-2026-59283": [
+      "7.0.0-7.0.8",
+      "6.2.0-6.2.19",
+      "6.1.0-6.1.28",
+      "6.0.0-6.0.30",
+      "5.3.0-5.3.49",
+      "5.2.25.RELEASE and earlier"
+    ],
+    "CVE-2026-59270": [
+      "7.1.0",
+      "7.0.0-7.0.6",
+      "6.5.0-6.5.11",
+      "6.4.0-6.4.18",
+      "5.8.0-5.8.27",
+      "5.7.0-5.7.25"
+    ]
+  },
+  "compatibleFixedVersions": {
+    "springFramework": "6.2.20 - enterprise only",
+    "springSecurity": "6.5.12 - enterprise only"
+  },
+  "finalClassification": "NOT READY \u2014 CRITICAL BLOCKERS REMAIN",
+  "finishedAt": "2026-10-14T02:37:57.912875+00:00"
+}

@@ -48,9 +48,9 @@
              key as an invalid empty key. Keep the latest pre-regression release
              so local and forked CI builds never require a committed secret. -->
         <dependency-check-maven.version>12.2.2</dependency-check-maven.version>
-        <!-- 2025.0.2.1 is not a published Spring Cloud BOM; 2025.0.2 is the
-             latest compatible 2025.0.x GA artifact available from Maven Central. -->
-        <spring-cloud.version>2025.0.2</spring-cloud.version>
+        <!-- Keep the release train compatible with Boot3.5; 2025.0.3 is the
+             latest public 2025.0.x service release verified on2026-10-14. -->
+        <spring-cloud.version>2025.0.3</spring-cloud.version>
         <testcontainers.version>1.21.3</testcontainers.version>
         <!-- Compatible patch/minor overrides verified against vendor advisories
              and Maven Central on2026-10-13; retain the requested Boot3.5 line. -->

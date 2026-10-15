@@ -205,7 +205,7 @@ jobs:
       - name: Validate cloud Prometheus configuration and alert rules
         run: |
           timeout 180s docker run --rm --network none --memory 128m --entrypoint promtool \
-            -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" \
+            -v "$PWD/monitoring/prometheus/rules:/etc/prometheus/rules:ro" \
             -v "$PWD/infrastructure/cloud/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro" \
             -v "$PWD/infrastructure/cloud/monitoring/cloud-alerts.yml:/etc/prometheus/cloud-alerts.yml:ro" \
             prom/prometheus:v3.5.0 check config /etc/prometheus/prometheus.yml

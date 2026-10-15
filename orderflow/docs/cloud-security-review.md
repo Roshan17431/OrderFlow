@@ -1,5 +1,7 @@
 # Phase 10 dependency security review
 
+The follow-up [2026-10-14 remediation report](phase-10-remediation.md) rechecks exact affected/fixed ranges, resolved dependencies and vulnerable-class prerequisites. It updates the compatible Cloud BOM to 2025.0.3, preserves Boot 3.5 and the raw gate, and distinguishes fresh results from the historical assessment below. The seven Spring patches still require verified enterprise access; no suppression was added.
+
 Reviewed on 2026-10-13. The owner chose to retain Spring Boot 3.5 and document remaining findings instead of migrating to Boot 4 or configuring commercial Spring repositories. The CVSS 9 dependency gate remains enabled; no suppression file, threshold increase or error bypass was added.
 
 ## Executed assessment

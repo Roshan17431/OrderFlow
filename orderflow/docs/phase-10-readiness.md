@@ -1,5 +1,7 @@
 # Phase 10 deployment readiness
 
+For the subsequent 2026-10-14 investigation and uncommitted compatible changes, see [release blocker remediation](phase-10-remediation.md) and its fresh evidence. The assessment below remains a historical record; the remediation's Java/frontend PASS results do not establish a passing dependency gate or complete real-backend journey.
+
 Assessment date: 2026-10-13. **NOT READY — CRITICAL BLOCKERS.** The AWS deployment components are implemented, but the enforced dependency gate fails on seven Spring findings. The owner chose to keep Spring Boot 3.5 and document these findings. No suppression, threshold bypass or migration to Boot 4 was added. Full local business verification also needs a stable runtime with sufficient memory. No live deployment or live-demo URL exists.
 
 PASS below applies only to the stated executed check. Local Docker, mocked AWS plans and fixture browser tests do not establish deployed cloud acceptance. The [deployment guide](phase-10-cloud-deployment.md), [security review](cloud-security-review.md) and [release checklist](cloud-release-checklist.md) explain the release process and remaining gates.
