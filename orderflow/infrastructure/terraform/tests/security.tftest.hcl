@@ -163,3 +163,42 @@ run "reject_budget_without_recipient" {
   }
   expect_failures = [terraform_data.deployment_guard]
 }
+
+run "on_demand_stop_and_assets" {
+  command = plan
+  assert {
+    condition     = aws_instance.application.instance_initiated_shutdown_behavior == "stop" && aws_instance.application.tags["OrderFlowOnDemand"] == "true"
+    error_message = "Dedicated on-demand hosts must STOP on OS shutdown."
+  }
+  assert {
+    condition     = var.demo_max_runtime_hours == 8 && length(local.on_demand_files) == 7
+    error_message = "Default countdown and boot assets must be present."
+  }
+  assert {
+    condition     = toset(jsondecode(aws_iam_role_policy.on_demand_read[0].policy).Statement[0].Action) == toset(["ec2:DescribeInstances", "ec2:DescribeInstanceAttribute"])
+    error_message = "Host identity validation needs read-only EC2 calls, no start/stop permissions."
+  }
+}
+run "reject_unbounded_runtime" {
+  command = plan
+  variables { demo_max_runtime_hours = 25 }
+  expect_failures = [var.demo_max_runtime_hours]
+}
+run "reject_on_demand_production" {
+  command = plan
+  variables { environment = "production" }
+  expect_failures = [terraform_data.deployment_guard]
+}
+run "approved_budget_alert_amounts" {
+  command = plan
+  variables {
+    enable_budget_alerts         = true
+    budget_notification_email    = "operator@example.com"
+    monthly_budget_usd           = 60
+    budget_actual_thresholds_usd = [20, 40, 60]
+  }
+  assert {
+    condition     = length(aws_budgets_budget.monthly[0].notification) == 4 && toset([for n in aws_budgets_budget.monthly[0].notification : n.threshold if n.notification_type == "ACTUAL"]) == toset([20, 40, 60])
+    error_message = "Approved budget configuration must send three actual-dollar and one forecast alert."
+  }
+}

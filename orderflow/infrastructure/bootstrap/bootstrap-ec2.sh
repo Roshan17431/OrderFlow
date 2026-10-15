@@ -114,3 +114,30 @@ APT::Periodic::Unattended-Upgrade "1";
 Unattended-Upgrade::Automatic-Reboot "false";
 APT
 printf 'Bootstrap ready. Populate protected runtime.env and persistent key files; no application deployed.\n'
+# These assets are supplied only by the dedicated Terraform cloud-demo configuration.
+if [[ ${ORDERFLOW_ENABLE_ON_DEMAND:-false} == true ]]; then
+  [[ -f /etc/orderflow-demo.json && -f /usr/local/lib/orderflow/on_demand_host.py ]] || { echo 'Missing dedicated on-demand assets' >&2; exit 1; }
+  cat > /usr/local/sbin/orderflow-host <<'HOST'
+#!/usr/bin/env bash
+set -euo pipefail
+exec /usr/bin/python3 /usr/local/lib/orderflow/on_demand_host.py "$@"
+HOST
+  chmod 0700 /usr/local/sbin/orderflow-host
+  if [[ ! -e /etc/default/orderflow-demo ]]; then
+    python3 - <<'DEFAULTS'
+import json, pathlib
+config=json.loads(pathlib.Path('/etc/orderflow-demo.json').read_text())
+value=float(config['maxRuntimeHours'])
+assert .25 <= value <= 24
+p=pathlib.Path('/etc/default/orderflow-demo')
+p.write_text('ORDERFLOW_DEMO_MAX_RUNTIME_HOURS='+str(value)+'\n');p.chmod(0o600)
+DEFAULTS
+  fi
+  # Enable the pre-Docker replay guard only after CLI/controller installation.
+  install -m 0600 /dev/null /etc/orderflow-demo-installed
+  systemctl daemon-reload
+  systemctl enable orderflow-demo.service orderflow-demo-stop.timer
+  systemctl start orderflow-demo-stop.timer
+  # Never start an application here: its first deployment still requires release gates.
+  echo 'Dedicated on-demand boot service and independent maximum-runtime countdown enabled.'
+fi

@@ -12,27 +12,29 @@ resource "aws_ebs_volume" "application_data" {
   depends_on = [terraform_data.deployment_guard]
 }
 resource "aws_instance" "application" {
-  ami                         = data.aws_ami.selected.id
-  instance_type               = var.instance_type
-  availability_zone           = local.availability_zone
-  subnet_id                   = aws_subnet.public.id
-  vpc_security_group_ids      = [aws_security_group.application.id]
-  associate_public_ip_address = true
-  iam_instance_profile        = aws_iam_instance_profile.application.name
-  monitoring                  = false
+  ami                                  = data.aws_ami.selected.id
+  instance_type                        = var.instance_type
+  availability_zone                    = local.availability_zone
+  subnet_id                            = aws_subnet.public.id
+  vpc_security_group_ids               = [aws_security_group.application.id]
+  associate_public_ip_address          = true
+  iam_instance_profile                 = aws_iam_instance_profile.application.name
+  monitoring                           = false
+  instance_initiated_shutdown_behavior = "stop"
   # Prevent automatic host replacement on bootstrap edits: rerun the reviewed
   # idempotent script through SSM after explicit operational approval.
   user_data_replace_on_change = false
   user_data_base64 = base64gzip(join("\n", ["#cloud-config", yamlencode({
-    write_files = [{
+    write_files = concat([{
       path        = "/usr/local/sbin/orderflow-bootstrap"
       permissions = "0700"
       owner       = "root:root"
       encoding    = "b64"
       content     = fileexists(local.bootstrap_path) ? filebase64(local.bootstrap_path) : ""
-    }]
+    }], local.on_demand_files)
     runcmd = [["env", "DATA_DEVICE=/dev/sdf", "DATA_MOUNT=/opt/orderflow",
       "EBS_VOLUME_ID=${aws_ebs_volume.application_data.id}",
+      "ORDERFLOW_ENABLE_ON_DEMAND=${var.enable_on_demand}",
       "ALLOW_FORMAT_EMPTY_VOLUME=true", "EBS_ENCRYPTION_VERIFIED=true",
     "/bin/bash", "/usr/local/sbin/orderflow-bootstrap"]]
   })]))
@@ -55,13 +57,14 @@ resource "aws_instance" "application" {
       cpu_credits = "standard"
     }
   }
-  tags = { Name = local.name }
+  tags = { Name = local.name, OrderFlowOnDemand = tostring(var.enable_on_demand) }
   depends_on = [
     aws_route_table_association.public,
     aws_iam_role_policy.ssm_agent,
     aws_iam_role_policy.runtime_secrets,
     aws_iam_role_policy.ecr_pull,
-    aws_iam_role_policy.backups
+    aws_iam_role_policy.backups,
+    aws_iam_role_policy.on_demand_read
   ]
 }
 resource "aws_volume_attachment" "application_data" {

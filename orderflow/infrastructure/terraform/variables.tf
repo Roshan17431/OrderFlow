@@ -204,3 +204,28 @@ variable "github_oidc_provider_arn" {
   default     = null
   description = "Reuse an existing token.actions.githubusercontent.com IAM OIDC provider rather than trying to create a duplicate."
 }
+
+variable "enable_on_demand" {
+  type        = bool
+  default     = true
+  description = "Install dedicated cloud-demo boot and runtime stop controls. Disable explicitly for other environments."
+}
+variable "demo_max_runtime_hours" {
+  type        = number
+  default     = 8
+  description = "ORDERFLOW_DEMO_MAX_RUNTIME_HOURS: maximum runtime per boot, before intentional session extension."
+  validation {
+    condition     = var.demo_max_runtime_hours >= 0.25 && var.demo_max_runtime_hours <= 24
+    error_message = "Demo runtime must be between 0.25 and 24 hours."
+  }
+}
+
+variable "budget_actual_thresholds_usd" {
+  type        = list(number)
+  default     = []
+  description = "Optional approved actual-dollar alerts (e.g.20,40,60); empty preserves80% actual alert. Forecast alert remains100% of monthly budget."
+  validation {
+    condition     = length(var.budget_actual_thresholds_usd) <= 4 && length(distinct(var.budget_actual_thresholds_usd)) == length(var.budget_actual_thresholds_usd) && alltrue([for amount in var.budget_actual_thresholds_usd : amount > 0])
+    error_message = "Use at most four distinct positive dollar amounts (plus the forecast notification)."
+  }
+}

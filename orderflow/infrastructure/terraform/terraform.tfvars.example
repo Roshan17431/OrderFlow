@@ -30,3 +30,9 @@ backup_retention_days      = 30 # backups/ only; versions retained another 90 da
 # Use existing CMKs if required; never key material.
 ebs_kms_key_arn     = null
 runtime_kms_key_arn = null
+
+# PROPOSED ONLY: disabled until account, plan, budget and recipient are approved.
+enable_on_demand       = true
+demo_max_runtime_hours = 8 # ORDERFLOW_DEMO_MAX_RUNTIME_HOURS on the host
+budget_actual_thresholds_usd = [20, 40, 60]
+# Set monthly_budget_usd to the approved amount; forecast alert is100% of it.

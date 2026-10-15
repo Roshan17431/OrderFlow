@@ -74,12 +74,15 @@ resource "aws_budgets_budget" "monthly" {
   limit_unit   = "USD"
   time_unit    = "MONTHLY"
   # Account-wide deliberately: tag-filtered budgets can miss unallocated costs.
-  notification {
-    comparison_operator        = "GREATER_THAN"
-    threshold                  = 80
-    threshold_type             = "PERCENTAGE"
-    notification_type          = "ACTUAL"
-    subscriber_email_addresses = [var.budget_notification_email]
+  dynamic "notification" {
+    for_each = length(var.budget_actual_thresholds_usd) == 0 ? { default = 80 } : { for amount in var.budget_actual_thresholds_usd : tostring(amount) => amount }
+    content {
+      comparison_operator        = "GREATER_THAN"
+      threshold                  = notification.value
+      threshold_type             = length(var.budget_actual_thresholds_usd) == 0 ? "PERCENTAGE" : "ABSOLUTE_VALUE"
+      notification_type          = "ACTUAL"
+      subscriber_email_addresses = [var.budget_notification_email]
+    }
   }
   notification {
     comparison_operator        = "GREATER_THAN"

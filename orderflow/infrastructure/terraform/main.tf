@@ -3,6 +3,10 @@ resource "terraform_data" "deployment_guard" {
   input = "${var.expected_account_id}/${var.aws_region}/${var.environment}"
   lifecycle {
     precondition {
+      condition     = !var.enable_on_demand || var.environment == "cloud-demo"
+      error_message = "On-demand shutdown is restricted to dedicated cloud-demo hosts."
+    }
+    precondition {
       condition     = data.aws_caller_identity.current.account_id == var.expected_account_id
       error_message = "AWS caller account differs from the explicitly selected deployment account."
     }
