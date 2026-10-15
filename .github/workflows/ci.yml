@@ -187,6 +187,8 @@ jobs:
           while IFS= read -r -d '' script; do
             bash -n "$script"
           done < <(rg --files -g '*.sh' -0 scripts infrastructure)
+      - name: Validate on-demand systemd units in disposable Ubuntu (no shutdown)
+        run: timeout 300s ./infrastructure/systemd/validate-units.sh
       - name: Cloud runtime policy contracts
         run: python3 -m unittest discover -s infrastructure/cloud/tests -v
       - name: Terraform formatting and provider validation
