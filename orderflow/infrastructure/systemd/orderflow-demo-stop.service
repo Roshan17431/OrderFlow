@@ -1,0 +1,11 @@
+[Unit]
+Description=Check dedicated OrderFlow maximum runtime and stop safely
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=-/etc/default/orderflow-demo
+Type=oneshot
+ExecStart=/usr/local/sbin/orderflow-host tick
+TimeoutStartSec=450
+UMask=0077

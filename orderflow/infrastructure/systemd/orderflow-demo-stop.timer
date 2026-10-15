@@ -1,0 +1,11 @@
+[Unit]
+Description=OrderFlow runtime safety countdown (no automatic startup schedule)
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+AccuracySec=1s
+Unit=orderflow-demo-stop.service
+
+[Install]
+WantedBy=timers.target
