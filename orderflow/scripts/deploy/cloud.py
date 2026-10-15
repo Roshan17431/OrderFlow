@@ -252,11 +252,16 @@ def verify(args, data):
     env.update({'E2E_BASE_URL':'https://'+args.domain,'ORDERFLOW_BASE_URL':'https://'+args.domain,'API_BASE_URL':'https://'+args.domain,'ORDERFLOW_PUBLIC_URL':'https://'+args.domain,'ORDERFLOW_CLOUD_E2E':'true'})
     run([args.verification_script],timeout=args.timeout,env=env,cwd=args.repo)
 
-def record_healthy(state, data, verifier):
+def record_healthy(state, data, verifier, repo=None, domain=None):
     verifier()
     current=Path(state)/'healthy.json'
     if current.exists() and read_json(current)!=data: atomic_json(Path(state)/'previous.json',read_json(current))
     atomic_json(current,data)
+    if repo is not None:
+        validate_domain(domain)
+        pointer={'repo':str(Path(repo).resolve()),'gitSha':data['gitSha'],'domain':domain}
+        atomic_json(Path(state)/'runtime-release.json',pointer)
+        atomic_json(Path(state)/'boot-ready.json',pointer)
 
 def backup_predeploy(args,data,cmd,env):
     # First deployment creates only private infrastructure/bootstrap before dumping all eight DBs.
@@ -323,11 +328,14 @@ def deploy(args,data):
         backup_predeploy(args,data,cmd,env)
         atomic_json(Path(args.state_dir)/'schema-release.json',data)
         atomic_json(Path(args.state_dir)/'schema-source.json',{'repo':str(Path(args.repo).resolve())})
+        # Invalidate Docker boot replay before replacing any application containers.
+        # A failed candidate cannot auto-start at the next Console boot.
+        (Path(args.state_dir)/'boot-ready.json').unlink(missing_ok=True)
         run(cmd+['up','-d','--no-build','--wait','--wait-timeout',str(args.timeout)],env=env,cwd=args.repo,timeout=args.timeout+30)
         if args.initial_demo_seed:
             health(args,data)
             initial_seed(args,data,env)
-        record_healthy(args.state_dir,data,lambda:verify(args,data))
+        record_healthy(args.state_dir,data,lambda:verify(args,data),args.repo,args.domain)
 
 def rollback(args,data):
     with lock(args.state_dir):
@@ -337,8 +345,11 @@ def rollback(args,data):
         cmd,env=preflight(args,data)
         pull(args,data)
         backup_predeploy(args,data,cmd,env)
+        # Invalidate Docker boot replay before replacing any application containers.
+        # A failed candidate cannot auto-start at the next Console boot.
+        (Path(args.state_dir)/'boot-ready.json').unlink(missing_ok=True)
         run(cmd+['up','-d','--no-build','--wait','--wait-timeout',str(args.timeout)],env=env,cwd=args.repo,timeout=args.timeout+30)
-        record_healthy(args.state_dir,data,lambda:verify(args,data))
+        record_healthy(args.state_dir,data,lambda:verify(args,data),args.repo,args.domain)
         # Keep schema-release.json at the newest attempted schema, even after reverting code.
 
 def fetch_secrets(args):

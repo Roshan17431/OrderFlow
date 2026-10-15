@@ -66,6 +66,13 @@ class ToolSafetyTests(unittest.TestCase):
             with self.assertRaises(common.SafetyError):performance.run({},31,2)
             with self.assertRaises(common.SafetyError):performance.run({},10,3)
             client.assert_not_called()
+    def test_stock_verification_rejects_correct_total_with_wrong_reservations(self):
+        client=Mock()
+        client.request.return_value={'onHandQuantity':5,'reservedQuantity':0,'availableQuantity':5}
+        self.assertFalse(journey.stock_state(client,'product',5,2,3))
+        client.request.return_value={'onHandQuantity':5,'reservedQuantity':2,'availableQuantity':3}
+        self.assertEqual(journey.stock_state(client,'product',5,2,3),client.request.return_value)
+
     def test_percentiles_use_actual_bounded_samples(self):
         self.assertEqual(performance.percentile([4,1,2,3],.5),2)
         self.assertEqual(performance.percentile([4,1,2,3],.95),4)

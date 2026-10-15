@@ -66,6 +66,12 @@ def state(client, path, field, value, expected=(200,)):
     return body if isinstance(body, dict) and body.get(field)==value else False
 
 
+def stock_state(client, product_id, on_hand, reserved, available):
+    value=client.request('/api/inventory/products/'+product_id)
+    expected={'onHandQuantity':on_hand,'reservedQuantity':reserved,'availableQuantity':available}
+    return value if isinstance(value,dict) and all(value.get(k)==v for k,v in expected.items()) else False
+
+
 def assert_cookie_rotation(client, original_user):
     old = next(c.value for c in client.jar if c.name=='ORDERFLOW_REFRESH')
     client.request('/api/auth/refresh', 'POST', csrf=False, auth=False, expected=(403,))
@@ -134,6 +140,11 @@ def journey(configuration, fixture_accounts, metrics):
         customer_password = secrets.token_urlsafe(32)
         customer.register(customer_email, customer_password, 'Synthetic cloud customer')
         customer_id = customer.user['id']
+        customer.request('/api/auth/logout','POST',expected=(204,))
+        customer=Client(configuration)
+        customer.login({'email':customer_email,'password':customer_password},'CUSTOMER')
+        if customer.user['id'] != customer_id:
+            raise VerificationError('Customer login did not preserve registered identity')
         assert_cookie_rotation(customer, customer_id)
         customer.request('/api/admin/orders',expected=(403,))
         agent.request('/api/admin/orders',expected=(403,))
@@ -155,6 +166,8 @@ def journey(configuration, fixture_accounts, metrics):
             raise VerificationError('Repeated order idempotency key created a different order')
         vendor.request('/api/orders/'+order_id,expected=(404,))
         poll('Payment pending order',lambda:state(customer,'/api/orders/'+order_id,'status','PAYMENT_PENDING'))
+        poll('Inventory reserved',lambda:state(admin,'/api/inventory/reservations/order/'+order_id,'status','RESERVED'))
+        poll('Reserved stock quantities',lambda:stock_state(vendor,product_id,5,2,3))
         payment = customer.request('/api/payments/orders/'+order_id)
         payment_id = identity(payment['id'])
         if payment.get('provider') != 'SIMULATOR' or payment.get('orderId') != order_id:
@@ -164,6 +177,7 @@ def journey(configuration, fixture_accounts, metrics):
             raise VerificationError('Simulator confirmation must first return PROCESSING')
         poll('Backend signed simulator completion',lambda:state(customer,'/api/orders/'+order_id,'status','PAID'))
         poll('Payment succeeded',lambda:state(customer,'/api/payments/'+payment_id,'status','SUCCEEDED'))
+        poll('Inventory committed',lambda:state(admin,'/api/inventory/reservations/order/'+order_id,'status','COMMITTED'))
         def delivery_present():
             result=customer.request('/api/deliveries/orders/'+order_id,expected=(200,404))
             return result if isinstance(result,dict) and result.get('orderId')==order_id else False
@@ -186,7 +200,8 @@ def journey(configuration, fixture_accounts, metrics):
         final_order=poll('Customer delivery projection',lambda:state(customer,'/api/orders/'+order_id,'fulfillmentStatus','DELIVERED'))
         if final_order.get('status') != 'PAID':
             raise VerificationError('Delivered synthetic order lost its confirmed PAID financial state')
-        final_stock=poll('Confirmed inventory reduction',lambda:state(vendor,'/api/inventory/products/'+product_id,'onHandQuantity',3))
+        poll('Inventory finalized',lambda:state(admin,'/api/inventory/reservations/order/'+order_id,'status','FULFILLED'))
+        final_stock=poll('Confirmed inventory quantities',lambda:stock_state(vendor,product_id,3,0,3))
         def notifications_present():
             value=page_items(customer.request('/api/notifications?size=100'))
             return value or False
@@ -208,7 +223,7 @@ def journey(configuration, fixture_accounts, metrics):
         customer.request('/api/auth/logout','POST',expected=(204,))
         customer.token=old_bearer
         customer.request('/api/auth/me',expected=(401,)) # actual Redis revocation
-        return {'result':'PASS','scope':'local-verified-TLS-simulation' if configuration['local'] else 'authorized-deployed-cloud','awsAccountId':configuration['account'],'environment':configuration['environment'],'run':run,'categoryId':category_id,'productId':product_id,'orderId':order_id,'paymentId':payment_id,'deliveryId':delivery_id,'financialStatus':final_order['status'],'fulfillmentStatus':final_order['fulfillmentStatus'],'onHandQuantity':final_stock['onHandQuantity'],'secureCookieAndCsrf':True,'refreshRotation':True,'logoutRevocation':True,'authenticatedActualSseEvent':True,'outboxBacklog':sum(final_metrics['backlog'].values()),'dltPublications':sum(final_metrics['dlt'].values()),'durationSeconds':round(time.monotonic()-started,3)}
+        return {'result':'PASS','scope':'local-verified-TLS-simulation' if configuration['local'] else 'authorized-deployed-cloud','awsAccountId':configuration['account'],'environment':configuration['environment'],'run':run,'customerId':customer_id,'reservationStatus':'FULFILLED','categoryId':category_id,'productId':product_id,'orderId':order_id,'paymentId':payment_id,'deliveryId':delivery_id,'financialStatus':final_order['status'],'fulfillmentStatus':final_order['fulfillmentStatus'],'onHandQuantity':final_stock['onHandQuantity'],'secureCookieAndCsrf':True,'refreshRotation':True,'logoutRevocation':True,'authenticatedActualSseEvent':True,'outboxBacklog':sum(final_metrics['backlog'].values()),'dltPublications':sum(final_metrics['dlt'].values()),'durationSeconds':round(time.monotonic()-started,3)}
     finally:
         if stream:
             stream.close()

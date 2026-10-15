@@ -101,6 +101,17 @@ class CloudSafety(unittest.TestCase):
         self.assertEqual((state/'healthy.json').read_bytes(),before)
         self.assertFalse((state/'previous.json').exists())
 
+    def test_resume_pointer_is_written_only_after_verified_release(self):
+        state=self.root/'state';data=self.manifest()
+        self.cloud.record_healthy(state,data,lambda:None,str(self.root/'release'),'demo.example.com')
+        pointer=self.cloud.read_json(state/'runtime-release.json')
+        self.assertEqual(pointer,{'repo':str((self.root/'release').resolve()),'gitSha':data['gitSha'],'domain':'demo.example.com'})
+        self.assertEqual(self.cloud.read_json(state/'boot-ready.json'),pointer)
+        before=(state/'runtime-release.json').read_bytes()
+        with self.assertRaises(self.cloud.SafetyError):
+            self.cloud.record_healthy(state,data,lambda:(_ for _ in ()).throw(self.cloud.SafetyError('failed journey')),str(self.root/'unverified'),'demo.example.com')
+        self.assertEqual((state/'runtime-release.json').read_bytes(),before)
+
     def test_missing_secret_or_permissive_file_is_rejected(self):
         with self.assertRaises(self.cloud.SafetyError): self.cloud.private_file(self.root/'runtime.env')
         path=self.root/'runtime.env'; path.write_text('secret'); path.chmod(0o644)
