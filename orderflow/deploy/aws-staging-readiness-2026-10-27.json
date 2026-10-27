@@ -1,0 +1,750 @@
+{
+  "assessmentDate": "2026-10-27",
+  "createdAt": "2026-10-27T03:09:46.416640+00:00",
+  "classification": "READY FOR AWS STAGING APPROVAL",
+  "meaning": "Prepared for human approval only; actual AWS acceptance and production readiness not established",
+  "baselineCommit": "4197fbe1095663f0dbc32d2705bf95b202fb2702",
+  "branch": "master",
+  "checks": [
+    {
+      "step": "migration-audit",
+      "status": "PASS",
+      "evidenceOrLimit": "160 starting migration files preserved; no probable secret/generated-path/unrelated findings"
+    },
+    {
+      "step": "cloud-compose-caddy-ecr",
+      "status": "PASS",
+      "evidenceOrLimit": "Cloud policies and proxy integration; 24 retained build identities re-inspected. ECR publication/pull NOT RUN"
+    },
+    {
+      "step": "terraform-systemd-start-stop",
+      "status": "PASS",
+      "evidenceOrLimit": "17 mocked plan tests, validate/fmt, Ubuntu systemd syntax, 65 cloud +36 deployment tests; actual AWS boot/stop NOT RUN"
+    },
+    {
+      "step": "mumbai-infrastructure-cost-plan",
+      "status": "PASS",
+      "evidenceOrLimit": "Official current regional prices retrieved; offline proposal only, authenticated plan NOT RUN"
+    },
+    {
+      "step": "restricted-staging-configuration",
+      "status": "PASS",
+      "evidenceOrLimit": "Tested HTTPS CIDR support and nondeployable placeholder templates prepared"
+    },
+    {
+      "step": "isolated-restart-persistence",
+      "status": "PASS",
+      "evidenceOrLimit": "Actual auth/Postgres/Redis/Kafka recreation passed for arm64 and amd64 auth; EBS/whole-app restart NOT RUN"
+    },
+    {
+      "step": "browser-acceptance-preparation",
+      "status": "PASS",
+      "evidenceOrLimit": "One cloud journey discovered; new reservation/commit/pickup assertions lint/typecheck; real execution NOT RUN"
+    },
+    {
+      "step": "negative-sse-outbox-dlt-memory-plan",
+      "status": "PASS",
+      "evidenceOrLimit": "Explicit operator matrix and existing actual-SSE/API verifier prepared; AWS results NOT RUN"
+    },
+    {
+      "step": "controlled-deploy-rollback-preparation",
+      "status": "PASS",
+      "evidenceOrLimit": "Eight-database isolated backup/restore and rollback safety tests passed; live rollout/rollback NOT RUN"
+    },
+    {
+      "step": "local-static-automation",
+      "status": "PASS",
+      "evidenceOrLimit": "113 Python automation tests, 17 Terraform tests, 138 Vitest, 10 fixture Playwright, lint/typecheck/build/audits/config/security checks"
+    },
+    {
+      "step": "aws-real-browser-full-commerce",
+      "status": "NOT RUN",
+      "evidenceOrLimit": "No AWS deployment; local Docker only 3.83 GiB"
+    },
+    {
+      "step": "aws-security-group-public-tls",
+      "status": "NOT RUN",
+      "evidenceOrLimit": "No real target, public certificate or AWS security group"
+    },
+    {
+      "step": "aws-negative-payment-refund-authorization",
+      "status": "NOT RUN",
+      "evidenceOrLimit": "Prepared operator acceptance matrix, no actual target"
+    },
+    {
+      "step": "aws-stop-start-memory-live-monitoring",
+      "status": "NOT RUN",
+      "evidenceOrLimit": "No EC2 host; no measured full-stack peak or notification delivery"
+    },
+    {
+      "step": "aws-controlled-data-preserving-rollback",
+      "status": "NOT RUN",
+      "evidenceOrLimit": "No previously healthy AWS release or live data exercise"
+    },
+    {
+      "step": "container-os-and-host-security-scan",
+      "status": "NOT RUN",
+      "evidenceOrLimit": "No installed image scanner or running host; future gate required"
+    }
+  ],
+  "recordedMigrationEvidence": {
+    "source": "deploy/boot4-migration-verification-2026-10-27.json",
+    "rerunThisTask": false,
+    "versions": {
+      "Java": "21.0.12.1 (executed; release 21)",
+      "Maven Wrapper": "3.9.11",
+      "Spring Boot": "4.1.2",
+      "Spring Cloud BOM": "2025.1.4",
+      "Spring Framework": "7.0.10",
+      "Spring Security": "7.1.2",
+      "Gateway Server WebFlux": "5.0.4",
+      "Cloud Netflix": "5.0.3",
+      "Eureka core": "2.0.6",
+      "Spring Kafka": "4.1.2",
+      "Kafka client": "4.2.2",
+      "Kafka broker": "3.9.1 (unchanged)",
+      "Spring Data BOM": "2026.0.2",
+      "Spring Data JPA / Redis": "4.1.2 / 4.1.2",
+      "Hibernate": "7.4.13.Final",
+      "Flyway": "12.4.0",
+      "PostgreSQL JDBC": "42.7.14",
+      "Jackson application JSON": "3.1.7",
+      "Jackson 2 vendor compatibility": "2.21.8",
+      "Testcontainers": "2.0.5 (executed test classpaths)",
+      "JUnit Jupiter": "6.0.3 (executed test classpaths)",
+      "Spring Session": "4.1.1",
+      "Lettuce": "7.5.2.RELEASE",
+      "Micrometer": "1.17.2",
+      "Resilience4j": "2.3.0",
+      "Tomcat": "11.0.27",
+      "Netty": "4.2.19.Final",
+      "Reactor Netty": "1.3.8",
+      "Kotlin runtime BOM / stdlib": "2.4.21 (compatible security override)"
+    },
+    "backend": {
+      "unit": {
+        "tests": 226,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "integration": {
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "product-service": {
+          "integration": {
+            "tests": 3,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 25,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "platform-contracts": {
+          "unit": {
+            "tests": 9,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "delivery-service": {
+          "integration": {
+            "tests": 5,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 12,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "operations-service": {
+          "integration": {
+            "tests": 2,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 4,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "notification-service": {
+          "integration": {
+            "tests": 2,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 12,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "api-gateway": {
+          "unit": {
+            "tests": 33,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "payment-service": {
+          "integration": {
+            "tests": 12,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 26,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "event-contracts": {
+          "unit": {
+            "tests": 7,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "order-service": {
+          "integration": {
+            "tests": 9,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 22,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "service-registry": {
+          "unit": {
+            "tests": 1,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "scheduler-support": {
+          "integration": {
+            "tests": 2,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 2,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "cart-service": {
+          "integration": {
+            "tests": 7,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 24,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "auth-service": {
+          "integration": {
+            "tests": 11,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 39,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "inventory-service": {
+          "integration": {
+            "tests": 7,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "unit": {
+            "tests": 10,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        }
+      }
+    },
+    "security": {
+      "engineVersion": "12.2.2",
+      "dependencyEntries": 166,
+      "threshold": 9,
+      "result": "PASS",
+      "suppressionsAdded": false,
+      "dataSources": [
+        {
+          "name": "NVD API Last Checked",
+          "timestamp": "2026-10-27T01:24:13Z"
+        },
+        {
+          "name": "NVD API Last Modified",
+          "timestamp": "2026-10-26T20:00:11-04"
+        },
+        {
+          "name": "NVD Cache Last Checked",
+          "timestamp": "2026-10-27T01:24:13Z"
+        },
+        {
+          "name": "NVD Cache Last Modified",
+          "timestamp": "2026-10-26T20:00:11-04"
+        }
+      ],
+      "analysisExceptions": [],
+      "sevenSpringFindings": {
+        "CVE-2026-47884": "ABSENT; patched managed Spring version verified",
+        "CVE-2026-47890": "ABSENT; patched managed Spring version verified",
+        "CVE-2026-47891": "ABSENT; patched managed Spring version verified",
+        "CVE-2026-47892": "ABSENT; patched managed Spring version verified",
+        "CVE-2026-59313": "ABSENT; patched managed Spring version verified",
+        "CVE-2026-59283": "ABSENT; patched managed Spring version verified",
+        "CVE-2026-59270": "ABSENT; patched managed Spring version verified"
+      },
+      "remainingFindings": [
+        {
+          "dependency": "commons-jxpath-1.3.jar",
+          "cve": "CVE-2022-40159",
+          "severity": "MEDIUM",
+          "cvss": 6.5
+        },
+        {
+          "dependency": "commons-jxpath-1.3.jar",
+          "cve": "CVE-2022-40160",
+          "severity": "MEDIUM",
+          "cvss": 6.5
+        },
+        {
+          "dependency": "kafka-clients-4.2.2.jar",
+          "cve": "CVE-2026-41115",
+          "severity": "MEDIUM",
+          "cvss": 4.3
+        }
+      ],
+      "kotlinCve": "CVE-2026-53914 absent after aligned Kotlin 2.4.21 override"
+    },
+    "buildCount": 24
+  },
+  "executedNow": {
+    "cloudTests": 65,
+    "deployTests": 36,
+    "runtimePolicyTests": 12,
+    "terraformMockedPlans": 17,
+    "frontendTests": 138,
+    "fixtureBrowserTests": 10,
+    "cloudBrowserDiscovered": 1,
+    "npmAuditFindings": 0,
+    "npmProductionAuditFindings": 0,
+    "retainedImageIdentities": 24,
+    "isolatedPersistenceArm64": {
+      "result": "PASS",
+      "scope": "isolated-four-service-container-recreation",
+      "authImageId": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+      "authArchitecture": "arm64",
+      "postgresUserRetained": true,
+      "flywayHistoryUnchanged": true,
+      "redisAofRecordRetained": true,
+      "kafkaRecordRetained": true,
+      "jwtIssuedBeforeRestartAcceptedAfterRestart": true,
+      "jwksUnchanged": true,
+      "signingKeyBytesUnchanged": true,
+      "fullCommerceE2E": "NOT RUN",
+      "hostEbsReboot": "NOT RUN",
+      "secureCookieThroughCaddy": "NOT RUN"
+    },
+    "isolatedPersistenceAmd64": {
+      "result": "PASS",
+      "scope": "isolated-four-service-container-recreation",
+      "authImageId": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+      "authArchitecture": "amd64",
+      "postgresUserRetained": true,
+      "flywayHistoryUnchanged": true,
+      "redisAofRecordRetained": true,
+      "kafkaRecordRetained": true,
+      "jwtIssuedBeforeRestartAcceptedAfterRestart": true,
+      "jwksUnchanged": true,
+      "signingKeyBytesUnchanged": true,
+      "fullCommerceE2E": "NOT RUN",
+      "hostEbsReboot": "NOT RUN",
+      "secureCookieThroughCaddy": "NOT RUN"
+    },
+    "isolatedRestore": {
+      "applicationStartup": "NOT RUN",
+      "checks": [
+        "pg_restore schema/data",
+        "owner-role authenticated SQL connectivity",
+        "Flyway SQL checksum/history",
+        "table counts",
+        "representative record hashes"
+      ],
+      "container": "orderflow-restore-53bb7cf74794",
+      "databases": 8,
+      "liveRecovery": "NOT RUN",
+      "status": "PASS",
+      "verifiedAt": "2026-10-27T02:55:24.793629+00:00"
+    },
+    "mumbaiRuntimeTemplate": {
+      "result": "PASS",
+      "region": "ap-south-1",
+      "unfilledTemplateRejected": true,
+      "filledSyntheticComposeValidated": true,
+      "ecrImagesInSelectedRegion": 12,
+      "jwtIssuerConsistent": true,
+      "persistentKeysRequired": true,
+      "secureRefreshCookie": true,
+      "productionSimulatorGuard": true,
+      "servicesStarted": false
+    }
+  },
+  "proposedTarget": {
+    "region": "ap-south-1",
+    "environment": "cloud-demo",
+    "purpose": "restricted staging acceptance",
+    "instanceType": "m7i.2xlarge",
+    "vCpu": 8,
+    "ramGiB": 32,
+    "platform": "linux/amd64",
+    "rootGp3GiB": 30,
+    "retainedDataGp3GiB": 100,
+    "eip": true,
+    "route53": false,
+    "maxRuntimeHours": 8,
+    "applicationImages": 12,
+    "terraformObjectsForOneTesterNewOidc": 61,
+    "awsObjectsForOneTesterNewOidc": 60,
+    "realAccountPlan": "NOT RUN"
+  },
+  "costEstimate": {
+    "currency": "USD",
+    "ec2PriceSource": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/ap-south-1/index.csv",
+    "retrievedAt": "2026-10-27T02:43:30.457949+00:00",
+    "regionalPriceRows": [
+      {
+        "SKU": "9F8VBK2QNNNBSF2Y",
+        "Instance Type": "m7i.xlarge",
+        "vCPU": "4",
+        "Memory": "16 GiB",
+        "Volume API Name": "",
+        "Unit": "Hrs",
+        "PricePerUnit": "0.2121000000",
+        "PriceDescription": "$0.2121 per On Demand Linux m7i.xlarge Instance Hour",
+        "EffectiveDate": "2026-10-01"
+      },
+      {
+        "SKU": "D7RMW443YWTMZ4V5",
+        "Instance Type": "",
+        "vCPU": "",
+        "Memory": "",
+        "Volume API Name": "gp3",
+        "Unit": "GB-Mo",
+        "PricePerUnit": "0.0912000000",
+        "PriceDescription": "$0.0912 per GB-month of General Purpose (gp3) provisioned storage - Asia Pacific (Mumbai)",
+        "EffectiveDate": "2026-10-01"
+      },
+      {
+        "SKU": "T52424QKCYEW5XW5",
+        "Instance Type": "m7i.2xlarge",
+        "vCPU": "8",
+        "Memory": "32 GiB",
+        "Volume API Name": "",
+        "Unit": "Hrs",
+        "PricePerUnit": "0.4242000000",
+        "PriceDescription": "$0.4242 per On Demand Linux m7i.2xlarge Instance Hour",
+        "EffectiveDate": "2026-10-01"
+      },
+      {
+        "SKU": "WSEUB4NX5HQYMN3K",
+        "Instance Type": "t3.xlarge",
+        "vCPU": "4",
+        "Memory": "16 GiB",
+        "Volume API Name": "",
+        "Unit": "Hrs",
+        "PricePerUnit": "0.1792000000",
+        "PriceDescription": "$0.1792 per On Demand Linux t3.xlarge Instance Hour",
+        "EffectiveDate": "2026-10-01"
+      }
+    ],
+    "m7i2xlargeHourly": 0.4242,
+    "gp3PerGbMonth": 0.0912,
+    "eipHourly": 0.005,
+    "retentionHours": 730,
+    "assumedEcrGb": 10,
+    "ecrPerGbMonth": 0.1,
+    "assumedS3GbIncludingVersions": 20,
+    "s3PerGbMonth": 0.025,
+    "monthlyRetainedSubtotal": 17.006,
+    "monthlyTotalByRunningHours": {
+      "8": 20.3996,
+      "40": 33.974,
+      "730": 326.672
+    },
+    "exclusions": [
+      "tax/FX",
+      "storage above assumptions",
+      "S3 requests",
+      "billable data transfer",
+      "optional snapshots/CloudWatch/SNS/KMS/advanced SSM/backend storage",
+      "existing domain cost"
+    ],
+    "notASpendingCap": true
+  },
+  "gitAudit": {
+    "startingModifiedTracked": 106,
+    "startingUntrackedFiles": 54,
+    "starting160FileBytesUnchanged": true,
+    "finalModifiedTracked": 110,
+    "finalUntrackedFiles": 61,
+    "newStagingPaths": [
+      "orderflow/deploy/aws-staging-readiness-2026-10-27.json",
+      "orderflow/docs/aws-staging-acceptance.md",
+      "orderflow/docs/aws-staging-readiness-2026-10-27.md",
+      "orderflow/docs/superpowers/plans/2026-10-27-aws-staging.md",
+      "orderflow/frontend/e2e/support/commerce-journey.ts",
+      "orderflow/infrastructure/cloud/staging-mumbai.env.example",
+      "orderflow/infrastructure/cloud/tests/persistence_integration.py",
+      "orderflow/infrastructure/terraform/security.tf",
+      "orderflow/infrastructure/terraform/staging-mumbai.tfvars.example",
+      "orderflow/infrastructure/terraform/tests/security.tftest.hcl",
+      "orderflow/infrastructure/terraform/variables.tf"
+    ],
+    "probableSecretFindings": [],
+    "generatedArtifacts": "Only intentional JSON/Markdown evidence; build caches and real runtime secrets excluded",
+    "noCommitsOrPushes": true
+  },
+  "commands": {
+    "final-policies": {
+      "name": "final-policies",
+      "command": [
+        "bash",
+        "-c",
+        "python3 -m unittest discover -s scripts/cloud/tests -v && python3 -m unittest discover -s scripts/deploy/tests -v && python3 -m unittest discover -s infrastructure/cloud/tests -v && bash scripts/security-scan.sh && bash scripts/verify-log-redaction.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T03:07:59Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 11.74,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/final-policies.log"
+    },
+    "terraform-final": {
+      "name": "terraform-final",
+      "command": [
+        "bash",
+        "-c",
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform fmt -check -recursive && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform validate -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform test -no-color"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-27T03:08:00Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 4.7,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/terraform-final.log"
+    },
+    "container-checks": {
+      "name": "container-checks",
+      "command": [
+        "bash",
+        "-c",
+        "bash infrastructure/systemd/validate-units.sh && python3 infrastructure/cloud/tests/proxy_integration.py && python3 infrastructure/cloud/tests/database_integration.py && bash scripts/validate-monitoring.sh"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:45:21Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 50.49,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/container-checks.log"
+    },
+    "static-config": {
+      "name": "static-config",
+      "command": [
+        "bash",
+        "-c",
+        "docker compose -f docker-compose.yml config --quiet && bash scripts/validate-production-config.sh && find scripts infrastructure -type f -name \"*.sh\" -exec bash -n {} +"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:49:40Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.44,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/static-config.log"
+    },
+    "frontend": {
+      "name": "frontend",
+      "command": [
+        "bash",
+        "-c",
+        "npm audit && npm audit --omit=dev && npm run lint && npm run typecheck && npm run test && npm run build && ORDERFLOW_CLOUD_E2E=true ORDERFLOW_TARGET_ENVIRONMENT=cloud-demo AWS_ACCOUNT_ID=123456789012 E2E_BASE_URL=https://acceptance.example.invalid npx playwright test --project=cloud-backend --list"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T02:50:03Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 24.67,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/frontend.log"
+    },
+    "frontend-acceptance-static": {
+      "name": "frontend-acceptance-static",
+      "command": [
+        "bash",
+        "-c",
+        "npm run lint && npm run typecheck && ORDERFLOW_CLOUD_E2E=true ORDERFLOW_TARGET_ENVIRONMENT=cloud-demo AWS_ACCOUNT_ID=123456789012 E2E_BASE_URL=https://acceptance.example.invalid npx playwright test --project=cloud-backend --list"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T03:00:57Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.45,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/frontend-acceptance-static.log"
+    },
+    "browser-fixtures": {
+      "name": "browser-fixtures",
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "--project=fixtures"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T02:53:05Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 21.42,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/browser-fixtures.log"
+    },
+    "cloud-monitoring-final": {
+      "name": "cloud-monitoring-final",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "promtool",
+        "-v",
+        "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/cloud/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro",
+        "-v",
+        "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/cloud/monitoring/cloud-alerts.yml:/etc/prometheus/cloud-alerts.yml:ro",
+        "-v",
+        "/Users/roshan/Documents/OrderFlow/orderflow/monitoring/prometheus/rules:/etc/prometheus/rules:ro",
+        "prom/prometheus:v3.5.0",
+        "check",
+        "config",
+        "/etc/prometheus/prometheus.yml"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:53:35Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 2.12,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/cloud-monitoring-final.log"
+    },
+    "persistence-probe": {
+      "name": "persistence-probe",
+      "command": [
+        "python3",
+        "infrastructure/cloud/tests/persistence_integration.py",
+        "--report",
+        "/Users/roshan/.cache/orderflow-staging/2026-10-27/persistence-results.json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:49:19Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 29.56,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/persistence-probe.log"
+    },
+    "persistence-amd64": {
+      "name": "persistence-amd64",
+      "command": [
+        "python3",
+        "infrastructure/cloud/tests/persistence_integration.py",
+        "--auth-image",
+        "orderflow-boot4/auth-service:verification-amd64",
+        "--report",
+        "/Users/roshan/.cache/orderflow-staging/2026-10-27/persistence-amd64-results.json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:55:25Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 68.1,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/persistence-amd64.log"
+    },
+    "isolated-backup-restore": {
+      "name": "isolated-backup-restore",
+      "command": [
+        "python3",
+        "/Users/roshan/.cache/orderflow-staging/2026-10-27/restore-probe.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:54:48Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 37.12,
+      "log": "/Users/roshan/.cache/orderflow-staging/2026-10-27/isolated-backup-restore.log"
+    }
+  },
+  "resolvedInitialFailures": [
+    {
+      "check": "cloud-monitoring",
+      "exitCode": 125,
+      "reason": "Nested mount under read-only parent prevented container startup",
+      "resolution": "Mount individual config files; promtool final PASS"
+    },
+    {
+      "check": "terraform-ingress-regression-red",
+      "reason": "Expected failure against original unrestricted ingress",
+      "resolution": "Implemented CIDR input/validation; final 17 PASS"
+    }
+  ],
+  "approvalChecklist": "docs/aws-staging-readiness-2026-10-27.md#exact-approval-checklist",
+  "acceptanceRunbook": "docs/aws-staging-acceptance.md",
+  "noAwsResourcesCreated": true,
+  "noAwsAccountOperations": true,
+  "noImagesPublished": true,
+  "noDnsChanges": true,
+  "noGitCommitsOrPushes": true
+}

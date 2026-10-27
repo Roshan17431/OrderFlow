@@ -1,0 +1,31 @@
+# REVIEW TEMPLATE ONLY. Not a deployment authorization. Copy outside Git and
+# replace every placeholder. Account validation intentionally rejects this file.
+expected_account_id = "REPLACE_WITH_APPROVED_12_DIGIT_ACCOUNT"
+aws_region          = "ap-south-1"
+project_name        = "orderflow"
+# This dedicated acceptance host uses existing cloud-demo guards and simulators.
+# Do not set staging here: current release/start-stop tooling requires cloud-demo.
+environment           = "cloud-demo"
+instance_type         = "m7i.2xlarge" # 8 vCPU, 32 GiB; fixed CPU, x86_64
+instance_architecture = "x86_64"
+root_volume_size      = 30
+data_volume_size      = 100
+# Replace documentation-only IP with the tester's actual fixed egress IPv4 /32.
+# No GitHub-hosted runner can reach the application unless separately approved.
+https_ingress_cidrs    = ["203.0.113.10/32"]
+domain_name            = "acceptance.example.invalid" # approved existing DNS name
+enable_route53         = false                        # no DNS writes in this preparation or later apply
+enable_elastic_ip      = true                         # stable manually approved DNS; billed while stopped
+enable_on_demand       = true
+demo_max_runtime_hours = 8
+# Local Prometheus/Grafana/node-exporter are enabled by the release tooling.
+# CloudWatch resources below do not install a CloudWatch agent.
+enable_observability  = false
+enable_budget_alerts  = false # enable only with an approved recipient and budget
+monthly_budget_usd    = 60    # alert threshold, not a spending cap or cost estimate
+backup_retention_days = 30
+# If an account already has the GitHub OIDC provider, set its exact ARN.
+# github_oidc_provider_arn = "arn:aws:iam::ACCOUNT:oidc-provider/token.actions.githubusercontent.com"
+# Choose/approve a regional AZ and AMI in the real reviewed plan; no pin invented.
+# availability_zone = "ap-south-1a"
+# ami_id = "ami-..."

@@ -57,6 +57,11 @@ class RuntimePolicyTests(unittest.TestCase):
                     self.assertIn(name, ['grafana', 'prometheus'])
                     self.assertEqual(p['host_ip'], '127.0.0.1')
 
+    def test_infrastructure_images_are_frozen_by_registry_digest(self):
+        for name, service in self.services.items():
+            if name not in APPS:
+                self.assertRegex(service['image'], r'^.+@sha256:[a-f0-9]{64}$', name)
+
     def test_no_local_passwords_or_localhost_public_origin(self):
         for name, s in self.services.items():
             for key, value in s.get('environment', {}).items():

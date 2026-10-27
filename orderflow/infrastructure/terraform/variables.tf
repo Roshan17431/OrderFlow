@@ -1,3 +1,13 @@
+variable "https_ingress_cidrs" {
+  description = "IPv4 networks allowed to reach Caddy HTTPS. Use tester /32 addresses for staging; [] closes HTTPS. Port 80 remains available only for Caddy ACME HTTP-01 and HTTPS redirects."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+  validation {
+    condition     = alltrue([for cidr in var.https_ingress_cidrs : can(cidrnetmask(cidr))])
+    error_message = "HTTPS ingress entries must be valid IPv4 CIDR networks."
+  }
+}
+
 variable "expected_account_id" {
   description = "Required authorized AWS account ID; provider refuses any other account."
   type        = string

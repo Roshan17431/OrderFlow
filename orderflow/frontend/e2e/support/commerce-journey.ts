@@ -294,6 +294,15 @@ test(title, async ({
       await expect(customerPage.getByLabel("Simulator outcome")).toBeVisible({
         timeout: 60000,
       });
+      await expect.poll(async () => {
+        const response = await admin.api.get(`/api/inventory/reservations/order/${orderId}`);
+        return response.ok() ? ((await response.json()) as { status: string }).status : null;
+      }, { timeout: 60000 }).toBe("RESERVED");
+      await expect.poll(async () => {
+        const response = await vendor.api.get(`/api/inventory/products/${productId}`);
+        const stock = (await response.json()) as Stock;
+        return [stock.onHandQuantity, stock.reservedQuantity, stock.availableQuantity];
+      }, { timeout: 60000 }).toEqual([10, 2, 8]);
       await customerPage
         .getByLabel("Simulator outcome")
         .selectOption("success");
@@ -319,6 +328,10 @@ test(title, async ({
       await expect(
         customerPage.getByText("Paid", { exact: true }).first(),
       ).toBeVisible({ timeout: 60000 });
+      await expect.poll(async () => {
+        const response = await admin.api.get(`/api/inventory/reservations/order/${orderId}`);
+        return response.ok() ? ((await response.json()) as { status: string }).status : null;
+      }, { timeout: 60000 }).toBe("COMMITTED");
     });
     await test.step("Agent availability triggers assignment and browser completes actual delivery", async () => {
       console.info(
@@ -370,12 +383,24 @@ test(title, async ({
       await expect(
         agentPage.getByText("123 Browser Test Street"),
       ).toBeVisible();
-      for (const action of [
+      for (const [index, action] of [
         /mark picked up|pick up|pickup/i,
         /out for delivery/i,
         /mark delivered|confirm delivered|delivered/i,
-      ]) {
+      ].entries()) {
         await agentPage.getByRole("button", { name: action }).first().click();
+        if (index === 0) {
+          // Prove pickup finalizes inventory before the next delivery action.
+          await expect.poll(async () => {
+            const response = await admin.api.get(`/api/inventory/reservations/order/${orderId}`);
+            return response.ok() ? ((await response.json()) as { status: string }).status : null;
+          }, { timeout: 60000 }).toBe("FULFILLED");
+          await expect.poll(async () => {
+            const response = await vendor.api.get(`/api/inventory/products/${productId}`);
+            const stock = (await response.json()) as Stock;
+            return [stock.onHandQuantity, stock.reservedQuantity, stock.availableQuantity];
+          }, { timeout: 60000 }).toEqual([8, 0, 8]);
+        }
       }
       await expect
         .poll(

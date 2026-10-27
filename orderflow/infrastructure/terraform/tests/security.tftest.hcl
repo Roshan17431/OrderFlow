@@ -73,6 +73,52 @@ run "reject_wrong_account" {
   expect_failures = [terraform_data.deployment_guard]
 }
 
+run "restricted_mumbai_acceptance" {
+  command = plan
+  variables {
+    aws_region               = "ap-south-1"
+    instance_type            = "m7i.2xlarge"
+    https_ingress_cidrs      = ["203.0.113.10/32", "198.51.100.20/32"]
+    enable_elastic_ip        = true
+    github_oidc_provider_arn = null
+  }
+  override_data {
+    target = data.aws_availability_zones.available
+    values = { names = ["ap-south-1a"] }
+  }
+  override_data {
+    target = data.aws_ec2_instance_type.selected
+    values = { supported_architectures = ["x86_64"], memory_size = 32768 }
+  }
+  assert {
+    condition     = toset([for r in aws_vpc_security_group_ingress_rule.web : r.cidr_ipv4 if r.from_port == 443]) == toset(["203.0.113.10/32", "198.51.100.20/32"])
+    error_message = "Staging HTTPS must admit exactly the approved tester addresses."
+  }
+  assert {
+    condition     = alltrue([for r in aws_vpc_security_group_ingress_rule.web : r.from_port == 80 || r.from_port == 443]) && length([for r in aws_vpc_security_group_ingress_rule.web : r if r.from_port == 80 && r.cidr_ipv4 == "0.0.0.0/0"]) == 1
+    error_message = "Only Caddy HTTP challenges/redirect and restricted HTTPS may be exposed."
+  }
+  assert {
+    condition     = local.availability_zone == "ap-south-1a" && local.container_platform == "linux/amd64" && aws_instance.application.instance_type == "m7i.2xlarge" && length(aws_route53_record.application) == 0 && length(aws_eip.application) == 1 && length(aws_iam_openid_connect_provider.github) == 1
+    error_message = "Acceptance must use the selected Mumbai host/platform without creating DNS."
+  }
+}
+
+run "reject_invalid_https_cidr" {
+  command = plan
+  variables { https_ingress_cidrs = ["not-an-ip/32"] }
+  expect_failures = [var.https_ingress_cidrs]
+}
+
+run "no_https_access_without_allowlist" {
+  command = plan
+  variables { https_ingress_cidrs = [] }
+  assert {
+    condition     = length([for r in aws_vpc_security_group_ingress_rule.web : r if r.from_port == 443]) == 0
+    error_message = "An empty allowlist must close HTTPS rather than silently allow the world."
+  }
+}
+
 run "reject_architecture_mismatch" {
   command = plan
   variables { instance_architecture = "arm64" }
