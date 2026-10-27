@@ -4,7 +4,7 @@ A full-stack microservices commerce portfolio with a Next.js storefront, vendor 
 
 **Live demo: not deployed.** AWS account access, an owned domain and explicit approval for the reviewed billable resource plan are required before deployment. **Demo payments charge no real money; email and SMS are simulated.**
 
-Phase 10 infrastructure and release tooling are implemented locally. The Spring Boot 4.1.2 / Spring Cloud 2025.1.4 migration passes the unchanged dependency security gate. Full-stack acceptance on a sufficiently provisioned host remains pending; see the [current migration and verification report](orderflow/docs/boot4-migration-2026-10-27.md). AWS deployment has not occurred.
+Phase 10 infrastructure and release tooling are implemented locally. The Spring Boot 4.1.2 / Spring Cloud 2025.1.4 migration passes the unchanged dependency security gate. The local release freeze found unresolved container vulnerabilities and an incomplete Java-image scan, so AWS approval is **BLOCKED**; see the [release freeze and approval worksheet](orderflow/docs/release-freeze-2026-10-27.md). Full-stack acceptance remains NOT RUN. AWS deployment has not occurred.
 
 ## Architecture
 
@@ -22,7 +22,7 @@ flowchart LR
     Services --> Observability[Private Prometheus and Grafana]
 ```
 
-The frontend uses React, strict TypeScript, Tailwind, TanStack Query, React Hook Form/Zod and exact monetary handling. Access tokens stay in memory, refresh cookies remain backend-owned, and role interfaces use authenticated gateway APIs. The backend uses Java21, Spring Boot3.5/Spring Cloud2025, RS256 JWT, CSRF, Redis revocation, Flyway, Kafka, idempotent consumers, transactional outboxes and bounded scheduling/reconciliation. Payments/refunds and delivery fulfillment remain distinct state machines.
+The frontend uses React, strict TypeScript, Tailwind, TanStack Query, React Hook Form/Zod and exact monetary handling. Access tokens stay in memory, refresh cookies remain backend-owned, and role interfaces use authenticated gateway APIs. The backend uses Java 21, Spring Boot 4.1.2/Spring Cloud 2025.1.4, RS256 JWT, CSRF, Redis revocation, Flyway, Kafka, idempotent consumers, transactional outboxes and bounded scheduling/reconciliation. Payments/refunds and delivery fulfillment remain distinct state machines.
 
 ## Development and Docker
 

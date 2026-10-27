@@ -746,5 +746,9 @@
   "noAwsAccountOperations": true,
   "noImagesPublished": true,
   "noDnsChanges": true,
-  "noGitCommitsOrPushes": true
+  "noGitCommitsOrPushes": true,
+  "historicalSnapshot": true,
+  "supersededBy": "docs/release-freeze-2026-10-27.md",
+  "currentDecisionEvidence": "deploy/release-verification-2026-10-27.json",
+  "historicalResultsPreserved": true
 }

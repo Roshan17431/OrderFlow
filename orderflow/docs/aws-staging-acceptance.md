@@ -1,6 +1,6 @@
 # AWS Mumbai real-backend acceptance runbook
 
-Prepared 2026-10-27. **Every AWS/browser/API/reboot/rollback acceptance case below is NOT RUN.** This document authorizes no commands against AWS. Use it only after the specific resource, publication, deployment, DNS and synthetic-data actions have been approved. Local isolated evidence is in the dated readiness report.
+Prepared 2026-10-27. **Every AWS/browser/API/reboot/rollback acceptance case below is NOT RUN.** This document authorizes no commands against AWS. Use it only after the specific resource, publication, deployment, DNS and synthetic-data actions have been approved. The [release freeze worksheet](release-freeze-2026-10-27.md) supersedes the earlier readiness decision and currently records **BLOCKED**.
 
 ## Target and boundaries
 
@@ -13,7 +13,7 @@ Prepared 2026-10-27. **Every AWS/browser/API/reboot/rollback acceptance case bel
 
 ## Before first deployment
 
-1. Obtain the approvals in `aws-staging-readiness-2026-10-27.md`. The current tree is uncommitted: the publishing workflow checks out a Git SHA and would otherwise build the old baseline. Do not label the current baseline SHA as a migrated release.
+1. Resolve the blockers and obtain the approvals in `release-freeze-2026-10-27.md`. The migration/staging source is now committed locally; use the final immutable SHA in the freeze receipt. Git/image publication still requires separate authorization. Do not use the old pre-migration baseline SHA for publication.
 2. After separately authorized Git publication, require clean-SHA Java 21 CI, unchanged OWASP gate, npm audits, image builds, SBOMs and a reviewed OS/container scan. Publish all 12 **amd64** images to the selected account's Mumbai ECR repositories only when image publication is authorized. Record digests in the release manifest.
 3. Review the authenticated Terraform plan using the completed Mumbai example, correct remote state, current AMI and approved AZ. Reject unexpected replacement/destruction, extra public ingress, a conflicting existing ECR/OIDC owner, or any DNS change. Apply remains a separate explicit approval.
 4. Approve an existing hostname and stable EIP. Terraform `enable_route53=false` does not configure DNS. The public A record must already be correct or receive a separate DNS approval; remove conflicting AAAA/CDN proxy paths. An unapproved `.invalid` placeholder cannot obtain a certificate.

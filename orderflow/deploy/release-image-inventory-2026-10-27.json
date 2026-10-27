@@ -1,0 +1,1852 @@
+{
+  "assessmentDate": "2026-10-27",
+  "sourceCommit": "3c2b43661c2e3b96f57c1456d8d2788c1fc0ac75",
+  "applications": [
+    {
+      "service": "service-registry",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "frontend",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "service-registry",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "frontend",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    }
+  ],
+  "infrastructure": [
+    {
+      "services": [
+        "blackbox-exporter"
+      ],
+      "baselineIndexReference": "prom/blackbox-exporter@sha256:92e05d5fe0df01d3980518dc42f07b778a8997048b57392ebc7f7391ebd7bb06",
+      "indexDigest": "sha256:92e05d5fe0df01d3980518dc42f07b778a8997048b57392ebc7f7391ebd7bb06",
+      "platformDigests": {
+        "amd64": "sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+        "arm64": "sha256:c29deb9d1916974b661b149246329de2f2fd113a81e771947d572bb6584f6674"
+      },
+      "localConfigId": "sha256:cccf3e174d3738117d92eb5fdcd58e880d518a824595dadf9368981dbe504548",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "prom/blackbox-exporter@sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+      "frozenCloudReference": "prom/blackbox-exporter:v0.26.0@sha256:92e05d5fe0df01d3980518dc42f07b778a8997048b57392ebc7f7391ebd7bb06",
+      "targetConfigDigest": "sha256:694775639bf5b3228234edf4cd57a5fc3e3a6a7c879fe0ca46ed7919bd2e8b71",
+      "preFreezeConfiguredReference": "prom/blackbox-exporter:v0.26.0",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "caddy"
+      ],
+      "baselineIndexReference": "caddy@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "indexDigest": "sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "platformDigests": {
+        "amd64": "sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+        "arm64": "sha256:84058f1a0e5beb97664a9b79dcfd267b594c033d5bb88d8463cdfb59c0779197"
+      },
+      "localConfigId": "sha256:f6a2207268b0f0914df9d3569e1824d6adcfa7b59fbffe0f3cbc5d2d60423f71",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "caddy@sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+      "frozenCloudReference": "caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "targetConfigDigest": "sha256:f77f856a30f0004200b36b322d61da17fade31e24875699d77fb968399b9eb77",
+      "preFreezeConfiguredReference": "caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "preFreezeConfiguredReferenceImmutable": true,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "database-bootstrap",
+        "postgres"
+      ],
+      "baselineIndexReference": "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "indexDigest": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "platformDigests": {
+        "amd64": "sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+        "arm64": "sha256:2c942175a1255a9abe0366e48c1b401d9f50f835b04dfea13f111609b5530df7"
+      },
+      "localConfigId": "sha256:ef738a34a8651d11b2bace81c55c7e2187f786b484add6c83070884340074368",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+      "frozenCloudReference": "postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "targetConfigDigest": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+      "preFreezeConfiguredReference": "postgres:16-alpine",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "grafana"
+      ],
+      "baselineIndexReference": "grafana/grafana@sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f",
+      "indexDigest": "sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f",
+      "platformDigests": {
+        "amd64": "sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+        "arm64": "sha256:3b7178cb66226403407d80ef83449a00921ed1b5d6cc0c032c15d35f23cc3317"
+      },
+      "localConfigId": "sha256:4b30e14267ee4bd0044d909cbdfac7c1a7c0d8f5c6abdae5bccffe16910d9f3b",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+      "frozenCloudReference": "grafana/grafana:12.1.0@sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f",
+      "targetConfigDigest": "sha256:75006c93b887a310c7d4b21b557de093cb67caa4e1e4d812cbc08edd7580b7e9",
+      "preFreezeConfiguredReference": "grafana/grafana:12.1.0",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "kafka"
+      ],
+      "baselineIndexReference": "apache/kafka@sha256:4ceccc577f03f51f6af8dbfda55194d0d892f4fa7913ffbded567ce3895622ed",
+      "indexDigest": "sha256:4ceccc577f03f51f6af8dbfda55194d0d892f4fa7913ffbded567ce3895622ed",
+      "platformDigests": {
+        "amd64": "sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "arm64": "sha256:39bc3b30084ad6ab33ad2c9a525f15c942bf097b18cb2a1825afa6df3411f8b5"
+      },
+      "localConfigId": "sha256:793ff1e5c750c9f8723804161c211a75bcc011b7b18fa951dd514bd7646e4aaa",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+      "frozenCloudReference": "apache/kafka:3.9.1@sha256:4ceccc577f03f51f6af8dbfda55194d0d892f4fa7913ffbded567ce3895622ed",
+      "targetConfigDigest": "sha256:44a48f9d78af26959fa4d61accb9be35f939a79bfdae05cad6df4baca8e22eeb",
+      "preFreezeConfiguredReference": "apache/kafka:3.9.1",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "node-exporter"
+      ],
+      "baselineIndexReference": "prom/node-exporter@sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a",
+      "indexDigest": "sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a",
+      "platformDigests": {
+        "amd64": "sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+        "arm64": "sha256:2e9d73002adb973441ec1c815a8e7e7c2465f5e535d859d16ee395f2ceb857c7"
+      },
+      "localConfigId": "sha256:94b9e099be351254ca09fd4c88b642254898e70d64960d3d3bed50ac0d771cdb",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "prom/node-exporter@sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+      "frozenCloudReference": "prom/node-exporter:v1.9.1@sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a",
+      "targetConfigDigest": "sha256:255ec253085fb105696533b31864a5e3b64f1f1e2147b5ec368100cbf3ec9b80",
+      "preFreezeConfiguredReference": "prom/node-exporter:v1.9.1",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "prometheus"
+      ],
+      "baselineIndexReference": "prom/prometheus@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996",
+      "indexDigest": "sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996",
+      "platformDigests": {
+        "amd64": "sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+        "arm64": "sha256:dfc3cce6bfa8485ccad377c66f4ef9833524fde710756faa725251b639d19d86"
+      },
+      "localConfigId": "sha256:5a1d4a6d0adfd8f785bb0f1243f2a90457e508eaf5eb7e958aa5ea1463020fcb",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+      "frozenCloudReference": "prom/prometheus:v3.5.0@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996",
+      "targetConfigDigest": "sha256:a3bc50fcb50fb1409287c32773d8fe799f6cad5511c4ba3e2e851784e7a05026",
+      "preFreezeConfiguredReference": "prom/prometheus:v3.5.0",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "redis"
+      ],
+      "baselineIndexReference": "redis@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "indexDigest": "sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "platformDigests": {
+        "amd64": "sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+        "arm64": "sha256:1f09a89a207d794a8c61d9edfc26e7c58427de10ccef7c5d18d638df79a63b85"
+      },
+      "localConfigId": "sha256:ec4f171e9ff071bb2a1c936057d3be00206069b028b6c0d61df2477e1dd02c42",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+      "frozenCloudReference": "redis:7-alpine@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "targetConfigDigest": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+      "preFreezeConfiguredReference": "redis:7-alpine",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    }
+  ],
+  "digestTypes": "Application config digests identify locally built images; they are not ECR manifest digests. Infrastructure index and amd64 child manifest digests are public registry digests. ECR is NOT PUBLISHED.",
+  "scanner": {
+    "name": "Trivy",
+    "version": "0.76.1",
+    "release": "https://github.com/aquasecurity/trivy/releases/tag/v0.76.1",
+    "archiveSha256": "11a9b6cd2752011b54f01ea4bd0dbfa9f0c41dc6538d5a3f9d23955f471bf4e5",
+    "archiveVerifiedAgainstReleaseApiAndChecksums": true,
+    "database": {
+      "Version": 2,
+      "NextUpdate": "2026-10-28T13:12:49.474279763Z",
+      "UpdatedAt": "2026-10-27T13:12:49.474279883Z",
+      "DownloadedAt": "2026-10-27T14:43:41.614997Z"
+    },
+    "ignoreFile": "/dev/null",
+    "ignoreUnfixed": false,
+    "severityFilter": "all",
+    "noImagesUploadedOrPublished": true
+  },
+  "summary": {
+    "imageCount": 32,
+    "reportedImagePackageOccurrences": 1377,
+    "uniqueAdvisoryIds": 399,
+    "uniqueCveIds": 391,
+    "otherAdvisoryIds": 8,
+    "severityOccurrences": {
+      "HIGH": 490,
+      "MEDIUM": 648,
+      "LOW": 186,
+      "UNKNOWN": 27,
+      "CRITICAL": 26
+    },
+    "dispositionCounts": {
+      "PENDING_REMEDIATION_OR_VENDOR_APPLICABILITY_REVIEW": 1323,
+      "BUNDLED_GLOBAL_NPM_TOOLING_OUTSIDE_PROJECT_NPM_AUDIT": 44,
+      "VENDOR_32_BIT_PREREQUISITE_ABSENT_ON_SCANNED_64_BIT_TARGET": 5,
+      "VENDOR_ENTERPRISE_SCIM_PREREQUISITES_ABSENT_IN_CONFIGURED_OSS_GRAFANA": 1,
+      "SUSPECTED_PSEUDO_VERSION_MATCH_REQUIRES_RECONCILIATION": 4
+    },
+    "scanExecutionStatus": "PASS",
+    "imageSecurityApprovalStatus": "BLOCKED",
+    "noFindingSuppressions": true,
+    "rawResultsOutsideGit": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans"
+  },
+  "scanResults": [
+    {
+      "name": "service-registry-arm64",
+      "reference": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/service-registry-arm64.json",
+        "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 4.44,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "11b84e5421e402bbb23454f07dfc085deb679df55caf61cf8b25f8beab1cfb81",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/service-registry-arm64.json"
+    },
+    {
+      "name": "api-gateway-arm64",
+      "reference": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/api-gateway-arm64.json",
+        "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.29,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "b4f92cb72b9e9f8d3d2ea52d6fb4e123a250329b75e0a3f6dbc5170ce8a8eced",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/api-gateway-arm64.json"
+    },
+    {
+      "name": "auth-service-arm64",
+      "reference": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/auth-service-arm64.json",
+        "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.34,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "7a952105eb5b1baf3730eb4e4de7fc1580cacb31a124021dcf7aa6c69ade81b7",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/auth-service-arm64.json"
+    },
+    {
+      "name": "product-service-arm64",
+      "reference": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/product-service-arm64.json",
+        "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.32,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "20683391bfb1d2d2619c85da47af7a8b26d1c2d0d6f5ab435fb563d840f34a58",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/product-service-arm64.json"
+    },
+    {
+      "name": "cart-service-arm64",
+      "reference": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/cart-service-arm64.json",
+        "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.21,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "9ae52957720c7d32069ec35030b2faa735266e87acafa930142508d2f4dae357",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/cart-service-arm64.json"
+    },
+    {
+      "name": "inventory-service-arm64",
+      "reference": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/inventory-service-arm64.json",
+        "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.49,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "6aa42ac9061054df6e238eeccbb9c0988ae95f6b000773adbd122c0a7cfe961b",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/inventory-service-arm64.json"
+    },
+    {
+      "name": "order-service-arm64",
+      "reference": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/order-service-arm64.json",
+        "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.51,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "b73c5b529e5498db3373a1789aea919692497691eeab1d31151bbd7bea638fd5",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/order-service-arm64.json"
+    },
+    {
+      "name": "payment-service-arm64",
+      "reference": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/payment-service-arm64.json",
+        "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.6,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "b291a27d9611631775c5db48826a6fb8e6aaf787c44fa3f9d697d280b5a5b611",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/payment-service-arm64.json"
+    },
+    {
+      "name": "delivery-service-arm64",
+      "reference": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/delivery-service-arm64.json",
+        "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.07,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "311ccc423dc8e3ece6dc53522d2b9bc9e24a46ae40882232910b917111916c95",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/delivery-service-arm64.json"
+    },
+    {
+      "name": "notification-service-arm64",
+      "reference": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/notification-service-arm64.json",
+        "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.84,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "97a940b0454dc42bbc4e731c55a2ef44183f311de515765568f5dd5c704ef642",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/notification-service-arm64.json"
+    },
+    {
+      "name": "operations-service-arm64",
+      "reference": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/operations-service-arm64.json",
+        "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.44,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "81bd12b2c6fd2cf016a9c1b8c42e232584b5a08ab7ec649c1370253fbc615159",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/operations-service-arm64.json"
+    },
+    {
+      "name": "frontend-arm64",
+      "reference": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+      "kind": "application",
+      "platform": "linux/arm64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/frontend-arm64.json",
+        "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 4.89,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "MEDIUM": 10,
+        "HIGH": 11,
+        "LOW": 1
+      },
+      "findingCount": 22,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "d8f69a30ea20e51e0ed91cc3c42f29bc8b38d513363510d60afabe79629607e4",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/frontend-arm64.json"
+    },
+    {
+      "name": "service-registry-amd64",
+      "reference": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/service-registry-amd64.json",
+        "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 4.5,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "5741dc612efa712a696003fd9259ada55caaa1c2dae96c63de83f1e3fcbe0a6f",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/service-registry-amd64.json"
+    },
+    {
+      "name": "api-gateway-amd64",
+      "reference": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/api-gateway-amd64.json",
+        "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.57,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "07d64f4b70f25c6893046eb1506a2eabbf7b442a286475f274fa6ec6da37d69b",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/api-gateway-amd64.json"
+    },
+    {
+      "name": "auth-service-amd64",
+      "reference": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/auth-service-amd64.json",
+        "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.59,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "d17e792650cda380c272a24c28d008a882f432da493ddfe879af3176eae3a373",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/auth-service-amd64.json"
+    },
+    {
+      "name": "product-service-amd64",
+      "reference": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/product-service-amd64.json",
+        "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.43,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "5e1be87adc92b3a39200ed4eaa8e0075ff4ec161832e189fc6a1c9399a7f7054",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/product-service-amd64.json"
+    },
+    {
+      "name": "cart-service-amd64",
+      "reference": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/cart-service-amd64.json",
+        "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.44,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "bf23f5816b41fe0a462cbecf93d5b4c434ce85dfdbf2b38251194f9b983e90d6",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/cart-service-amd64.json"
+    },
+    {
+      "name": "inventory-service-amd64",
+      "reference": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/inventory-service-amd64.json",
+        "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.03,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "2ab340e1da46db9b9135dc2fcea8c403c62bdae5fed17862f2a8d18c1e907f0a",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/inventory-service-amd64.json"
+    },
+    {
+      "name": "order-service-amd64",
+      "reference": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/order-service-amd64.json",
+        "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 4.05,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "09a2770b8fc9dc20a703c024e051eac7712e52a7f6120c8166a95c6faa014417",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/order-service-amd64.json"
+    },
+    {
+      "name": "payment-service-amd64",
+      "reference": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/payment-service-amd64.json",
+        "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.83,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "7be5859c61559cb76bfeb3e66711649d9ea06ea9c1671f9d1f7841ec84b73fe3",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/payment-service-amd64.json"
+    },
+    {
+      "name": "delivery-service-amd64",
+      "reference": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/delivery-service-amd64.json",
+        "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.16,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "b37ae4bda8ad0e504a007a33e5a924d58359e5d33dbd74f5d2f77286882860a2",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/delivery-service-amd64.json"
+    },
+    {
+      "name": "notification-service-amd64",
+      "reference": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/notification-service-amd64.json",
+        "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.15,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "323c34553df91bd3335e9825d4215f41d8e22f98d19c3ae2e1217b23c1c0427b",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/notification-service-amd64.json"
+    },
+    {
+      "name": "operations-service-amd64",
+      "reference": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/operations-service-amd64.json",
+        "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 4.92,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 1
+      },
+      "findingCount": 1,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "a9da25d4b7c323f377a3d2cfa1385d452903ce7dc796012641e94532b8f2dfd2",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/operations-service-amd64.json"
+    },
+    {
+      "name": "frontend-amd64",
+      "reference": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+      "kind": "application",
+      "platform": "linux/amd64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/frontend-amd64.json",
+        "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 5.28,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "MEDIUM": 10,
+        "HIGH": 11,
+        "LOW": 1
+      },
+      "findingCount": 22,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.3"
+      },
+      "reportSha256": "ed051bc0c74a7a29b3d17819cd1d31b06d2956b9ae21feef7c482124f404f7d3",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/frontend-amd64.json"
+    },
+    {
+      "name": "blackbox-exporter-amd64",
+      "reference": "prom/blackbox-exporter@sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/blackbox-exporter-amd64.json",
+        "prom/blackbox-exporter@sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.88,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 50,
+        "MEDIUM": 57,
+        "UNKNOWN": 2,
+        "CRITICAL": 2,
+        "LOW": 3
+      },
+      "findingCount": 114,
+      "os": null,
+      "reportSha256": "d77293b7137d12a55b0ae328fae3df877c4e079aa7d4c52c05acbaf4a0fb65b5",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/blackbox-exporter-amd64.json"
+    },
+    {
+      "name": "caddy-amd64",
+      "reference": "caddy@sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/caddy-amd64.json",
+        "caddy@sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.8,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 8,
+        "MEDIUM": 17,
+        "LOW": 45,
+        "UNKNOWN": 3
+      },
+      "findingCount": 73,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.23.6"
+      },
+      "reportSha256": "16c6a4f04698e4681034b0457c347c6c0e853c1e464e7375af954e70ac17493b",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/caddy-amd64.json"
+    },
+    {
+      "name": "postgres-amd64",
+      "reference": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/postgres-amd64.json",
+        "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 5.38,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "UNKNOWN": 2,
+        "MEDIUM": 1
+      },
+      "findingCount": 3,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.2"
+      },
+      "reportSha256": "62b0fe940f3b7f6ae96a7892d461a6334778291478c4a7051857193295242066",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/postgres-amd64.json"
+    },
+    {
+      "name": "grafana-amd64",
+      "reference": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/grafana-amd64.json",
+        "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 10.22,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 171,
+        "MEDIUM": 261,
+        "LOW": 63,
+        "UNKNOWN": 10,
+        "CRITICAL": 14
+      },
+      "findingCount": 519,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.21.3"
+      },
+      "reportSha256": "efdd4ccfaf6f499efc7702aecd5f159aec4d7ab584cf77a90de2948bde60f93f",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/grafana-amd64.json"
+    },
+    {
+      "name": "kafka-amd64",
+      "reference": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/kafka-amd64.json",
+        "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.43,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 63,
+        "MEDIUM": 104,
+        "LOW": 57,
+        "CRITICAL": 5,
+        "UNKNOWN": 2
+      },
+      "findingCount": 231,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.21.3"
+      },
+      "reportSha256": "da7c7831d211d31091476f6fc12a2de9f16830bcbf1b3403702646d79c619f2a",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/kafka-amd64.json"
+    },
+    {
+      "name": "node-exporter-amd64",
+      "reference": "prom/node-exporter@sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/node-exporter-amd64.json",
+        "prom/node-exporter@sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.44,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 46,
+        "MEDIUM": 54,
+        "UNKNOWN": 2,
+        "CRITICAL": 1,
+        "LOW": 3
+      },
+      "findingCount": 106,
+      "os": null,
+      "reportSha256": "09d57801081858ab4177cacf1213924a7d79a95183c9cfd14ef81d04e912e50c",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/node-exporter-amd64.json"
+    },
+    {
+      "name": "prometheus-amd64",
+      "reference": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os,library",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os,library",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/prometheus-amd64.json",
+        "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.72,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 106,
+        "MEDIUM": 117,
+        "LOW": 11,
+        "UNKNOWN": 4,
+        "CRITICAL": 4
+      },
+      "findingCount": 242,
+      "os": null,
+      "reportSha256": "3de83a62ebdc2299c38bc715d23b227c09a64fff1c4fd4da372328f42ae18ad6",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/prometheus-amd64.json"
+    },
+    {
+      "name": "redis-amd64",
+      "reference": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+      "kind": "infrastructure",
+      "platform": "linux/amd64",
+      "packageTypes": "os",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--scanners",
+        "vuln",
+        "--pkg-types",
+        "os",
+        "--image-src",
+        "docker",
+        "--ignorefile",
+        "/dev/null",
+        "--skip-db-update",
+        "--no-progress",
+        "--timeout",
+        "5m",
+        "--format",
+        "json",
+        "--output",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/redis-amd64.json",
+        "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 0.54,
+      "scanExecutionStatus": "PASS",
+      "severityCounts": {
+        "HIGH": 2,
+        "MEDIUM": 17,
+        "LOW": 2,
+        "UNKNOWN": 2
+      },
+      "findingCount": 23,
+      "os": {
+        "Family": "alpine",
+        "Name": "3.21.8"
+      },
+      "reportSha256": "aa283d90d87a2bc354a7520be5f8a02d17911da039c43acf4ebb8b5f54c4a6b3",
+      "report": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans/redis-amd64.json"
+    }
+  ],
+  "javaLibraryImageAnalyzer": {
+    "status": "NOT RUN",
+    "scope": "Additional Trivy Java-library image analyzer",
+    "reason": "Download of 944.5 MiB metadata artifact exceeded 900-second limit (actual exit124). Fresh OWASP scanned 166 backend dependency entries. Kafka broker bundled Java libraries are outside that reactor scan. OS packages are scanned for all images; available non-Java library scans are separate. No vulnerability results were suppressed.",
+    "download": {
+      "name": "trivy-java-db",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--no-progress",
+        "--download-java-db-only"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:44:13Z",
+      "timedOut": true,
+      "exitCode": 124,
+      "durationSeconds": 915.03,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-java-db.log"
+    },
+    "artifactDigest": "sha256:07c747058dc47fa9eedfe43092ebd6180710d44b291a5a84e17dae0ae5fd5264",
+    "artifactMiB": 944.5
+  }
+}

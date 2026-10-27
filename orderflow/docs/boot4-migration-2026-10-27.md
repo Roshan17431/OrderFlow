@@ -1,5 +1,7 @@
 # OrderFlow Spring Boot 4 migration and security verification
 
+> Historical migration-task snapshot. Its statements about uncommitted work and actions apply to that task only. The subsequent [release freeze and approval worksheet](release-freeze-2026-10-27.md) records local commits, fresh verification and container findings. Current AWS approval decision: **BLOCKED**; full real acceptance remains NOT RUN.
+
 Assessment: 2026-10-27. Baseline/current HEAD: `4197fbe1095663f0dbc32d2705bf95b202fb2702`, branch `master`. The initial working tree was clean. All changes remain uncommitted. No Git branches, commits, pushes, AWS resources, public deployments, DNS updates, live-data changes or destructive migrations were performed.
 
 **MIGRATION IMPLEMENTED — FURTHER VERIFICATION REQUIRED**

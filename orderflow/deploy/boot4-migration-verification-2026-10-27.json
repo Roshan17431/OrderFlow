@@ -1487,5 +1487,9 @@
     "orderflow/scheduler-support/src/test/java/com/orderflow/scheduler/ConservativeRetentionIT.java",
     "orderflow/scheduler-support/src/test/java/com/orderflow/scheduler/PostgresJobSchedulerIT.java",
     "orderflow/service-registry/pom.xml"
-  ]
+  ],
+  "historicalSnapshot": true,
+  "supersededBy": "docs/release-freeze-2026-10-27.md",
+  "currentDecisionEvidence": "deploy/release-verification-2026-10-27.json",
+  "historicalResultsPreserved": true
 }

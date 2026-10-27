@@ -1,0 +1,401 @@
+{
+  "assessmentDate": "2026-10-27",
+  "classification": "BLOCKED",
+  "baselineCommit": "4197fbe1095663f0dbc32d2705bf95b202fb2702",
+  "verifiedSourceCommit": "3c2b43661c2e3b96f57c1456d8d2788c1fc0ac75",
+  "finalReleaseShaReceipt": "Outside Git: /Users/roshan/.cache/orderflow-release/2026-10-27/frozen-release.json; final evidence commit follows these source commits",
+  "localSourceCommits": [
+    {
+      "sha": "1649f74007f086c3b14b962f4d9ca8d4db93b8e9",
+      "subject": "build(backend): migrate reactor and runtime to Spring Boot 4"
+    },
+    {
+      "sha": "a46d446dc3f00a8db18446213b852c32e1596bcd",
+      "subject": "test(compatibility): preserve Boot 3 data and security contracts"
+    },
+    {
+      "sha": "3c2b43661c2e3b96f57c1456d8d2788c1fc0ac75",
+      "subject": "chore(staging): prepare restricted Mumbai acceptance environment"
+    }
+  ],
+  "backend": {
+    "unit": {
+      "tests": 226,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reportFiles": 79
+    },
+    "integration": {
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reportFiles": 15
+    }
+  },
+  "restoredCompatibilityRepeat": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend": {
+    "vitestPassed": 138,
+    "fixturePlaywrightPassed": 10,
+    "npmAuditFindings": 0,
+    "npmProductionAuditFindings": 0,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "realCloudE2E": "NOT RUN"
+  },
+  "automation": {
+    "cloudTests": 65,
+    "deployTests": 36,
+    "runtimePolicies": 13,
+    "terraformMockedPlans": 17,
+    "systemdSyntax": "PASS",
+    "caddyHandlers": "PASS",
+    "monitoringStatic": "PASS"
+  },
+  "owasp": {
+    "dependencyEntries": 166,
+    "findings": [
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "cve": "CVE-2022-40159",
+        "severity": "MEDIUM",
+        "cvss": 6.5
+      },
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "cve": "CVE-2022-40160",
+        "severity": "MEDIUM",
+        "cvss": 6.5
+      },
+      {
+        "dependency": "kafka-clients-4.2.2.jar",
+        "cve": "CVE-2026-41115",
+        "severity": "MEDIUM",
+        "cvss": 4.3
+      }
+    ],
+    "exceptions": [],
+    "scanInfo": {
+      "engineVersion": "12.2.2",
+      "dataSource": [
+        {
+          "name": "NVD API Last Checked",
+          "timestamp": "2026-10-27T14:42:53Z"
+        },
+        {
+          "name": "NVD API Last Modified",
+          "timestamp": "2026-10-27T06:00:14-04"
+        },
+        {
+          "name": "NVD Cache Last Checked",
+          "timestamp": "2026-10-27T14:42:53Z"
+        },
+        {
+          "name": "NVD Cache Last Modified",
+          "timestamp": "2026-10-27T06:00:14-04"
+        }
+      ]
+    }
+  },
+  "unchangedOwaspThreshold": 9,
+  "containerScanSummary": {
+    "imageCount": 32,
+    "reportedImagePackageOccurrences": 1377,
+    "uniqueAdvisoryIds": 399,
+    "uniqueCveIds": 391,
+    "otherAdvisoryIds": 8,
+    "severityOccurrences": {
+      "HIGH": 490,
+      "MEDIUM": 648,
+      "LOW": 186,
+      "UNKNOWN": 27,
+      "CRITICAL": 26
+    },
+    "dispositionCounts": {
+      "PENDING_REMEDIATION_OR_VENDOR_APPLICABILITY_REVIEW": 1323,
+      "BUNDLED_GLOBAL_NPM_TOOLING_OUTSIDE_PROJECT_NPM_AUDIT": 44,
+      "VENDOR_32_BIT_PREREQUISITE_ABSENT_ON_SCANNED_64_BIT_TARGET": 5,
+      "VENDOR_ENTERPRISE_SCIM_PREREQUISITES_ABSENT_IN_CONFIGURED_OSS_GRAFANA": 1,
+      "SUSPECTED_PSEUDO_VERSION_MATCH_REQUIRES_RECONCILIATION": 4
+    },
+    "scanExecutionStatus": "PASS",
+    "imageSecurityApprovalStatus": "BLOCKED",
+    "noFindingSuppressions": true,
+    "rawResultsOutsideGit": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-scans"
+  },
+  "containerJavaAnalyzer": {
+    "status": "NOT RUN",
+    "scope": "Additional Trivy Java-library image analyzer",
+    "reason": "Download of 944.5 MiB metadata artifact exceeded 900-second limit (actual exit124). Fresh OWASP scanned 166 backend dependency entries. Kafka broker bundled Java libraries are outside that reactor scan. OS packages are scanned for all images; available non-Java library scans are separate. No vulnerability results were suppressed.",
+    "download": {
+      "name": "trivy-java-db",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--no-progress",
+        "--download-java-db-only"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:44:13Z",
+      "timedOut": true,
+      "exitCode": 124,
+      "durationSeconds": 915.03,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-java-db.log"
+    },
+    "artifactDigest": "sha256:07c747058dc47fa9eedfe43092ebd6180710d44b291a5a84e17dae0ae5fd5264",
+    "artifactMiB": 944.5
+  },
+  "commands": {
+    "backend-clean-verify": {
+      "name": "backend-clean-verify",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "verify"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:37:19Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 260.37,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/backend-clean-verify.log"
+    },
+    "frontend": {
+      "name": "frontend",
+      "command": [
+        "bash",
+        "-c",
+        "npm ci && npm audit && npm audit --omit=dev && npm run lint && npm run typecheck && npm run test && npm run build && npx playwright test --project=fixtures"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T14:38:20Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 79.63,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/frontend.log"
+    },
+    "vulnerability-data-refresh": {
+      "name": "vulnerability-data-refresh",
+      "command": [
+        "./mvnw",
+        "-N",
+        "-B",
+        "-ntp",
+        "org.owasp:dependency-check-maven:12.2.2:update-only",
+        "-DdataDirectory=/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-data",
+        "-DnvdValidForHours=0"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:39:07Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 60.5,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/vulnerability-data-refresh.log"
+    },
+    "owasp-security-gate": {
+      "name": "owasp-security-gate",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-Psecurity-scan",
+        "org.owasp:dependency-check-maven:12.2.2:aggregate",
+        "-DdataDirectory=/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-data",
+        "-DnvdValidForHours=0"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:42:35Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 295.46,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/owasp-security-gate.log"
+    },
+    "restored-compatibility": {
+      "name": "restored-compatibility",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-pl",
+        "auth-service,product-service,inventory-service,order-service,payment-service,delivery-service,notification-service,operations-service",
+        "-am",
+        "failsafe:integration-test",
+        "failsafe:verify",
+        "-Dorderflow.verifyBoot3Schema=true",
+        "-Dit.test=AuthenticationFlowIT,ProductCatalogIT,InventoryFlowIT,OrderFlowIT,PaymentFlowIT,DeliveryFlowIT,NotificationFlowIT,OperationsFlowIT",
+        "-Dfailsafe.failIfNoSpecifiedTests=false"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:48:14Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 120.73,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/restored-compatibility.log"
+    },
+    "terraform": {
+      "name": "terraform",
+      "command": [
+        "bash",
+        "-c",
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform init -backend=false -lockfile=readonly -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform fmt -check -recursive && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform validate -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform test -no-color"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-27T14:44:01Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 5.45,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/terraform.log"
+    },
+    "final-staging-automation": {
+      "name": "final-staging-automation",
+      "command": [
+        "bash",
+        "-c",
+        "python3 -m unittest discover -s scripts/cloud/tests -v && python3 -m unittest discover -s scripts/deploy/tests -v && python3 -m unittest discover -s infrastructure/cloud/tests -v && bash scripts/validate-production-config.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:55:06Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.84,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/final-staging-automation.log"
+    },
+    "container-static": {
+      "name": "container-static",
+      "command": [
+        "bash",
+        "-c",
+        "bash infrastructure/systemd/validate-units.sh && python3 infrastructure/cloud/tests/proxy_integration.py && bash scripts/validate-monitoring.sh && docker run --rm --memory 256m --entrypoint promtool -v \"$PWD/infrastructure/cloud/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro\" -v \"$PWD/infrastructure/cloud/monitoring/cloud-alerts.yml:/etc/prometheus/cloud-alerts.yml:ro\" -v \"$PWD/monitoring/prometheus/rules:/etc/prometheus/rules:ro\" prom/prometheus:v3.5.0 check config /etc/prometheus/prometheus.yml"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:47:26Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 57.99,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/container-static.log"
+    },
+    "persistence-amd64": {
+      "name": "persistence-amd64",
+      "command": [
+        "python3",
+        "infrastructure/cloud/tests/persistence_integration.py",
+        "--auth-image",
+        "orderflow-boot4/auth-service:verification-amd64",
+        "--report",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/persistence-amd64-results.json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T15:07:04Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 66.32,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/persistence-amd64.log"
+    },
+    "trivy-java-db": {
+      "name": "trivy-java-db",
+      "command": [
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/tools/trivy",
+        "image",
+        "--cache-dir",
+        "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-cache",
+        "--no-progress",
+        "--download-java-db-only"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T14:44:13Z",
+      "timedOut": true,
+      "exitCode": 124,
+      "durationSeconds": 915.03,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/trivy-java-db.log"
+    },
+    "final-source-safety": {
+      "name": "final-source-safety",
+      "command": [
+        "bash",
+        "-c",
+        "bash scripts/security-scan.sh && bash scripts/verify-log-redaction.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T15:17:03Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 8.88,
+      "log": "/Users/roshan/.cache/orderflow-release/2026-10-27/final-source-safety.log"
+    }
+  },
+  "blockers": [
+    "Unresolved HIGH/CRITICAL container findings require image remediation and complete applicability review; no suppressions added",
+    "Additional Trivy Java image library scan timed out; Kafka broker bundled Java libraries remain unverified",
+    "Account/domain/CIDR/budget/secrets/remote-state inputs and authenticated Terraform plan are not supplied or executed",
+    "Retained Temurin JRE 21.0.12.1+1 predates official current Java 21 patch 21.0.13+9; update/rebuild/reverify before approval."
+  ],
+  "notRun": [
+    "AWS actual plan/apply",
+    "EC2 launch/boot/stop",
+    "Full eleven-service real commerce/negative API and browser acceptance",
+    "Public ACME/TLS and security group enforcement",
+    "AWS memory peaks/live monitoring/alert delivery",
+    "Live data-preserving rollback",
+    "Complete EC2 host/JRE vendor security assessment"
+  ],
+  "noPushes": true,
+  "noImagesPublished": true,
+  "noAwsResourcesCreated": true,
+  "noDnsChanges": true,
+  "gitAudit": "All 173 migration/staging paths committed in three logical commits. Original 44 synthetic fixture hashes and 23 historical migrations preserved. Final evidence/docs are separate. No credentials/state/private keys/cache paths staged.",
+  "runtimeVersions": {
+    "backend-jre": {
+      "exitCode": 0,
+      "output": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)"
+    },
+    "frontend-node": {
+      "exitCode": 0,
+      "output": "v22.23.4"
+    },
+    "grafana": {
+      "exitCode": 0,
+      "output": "grafana version 12.1.0"
+    }
+  },
+  "isolatedPersistenceProbe": {
+    "result": "PASS",
+    "scope": "isolated-four-service-container-recreation",
+    "authImageId": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+    "authArchitecture": "amd64",
+    "postgresUserRetained": true,
+    "flywayHistoryUnchanged": true,
+    "redisAofRecordRetained": true,
+    "kafkaRecordRetained": true,
+    "jwtIssuedBeforeRestartAcceptedAfterRestart": true,
+    "jwksUnchanged": true,
+    "signingKeyBytesUnchanged": true,
+    "fullCommerceE2E": "NOT RUN",
+    "hostEbsReboot": "NOT RUN",
+    "secureCookieThroughCaddy": "NOT RUN"
+  },
+  "javaRuntimePatchStatus": {
+    "status": "BLOCKED",
+    "executed": "Temurin 21.0.12.1+1",
+    "currentVendorRelease": "Temurin 21.0.13+9",
+    "vendorReleaseDate": "2026-10-22",
+    "source": "https://github.com/adoptium/temurin21-binaries/releases/tag/jdk-21.0.13%2B9",
+    "required": "Patch within Java 21, rebuild, repeat affected tests and image scans"
+  },
+  "fixtureIntegrity": {
+    "fixtureFiles": 44,
+    "hashesMatch": true,
+    "historicalFlywayFiles": 23,
+    "historicalFlywayFilesUnchanged": true
+  }
+}

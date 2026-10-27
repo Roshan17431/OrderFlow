@@ -1,5 +1,7 @@
 # OrderFlow — AWS Mumbai staging readiness
 
+> Historical preparation-task snapshot. Its uncommitted status, container-scan NOT RUN and preparation conclusion describe that earlier task. The subsequent [release freeze and approval worksheet](release-freeze-2026-10-27.md) records local commits, fresh scans and the current AWS approval decision: **BLOCKED**. No full-stack acceptance has run.
+
 Assessment: **2026-10-27**. Baseline HEAD: `4197fbe1095663f0dbc32d2705bf95b202fb2702`, branch `master`. The migrated working tree remains uncommitted. **READY FOR AWS STAGING APPROVAL** means preparation is ready for the approval checklist below; it does not mean AWS acceptance or production readiness has passed.
 
 No commits, pushes, branch creation, image publication, AWS account operations, Terraform apply, paid resource creation, EC2 launch or DNS modification occurred. Public AWS price-list downloads and offline mocked Terraform plans do not access an AWS account.
