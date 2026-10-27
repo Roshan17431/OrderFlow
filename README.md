@@ -4,7 +4,7 @@ A full-stack microservices commerce portfolio with a Next.js storefront, vendor 
 
 **Live demo: not deployed.** AWS account access, an owned domain and explicit approval for the reviewed billable resource plan are required before deployment. **Demo payments charge no real money; email and SMS are simulated.**
 
-Phase 10 infrastructure and release tooling are implemented locally. Publication remains blocked by seven findings in the enforced Spring dependency scan. Spring Boot 3.5 is retained by the owner's decision; see the [security review](orderflow/docs/cloud-security-review.md) and [readiness report](orderflow/docs/phase-10-readiness.md).
+Phase 10 infrastructure and release tooling are implemented locally. The Spring Boot 4.1.2 / Spring Cloud 2025.1.4 migration passes the unchanged dependency security gate. Full-stack acceptance on a sufficiently provisioned host remains pending; see the [current migration and verification report](orderflow/docs/boot4-migration-2026-10-27.md). AWS deployment has not occurred.
 
 ## Architecture
 

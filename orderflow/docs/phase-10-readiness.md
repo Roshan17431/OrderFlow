@@ -1,5 +1,8 @@
 # Phase 10 deployment readiness
 
+> Current candidate: see the [2026-10-27 Boot 4 migration report](boot4-migration-2026-10-27.md). Earlier dependency findings below describe the prior Boot 3 assessment.
+
+
 For the subsequent 2026-10-14 investigation and uncommitted compatible changes, see [release blocker remediation](phase-10-remediation.md) and its fresh evidence. The assessment below remains a historical record; the remediation's Java/frontend PASS results do not establish a passing dependency gate or complete real-backend journey.
 
 Assessment date: 2026-10-13. **NOT READY — CRITICAL BLOCKERS.** The AWS deployment components are implemented, but the enforced dependency gate fails on seven Spring findings. The owner chose to keep Spring Boot 3.5 and document these findings. No suppression, threshold bypass or migration to Boot 4 was added. Full local business verification also needs a stable runtime with sufficient memory. No live deployment or live-demo URL exists.

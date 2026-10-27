@@ -1,0 +1,1491 @@
+{
+  "assessmentDate": "2026-10-27",
+  "baselineCommit": "4197fbe1095663f0dbc32d2705bf95b202fb2702",
+  "branch": "master",
+  "classification": "MIGRATION IMPLEMENTED \u2014 FURTHER VERIFICATION REQUIRED",
+  "versionMatrix": {
+    "Java": "21.0.12.1 (executed; release 21)",
+    "Maven Wrapper": "3.9.11",
+    "Spring Boot": "4.1.2",
+    "Spring Cloud BOM": "2025.1.4",
+    "Spring Framework": "7.0.10",
+    "Spring Security": "7.1.2",
+    "Gateway Server WebFlux": "5.0.4",
+    "Cloud Netflix": "5.0.3",
+    "Eureka core": "2.0.6",
+    "Spring Kafka": "4.1.2",
+    "Kafka client": "4.2.2",
+    "Kafka broker": "3.9.1 (unchanged)",
+    "Spring Data BOM": "2026.0.2",
+    "Spring Data JPA / Redis": "4.1.2 / 4.1.2",
+    "Hibernate": "7.4.13.Final",
+    "Flyway": "12.4.0",
+    "PostgreSQL JDBC": "42.7.14",
+    "Jackson application JSON": "3.1.7",
+    "Jackson 2 vendor compatibility": "2.21.8",
+    "Testcontainers": "2.0.5 (executed test classpaths)",
+    "JUnit Jupiter": "6.0.3 (executed test classpaths)",
+    "Spring Session": "4.1.1",
+    "Lettuce": "7.5.2.RELEASE",
+    "Micrometer": "1.17.2",
+    "Resilience4j": "2.3.0",
+    "Tomcat": "11.0.27",
+    "Netty": "4.2.19.Final",
+    "Reactor Netty": "1.3.8",
+    "Kotlin runtime BOM / stdlib": "2.4.21 (compatible security override)"
+  },
+  "backendFresh": {
+    "unit": {
+      "tests": 226,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "integration": {
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "modules": {
+      "product-service": {
+        "integration": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 25,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "platform-contracts": {
+        "unit": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "delivery-service": {
+        "integration": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "operations-service": {
+        "integration": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "notification-service": {
+        "integration": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "api-gateway": {
+        "unit": {
+          "tests": 33,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "payment-service": {
+        "integration": {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 26,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "event-contracts": {
+        "unit": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "order-service": {
+        "integration": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 22,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "service-registry": {
+        "unit": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "scheduler-support": {
+        "integration": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "cart-service": {
+        "integration": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 24,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "auth-service": {
+        "integration": {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 39,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "inventory-service": {
+        "integration": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unit": {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      }
+    }
+  },
+  "restoredBoot3Databases": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      "com.orderflow.product.ProductCatalogIT",
+      "com.orderflow.delivery.DeliveryFlowIT",
+      "com.orderflow.operations.OperationsFlowIT",
+      "com.orderflow.notification.NotificationFlowIT",
+      "com.orderflow.payment.PaymentFlowIT",
+      "com.orderflow.order.OrderFlowIT",
+      "com.orderflow.auth.AuthenticationFlowIT",
+      "com.orderflow.inventory.InventoryFlowIT"
+    ]
+  },
+  "security": {
+    "engineVersion": "12.2.2",
+    "dependencyEntries": 166,
+    "threshold": 9,
+    "result": "PASS",
+    "suppressionsAdded": false,
+    "dataSources": [
+      {
+        "name": "NVD API Last Checked",
+        "timestamp": "2026-10-27T01:24:13Z"
+      },
+      {
+        "name": "NVD API Last Modified",
+        "timestamp": "2026-10-26T20:00:11-04"
+      },
+      {
+        "name": "NVD Cache Last Checked",
+        "timestamp": "2026-10-27T01:24:13Z"
+      },
+      {
+        "name": "NVD Cache Last Modified",
+        "timestamp": "2026-10-26T20:00:11-04"
+      }
+    ],
+    "analysisExceptions": [],
+    "sevenSpringFindings": {
+      "CVE-2026-47884": "ABSENT; patched managed Spring version verified",
+      "CVE-2026-47890": "ABSENT; patched managed Spring version verified",
+      "CVE-2026-47891": "ABSENT; patched managed Spring version verified",
+      "CVE-2026-47892": "ABSENT; patched managed Spring version verified",
+      "CVE-2026-59313": "ABSENT; patched managed Spring version verified",
+      "CVE-2026-59283": "ABSENT; patched managed Spring version verified",
+      "CVE-2026-59270": "ABSENT; patched managed Spring version verified"
+    },
+    "remainingFindings": [
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "cve": "CVE-2022-40159",
+        "severity": "MEDIUM",
+        "cvss": 6.5
+      },
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "cve": "CVE-2022-40160",
+        "severity": "MEDIUM",
+        "cvss": 6.5
+      },
+      {
+        "dependency": "kafka-clients-4.2.2.jar",
+        "cve": "CVE-2026-41115",
+        "severity": "MEDIUM",
+        "cvss": 4.3
+      }
+    ],
+    "kotlinCve": "CVE-2026-53914 absent after aligned Kotlin 2.4.21 override"
+  },
+  "frontend": {
+    "vitestPassed": 138,
+    "fixturePlaywrightPassed": 10,
+    "auditTotal": 0,
+    "productionAuditTotal": 0,
+    "sourceChanges": false
+  },
+  "realFullStack": "NOT RUN: 8 GiB physical host / Docker approximately 4 GiB; no larger host available",
+  "dockerBuilds": [
+    {
+      "module": "service-registry",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "service-registry/Dockerfile",
+        "-t",
+        "orderflow-boot4/service-registry:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 7.41,
+      "imageId": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "api-gateway",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "api-gateway/Dockerfile",
+        "-t",
+        "orderflow-boot4/api-gateway:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 7.54,
+      "imageId": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "auth-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "auth-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/auth-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 8.3,
+      "imageId": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "product-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "product-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/product-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 8.12,
+      "imageId": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "cart-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "cart-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/cart-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 7.78,
+      "imageId": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "inventory-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "inventory-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/inventory-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 8.49,
+      "imageId": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "order-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "order-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/order-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 8.9,
+      "imageId": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "payment-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "payment-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/payment-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 9.54,
+      "imageId": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "delivery-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "delivery-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/delivery-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 10.32,
+      "imageId": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "notification-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "notification-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/notification-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 11.43,
+      "imageId": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "operations-service",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "operations-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/operations-service:verification",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 1.98,
+      "imageId": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+      "platform": "linux/arm64"
+    },
+    {
+      "module": "frontend",
+      "platform": "linux/arm64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "frontend/Dockerfile",
+        "-t",
+        "orderflow-boot4/frontend:verification",
+        "frontend"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 102.88,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-arm64-frontend.log",
+      "imageId": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29"
+    },
+    {
+      "module": "service-registry",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "service-registry/Dockerfile",
+        "-t",
+        "orderflow-boot4/service-registry:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 50.58,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-service-registry.log",
+      "imageId": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68"
+    },
+    {
+      "module": "api-gateway",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "api-gateway/Dockerfile",
+        "-t",
+        "orderflow-boot4/api-gateway:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.5,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-api-gateway.log",
+      "imageId": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e"
+    },
+    {
+      "module": "auth-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "auth-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/auth-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 7.05,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-auth-service.log",
+      "imageId": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09"
+    },
+    {
+      "module": "product-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "product-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/product-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.72,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-product-service.log",
+      "imageId": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978"
+    },
+    {
+      "module": "cart-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "cart-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/cart-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.49,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-cart-service.log",
+      "imageId": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46"
+    },
+    {
+      "module": "inventory-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "inventory-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/inventory-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.25,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-inventory-service.log",
+      "imageId": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8"
+    },
+    {
+      "module": "order-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "order-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/order-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.06,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-order-service.log",
+      "imageId": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5"
+    },
+    {
+      "module": "payment-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "payment-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/payment-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.44,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-payment-service.log",
+      "imageId": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49"
+    },
+    {
+      "module": "delivery-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "delivery-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/delivery-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 6.39,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-delivery-service.log",
+      "imageId": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714"
+    },
+    {
+      "module": "notification-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "notification-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/notification-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 2.78,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-notification-service.log",
+      "imageId": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2"
+    },
+    {
+      "module": "operations-service",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "operations-service/Dockerfile",
+        "-t",
+        "orderflow-boot4/operations-service:verification-amd64",
+        "."
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.39,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-operations-service.log",
+      "imageId": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32"
+    },
+    {
+      "module": "frontend",
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "build",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "frontend/Dockerfile",
+        "-t",
+        "orderflow-boot4/frontend:verification-amd64",
+        "frontend"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 145.82,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-amd64-frontend.log",
+      "imageId": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce"
+    }
+  ],
+  "isolatedRuntime": [
+    {
+      "service": "service-registry",
+      "path": "/actuator/health/readiness",
+      "scope": "isolated image runtime smoke",
+      "prometheus": "PASS",
+      "result": "PASS",
+      "durationSeconds": 4.17
+    },
+    {
+      "service": "frontend",
+      "path": "/",
+      "scope": "isolated image runtime smoke",
+      "result": "PASS",
+      "durationSeconds": 1.28
+    }
+  ],
+  "databaseReverseCompatibility": [
+    {
+      "module": "auth",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "product",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "inventory",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "order",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "payment",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "delivery",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "notification",
+      "result": "PASS",
+      "writer": "Hibernate 7.4.13.Final",
+      "reader": "Hibernate 6.6.53.Final"
+    },
+    {
+      "module": "operations",
+      "result": "PASS",
+      "scope": "unchanged JDBC numeric schema"
+    }
+  ],
+  "commands": {
+    "baseline-verify": {
+      "name": "baseline-verify",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "verify"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:24:24Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 236.97,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/baseline-verify.log"
+    },
+    "boot4-clean-verify-kotlin": {
+      "name": "boot4-clean-verify-kotlin",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "verify"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:58:29Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 280.92,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/boot4-clean-verify-kotlin.log"
+    },
+    "restored-boot3-databases-final": {
+      "name": "restored-boot3-databases-final",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-pl",
+        "auth-service,product-service,inventory-service,order-service,payment-service,delivery-service,notification-service,operations-service",
+        "-am",
+        "failsafe:integration-test",
+        "failsafe:verify",
+        "-Dorderflow.verifyBoot3Schema=true",
+        "-Dit.test=AuthenticationFlowIT,ProductCatalogIT,InventoryFlowIT,OrderFlowIT,PaymentFlowIT,DeliveryFlowIT,NotificationFlowIT,OperationsFlowIT",
+        "-Dfailsafe.failIfNoSpecifiedTests=false"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:04:14Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 145.74,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/restored-boot3-databases-final.log"
+    },
+    "nvd-update": {
+      "name": "nvd-update",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-N",
+        "-Psecurity-scan",
+        "org.owasp:dependency-check-maven:12.2.2:update-only",
+        "-DdataDirectory=/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-data",
+        "-DnvdValidForHours=0"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:23:59Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 197.82,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/nvd-update.log"
+    },
+    "dependency-check-boot4-final": {
+      "name": "dependency-check-boot4-final",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-Psecurity-scan",
+        "org.owasp:dependency-check-maven:12.2.2:aggregate",
+        "-DdataDirectory=/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-data"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:04:13Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 25.54,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-check-boot4-final.log"
+    },
+    "dependency-trees": {
+      "name": "dependency-trees",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "dependency:tree",
+        "-Dscope=runtime",
+        "-DoutputFile=target/boot4-runtime-tree.txt"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:05:05Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 10.47,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-trees.log"
+    },
+    "frontend-ci": {
+      "name": "frontend-ci",
+      "command": [
+        "npm",
+        "ci"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:23:58Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 15.72,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-ci.log"
+    },
+    "frontend-lint": {
+      "name": "frontend-lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:24:41Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 4.96,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-lint.log"
+    },
+    "frontend-typecheck-baseline-declarations": {
+      "name": "frontend-typecheck-baseline-declarations",
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:57:52Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.14,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-typecheck-baseline-declarations.log"
+    },
+    "frontend-test": {
+      "name": "frontend-test",
+      "command": [
+        "npm",
+        "run",
+        "test"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:25:30Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 13.93,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-test.log"
+    },
+    "frontend-build-final": {
+      "name": "frontend-build-final",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:32:04Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 10.18,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-build-final.log"
+    },
+    "frontend-audit": {
+      "name": "frontend-audit",
+      "command": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:24:41Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.38,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-audit.log"
+    },
+    "frontend-audit-production": {
+      "name": "frontend-audit-production",
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev",
+        "--json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:29:47Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.11,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-audit-production.log"
+    },
+    "frontend-playwright": {
+      "name": "frontend-playwright",
+      "command": [
+        "npm",
+        "run",
+        "test:e2e"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T01:32:55Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 33.17,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/frontend-playwright.log"
+    },
+    "terraform-init": {
+      "name": "terraform-init",
+      "command": [
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform",
+        "init",
+        "-backend=false",
+        "-input=false",
+        "-lockfile=readonly"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-27T01:40:52Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.66,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/terraform-init.log"
+    },
+    "terraform-validate": {
+      "name": "terraform-validate",
+      "command": [
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform",
+        "validate",
+        "-no-color"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-27T01:41:59Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 16.56,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/terraform-validate.log"
+    },
+    "terraform-mock-tests": {
+      "name": "terraform-mock-tests",
+      "command": [
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform",
+        "test",
+        "-no-color"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-27T01:41:59Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 16.61,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/terraform-mock-tests.log"
+    },
+    "script-tests": {
+      "name": "script-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/cloud/tests",
+        "-v"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:35:32Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 2.56,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/script-tests.log"
+    },
+    "deploy-script-tests": {
+      "name": "deploy-script-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/deploy/tests",
+        "-v"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:38:18Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.41,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/deploy-script-tests.log"
+    },
+    "cloud-config-tests": {
+      "name": "cloud-config-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "infrastructure/cloud/tests",
+        "-v"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:38:18Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.0,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/cloud-config-tests.log"
+    },
+    "base-compose": {
+      "name": "base-compose",
+      "command": [
+        "docker",
+        "compose",
+        "config",
+        "--quiet"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:42:50Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.35,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/base-compose.log"
+    },
+    "production-compose": {
+      "name": "production-compose",
+      "command": [
+        "bash",
+        "scripts/validate-production-config.sh"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:40:52Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.59,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/production-compose.log"
+    },
+    "monitoring-validation": {
+      "name": "monitoring-validation",
+      "command": [
+        "bash",
+        "scripts/validate-monitoring.sh"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:40:52Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 3.04,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/monitoring-validation.log"
+    },
+    "caddy-proxy": {
+      "name": "caddy-proxy",
+      "command": [
+        "python3",
+        "infrastructure/cloud/tests/proxy_integration.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:44:35Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.39,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/caddy-proxy.log"
+    },
+    "source-security": {
+      "name": "source-security",
+      "command": [
+        "bash",
+        "scripts/security-scan.sh"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T01:38:18Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.4,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/source-security.log"
+    },
+    "log-redaction": {
+      "name": "log-redaction",
+      "command": [
+        "bash",
+        "scripts/verify-log-redaction.sh"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:03:39Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 8.89,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/log-redaction.log"
+    },
+    "docker-image-matrix": {
+      "name": "docker-image-matrix",
+      "command": [
+        "python3",
+        "/Users/roshan/.cache/orderflow-boot4/2026-10-27/build-image-matrix.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:01:46Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 337.94,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/docker-image-matrix.log"
+    },
+    "runtime-image-checks": {
+      "name": "runtime-image-checks",
+      "command": [
+        "python3",
+        "/Users/roshan/.cache/orderflow-boot4/2026-10-27/runtime-image-checks.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:09:01Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 11.37,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/runtime-image-checks.log"
+    },
+    "database-rollback": {
+      "name": "database-rollback",
+      "command": [
+        "python3",
+        "/Users/roshan/.cache/orderflow-boot4/2026-10-27/verify-database-rollback.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-27T02:12:28Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 28.85,
+      "log": "/Users/roshan/.cache/orderflow-boot4/2026-10-27/database-rollback.log"
+    }
+  },
+  "noAwsResourcesCreated": true,
+  "noGitCommitsOrPushes": true,
+  "noHistoricalFlywaySqlChanged": true,
+  "fixtureSha256": {
+    "product-service/src/test/resources/compat/boot3-schema.sql": "5d85d748f9370b6a53522e593fc6de4bdaf112da70ec9f9b7d41f00d462d550b",
+    "product-service/src/test/resources/compat/boot3/catalog-product.json": "f1b37559dc867f33dc7e7a4cf17603c5ae2da6601fbc3dd1ab321d32f0752dca",
+    "product-service/src/test/resources/compat/boot3/ProductDetailResponse.json": "6c426f255c74fc41661b6125876e4cc60c6c9331cc37a37eb1c51ce059d95685",
+    "product-service/src/test/resources/compat/boot3/catalog-categories.json": "ca2163f1f2d51f760c66eeea7915a34dd3da5b91542d1e6ca58cd45406377080",
+    "platform-contracts/src/test/resources/compat/boot3/ApiError.json": "38c6031b039c00d41d79ded23126099ea9d754cb3050bad4f56d297af44bf8f0",
+    "delivery-service/src/test/resources/compat/boot3-schema.sql": "e309caaf1f78b1ede50e3a8ac5ed878c7e213eae12a606118e1b56ed749728a1",
+    "operations-service/src/test/resources/compat/boot3-schema.sql": "8ca003db0209f51a2535f89ce67b17eabc236fa8bc13a9c9445f0a8facf8ff92",
+    "notification-service/src/test/resources/compat/boot3-schema.sql": "293033904d5c26c0f3614f630316390debf9505cb0ac3ac6d93a9f17f4431240",
+    "payment-service/src/test/resources/compat/boot3-schema.sql": "28f86a4864a0457a39e06f29a32014f46185c5846ce22c208b2f875a7a0aeb61",
+    "event-contracts/src/test/resources/compat/boot3/NOTIFICATION_DELIVERED.json": "d1343b63de72901821a710b93464d95d137fc85f355674b695e46495911ec539",
+    "event-contracts/src/test/resources/compat/boot3/ORDER_CREATED.json": "00535b0e3708233995381f1dabd832690b4fc766fdf8290480c1e2687eece964",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_REFUNDED.json": "cf4a6380c5a0d057d983c292450be38a0ed0c5fb4142ee8d04f183155379b83f",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_SUCCEEDED.json": "6e041f6971c1c42eaa1d98587c4b7ca392ff35cf241bb92961ab312c0506bfca",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_CANCEL_REQUESTED.json": "0255d4609a5a88bddb5980f3c1967d661f87d3d9d924ac7b555ef75e4cc42e0c",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_REQUESTED.json": "2e59ad66d58283e04dcf32aac157ad59c64e2efd88019bd81908ada81ef99bc6",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_CANCELLED.json": "2bcc3d293458ac07590d5a0645c55b6f2a6900ccb984fc2006c967b47a5f7df7",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_DELIVERED.json": "4c11d0d8403deafea52e6733096c8f0e46417f25ff163c1c1c325747e27057f3",
+    "event-contracts/src/test/resources/compat/boot3/INVENTORY_COMMITTED.json": "cbbc878d77ba83a33037c8d380bc2ec05bd7633862a1be5a1e8e798db0fddf0d",
+    "event-contracts/src/test/resources/compat/boot3/INVENTORY_RESERVED.json": "ebb21b9922cba5a922cbbbb8856c30b707842c105731144516fdae52ef012d16",
+    "event-contracts/src/test/resources/compat/boot3/INVENTORY_RESERVATION_FAILED.json": "55dbff1654623a339faed4838a2008e2723aba50b8834f712c27f3c2d711e050",
+    "event-contracts/src/test/resources/compat/boot3/INVENTORY_COMMIT_REQUESTED.json": "48a3b2f6fd644ead3e6b78bab3a0f830cf4b9185dc4ed0a9ee852101ab18e00c",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_OUT_FOR_DELIVERY.json": "d52fef84398081033f706e37f3126616c9b334db45eb5f3f1e754f09c763c979",
+    "event-contracts/src/test/resources/compat/boot3/ORDER_CANCEL_REQUESTED.json": "163d28ba4e5d742b94537440a6af9503a73cd5a1034d3d0f553809d90f02e184",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_FAILED.json": "f60bae892c60494974ada746d6e1b0b49708e190035a5fb99735f90c65cc8ab7",
+    "event-contracts/src/test/resources/compat/boot3/NOTIFICATION_FAILED.json": "bc8c5bb7c0e7c1d29ec8e0c3a3c91a3de0e694ffceafdb6e517b681091f5633d",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_ASSIGNED.json": "b82696d071eceb594f3fee8c22de8f17def250985f1d9b8c0153ef1b8af991b7",
+    "event-contracts/src/test/resources/compat/boot3/INVENTORY_RELEASED.json": "731669e1cbc2bf6920c14c5bd93d8c1760c2b414d454bec440d922feffc2e0c4",
+    "event-contracts/src/test/resources/compat/boot3/NOTIFICATION_DISPATCH_REQUESTED.json": "f6edc1d430f683bfeed30f9d371d25d492c084f79bd45c15ec70bef9eb1afad2",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_CANCELLED.json": "884fa6fa2a7c46b1ac8480a1ecfeccffd9a74cec66c2d9bd033a259dafbd38a5",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_REQUESTED.json": "049e39e13ea1fad2ed78741bce58f8b0e30bb73ae0feb75ed3941dfad4142366",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_FAILED.json": "b8e55e8bd6f86c97036b93cc1f5bfe8bad7746051cbec820811bef95733e7649",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_PICKED_UP.json": "478bebca481319fe158c035f580694e56920294ccebe9acda6f2320b17e7d6ca",
+    "event-contracts/src/test/resources/compat/boot3/PAYMENT_REFUND_FAILED.json": "3ff99232377e94e10300da6a8c76c378f5f2d17672bf008279b235230008ae77",
+    "event-contracts/src/test/resources/compat/boot3/DELIVERY_CANCEL_REQUESTED.json": "c0a546e1337f298b48000b47aa4d88927c529e104f158fa76929470ebfe06753",
+    "order-service/src/test/resources/compat/boot3-schema.sql": "b1d776521fcb4f0db36eca13900b002931e812eefcbda2248e096547ce1c4445",
+    "cart-service/src/test/resources/compat/boot3/StoredCartItem.json": "9527c573fd95cca3c86cb262a31a92ec2b262f3122e3deba47bdb3d67ef300f6",
+    "auth-service/src/test/resources/compat/boot3-schema.sql": "f8d653991c4422c171936e478c11283b0a6149ea5ac8a8b67df1d7d6f8318d2b",
+    "auth-service/src/test/resources/compat/boot3/public-jwk.json": "14f114d689362c69b0c3c658c70e1bcd41dea9ba2c4ba54cb1175d24229d9a6a",
+    "auth-service/src/test/resources/compat/boot3/oauth2-authorization-request.base64": "9e61d3344bee828c4815c7637cde34a36e85bf2cfb8b926d642ee9709f7f8d95",
+    "auth-service/src/test/resources/compat/boot3/access-token.jwt": "c3965a0c9e6ee2dd0b7cb47d1c2d1eae4073a1e6187e80fca720c2b54ff4b149",
+    "auth-service/src/test/resources/compat/boot4/public-jwk.json": "930a0e66ae6b1bcfeaa76ed05f492a1b23e1a445d365baea3fd76a15e0dc191b",
+    "auth-service/src/test/resources/compat/boot4/oauth2-authorization-request.base64": "77bfca59be06b567fac4a1b4ffc74978366deec1ee97e13b83b184d312baadd1",
+    "auth-service/src/test/resources/compat/boot4/access-token.jwt": "6d56d4e1ec84150b21918a099256c69afe53fb0d7dd6d837716a72e440626fdc",
+    "inventory-service/src/test/resources/compat/boot3-schema.sql": "1386d13bc9b090db32ccfb83996f23c5d249e471ebc5a2eb347ce2d8f3c69774"
+  },
+  "changedFiles": [
+    "README.md",
+    "orderflow/api-gateway/pom.xml",
+    "orderflow/api-gateway/src/main/java/com/orderflow/gateway/error/GatewayErrorWebExceptionHandler.java",
+    "orderflow/api-gateway/src/main/java/com/orderflow/gateway/security/GatewayAuthenticationEntryPoint.java",
+    "orderflow/api-gateway/src/main/java/com/orderflow/gateway/security/GatewaySecurityErrorWriter.java",
+    "orderflow/api-gateway/src/main/resources/application.yml",
+    "orderflow/api-gateway/src/test/java/com/orderflow/gateway/ApiGatewayApplicationTest.java",
+    "orderflow/api-gateway/src/test/java/com/orderflow/gateway/ratelimit/GatewayRateLimitWebFilterTest.java",
+    "orderflow/api-gateway/src/test/java/com/orderflow/gateway/security/GatewayRevocationWebFilterTest.java",
+    "orderflow/api-gateway/src/test/java/com/orderflow/gateway/security/GatewaySecurityWebTest.java",
+    "orderflow/auth-service/pom.xml",
+    "orderflow/auth-service/src/main/java/com/orderflow/auth/config/KafkaHealthIndicator.java",
+    "orderflow/auth-service/src/main/java/com/orderflow/auth/security/ApiSecurityErrorWriter.java",
+    "orderflow/auth-service/src/main/resources/application.yml",
+    "orderflow/auth-service/src/test/java/com/orderflow/auth/AuthenticationFlowIT.java",
+    "orderflow/auth-service/src/test/java/com/orderflow/auth/InfrastructureIT.java",
+    "orderflow/auth-service/src/test/java/com/orderflow/auth/error/GlobalExceptionHandlerTest.java",
+    "orderflow/auth-service/src/test/java/com/orderflow/auth/platform/PlatformControllerTest.java",
+    "orderflow/auth-service/src/test/java/com/orderflow/auth/security/jwt/Boot3JwtCompatibilityTest.java",
+    "orderflow/auth-service/src/test/java/com/orderflow/auth/security/oauth2/Boot3OAuthSessionCompatibilityTest.java",
+    "orderflow/auth-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/auth-service/src/test/resources/compat/boot3/access-token.jwt",
+    "orderflow/auth-service/src/test/resources/compat/boot3/oauth2-authorization-request.base64",
+    "orderflow/auth-service/src/test/resources/compat/boot3/public-jwk.json",
+    "orderflow/auth-service/src/test/resources/compat/boot4/access-token.jwt",
+    "orderflow/auth-service/src/test/resources/compat/boot4/oauth2-authorization-request.base64",
+    "orderflow/auth-service/src/test/resources/compat/boot4/public-jwk.json",
+    "orderflow/cart-service/pom.xml",
+    "orderflow/cart-service/src/main/java/com/orderflow/cart/client/ProductClient.java",
+    "orderflow/cart-service/src/main/java/com/orderflow/cart/persistence/CartRedisRepository.java",
+    "orderflow/cart-service/src/main/java/com/orderflow/cart/security/ApiSecurityErrorWriter.java",
+    "orderflow/cart-service/src/main/resources/application.yml",
+    "orderflow/cart-service/src/test/java/com/orderflow/cart/CartFlowIT.java",
+    "orderflow/cart-service/src/test/java/com/orderflow/cart/CartStateUnavailableIT.java",
+    "orderflow/cart-service/src/test/java/com/orderflow/cart/dto/ProductResolutionContractTest.java",
+    "orderflow/cart-service/src/test/java/com/orderflow/cart/persistence/StoredCartItemBoot3CompatibilityTest.java",
+    "orderflow/cart-service/src/test/java/com/orderflow/cart/security/CartSecurityMvcTest.java",
+    "orderflow/cart-service/src/test/resources/compat/boot3/StoredCartItem.json",
+    "orderflow/delivery-service/pom.xml",
+    "orderflow/delivery-service/src/main/java/com/orderflow/delivery/config/KafkaConfiguration.java",
+    "orderflow/delivery-service/src/main/java/com/orderflow/delivery/messaging/OrderEventListener.java",
+    "orderflow/delivery-service/src/main/java/com/orderflow/delivery/outbox/OutboxStore.java",
+    "orderflow/delivery-service/src/main/java/com/orderflow/delivery/security/ApiSecurityErrorWriter.java",
+    "orderflow/delivery-service/src/main/resources/application.yml",
+    "orderflow/delivery-service/src/test/java/com/orderflow/delivery/DeliveryFlowIT.java",
+    "orderflow/delivery-service/src/test/java/com/orderflow/delivery/security/DeliverySecurityMvcTest.java",
+    "orderflow/delivery-service/src/test/java/com/orderflow/delivery/service/AgentAddressPrivacyTest.java",
+    "orderflow/delivery-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/deploy/boot4-migration-verification-2026-10-27.json",
+    "orderflow/docs/boot4-compatibility-fixtures.md",
+    "orderflow/docs/boot4-migration-2026-10-27.md",
+    "orderflow/docs/cloud-release-checklist.md",
+    "orderflow/docs/cloud-security-review.md",
+    "orderflow/docs/phase-10-readiness.md",
+    "orderflow/docs/superpowers/plans/2026-10-27-spring-boot4.md",
+    "orderflow/event-contracts/pom.xml",
+    "orderflow/event-contracts/src/test/java/com/orderflow/events/EventSerializationCompatibilityTest.java",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_ASSIGNED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_CANCELLED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_CANCEL_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_DELIVERED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_FAILED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_OUT_FOR_DELIVERY.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_PICKED_UP.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/DELIVERY_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/INVENTORY_COMMITTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/INVENTORY_COMMIT_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/INVENTORY_RELEASED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/INVENTORY_RESERVATION_FAILED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/INVENTORY_RESERVED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/NOTIFICATION_DELIVERED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/NOTIFICATION_DISPATCH_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/NOTIFICATION_FAILED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/ORDER_CANCEL_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/ORDER_CREATED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_CANCELLED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_CANCEL_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_FAILED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_REFUNDED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_REFUND_FAILED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_REQUESTED.json",
+    "orderflow/event-contracts/src/test/resources/compat/boot3/PAYMENT_SUCCEEDED.json",
+    "orderflow/inventory-service/pom.xml",
+    "orderflow/inventory-service/src/main/java/com/orderflow/inventory/config/KafkaConfiguration.java",
+    "orderflow/inventory-service/src/main/java/com/orderflow/inventory/messaging/DeliveryEventListener.java",
+    "orderflow/inventory-service/src/main/java/com/orderflow/inventory/messaging/OrderEventListener.java",
+    "orderflow/inventory-service/src/main/java/com/orderflow/inventory/outbox/OutboxStore.java",
+    "orderflow/inventory-service/src/main/java/com/orderflow/inventory/security/ApiSecurityErrorWriter.java",
+    "orderflow/inventory-service/src/main/resources/application.yml",
+    "orderflow/inventory-service/src/test/java/com/orderflow/inventory/InventoryFlowIT.java",
+    "orderflow/inventory-service/src/test/java/com/orderflow/inventory/client/ProductManagementAccessContractTest.java",
+    "orderflow/inventory-service/src/test/java/com/orderflow/inventory/security/InventorySecurityMvcTest.java",
+    "orderflow/inventory-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/notification-service/pom.xml",
+    "orderflow/notification-service/src/main/java/com/orderflow/notification/config/KafkaConfiguration.java",
+    "orderflow/notification-service/src/main/java/com/orderflow/notification/messaging/DispatchEventListener.java",
+    "orderflow/notification-service/src/main/java/com/orderflow/notification/messaging/DomainEventListener.java",
+    "orderflow/notification-service/src/main/java/com/orderflow/notification/outbox/OutboxStore.java",
+    "orderflow/notification-service/src/main/java/com/orderflow/notification/security/ApiSecurityErrorWriter.java",
+    "orderflow/notification-service/src/main/resources/application.yml",
+    "orderflow/notification-service/src/test/java/com/orderflow/notification/NotificationFlowIT.java",
+    "orderflow/notification-service/src/test/java/com/orderflow/notification/security/NotificationSecurityMvcTest.java",
+    "orderflow/notification-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/operations-service/pom.xml",
+    "orderflow/operations-service/src/main/java/com/orderflow/operations/config/KafkaConfiguration.java",
+    "orderflow/operations-service/src/main/java/com/orderflow/operations/messaging/OperationalEventListener.java",
+    "orderflow/operations-service/src/main/java/com/orderflow/operations/security/ApiSecurityErrorWriter.java",
+    "orderflow/operations-service/src/main/resources/application.yml",
+    "orderflow/operations-service/src/test/java/com/orderflow/operations/OperationsFlowIT.java",
+    "orderflow/operations-service/src/test/java/com/orderflow/operations/security/OperationsSecurityMvcTest.java",
+    "orderflow/operations-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/order-service/pom.xml",
+    "orderflow/order-service/src/main/java/com/orderflow/order/config/KafkaConfiguration.java",
+    "orderflow/order-service/src/main/java/com/orderflow/order/messaging/DeliveryEventListener.java",
+    "orderflow/order-service/src/main/java/com/orderflow/order/messaging/InventoryEventListener.java",
+    "orderflow/order-service/src/main/java/com/orderflow/order/messaging/PaymentEventListener.java",
+    "orderflow/order-service/src/main/java/com/orderflow/order/outbox/OutboxStore.java",
+    "orderflow/order-service/src/main/java/com/orderflow/order/security/ApiSecurityErrorWriter.java",
+    "orderflow/order-service/src/main/resources/application.yml",
+    "orderflow/order-service/src/test/java/com/orderflow/order/OrderFlowIT.java",
+    "orderflow/order-service/src/test/java/com/orderflow/order/client/CartContractCompatibilityTest.java",
+    "orderflow/order-service/src/test/java/com/orderflow/order/messaging/DeliveryEventListenerTest.java",
+    "orderflow/order-service/src/test/java/com/orderflow/order/outbox/OutboxOrderingIT.java",
+    "orderflow/order-service/src/test/java/com/orderflow/order/security/OrderSecurityMvcTest.java",
+    "orderflow/order-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/payment-service/pom.xml",
+    "orderflow/payment-service/src/main/java/com/orderflow/payment/config/KafkaConfiguration.java",
+    "orderflow/payment-service/src/main/java/com/orderflow/payment/demo/DemoCompletionWorker.java",
+    "orderflow/payment-service/src/main/java/com/orderflow/payment/messaging/OrderEventListener.java",
+    "orderflow/payment-service/src/main/java/com/orderflow/payment/outbox/OutboxStore.java",
+    "orderflow/payment-service/src/main/java/com/orderflow/payment/provider/SimulatorPaymentProvider.java",
+    "orderflow/payment-service/src/main/java/com/orderflow/payment/security/ApiSecurityErrorWriter.java",
+    "orderflow/payment-service/src/main/resources/application.yml",
+    "orderflow/payment-service/src/test/java/com/orderflow/payment/PaymentFlowIT.java",
+    "orderflow/payment-service/src/test/java/com/orderflow/payment/demo/DemoCompletionWorkerTest.java",
+    "orderflow/payment-service/src/test/java/com/orderflow/payment/provider/SimulatorPaymentProviderTest.java",
+    "orderflow/payment-service/src/test/java/com/orderflow/payment/security/PaymentSecurityMvcTest.java",
+    "orderflow/payment-service/src/test/java/com/orderflow/payment/webhook/SimulatorWebhookVerifierTest.java",
+    "orderflow/payment-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/platform-contracts/pom.xml",
+    "orderflow/platform-contracts/src/test/java/com/orderflow/platform/error/ApiErrorBoot3CompatibilityTest.java",
+    "orderflow/platform-contracts/src/test/java/com/orderflow/platform/error/ApiErrorTest.java",
+    "orderflow/platform-contracts/src/test/resources/compat/boot3/ApiError.json",
+    "orderflow/pom.xml",
+    "orderflow/product-service/pom.xml",
+    "orderflow/product-service/src/main/java/com/orderflow/product/cache/CatalogCacheConfiguration.java",
+    "orderflow/product-service/src/main/java/com/orderflow/product/security/ApiSecurityErrorWriter.java",
+    "orderflow/product-service/src/main/resources/application.yml",
+    "orderflow/product-service/src/test/java/com/orderflow/product/ProductCatalogIT.java",
+    "orderflow/product-service/src/test/java/com/orderflow/product/cache/CatalogSerializationCompatibilityTest.java",
+    "orderflow/product-service/src/test/java/com/orderflow/product/dto/ProductDetailResponseBoot3CompatibilityTest.java",
+    "orderflow/product-service/src/test/java/com/orderflow/product/security/ProductSecurityMvcTest.java",
+    "orderflow/product-service/src/test/resources/compat/boot3-schema.sql",
+    "orderflow/product-service/src/test/resources/compat/boot3/ProductDetailResponse.json",
+    "orderflow/product-service/src/test/resources/compat/boot3/catalog-categories.json",
+    "orderflow/product-service/src/test/resources/compat/boot3/catalog-product.json",
+    "orderflow/scheduler-support/pom.xml",
+    "orderflow/scheduler-support/src/test/java/com/orderflow/scheduler/ConservativeRetentionIT.java",
+    "orderflow/scheduler-support/src/test/java/com/orderflow/scheduler/PostgresJobSchedulerIT.java",
+    "orderflow/service-registry/pom.xml"
+  ]
+}

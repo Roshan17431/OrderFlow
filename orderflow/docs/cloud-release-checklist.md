@@ -1,5 +1,8 @@
 # Cloud release checklist
 
+> Current candidate: see the [2026-10-27 Boot 4 migration report](boot4-migration-2026-10-27.md). Earlier dependency findings below describe the prior Boot 3 assessment.
+
+
 A check is PASS only after its exact command has run successfully; otherwise record FAIL or NOT RUN with a reason. Local validation never establishes a live deployment.
 
 - Complete Java 21 `./mvnw -B -ntp clean verify`, frontend clean install/lint/types/tests/build and fixture browser gates.
