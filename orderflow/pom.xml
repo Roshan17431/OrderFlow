@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.16</version>
+        <version>4.1.2</version>
         <relativePath/>
     </parent>
 
@@ -48,23 +48,15 @@
              key as an invalid empty key. Keep the latest pre-regression release
              so local and forked CI builds never require a committed secret. -->
         <dependency-check-maven.version>12.2.2</dependency-check-maven.version>
-        <!-- Keep the release train compatible with Boot3.5; 2025.0.3 is the
-             latest public 2025.0.x service release verified on2026-10-14. -->
-        <spring-cloud.version>2025.0.3</spring-cloud.version>
-        <testcontainers.version>1.21.3</testcontainers.version>
-        <!-- Compatible patch/minor overrides verified against vendor advisories
-             and Maven Central on2026-10-13; retain the requested Boot3.5 line. -->
-        <tomcat.version>10.1.61</tomcat.version>
-        <netty.version>4.1.139.Final</netty.version>
-        <freemarker.version>2.3.35</freemarker.version>
-        <httpclient5.version>5.6.5</httpclient5.version>
-        <httpcore5.version>5.4.4</httpcore5.version>
-        <!-- Compatible security updates verified on 2026-10-25. Keep Jackson
-             and Log4j modules aligned through Boot's managed BOM properties. -->
-        <jackson-bom.version>2.21.8</jackson-bom.version>
-        <log4j2.version>2.25.5</log4j2.version>
-        <postgresql.version>42.7.14</postgresql.version>
+        <!-- Officially compatible release train for Spring Boot 4.1.x. -->
+        <spring-cloud.version>2025.1.4</spring-cloud.version>
+        <!-- Retain the compatible Jackson 2 security patch for third-party
+             libraries; application JSON uses Boot-managed Jackson 3. -->
+        <jackson-2-bom.version>2.21.8</jackson-2-bom.version>
         <httpclient4.version>4.5.14</httpclient4.version>
+        <!-- CVE-2026-53914: keep all Kotlin runtime modules aligned on the
+             compatible patched 2.4 line; no Kotlin source/compiler is used. -->
+        <kotlin.version>2.4.21</kotlin.version>
     </properties>
 
     <dependencyManagement>
@@ -79,13 +71,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>${testcontainers.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

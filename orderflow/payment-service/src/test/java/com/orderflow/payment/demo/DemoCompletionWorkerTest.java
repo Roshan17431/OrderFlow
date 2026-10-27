@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.payment.config.PaymentProperties;
 import com.orderflow.payment.domain.Payment;
 import com.orderflow.payment.domain.PaymentStatus;
@@ -30,7 +30,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 class DemoCompletionWorkerTest {
     @Test
     void sendsSignedCallbacksThroughRealVerifierWithoutCustomerControlledAmount() throws Exception {
-        var mapper = new ObjectMapper().findAndRegisterModules();
+        var mapper = tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().findAndAddModules().build();
         var clock = Clock.fixed(Instant.parse("2026-10-12T00:00:00Z"), ZoneOffset.UTC);
         var metrics = new SimpleMeterRegistry();
         var props = new PaymentProperties("simulator", true, false, "test-only-demo-webhook-secret", Duration.ofMinutes(5), Duration.ofSeconds(1), Duration.ofSeconds(2), 1, Duration.ofMillis(20), 100);

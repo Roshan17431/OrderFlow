@@ -1,7 +1,7 @@
 package com.orderflow.order.outbox;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.*;
 import com.orderflow.order.config.OutboxProperties;
 import java.time.*;
@@ -12,12 +12,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.*;
 
 @Testcontainers
 class OutboxOrderingIT {
-    @Container static final PostgreSQLContainer<?> DB = new PostgreSQLContainer<>("postgres:16-alpine");
+    @Container static final PostgreSQLContainer DB = new PostgreSQLContainer("postgres:16-alpine");
     static JdbcTemplate jdbc;
     static TransactionTemplate tx;
     static OutboxStore store;
@@ -31,7 +31,7 @@ class OutboxOrderingIT {
         Flyway.configure().dataSource(ds).load().migrate();
         assertThat(jdbc.queryForObject("select count(*) from outbox_event where event_sequence > 0", Integer.class)).isEqualTo(1);
         tx = new TransactionTemplate(new DataSourceTransactionManager(ds));
-        store = new OutboxStore(jdbc, new ObjectMapper().findAndRegisterModules(), new OutboxProperties(Duration.ofSeconds(1), 50, 3, Duration.ofMinutes(2), Duration.ofSeconds(1), Duration.ofSeconds(5)), Clock.fixed(now, ZoneOffset.UTC));
+        store = new OutboxStore(jdbc, tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().findAndAddModules().build(), new OutboxProperties(Duration.ofSeconds(1), 50, 3, Duration.ofMinutes(2), Duration.ofSeconds(1), Duration.ofSeconds(5)), Clock.fixed(now, ZoneOffset.UTC));
     }
     @BeforeEach void reset() { jdbc.update("delete from outbox_event"); }
     @Test void secondPublisherCannotOvertakeInFlightOrRetryingEvent() {

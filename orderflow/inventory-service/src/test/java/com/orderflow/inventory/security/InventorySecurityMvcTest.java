@@ -17,9 +17,9 @@ import com.orderflow.inventory.service.InventoryManagementService;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
@@ -49,13 +49,13 @@ class InventorySecurityMvcTest {
     @jakarta.annotation.Resource
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private InventoryManagementService inventory;
 
-    @MockBean
+    @MockitoBean
     private RevocationStateService revocations;
 
-    @MockBean
+    @MockitoBean
     private JwtDecoder jwtDecoder;
 
     @BeforeEach

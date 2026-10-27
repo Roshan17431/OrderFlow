@@ -11,11 +11,11 @@ import com.orderflow.auth.correlation.CorrelationIdFilter;
 import com.orderflow.auth.error.GlobalExceptionHandler;
 import com.orderflow.platform.http.CorrelationHeaders;
 import java.time.Instant;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import tools.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
+import tools.jackson.databind.json.JsonMapper;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -30,10 +30,8 @@ class PlatformControllerTest {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new PlatformController(metadataService))
                 .setControllerAdvice(new GlobalExceptionHandler())
-                .setMessageConverters(new MappingJackson2HttpMessageConverter(
-                        Jackson2ObjectMapperBuilder.json()
-                                .featuresToDisable(
-                                        SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .setMessageConverters(new JacksonJsonHttpMessageConverter(JsonMapper.builder()
+                                .disable(tools.jackson.databind.cfg.DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
                                 .build()))
                 .addFilters(new CorrelationIdFilter())
                 .build();

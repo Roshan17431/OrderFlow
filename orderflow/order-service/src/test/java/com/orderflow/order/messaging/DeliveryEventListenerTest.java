@@ -4,14 +4,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.order.service.OrderDeliveryWorkflowService;
 import org.junit.jupiter.api.Test;
 
 class DeliveryEventListenerTest {
 
     private final OrderDeliveryWorkflowService workflow = mock(OrderDeliveryWorkflowService.class);
-    private final DeliveryEventListener listener = new DeliveryEventListener(new ObjectMapper(), workflow);
+    private final DeliveryEventListener listener = new DeliveryEventListener(tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().build(), workflow);
 
     @Test
     void ignoresDeliveryCommandsConsumedFromTheSharedTopic() throws Exception {

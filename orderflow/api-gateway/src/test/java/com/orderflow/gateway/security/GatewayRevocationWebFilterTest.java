@@ -6,7 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ class GatewayRevocationWebFilterTest {
         when(chain.filter(org.mockito.ArgumentMatchers.any())).thenReturn(Mono.empty());
         filter = new GatewayRevocationWebFilter(
                 redis,
-                new GatewaySecurityErrorWriter(new ObjectMapper()));
+                new GatewaySecurityErrorWriter(tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().build()));
     }
 
     @Test

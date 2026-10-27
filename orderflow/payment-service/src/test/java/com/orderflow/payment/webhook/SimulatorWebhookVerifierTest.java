@@ -3,7 +3,7 @@ package com.orderflow.payment.webhook;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.payment.config.PaymentProperties;
 import com.orderflow.payment.error.PaymentDomainException;
 import com.orderflow.payment.provider.SimulatorPaymentProvider;
@@ -23,7 +23,7 @@ class SimulatorWebhookVerifierTest {
                     "simulator", true, false, "unit-test-secret",
                     Duration.ofMinutes(5), Duration.ofSeconds(2),
                     Duration.ofSeconds(5), 2, Duration.ofMillis(250), 100),
-            new SimulatorPaymentProvider(new ObjectMapper()),
+            new SimulatorPaymentProvider(tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().build()),
             new SimpleMeterRegistry(),
             Clock.fixed(NOW, ZoneOffset.UTC));
 
@@ -37,6 +37,7 @@ class SimulatorWebhookVerifierTest {
         VerifiedWebhookRequest result =
                 verifier.verify(body, timestamp, "sha256=" + signature, "evt-1");
         assertThat(result.event().eventType()).isEqualTo("payment.succeeded");
+        assertThat(result.event().retryable()).isFalse();
         assertThat(result.payloadHash()).hasSize(64);
     }
 

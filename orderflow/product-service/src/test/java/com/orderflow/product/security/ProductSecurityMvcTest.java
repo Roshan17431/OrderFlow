@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -43,6 +43,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.test.web.servlet.MockMvc;
 
+@org.springframework.boot.cache.test.autoconfigure.AutoConfigureCache
 @WebMvcTest(controllers = {
     PublicCatalogController.class,
     CategoryController.class,
@@ -66,22 +67,22 @@ class ProductSecurityMvcTest {
     @jakarta.annotation.Resource
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private PublicCatalogService catalog;
 
-    @MockBean
+    @MockitoBean
     private ProductManagementService products;
 
-    @MockBean
+    @MockitoBean
     private CategoryManagementService categories;
 
-    @MockBean
+    @MockitoBean
     private ProductSearchValidator search;
 
-    @MockBean
+    @MockitoBean
     private RevocationStateService revocations;
 
-    @MockBean
+    @MockitoBean
     private JwtDecoder decoder;
 
     @BeforeEach

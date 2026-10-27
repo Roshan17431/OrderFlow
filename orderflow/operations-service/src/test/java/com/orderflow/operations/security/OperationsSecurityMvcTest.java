@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
@@ -36,9 +36,9 @@ import org.springframework.test.web.servlet.MockMvc;
         CorrelationIdFilter.class, OperationsSecurityMvcTest.JwtTestConfiguration.class})
 class OperationsSecurityMvcTest {
     @jakarta.annotation.Resource private MockMvc mockMvc;
-    @MockBean private OperationsQueryService queries;
-    @MockBean private RevocationStateService revocations;
-    @MockBean private JwtDecoder jwtDecoder;
+    @MockitoBean private OperationsQueryService queries;
+    @MockitoBean private RevocationStateService revocations;
+    @MockitoBean private JwtDecoder jwtDecoder;
 
     @BeforeEach void setup() {
         when(revocations.validate(any(), any(), anyLong())).thenReturn(RevocationStateService.Validation.VALID);

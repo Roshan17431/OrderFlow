@@ -1,7 +1,7 @@
 package com.orderflow.order.messaging;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.DeliveryAssignedEvent;
 import com.orderflow.events.DeliveryCancelledEvent;
 import com.orderflow.events.DeliveryDeliveredEvent;
@@ -19,7 +19,7 @@ public class DeliveryEventListener {
     private final ObjectMapper mapper; private final OrderDeliveryWorkflowService workflow;
     public DeliveryEventListener(ObjectMapper mapper, OrderDeliveryWorkflowService workflow) { this.mapper = mapper; this.workflow = workflow; }
     @KafkaListener(topics = "${app.kafka.topics.delivery-events}", groupId = "order-service-delivery-events-v1")
-    public void consume(String payload, @Header("eventType") String name) throws JsonProcessingException {
+    public void consume(String payload, @Header("eventType") String name) throws JacksonException {
         switch (EventType.valueOf(name)) {
             case DELIVERY_ASSIGNED -> workflow.assigned(mapper.readValue(payload, DeliveryAssignedEvent.class));
             case DELIVERY_PICKED_UP -> workflow.pickedUp(mapper.readValue(payload, DeliveryPickedUpEvent.class));

@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
@@ -71,13 +71,13 @@ class PaymentSecurityMvcTest {
     private static final UUID ORDER_ID = UUID.randomUUID();
 
     @jakarta.annotation.Resource private MockMvc mockMvc;
-    @MockBean private PaymentQueryService queries;
-    @MockBean private PaymentCommandService commands;
-    @MockBean private RefundCommandService refunds;
-    @MockBean private SimulatorWebhookVerifier verifier;
-    @MockBean private PaymentWebhookService webhooks;
-    @MockBean private RevocationStateService revocations;
-    @MockBean private JwtDecoder jwtDecoder;
+    @MockitoBean private PaymentQueryService queries;
+    @MockitoBean private PaymentCommandService commands;
+    @MockitoBean private RefundCommandService refunds;
+    @MockitoBean private SimulatorWebhookVerifier verifier;
+    @MockitoBean private PaymentWebhookService webhooks;
+    @MockitoBean private RevocationStateService revocations;
+    @MockitoBean private JwtDecoder jwtDecoder;
 
     @BeforeEach
     void setup() {

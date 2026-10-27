@@ -6,12 +6,12 @@ import java.time.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.*;
 
 @Testcontainers
 class ConservativeRetentionIT {
-    @Container static final PostgreSQLContainer<?> DB = new PostgreSQLContainer<>("postgres:16-alpine");
+    @Container static final PostgreSQLContainer DB = new PostgreSQLContainer("postgres:16-alpine");
     @Test void cutoffsBindToPostgresAndActiveRecordsSurviveCleanup() {
         var jdbc = new JdbcTemplate(new DriverManagerDataSource(DB.getJdbcUrl(), DB.getUsername(), DB.getPassword()));
         jdbc.execute("create table processed_event(processed_at timestamptz)");

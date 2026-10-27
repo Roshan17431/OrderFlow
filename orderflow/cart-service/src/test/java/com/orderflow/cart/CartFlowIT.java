@@ -11,8 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.cart.domain.Cart;
 import com.orderflow.cart.domain.CartItem;
 import com.orderflow.cart.error.CartDomainException;
@@ -41,8 +41,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.micrometer.metrics.test.autoconfigure.AutoConfigureMetrics;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
@@ -58,7 +58,7 @@ import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureObservability
+@AutoConfigureMetrics
 @ActiveProfiles("test")
 @Testcontainers
 class CartFlowIT {
@@ -122,6 +122,33 @@ class CartFlowIT {
     @AfterAll
     static void stopProductStub() {
         PRODUCTS.stop();
+    }
+
+    @Test
+    void readsOldDurableCartHashAndWritesRollbackCompatibleItems() throws Exception {
+        var id = UUID.fromString("30000000-0000-0000-0000-000000000003");
+        String item;
+        try (var input = getClass().getResourceAsStream("/compat/boot3/StoredCartItem.json")) {
+            item = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+        }
+        var hash = new java.util.HashMap<String, String>();
+        hash.put("item:" + id, item);
+        hash.put("__version", "7");
+        hash.put("__currency", "USD");
+        hash.put("__createdAt", "2026-01-02T03:04:05.123456Z");
+        hash.put("__updatedAt", "2026-01-02T03:04:05.123456Z");
+        hash.put("__expiresAt", java.time.Instant.now().plusSeconds(120).toString());
+        redis.opsForHash().putAll(carts.key(USER_ID), hash);
+        var existing = carts.find(USER_ID);
+        assertThat(existing.version()).isEqualTo(7);
+        assertThat(existing.items().getFirst().unitPriceSnapshot()).isEqualByComparingTo("41152263.041152");
+        carts.update(USER_ID, existing.items().getFirst());
+        String written = redis.opsForHash().get(carts.key(USER_ID), "item:" + id).toString();
+        var old = new com.fasterxml.jackson.databind.ObjectMapper();
+        var rollbackItem = old.readValue(written, com.orderflow.cart.persistence.StoredCartItem.class);
+        assertThat(rollbackItem.quantity()).isEqualTo(3);
+        assertThat(rollbackItem.unitPriceSnapshot()).isEqualTo("41152263.041152");
+        assertThat(carts.find(USER_ID).version()).isEqualTo(8);
     }
 
     @Test
@@ -423,7 +450,7 @@ class CartFlowIT {
 
     private static final class ProductStub {
 
-        private static final ObjectMapper JSON = new ObjectMapper();
+        private static final ObjectMapper JSON = tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().build();
         private final HttpServer server;
         private final Map<UUID, StubProduct> products = new ConcurrentHashMap<>();
         private final AtomicInteger calls = new AtomicInteger();

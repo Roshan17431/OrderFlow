@@ -1,7 +1,7 @@
 package com.orderflow.payment.outbox;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.EventMetadata;
 import com.orderflow.payment.config.OutboxProperties;
 import java.sql.ResultSet;
@@ -49,7 +49,7 @@ public class OutboxStore {
                     metadata.eventType().name(), metadata.eventVersion(), topic,
                     orderId.toString(), payload, metadata.correlationId(),
                     metadata.causationId(), Timestamp.from(now), Timestamp.from(now));
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             throw new IllegalStateException("Unable to serialize payment event", exception);
         }
     }

@@ -87,7 +87,7 @@ class GlobalExceptionHandlerTest {
 
         @GetMapping("/framework-missing")
         void frameworkMissing() throws NoResourceFoundException {
-            throw new NoResourceFoundException(HttpMethod.GET, "/framework-missing");
+            throw new NoResourceFoundException(HttpMethod.GET, "/framework-missing", "No static resource framework-missing");
         }
 
         @GetMapping("/failure")

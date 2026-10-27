@@ -1,6 +1,6 @@
 package com.orderflow.inventory.messaging;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.DeliveryCancelledEvent;
 import com.orderflow.events.DeliveryPickedUpEvent;
 import com.orderflow.events.DeliveryFailedEvent;

@@ -2,9 +2,9 @@ package com.orderflow.platform.error;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class ApiErrorTest {
 
-    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final ObjectMapper mapper = JsonMapper.builder().configureForJackson2().build();
 
     @Test
     void normalizesNullFieldErrorsToAnImmutableEmptyList() {

@@ -3,14 +3,14 @@ package com.orderflow.order.client;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
 class CartContractCompatibilityTest {
 
-    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final ObjectMapper mapper = JsonMapper.builder().configureForJackson2().disable(tools.jackson.databind.cfg.DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
     private final String cart = """
             {"userId":"20000000-0000-0000-0000-000000000002","version":7,"currency":"USD",
             "items":[{"productId":"30000000-0000-0000-0000-000000000003",

@@ -1,6 +1,6 @@
 package com.orderflow.order.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.order.correlation.OrderRequestAttributes;
 import com.orderflow.platform.error.ApiError;
 import com.orderflow.platform.error.ErrorCode;

@@ -108,10 +108,11 @@ class ApiGatewayApplicationTest {
                 .header("X-Correlation-ID", "oversized-request")
                 .bodyValue("x".repeat(1_048_577))
                 .exchange()
-                .expectStatus().isEqualTo(HttpStatus.PAYLOAD_TOO_LARGE)
+                .expectStatus().isEqualTo(413)
                 .expectHeader().valueEquals("X-Correlation-ID", "oversized-request")
                 .expectBody()
                 .jsonPath("$.code").isEqualTo("PAYLOAD_TOO_LARGE")
+                .jsonPath("$.error").isEqualTo("Payload Too Large")
                 .jsonPath("$.correlationId").isEqualTo("oversized-request");
     }
 

@@ -16,7 +16,7 @@ class AgentAddressPrivacyTest {
   when(deliveries.findByDeliveryAgentId(eq(profile),any(org.springframework.data.domain.Pageable.class)))
     .thenReturn(new org.springframework.data.domain.PageImpl<Delivery>(List.of()));
   var query=new DeliveryQueryService(deliveries,agents,mock(DeliveryStatusHistoryRepository.class),new DeliveryMapper(),mock(DeliveryProperties.class));
-  var body=new com.fasterxml.jackson.databind.ObjectMapper().findAndRegisterModules().valueToTree(query.agent(user));
+  var body=tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().findAndAddModules().build().valueToTree(query.agent(user));
   assertThat(body.hasNonNull("profileId")).isTrue();assertThat(body.get("profileId").asText()).isEqualTo(profile.toString());
  }
  @Test void ownerWithAgentRoleCannotReadAddressUnlessAssigned(){

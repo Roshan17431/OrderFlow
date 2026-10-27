@@ -1,6 +1,6 @@
 package com.orderflow.product.cache;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.product.config.CatalogCacheProperties;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -30,10 +30,7 @@ public class CatalogCacheConfiguration implements CachingConfigurer {
             RedisConnectionFactory connectionFactory,
             ObjectMapper objectMapper,
             CatalogCacheProperties properties) {
-        var valueSerializer = GenericJackson2JsonRedisSerializer.builder()
-                .objectMapper(objectMapper.copy())
-                .defaultTyping(true)
-                .build();
+        var valueSerializer = valueSerializer(objectMapper);
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .computePrefixWith(name -> properties.namespace() + ":cache:" + name + ":")
@@ -50,10 +47,29 @@ public class CatalogCacheConfiguration implements CachingConfigurer {
                 defaults.entryTtl(properties.categoryTtl()),
                 CatalogCaches.PRODUCT_SEARCH,
                 defaults.entryTtl(properties.searchTtl()));
-        return RedisCacheManager.builder(connectionFactory)
+        return RedisCacheManager.builder(
+                        org.springframework.data.redis.cache.RedisCacheWriter.create(
+                                connectionFactory, writer -> writer.immediateWrites()))
                 .cacheDefaults(defaults)
                 .withInitialCacheConfigurations(configurations)
                 .enableStatistics()
+                .build();
+    }
+
+    // Retain the v1 typed cache format while restricting deserialization to the
+    // actual catalog DTOs and their collection/decimal values.
+    static org.springframework.data.redis.serializer.RedisSerializer<Object> valueSerializer(
+            ObjectMapper objectMapper) {
+        var validator = tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType("com.orderflow.product.dto.")
+                .allowIfSubType(java.math.BigDecimal.class)
+                .allowIfSubType(java.util.ArrayList.class)
+                .allowIfSubType(java.util.regex.Pattern.compile(
+                        "java\\.util\\.ImmutableCollections\\$List(?:12|N)"))
+                .build();
+        return GenericJacksonJsonRedisSerializer.builder(objectMapper::rebuild)
+                .enableDefaultTyping(validator)
+                .typePropertyName("@class")
                 .build();
     }
 

@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
@@ -57,11 +57,11 @@ class DeliverySecurityMvcTest {
     private static final UUID USER_ID = UUID.randomUUID();
 
     @jakarta.annotation.Resource private MockMvc mockMvc;
-    @MockBean private DeliveryAssignmentService assignment;
-    @MockBean private DeliveryCommandService commands;
-    @MockBean private DeliveryQueryService queries;
-    @MockBean private RevocationStateService revocations;
-    @MockBean private JwtDecoder jwtDecoder;
+    @MockitoBean private DeliveryAssignmentService assignment;
+    @MockitoBean private DeliveryCommandService commands;
+    @MockitoBean private DeliveryQueryService queries;
+    @MockitoBean private RevocationStateService revocations;
+    @MockitoBean private JwtDecoder jwtDecoder;
 
     @BeforeEach
     void validSecurityState() {

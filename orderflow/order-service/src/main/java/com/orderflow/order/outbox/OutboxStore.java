@@ -1,7 +1,7 @@
 package com.orderflow.order.outbox;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.EventMetadata;
 import com.orderflow.order.config.OutboxProperties;
 import java.sql.ResultSet;
@@ -39,7 +39,7 @@ public class OutboxStore {
         String payload;
         try {
             payload = objectMapper.writeValueAsString(event);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             throw new IllegalStateException("Unable to serialize event", exception);
         }
         Instant now = Instant.now(clock);

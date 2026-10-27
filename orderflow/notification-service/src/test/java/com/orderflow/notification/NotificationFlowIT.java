@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.DeliveryAssignedEvent;
 import com.orderflow.events.DeliveryDeliveredEvent;
 import com.orderflow.events.DeliveryOutForDeliveryEvent;
@@ -29,7 +29,7 @@ import org.apache.kafka.common.header.internals.RecordHeader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -42,7 +42,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -50,10 +50,32 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class NotificationFlowIT {
+    @Test
+    void validatesFreshOrRestoredBoot3SchemaAndSyntheticData() throws Exception {
+        try (var connection = java.sql.DriverManager.getConnection(
+                POSTGRES.getJdbcUrl(), POSTGRES.getUsername(), POSTGRES.getPassword());
+                var statement = connection.createStatement()) {
+            try (var result = statement.executeQuery(
+                    "select count(*) from information_schema.tables where table_name='boot3_compatibility_probe'")) {
+                result.next();
+                assertThat(result.getInt(1)).isEqualTo(Boolean.getBoolean("orderflow.verifyBoot3Schema") ? 1 : 0);
+            }
+            if (Boolean.getBoolean("orderflow.verifyBoot3Schema")) {
+                try (var result = statement.executeQuery(
+                        "select payload::text, amount, occurred_at from boot3_compatibility_probe")) {
+                    assertThat(result.next()).isTrue();
+                    assertThat(result.getString(1)).contains("ORDER_CREATED", "123456789.123456");
+                    assertThat(result.getBigDecimal(2)).isEqualByComparingTo("123456789.123456");
+                    assertThat(result.getTimestamp(3).toInstant()).isEqualTo(java.time.Instant.parse("2026-01-02T03:04:05.123456Z"));
+                }
+            }
+        }
+    }
+
     private static final UUID USER = UUID.fromString("88000000-0000-0000-0000-000000000001");
     private static final UUID OTHER = UUID.fromString("88000000-0000-0000-0000-000000000002");
 
-    static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine")
+    static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:16-alpine").withInitScripts(Boolean.getBoolean("orderflow.verifyBoot3Schema") ? java.util.List.of("compat/boot3-schema.sql") : java.util.List.of())
             .withDatabaseName("orderflow_notification_test")
             .withUsername("orderflow_notification")
             .withPassword("notification_test_password");
@@ -88,6 +110,7 @@ class NotificationFlowIT {
 
     @BeforeEach
     void reset() {
+        verifyExistingBusinessDataBeforeReset();
         jdbc.update("delete from processed_event");
         jdbc.update("delete from outbox_event");
         jdbc.update("delete from notification_delivery");
@@ -190,5 +213,16 @@ class NotificationFlowIT {
 
     private int count(String sql) {
         return jdbc.queryForObject(sql, Integer.class);
+    }
+
+    private static final java.util.concurrent.atomic.AtomicBoolean EXISTING_DATA_CHECKED = new java.util.concurrent.atomic.AtomicBoolean();
+    @Autowired jakarta.persistence.EntityManagerFactory compatibilityEntityManagerFactory;
+    private void verifyExistingBusinessDataBeforeReset() {
+        if (Boolean.getBoolean("orderflow.verifyBoot3Schema") && EXISTING_DATA_CHECKED.compareAndSet(false, true)) {
+            try (var manager = compatibilityEntityManagerFactory.createEntityManager()) {
+                var existing = manager.find(com.orderflow.notification.domain.Notification.class, java.util.UUID.fromString("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"));
+                assertThat(existing).isNotNull();
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.orderflow.gateway.error;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.gateway.correlation.GatewayCorrelationContext;
 import com.orderflow.platform.error.ApiError;
 import com.orderflow.platform.error.ErrorCode;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+import org.springframework.boot.webflux.error.ErrorWebExceptionHandler;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -69,7 +69,7 @@ public class GatewayErrorWebExceptionHandler implements ErrorWebExceptionHandler
             byte[] body = objectMapper.writeValueAsBytes(error);
             return exchange.getResponse().writeWith(
                     Mono.just(exchange.getResponse().bufferFactory().wrap(body)));
-        } catch (JsonProcessingException serializationFailure) {
+        } catch (JacksonException serializationFailure) {
             LOGGER.error("Failed to serialize gateway error response", serializationFailure);
             return exchange.getResponse().setComplete();
         }

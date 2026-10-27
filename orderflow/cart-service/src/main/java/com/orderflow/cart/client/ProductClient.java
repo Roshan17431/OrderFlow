@@ -1,6 +1,6 @@
 package com.orderflow.cart.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.cart.dto.ProductResolutionRequest;
 import com.orderflow.cart.dto.ProductResolutionResponse;
 import com.orderflow.cart.error.CartDomainException;
@@ -105,7 +105,7 @@ public class ProductClient {
             var status = response.getStatusCode();
             ApiError error = objectMapper.readValue(response.getBody(), ApiError.class);
             return new ProductClientRejectedException(status, error.code());
-        } catch (IOException exception) {
+        } catch (IOException | tools.jackson.core.JacksonException exception) {
             return new ProductClientRejectedException(HttpStatus.BAD_GATEWAY);
         }
     }

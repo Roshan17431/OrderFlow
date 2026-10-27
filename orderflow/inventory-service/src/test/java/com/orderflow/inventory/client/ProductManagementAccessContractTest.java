@@ -3,11 +3,11 @@ package com.orderflow.inventory.client;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 class ProductManagementAccessContractTest {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().build();
 
     @Test
     void consumesTheProductManagementAccessContract() throws Exception {

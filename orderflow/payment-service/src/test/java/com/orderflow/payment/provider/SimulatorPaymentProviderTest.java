@@ -3,7 +3,7 @@ package com.orderflow.payment.provider;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.payment.domain.ProviderFailureCategory;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 class SimulatorPaymentProviderTest {
     private final SimulatorPaymentProvider provider =
-            new SimulatorPaymentProvider(new ObjectMapper());
+            new SimulatorPaymentProvider(tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().build());
     private final ProviderPaymentRequest request = new ProviderPaymentRequest(
             UUID.randomUUID(), UUID.randomUUID(), new BigDecimal("10.00"),
             "USD", "same-operation");

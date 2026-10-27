@@ -1,0 +1,1 @@
+{"@class":"com.orderflow.product.dto.CategoryListResponse","items":["java.util.ImmutableCollections$List12",[{"@class":"com.orderflow.product.dto.CategoryResponse","id":"40000000-0000-0000-0000-000000000004","name":"Category","slug":"category","description":null,"status":"ACTIVE","createdAt":"2026-01-02T03:04:05.123456Z","updatedAt":"2026-01-02T03:04:05.123456Z","version":0}]]}

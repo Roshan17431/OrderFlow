@@ -1,7 +1,7 @@
 package com.orderflow.order.messaging;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.EventType;
 import com.orderflow.events.InventoryReleasedEvent;
 import com.orderflow.events.InventoryReservationFailedEvent;
@@ -28,7 +28,7 @@ public class InventoryEventListener {
             topics = "${app.kafka.topics.inventory-events}",
             groupId = "${spring.kafka.consumer.group-id}")
     public void consume(String payload, @Header("eventType") String eventType)
-            throws JsonProcessingException {
+            throws JacksonException {
         EventType type = EventType.valueOf(eventType);
         switch (type) {
             case INVENTORY_RESERVED -> workflows.reserved(

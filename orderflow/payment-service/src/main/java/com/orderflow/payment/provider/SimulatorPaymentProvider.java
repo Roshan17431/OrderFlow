@@ -1,8 +1,7 @@
 package com.orderflow.payment.provider;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.payment.domain.ProviderFailureCategory;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
@@ -134,7 +133,7 @@ public class SimulatorPaymentProvider implements PaymentProvider {
                     payload.failureCode(),
                     payload.failureCategory(),
                     payload.retryable());
-        } catch (IOException exception) {
+        } catch (tools.jackson.core.JacksonException exception) {
             throw new IllegalArgumentException("Malformed simulator webhook payload");
         }
     }

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.gateway.config.GatewayRateLimitProperties;
 import com.orderflow.gateway.config.GatewayRateLimitProperties.Policy;
 import com.orderflow.gateway.correlation.GatewayCorrelationContext;
@@ -46,7 +46,7 @@ class GatewayRateLimitWebFilterTest {
                 twoPerMinute,
                 twoPerMinute,
                 twoPerMinute);
-        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
+        ObjectMapper mapper = tools.jackson.databind.json.JsonMapper.builder().configureForJackson2().findAndAddModules().build();
         filter = new GatewayRateLimitWebFilter(
                 properties, store, new GatewaySecurityErrorWriter(mapper));
     }

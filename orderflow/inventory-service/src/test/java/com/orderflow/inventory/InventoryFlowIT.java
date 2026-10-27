@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.EventMetadata;
 import com.orderflow.events.EventType;
 import com.orderflow.events.OrderCancelRequestedEvent;
@@ -45,8 +45,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.micrometer.metrics.test.autoconfigure.AutoConfigureMetrics;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
@@ -60,7 +60,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.kafka.KafkaContainer;
@@ -68,11 +68,34 @@ import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureObservability
+@AutoConfigureMetrics
 @ActiveProfiles("test")
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class InventoryFlowIT {
+    @Test
+    void validatesFreshOrRestoredBoot3SchemaAndSyntheticData() throws Exception {
+        try (var connection = java.sql.DriverManager.getConnection(
+                POSTGRES.getJdbcUrl(), POSTGRES.getUsername(), POSTGRES.getPassword());
+                var statement = connection.createStatement()) {
+            try (var result = statement.executeQuery(
+                    "select count(*) from information_schema.tables where table_name='boot3_compatibility_probe'")) {
+                result.next();
+                assertThat(result.getInt(1)).isEqualTo(Boolean.getBoolean("orderflow.verifyBoot3Schema") ? 1 : 0);
+            }
+            if (Boolean.getBoolean("orderflow.verifyBoot3Schema")) {
+                try (var result = statement.executeQuery(
+                        "select payload::text, amount, occurred_at from boot3_compatibility_probe")) {
+                    assertThat(result.next()).isTrue();
+                    assertThat(result.getString(1)).contains("ORDER_CREATED", "123456789.123456");
+                    assertThat(result.getBigDecimal(2)).isEqualByComparingTo("123456789.123456");
+                    assertThat(result.getTimestamp(3).toInstant()).isEqualTo(java.time.Instant.parse("2026-01-02T03:04:05.123456Z"));
+                }
+            }
+        }
+    }
+
+
 
     private static final String ORDER_TOPIC = "orderflow.order-events.v1";
     private static final String ORDER_DLT = "orderflow.order-events.v1.DLT";
@@ -87,8 +110,8 @@ class InventoryFlowIT {
     private static final ProductStub PRODUCTS = ProductStub.start();
 
     @Container
-    static final PostgreSQLContainer<?> POSTGRES =
-            new PostgreSQLContainer<>("postgres:16-alpine")
+    static final PostgreSQLContainer POSTGRES =
+            new PostgreSQLContainer("postgres:16-alpine").withInitScripts(Boolean.getBoolean("orderflow.verifyBoot3Schema") ? java.util.List.of("compat/boot3-schema.sql") : java.util.List.of())
                     .withDatabaseName("orderflow_inventory_test")
                     .withUsername("orderflow_inventory")
                     .withPassword("inventory_test_password");
@@ -139,6 +162,7 @@ class InventoryFlowIT {
 
     @BeforeEach
     void resetState() {
+        verifyExistingBusinessDataBeforeReset();
         jdbc.update("delete from processed_event");
         jdbc.update("delete from outbox_event");
         jdbc.update("delete from inventory_reservation_item");
@@ -445,7 +469,7 @@ class InventoryFlowIT {
             OrderCreatedEvent valid =
                     createdEvent(UUID.randomUUID(), orderId, PRODUCT_ID, 1, "invalid-version");
             JsonNode tree = objectMapper.valueToTree(valid);
-            ((com.fasterxml.jackson.databind.node.ObjectNode) tree.path("metadata"))
+            ((tools.jackson.databind.node.ObjectNode) tree.path("metadata"))
                     .put("eventVersion", 99);
             publishJson(
                     ORDER_TOPIC,
@@ -636,6 +660,17 @@ class InventoryFlowIT {
             exchange.sendResponseHeaders(200, body.length);
             exchange.getResponseBody().write(body);
             exchange.close();
+        }
+    }
+
+    private static final java.util.concurrent.atomic.AtomicBoolean EXISTING_DATA_CHECKED = new java.util.concurrent.atomic.AtomicBoolean();
+    @Autowired jakarta.persistence.EntityManagerFactory compatibilityEntityManagerFactory;
+    private void verifyExistingBusinessDataBeforeReset() {
+        if (Boolean.getBoolean("orderflow.verifyBoot3Schema") && EXISTING_DATA_CHECKED.compareAndSet(false, true)) {
+            try (var manager = compatibilityEntityManagerFactory.createEntityManager()) {
+                var existing = manager.find(com.orderflow.inventory.domain.InventoryItem.class, java.util.UUID.fromString("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"));
+                assertThat(existing).isNotNull();
+            }
         }
     }
 }

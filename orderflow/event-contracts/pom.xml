@@ -32,5 +32,8 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>tools.jackson.core</groupId><artifactId>jackson-databind</artifactId><scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

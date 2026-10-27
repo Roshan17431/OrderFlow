@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
@@ -50,11 +50,11 @@ class NotificationSecurityMvcTest {
     private static final UUID USER_ID = UUID.randomUUID();
 
     @jakarta.annotation.Resource private MockMvc mockMvc;
-    @MockBean private NotificationQueryService queries;
-    @MockBean private PreferenceService preferences;
-    @MockBean private SseRegistry streams;
-    @MockBean private RevocationStateService revocations;
-    @MockBean private JwtDecoder jwtDecoder;
+    @MockitoBean private NotificationQueryService queries;
+    @MockitoBean private PreferenceService preferences;
+    @MockitoBean private SseRegistry streams;
+    @MockitoBean private RevocationStateService revocations;
+    @MockitoBean private JwtDecoder jwtDecoder;
 
     @BeforeEach
     void validSecurityState() {

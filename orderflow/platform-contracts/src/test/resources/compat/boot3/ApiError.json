@@ -1,0 +1,1 @@
+{"timestamp":"2026-01-02T03:04:05.123456Z","status":400,"error":"Bad Request","code":"VALIDATION_FAILED","message":"Invalid request","path":"/api/products","correlationId":"compat-correlation","fieldErrors":[{"field":"price","message":"must be positive","rejectedValue":null}]}

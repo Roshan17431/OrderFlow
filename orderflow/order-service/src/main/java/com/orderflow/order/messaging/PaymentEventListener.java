@@ -1,7 +1,7 @@
 package com.orderflow.order.messaging;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.events.EventType;
 import com.orderflow.events.PaymentCancelledEvent;
 import com.orderflow.events.PaymentFailedEvent;
@@ -28,7 +28,7 @@ public class PaymentEventListener {
             topics = "${app.kafka.topics.payment-events}",
             groupId = "order-service-payment-events-v1")
     public void consume(String payload, @Header("eventType") String eventType)
-            throws JsonProcessingException {
+            throws JacksonException {
         EventType type = EventType.valueOf(eventType);
         switch (type) {
             case PAYMENT_SUCCEEDED -> workflow.succeeded(

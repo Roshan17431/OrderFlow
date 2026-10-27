@@ -1,7 +1,7 @@
 package com.orderflow.gateway.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.gateway.correlation.GatewayCorrelationContext;
 import com.orderflow.platform.error.ApiError;
 import com.orderflow.platform.error.ErrorCode;
@@ -53,7 +53,7 @@ public class GatewaySecurityErrorWriter {
             byte[] body = objectMapper.writeValueAsBytes(error);
             return exchange.getResponse().writeWith(Mono.just(
                     exchange.getResponse().bufferFactory().wrap(body)));
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             return exchange.getResponse().setComplete();
         }
     }

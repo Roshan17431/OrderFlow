@@ -1,7 +1,7 @@
 package com.orderflow.cart.persistence;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.orderflow.cart.config.CartProperties;
 import com.orderflow.cart.domain.Cart;
 import com.orderflow.cart.domain.CartItem;
@@ -79,7 +79,7 @@ public class CartRedisRepository {
                     instantValue(values, "__createdAt"),
                     instantValue(values, "__updatedAt"),
                     instantValue(values, "__expiresAt"));
-        } catch (DataAccessException | JsonProcessingException exception) {
+        } catch (DataAccessException | JacksonException exception) {
             throw unavailable(exception);
         }
     }
@@ -176,7 +176,7 @@ public class CartRedisRepository {
     private String serialize(CartItem item) {
         try {
             return objectMapper.writeValueAsString(StoredCartItem.from(item));
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             throw new IllegalStateException("Unable to serialize a cart item", exception);
         }
     }

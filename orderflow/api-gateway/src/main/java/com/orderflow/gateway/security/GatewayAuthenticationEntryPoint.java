@@ -21,7 +21,7 @@ public class GatewayAuthenticationEntryPoint implements ServerAuthenticationEntr
     public Mono<Void> commence(
             ServerWebExchange exchange,
             AuthenticationException exception) {
-        boolean bearer = exchange.getRequest().getHeaders().containsKey("Authorization");
+        boolean bearer = exchange.getRequest().getHeaders().containsHeader("Authorization");
         return writer.write(
                 exchange,
                 HttpStatus.UNAUTHORIZED,

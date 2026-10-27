@@ -2,12 +2,12 @@ package com.orderflow.events;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.json.JsonMapper;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.EnumSet;
@@ -28,10 +28,20 @@ class EventSerializationCompatibilityTest {
     private static final UUID AGENT_ID = UUID.fromString("80000000-0000-0000-0000-000000000008");
     private static final UUID NOTIFICATION_ID = UUID.fromString("90000000-0000-0000-0000-000000000009");
 
-    private final ObjectMapper mapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    private final ObjectMapper mapper = JsonMapper.builder().configureForJackson2()
+            .disable(tools.jackson.databind.cfg.DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
+
+    @Test
+    void boot3RollbackReadsEveryNewEventWithoutChangingItsSchema() throws Exception {
+        var rollback = new com.fasterxml.jackson.databind.ObjectMapper()
+                .registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule())
+                .disable(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        for (EventCase eventCase : eventCases()) {
+            String newPayload = mapper.writeValueAsString(eventCase.value());
+            assertThat(rollback.readValue(newPayload, eventCase.type())).isEqualTo(eventCase.value());
+        }
+    }
 
     @Test
     void everyPublishedEventRoundTripsAndToleratesAdditiveFields() throws Exception {
@@ -52,6 +62,18 @@ class EventSerializationCompatibilityTest {
             withFutureOptionalField.put("futureOptionalField", "ignored-by-v1-consumer");
             Object restored = mapper.treeToValue(withFutureOptionalField, eventCase.type());
             assertThat(restored).isEqualTo(eventCase.value());
+        }
+    }
+
+    @Test
+    void readsBoot3FixturesAndPreservesPersistedOutboxPayloads() throws Exception {
+        for (EventCase eventCase : eventCases()) {
+            String name = "/compat/boot3/" + eventCase.metadata().eventType().name() + ".json";
+            try (var input = getClass().getResourceAsStream(name)) {
+                assertThat(input).as(name).isNotNull();
+                Object restored = mapper.readValue(input, eventCase.type());
+                assertThat(restored).isEqualTo(eventCase.value());
+            }
         }
     }
 
