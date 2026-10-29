@@ -1,0 +1,4396 @@
+{
+  "assessmentDate": "2026-10-28",
+  "classification": "CONTAINER SECURITY REMEDIATION INCOMPLETE",
+  "baselineHead": "a1536d32cee31d6c1ea2ac7710ebca031bdeed2d",
+  "javaRuntime": "Corretto 21.0.13.0.11, OpenJDK 21.0.13+11",
+  "maven": "3.9.16",
+  "springBoot": "4.1.2",
+  "springCloud": "2025.1.4",
+  "dependencyChanges": {
+    "at.yawk.lz4:lz4-java": "1.11.2 -> 1.11.4",
+    "com.google.guava:guava": "33.0.0-jre -> 33.7.2-jre",
+    "org.xerial.snappy:snappy-java": "1.1.10.7 -> 1.1.10.11"
+  },
+  "backendTests": {
+    "unit": {
+      "tests": 226,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "integration": {
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "frontendCommands": [
+    {
+      "name": "npm-ci",
+      "command": [
+        "npm",
+        "ci"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:23.055164+00:00",
+      "exitCode": 0,
+      "durationSeconds": 9.22,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/npm-ci.log"
+    },
+    {
+      "name": "npm-audit",
+      "command": [
+        "npm",
+        "audit"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:32.278520+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.99,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/npm-audit.log"
+    },
+    {
+      "name": "npm-audit-production",
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:33.271023+00:00",
+      "exitCode": 0,
+      "durationSeconds": 0.63,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/npm-audit-production.log"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:33.897724+00:00",
+      "exitCode": 0,
+      "durationSeconds": 3.68,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/lint.log"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:37.577915+00:00",
+      "exitCode": 0,
+      "durationSeconds": 1.69,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/typecheck.log"
+    },
+    {
+      "name": "test",
+      "command": [
+        "npm",
+        "run",
+        "test"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:39.270555+00:00",
+      "exitCode": 0,
+      "durationSeconds": 11.0,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/test.log"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-27T17:40:50.270139+00:00",
+      "exitCode": 0,
+      "durationSeconds": 4.87,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/build.log"
+    }
+  ],
+  "frontendChecks": {
+    "nodeLocal": "v22.16.0",
+    "npmLocal": "10.9.2",
+    "sourceChanges": [
+      "orderflow/frontend/Dockerfile"
+    ],
+    "nextEnvSha256": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b",
+    "nextEnvMatchesOriginal": true,
+    "standalonePaths": {
+      ".next/standalone/server.js": true,
+      ".next/standalone/.next/server": true,
+      ".next/static": true,
+      ".next/standalone/node_modules/next/package.json": true,
+      ".next/standalone/node_modules/react/package.json": true
+    },
+    "testCounts": {
+      "testFiles": 15,
+      "tests": 138,
+      "failures": 0
+    },
+    "npmAuditFindings": {
+      "all": 0,
+      "omitDev": 0
+    },
+    "runtimeDockerBuildsAndScans": "PASS: both architectures; see final immutable inventory and full reports",
+    "buildWarnings": [
+      "Next.js ignored /Users/roshan/package-lock.json outside repository; production build exited0."
+    ]
+  },
+  "owasp": {
+    "dependencies": 165,
+    "findings": [
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "advisory": "CVE-2022-40159",
+        "severity": "MEDIUM",
+        "cvss": {
+          "baseScore": 6.5,
+          "attackVector": "NETWORK",
+          "attackComplexity": "LOW",
+          "privilegesRequired": "LOW",
+          "userInteraction": "NONE",
+          "scope": "UNCHANGED",
+          "confidentialityImpact": "NONE",
+          "integrityImpact": "NONE",
+          "availabilityImpact": "HIGH",
+          "baseSeverity": "MEDIUM",
+          "exploitabilityScore": "2.8",
+          "impactScore": "3.6",
+          "version": "3.1"
+        }
+      },
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "advisory": "CVE-2022-40160",
+        "severity": "MEDIUM",
+        "cvss": {
+          "baseScore": 6.5,
+          "attackVector": "NETWORK",
+          "attackComplexity": "LOW",
+          "privilegesRequired": "LOW",
+          "userInteraction": "NONE",
+          "scope": "UNCHANGED",
+          "confidentialityImpact": "NONE",
+          "integrityImpact": "NONE",
+          "availabilityImpact": "HIGH",
+          "baseSeverity": "MEDIUM",
+          "exploitabilityScore": "2.8",
+          "impactScore": "3.6",
+          "version": "3.1"
+        }
+      },
+      {
+        "dependency": "kafka-clients-4.2.2.jar",
+        "advisory": "CVE-2026-41115",
+        "severity": "MEDIUM",
+        "cvss": {
+          "baseScore": 4.3,
+          "attackVector": "NETWORK",
+          "attackComplexity": "LOW",
+          "privilegesRequired": "LOW",
+          "userInteraction": "NONE",
+          "scope": "UNCHANGED",
+          "confidentialityImpact": "LOW",
+          "integrityImpact": "NONE",
+          "availabilityImpact": "NONE",
+          "baseSeverity": "MEDIUM",
+          "exploitabilityScore": "2.8",
+          "impactScore": "1.4",
+          "version": "3.1"
+        }
+      }
+    ],
+    "exceptions": [],
+    "scanInfo": {
+      "engineVersion": "12.2.2",
+      "dataSource": [
+        {
+          "name": "NVD API Last Checked",
+          "timestamp": "2026-10-28T01:11:04Z"
+        },
+        {
+          "name": "NVD API Last Modified",
+          "timestamp": "2026-10-27T20:00:12-04"
+        },
+        {
+          "name": "NVD Cache Last Checked",
+          "timestamp": "2026-10-28T01:11:04Z"
+        },
+        {
+          "name": "NVD Cache Last Modified",
+          "timestamp": "2026-10-27T20:00:12-04"
+        }
+      ]
+    },
+    "threshold": 9,
+    "unchangedThreshold": true
+  },
+  "comparison": {
+    "generatedAt": "2026-10-28T13:13:09.679369+00:00",
+    "imageCount": 32,
+    "applicationImageCount": 24,
+    "infrastructureImageCount": 8,
+    "scanExecutionStatus": "PASS",
+    "noFindingSuppressions": true,
+    "databaseSnapshot": {
+      "preparedAt": "2026-10-28T00:50:37.397078+00:00",
+      "cache": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/cache",
+      "retainedComparableOct27Cache": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/cache",
+      "metadata": {
+        "db": {
+          "Version": 2,
+          "NextUpdate": "2026-10-28T19:17:44.708952538Z",
+          "UpdatedAt": "2026-10-27T19:17:44.708952708Z",
+          "DownloadedAt": "2026-10-28T00:49:22.743398Z"
+        },
+        "java-db": {
+          "Version": 1,
+          "NextUpdate": "2026-10-30T01:08:30.264956187Z",
+          "UpdatedAt": "2026-10-27T01:08:30.264956307Z",
+          "DownloadedAt": "2026-10-27T17:48:33.284878Z"
+        }
+      },
+      "officialCurrentOSManifest": {
+        "schemaVersion": 2,
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "artifactType": "application/vnd.aquasec.trivy.config.v1+json",
+        "config": {
+          "mediaType": "application/vnd.oci.empty.v1+json",
+          "digest": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2,
+          "data": "e30="
+        },
+        "layers": [
+          {
+            "mediaType": "application/vnd.aquasec.trivy.db.layer.v1.tar+gzip",
+            "digest": "sha256:ce0f2cbd280c2a0d9de31e870af3d9bf8cfdafdf27c6e11fc725fcb073bf07c8",
+            "size": 136405367,
+            "annotations": {
+              "org.opencontainers.image.title": "db.tar.gz"
+            }
+          }
+        ],
+        "annotations": {
+          "org.opencontainers.image.created": "2026-10-27T19:25:31Z"
+        }
+      },
+      "officialCurrentJavaManifest": {
+        "schemaVersion": 2,
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "artifactType": "application/vnd.aquasec.trivy.config.v1+json",
+        "config": {
+          "mediaType": "application/vnd.oci.empty.v1+json",
+          "digest": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2,
+          "data": "e30="
+        },
+        "layers": [
+          {
+            "mediaType": "application/vnd.aquasec.trivy.javadb.layer.v1.tar+gzip",
+            "digest": "sha256:07c747058dc47fa9eedfe43092ebd6180710d44b291a5a84e17dae0ae5fd5264",
+            "size": 990329871,
+            "annotations": {
+              "org.opencontainers.image.title": "javadb.tar.gz"
+            }
+          }
+        ],
+        "annotations": {
+          "org.opencontainers.image.created": "2026-10-27T01:09:42Z"
+        }
+      }
+    },
+    "before": {
+      "occurrences": 1577,
+      "uniqueAdvisoryIDs": 454,
+      "uniqueCanonicalCVEIDs": 444,
+      "otherReportedAdvisoryIDs": [
+        "CVE-2026-1965_1",
+        "CVE-2026-1965_2",
+        "GHSA-fv92-fjc5-jj9h",
+        "GHSA-gcjh-h69q-9w9g",
+        "GHSA-hrxh-6v49-42gf",
+        "GHSA-r277-6w6q-xmqw",
+        "GHSA-w5pp-99ch-qj29",
+        "GHSA-w67g-5rqw-f597",
+        "GHSA-xmrv-pmrh-hhx2",
+        "GO-2026-5932"
+      ],
+      "severityOccurrences": {
+        "HIGH": 587,
+        "MEDIUM": 729,
+        "LOW": 205,
+        "CRITICAL": 28,
+        "UNKNOWN": 28
+      }
+    },
+    "after": {
+      "occurrences": 174,
+      "uniqueAdvisoryIDs": 98,
+      "uniqueCanonicalCVEIDs": 97,
+      "otherReportedAdvisoryIDs": [
+        "GO-2026-5932"
+      ],
+      "severityOccurrences": {
+        "HIGH": 52,
+        "MEDIUM": 63,
+        "UNKNOWN": 9,
+        "LOW": 49,
+        "CRITICAL": 1
+      }
+    },
+    "advisoryIDTransitions": {
+      "noLongerReported": [
+        "CVE-2018-1000816",
+        "CVE-2018-12099",
+        "CVE-2018-15727",
+        "CVE-2018-18623",
+        "CVE-2018-18624",
+        "CVE-2018-18625",
+        "CVE-2019-13068",
+        "CVE-2019-19499",
+        "CVE-2020-11110",
+        "CVE-2020-12245",
+        "CVE-2020-12458",
+        "CVE-2020-13430",
+        "CVE-2020-24303",
+        "CVE-2021-39226",
+        "CVE-2022-35957",
+        "CVE-2022-39229",
+        "CVE-2022-39307",
+        "CVE-2022-39324",
+        "CVE-2023-2183",
+        "CVE-2023-2801",
+        "CVE-2023-3128",
+        "CVE-2023-4822",
+        "CVE-2024-10452",
+        "CVE-2024-12243",
+        "CVE-2024-29371",
+        "CVE-2024-58251",
+        "CVE-2024-6763",
+        "CVE-2025-0913",
+        "CVE-2025-10148",
+        "CVE-2025-11065",
+        "CVE-2025-11143",
+        "CVE-2025-12183",
+        "CVE-2025-13034",
+        "CVE-2025-13151",
+        "CVE-2025-14524",
+        "CVE-2025-14819",
+        "CVE-2025-14831",
+        "CVE-2025-15467",
+        "CVE-2025-15468",
+        "CVE-2025-22868",
+        "CVE-2025-22869",
+        "CVE-2025-22870",
+        "CVE-2025-22871",
+        "CVE-2025-22872",
+        "CVE-2025-22873",
+        "CVE-2025-29088",
+        "CVE-2025-32988",
+        "CVE-2025-32989",
+        "CVE-2025-32990",
+        "CVE-2025-3415",
+        "CVE-2025-41115",
+        "CVE-2025-46394",
+        "CVE-2025-4673",
+        "CVE-2025-47906",
+        "CVE-2025-47907",
+        "CVE-2025-47911",
+        "CVE-2025-47913",
+        "CVE-2025-47914",
+        "CVE-2025-48734",
+        "CVE-2025-48924",
+        "CVE-2025-4947",
+        "CVE-2025-5025",
+        "CVE-2025-52881",
+        "CVE-2025-5399",
+        "CVE-2025-54388",
+        "CVE-2025-58057",
+        "CVE-2025-58181",
+        "CVE-2025-58190",
+        "CVE-2025-59375",
+        "CVE-2025-6023",
+        "CVE-2025-62408",
+        "CVE-2025-6395",
+        "CVE-2025-64505",
+        "CVE-2025-64506",
+        "CVE-2025-64720",
+        "CVE-2025-64751",
+        "CVE-2025-65018",
+        "CVE-2025-66199",
+        "CVE-2025-66293",
+        "CVE-2025-66566",
+        "CVE-2025-67030",
+        "CVE-2025-68160",
+        "CVE-2025-68972",
+        "CVE-2025-68973",
+        "CVE-2025-69418",
+        "CVE-2025-69419",
+        "CVE-2025-69420",
+        "CVE-2025-69421",
+        "CVE-2025-6965",
+        "CVE-2025-9086",
+        "CVE-2025-9230",
+        "CVE-2025-9231",
+        "CVE-2025-9232",
+        "CVE-2025-9820",
+        "CVE-2026-100347",
+        "CVE-2026-100348",
+        "CVE-2026-100349",
+        "CVE-2026-100352",
+        "CVE-2026-100354",
+        "CVE-2026-10050",
+        "CVE-2026-101911",
+        "CVE-2026-101912",
+        "CVE-2026-101913",
+        "CVE-2026-102276",
+        "CVE-2026-102277",
+        "CVE-2026-102278",
+        "CVE-2026-102554",
+        "CVE-2026-104844",
+        "CVE-2026-10601",
+        "CVE-2026-106449",
+        "CVE-2026-106450",
+        "CVE-2026-106451",
+        "CVE-2026-106452",
+        "CVE-2026-106453",
+        "CVE-2026-108106",
+        "CVE-2026-111997",
+        "CVE-2026-116590",
+        "CVE-2026-1229",
+        "CVE-2026-13149",
+        "CVE-2026-14257",
+        "CVE-2026-1584",
+        "CVE-2026-18401",
+        "CVE-2026-19032",
+        "CVE-2026-1965_1",
+        "CVE-2026-1965_2",
+        "CVE-2026-2100",
+        "CVE-2026-21724",
+        "CVE-2026-21726",
+        "CVE-2026-21727",
+        "CVE-2026-22184",
+        "CVE-2026-22695",
+        "CVE-2026-22795",
+        "CVE-2026-22796",
+        "CVE-2026-22801",
+        "CVE-2026-2303",
+        "CVE-2026-2332",
+        "CVE-2026-24051",
+        "CVE-2026-24281",
+        "CVE-2026-24308",
+        "CVE-2026-24515",
+        "CVE-2026-24851",
+        "CVE-2026-25210",
+        "CVE-2026-25646",
+        "CVE-2026-25680",
+        "CVE-2026-25681",
+        "CVE-2026-25934",
+        "CVE-2026-27135",
+        "CVE-2026-27136",
+        "CVE-2026-27171",
+        "CVE-2026-27877",
+        "CVE-2026-27878",
+        "CVE-2026-28387",
+        "CVE-2026-28388",
+        "CVE-2026-28389",
+        "CVE-2026-28390",
+        "CVE-2026-29181",
+        "CVE-2026-31789",
+        "CVE-2026-31790",
+        "CVE-2026-32285",
+        "CVE-2026-32776",
+        "CVE-2026-32777",
+        "CVE-2026-32778",
+        "CVE-2026-32952",
+        "CVE-2026-33186",
+        "CVE-2026-33380",
+        "CVE-2026-33381",
+        "CVE-2026-33416",
+        "CVE-2026-33558",
+        "CVE-2026-33630",
+        "CVE-2026-33636",
+        "CVE-2026-33671",
+        "CVE-2026-33672",
+        "CVE-2026-33729",
+        "CVE-2026-33750",
+        "CVE-2026-33762",
+        "CVE-2026-33815",
+        "CVE-2026-33816",
+        "CVE-2026-33845",
+        "CVE-2026-33846",
+        "CVE-2026-33997",
+        "CVE-2026-34165",
+        "CVE-2026-34182",
+        "CVE-2026-34183",
+        "CVE-2026-34757",
+        "CVE-2026-34972",
+        "CVE-2026-34986",
+        "CVE-2026-35189",
+        "CVE-2026-35554",
+        "CVE-2026-3783",
+        "CVE-2026-3784",
+        "CVE-2026-3805",
+        "CVE-2026-3832",
+        "CVE-2026-3833",
+        "CVE-2026-39827",
+        "CVE-2026-39828",
+        "CVE-2026-39829",
+        "CVE-2026-39830",
+        "CVE-2026-39831",
+        "CVE-2026-39832",
+        "CVE-2026-39833",
+        "CVE-2026-39834",
+        "CVE-2026-39835",
+        "CVE-2026-39882",
+        "CVE-2026-39883",
+        "CVE-2026-40179",
+        "CVE-2026-40200",
+        "CVE-2026-40293",
+        "CVE-2026-40930",
+        "CVE-2026-41080",
+        "CVE-2026-41131",
+        "CVE-2026-41506",
+        "CVE-2026-41567",
+        "CVE-2026-41568",
+        "CVE-2026-41602",
+        "CVE-2026-41889",
+        "CVE-2026-42009",
+        "CVE-2026-42010",
+        "CVE-2026-42011",
+        "CVE-2026-42012",
+        "CVE-2026-42013",
+        "CVE-2026-42014",
+        "CVE-2026-42015",
+        "CVE-2026-42127",
+        "CVE-2026-42129",
+        "CVE-2026-42151",
+        "CVE-2026-42154",
+        "CVE-2026-42306",
+        "CVE-2026-42338",
+        "CVE-2026-42502",
+        "CVE-2026-42506",
+        "CVE-2026-42508",
+        "CVE-2026-42583",
+        "CVE-2026-42766",
+        "CVE-2026-42768",
+        "CVE-2026-42770",
+        "CVE-2026-43871",
+        "CVE-2026-44249",
+        "CVE-2026-44740",
+        "CVE-2026-44903",
+        "CVE-2026-44973",
+        "CVE-2026-45022",
+        "CVE-2026-45186",
+        "CVE-2026-45416",
+        "CVE-2026-45445",
+        "CVE-2026-45446",
+        "CVE-2026-45447",
+        "CVE-2026-45536",
+        "CVE-2026-45570",
+        "CVE-2026-45571",
+        "CVE-2026-46595",
+        "CVE-2026-46597",
+        "CVE-2026-46598",
+        "CVE-2026-46675",
+        "CVE-2026-48096",
+        "CVE-2026-4873",
+        "CVE-2026-48758",
+        "CVE-2026-48815",
+        "CVE-2026-50010",
+        "CVE-2026-50219",
+        "CVE-2026-5260",
+        "CVE-2026-5419",
+        "CVE-2026-54512",
+        "CVE-2026-54513",
+        "CVE-2026-54514",
+        "CVE-2026-54515",
+        "CVE-2026-54872",
+        "CVE-2026-54875",
+        "CVE-2026-55170",
+        "CVE-2026-5545",
+        "CVE-2026-55689",
+        "CVE-2026-56131",
+        "CVE-2026-56132",
+        "CVE-2026-56403",
+        "CVE-2026-56404",
+        "CVE-2026-56405",
+        "CVE-2026-56406",
+        "CVE-2026-56407",
+        "CVE-2026-56408",
+        "CVE-2026-56409",
+        "CVE-2026-56410",
+        "CVE-2026-56411",
+        "CVE-2026-56412",
+        "CVE-2026-56740",
+        "CVE-2026-56741",
+        "CVE-2026-56852",
+        "CVE-2026-5773",
+        "CVE-2026-59888",
+        "CVE-2026-59889",
+        "CVE-2026-59901",
+        "CVE-2026-59949",
+        "CVE-2026-6042",
+        "CVE-2026-61709",
+        "CVE-2026-6253",
+        "CVE-2026-6276",
+        "CVE-2026-63072",
+        "CVE-2026-63073",
+        "CVE-2026-63076",
+        "CVE-2026-63209",
+        "CVE-2026-6429",
+        "CVE-2026-66046",
+        "CVE-2026-6790",
+        "CVE-2026-68494",
+        "CVE-2026-68497",
+        "CVE-2026-69152",
+        "CVE-2026-69192",
+        "CVE-2026-71556",
+        "CVE-2026-71557",
+        "CVE-2026-7168",
+        "CVE-2026-72897",
+        "CVE-2026-73502",
+        "CVE-2026-75595",
+        "CVE-2026-75596",
+        "CVE-2026-75803",
+        "CVE-2026-75804",
+        "CVE-2026-75805",
+        "CVE-2026-75806",
+        "CVE-2026-76641",
+        "CVE-2026-76905",
+        "CVE-2026-76956",
+        "CVE-2026-76957",
+        "CVE-2026-77310",
+        "CVE-2026-77354",
+        "CVE-2026-77420",
+        "CVE-2026-77421",
+        "CVE-2026-77422",
+        "CVE-2026-77696",
+        "CVE-2026-81870",
+        "CVE-2026-81871",
+        "CVE-2026-81872",
+        "CVE-2026-8286",
+        "CVE-2026-83557",
+        "CVE-2026-84303",
+        "CVE-2026-84304",
+        "CVE-2026-84445",
+        "CVE-2026-84782",
+        "CVE-2026-84784",
+        "CVE-2026-85091",
+        "CVE-2026-8924",
+        "CVE-2026-8927",
+        "CVE-2026-89425",
+        "CVE-2026-9029",
+        "CVE-2026-9076",
+        "CVE-2026-91776",
+        "CVE-2026-91777",
+        "CVE-2026-93451",
+        "CVE-2026-9358",
+        "CVE-2026-93748",
+        "CVE-2026-93990",
+        "CVE-2026-9496",
+        "GHSA-fv92-fjc5-jj9h",
+        "GHSA-gcjh-h69q-9w9g",
+        "GHSA-hrxh-6v49-42gf",
+        "GHSA-r277-6w6q-xmqw",
+        "GHSA-w5pp-99ch-qj29",
+        "GHSA-w67g-5rqw-f597",
+        "GHSA-xmrv-pmrh-hhx2"
+      ],
+      "newlyReported": [],
+      "remaining": [
+        "CVE-2025-47912",
+        "CVE-2025-58183",
+        "CVE-2025-58185",
+        "CVE-2025-58186",
+        "CVE-2025-58187",
+        "CVE-2025-58188",
+        "CVE-2025-58189",
+        "CVE-2025-61723",
+        "CVE-2025-61724",
+        "CVE-2025-61725",
+        "CVE-2025-61726",
+        "CVE-2025-61727",
+        "CVE-2025-61728",
+        "CVE-2025-61729",
+        "CVE-2025-61730",
+        "CVE-2025-68121",
+        "CVE-2026-102633",
+        "CVE-2026-107891",
+        "CVE-2026-107928",
+        "CVE-2026-107929",
+        "CVE-2026-111497",
+        "CVE-2026-111943",
+        "CVE-2026-114437",
+        "CVE-2026-21728",
+        "CVE-2026-25679",
+        "CVE-2026-27139",
+        "CVE-2026-27142",
+        "CVE-2026-27145",
+        "CVE-2026-28377",
+        "CVE-2026-32280",
+        "CVE-2026-32281",
+        "CVE-2026-32282",
+        "CVE-2026-32283",
+        "CVE-2026-32288",
+        "CVE-2026-32289",
+        "CVE-2026-33811",
+        "CVE-2026-33814",
+        "CVE-2026-33818",
+        "CVE-2026-39820",
+        "CVE-2026-39821",
+        "CVE-2026-39822",
+        "CVE-2026-39823",
+        "CVE-2026-39824",
+        "CVE-2026-39825",
+        "CVE-2026-39826",
+        "CVE-2026-39836",
+        "CVE-2026-42499",
+        "CVE-2026-42504",
+        "CVE-2026-42505",
+        "CVE-2026-42507",
+        "CVE-2026-46600",
+        "CVE-2026-56851",
+        "CVE-2026-56853",
+        "CVE-2026-56854",
+        "CVE-2026-56855",
+        "CVE-2026-56857",
+        "CVE-2026-56858",
+        "CVE-2026-56859",
+        "CVE-2026-56860",
+        "CVE-2026-56862",
+        "CVE-2026-56866",
+        "CVE-2026-61801",
+        "CVE-2026-77214",
+        "CVE-2026-78659",
+        "CVE-2026-78660",
+        "CVE-2026-78662",
+        "CVE-2026-78663",
+        "CVE-2026-78667",
+        "CVE-2026-78669",
+        "CVE-2026-86409",
+        "CVE-2026-86410",
+        "CVE-2026-86411",
+        "CVE-2026-86412",
+        "CVE-2026-86413",
+        "CVE-2026-86414",
+        "CVE-2026-86415",
+        "CVE-2026-87861",
+        "CVE-2026-87862",
+        "CVE-2026-87863",
+        "CVE-2026-87864",
+        "CVE-2026-87865",
+        "CVE-2026-87866",
+        "CVE-2026-92386",
+        "CVE-2026-92387",
+        "CVE-2026-92388",
+        "CVE-2026-92389",
+        "CVE-2026-92390",
+        "CVE-2026-92391",
+        "CVE-2026-92392",
+        "CVE-2026-94265",
+        "CVE-2026-94266",
+        "CVE-2026-94439",
+        "CVE-2026-94440",
+        "CVE-2026-94448",
+        "CVE-2026-97030",
+        "CVE-2026-97031",
+        "CVE-2026-97032",
+        "GO-2026-5932"
+      ]
+    },
+    "applicationResults": {
+      "occurrences": 0,
+      "severityOccurrences": {},
+      "zeroCriticalHighVerifiedAcrossAll24": true
+    },
+    "occurrenceTransitions": {
+      "fixedOccurrences": 1404,
+      "newlyReportedOccurrences": 1,
+      "remainingMatchedOccurrences": 173,
+      "occurrenceDecreaseWithinRemainingPairs": 0,
+      "occurrenceIncreaseWithinRemainingPairs": 0
+    },
+    "advisoryPackageImageTransitions": {
+      "fixedAdvisoryPackagePairs": 1123,
+      "newlyReportedAdvisoryPackagePairs": 1,
+      "remainingAdvisoryPackagePairs": 172
+    },
+    "comparisonMethod": "Keys use logical image, ecosystem/type, package name and advisory ID. Installed version and file path are evidence fields, not identity keys, so version or JAR filename changes do not inflate new/fixed vulnerabilities. Raw target occurrences and multiplicity changes remain separately counted. Newly reported scanner flags are not proof of newly introduced exploitable vulnerabilities.",
+    "coverageHistory": {
+      "originalLimitedCoverageCount": 1377,
+      "expandedSameSnapshotFullCoverageCount": 1530,
+      "coverageExpansion": 153,
+      "JARCoverageExpansion": 92,
+      "GoHelperCoverageExpansion": 61,
+      "newDatabaseRefreshAdded": 47,
+      "freshComparableBaselineCount": 1577
+    },
+    "perImage": [
+      {
+        "name": "kafka-amd64",
+        "baselineImage": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "finalImage": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+        "baselineConfigDigest": "sha256:44a48f9d78af26959fa4d61accb9be35f939a79bfdae05cad6df4baca8e22eeb",
+        "finalConfigDigest": "sha256:5f903e08de3eaa781db23c1ca43c274b50accc969f8b46effe5da0c7be73a968",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 284,
+        "afterOccurrences": 5,
+        "netOccurrenceReduction": 279,
+        "beforeSeverityOccurrences": {
+          "HIGH": 91,
+          "MEDIUM": 126,
+          "LOW": 59,
+          "CRITICAL": 6,
+          "UNKNOWN": 2
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 2,
+          "MEDIUM": 1,
+          "UNKNOWN": 2
+        },
+        "fixedAdvisoryPackagePairs": 279,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 5,
+        "fixedOccurrences": 279,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 5,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/kafka-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/kafka-amd64.json"
+      },
+      {
+        "name": "service-registry-arm64",
+        "baselineImage": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+        "finalImage": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "baselineConfigDigest": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+        "finalConfigDigest": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 2,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 2,
+        "beforeSeverityOccurrences": {
+          "HIGH": 2
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 2,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 2,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/service-registry-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/service-registry-arm64.json"
+      },
+      {
+        "name": "api-gateway-arm64",
+        "baselineImage": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+        "finalImage": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "baselineConfigDigest": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+        "finalConfigDigest": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/api-gateway-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/api-gateway-arm64.json"
+      },
+      {
+        "name": "auth-service-arm64",
+        "baselineImage": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+        "finalImage": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "baselineConfigDigest": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+        "finalConfigDigest": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/auth-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/auth-service-arm64.json"
+      },
+      {
+        "name": "product-service-arm64",
+        "baselineImage": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+        "finalImage": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "baselineConfigDigest": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+        "finalConfigDigest": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/product-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/product-service-arm64.json"
+      },
+      {
+        "name": "cart-service-arm64",
+        "baselineImage": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+        "finalImage": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "baselineConfigDigest": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+        "finalConfigDigest": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/cart-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/cart-service-arm64.json"
+      },
+      {
+        "name": "inventory-service-arm64",
+        "baselineImage": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+        "finalImage": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "baselineConfigDigest": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+        "finalConfigDigest": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/inventory-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/inventory-service-arm64.json"
+      },
+      {
+        "name": "order-service-arm64",
+        "baselineImage": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+        "finalImage": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "baselineConfigDigest": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+        "finalConfigDigest": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/order-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/order-service-arm64.json"
+      },
+      {
+        "name": "payment-service-arm64",
+        "baselineImage": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+        "finalImage": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "baselineConfigDigest": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+        "finalConfigDigest": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/payment-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/payment-service-arm64.json"
+      },
+      {
+        "name": "delivery-service-arm64",
+        "baselineImage": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+        "finalImage": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "baselineConfigDigest": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+        "finalConfigDigest": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/delivery-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/delivery-service-arm64.json"
+      },
+      {
+        "name": "notification-service-arm64",
+        "baselineImage": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+        "finalImage": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "baselineConfigDigest": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+        "finalConfigDigest": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/notification-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/notification-service-arm64.json"
+      },
+      {
+        "name": "operations-service-arm64",
+        "baselineImage": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+        "finalImage": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "baselineConfigDigest": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+        "finalConfigDigest": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/operations-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/operations-service-arm64.json"
+      },
+      {
+        "name": "service-registry-amd64",
+        "baselineImage": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+        "finalImage": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "baselineConfigDigest": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+        "finalConfigDigest": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 2,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 2,
+        "beforeSeverityOccurrences": {
+          "HIGH": 2
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 2,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 2,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/service-registry-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/service-registry-amd64.json"
+      },
+      {
+        "name": "api-gateway-amd64",
+        "baselineImage": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+        "finalImage": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "baselineConfigDigest": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+        "finalConfigDigest": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/api-gateway-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/api-gateway-amd64.json"
+      },
+      {
+        "name": "auth-service-amd64",
+        "baselineImage": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+        "finalImage": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "baselineConfigDigest": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+        "finalConfigDigest": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/auth-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/auth-service-amd64.json"
+      },
+      {
+        "name": "product-service-amd64",
+        "baselineImage": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+        "finalImage": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "baselineConfigDigest": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+        "finalConfigDigest": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/product-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/product-service-amd64.json"
+      },
+      {
+        "name": "cart-service-amd64",
+        "baselineImage": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+        "finalImage": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "baselineConfigDigest": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+        "finalConfigDigest": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/cart-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/cart-service-amd64.json"
+      },
+      {
+        "name": "inventory-service-amd64",
+        "baselineImage": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+        "finalImage": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "baselineConfigDigest": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+        "finalConfigDigest": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/inventory-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/inventory-service-amd64.json"
+      },
+      {
+        "name": "order-service-amd64",
+        "baselineImage": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+        "finalImage": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "baselineConfigDigest": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+        "finalConfigDigest": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/order-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/order-service-amd64.json"
+      },
+      {
+        "name": "payment-service-amd64",
+        "baselineImage": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+        "finalImage": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "baselineConfigDigest": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+        "finalConfigDigest": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/payment-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/payment-service-amd64.json"
+      },
+      {
+        "name": "delivery-service-amd64",
+        "baselineImage": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+        "finalImage": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "baselineConfigDigest": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+        "finalConfigDigest": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/delivery-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/delivery-service-amd64.json"
+      },
+      {
+        "name": "notification-service-amd64",
+        "baselineImage": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+        "finalImage": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "baselineConfigDigest": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+        "finalConfigDigest": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/notification-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/notification-service-amd64.json"
+      },
+      {
+        "name": "operations-service-amd64",
+        "baselineImage": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+        "finalImage": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "baselineConfigDigest": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+        "finalConfigDigest": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/operations-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/operations-service-amd64.json"
+      },
+      {
+        "name": "frontend-arm64",
+        "baselineImage": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+        "finalImage": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+        "baselineConfigDigest": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+        "finalConfigDigest": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 22,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 22,
+        "beforeSeverityOccurrences": {
+          "MEDIUM": 10,
+          "HIGH": 11,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 21,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 22,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/frontend-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/frontend-arm64.json"
+      },
+      {
+        "name": "frontend-amd64",
+        "baselineImage": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+        "finalImage": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+        "baselineConfigDigest": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+        "finalConfigDigest": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 22,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 22,
+        "beforeSeverityOccurrences": {
+          "MEDIUM": 10,
+          "HIGH": 11,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 21,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 22,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/frontend-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/frontend-amd64.json"
+      },
+      {
+        "name": "blackbox-exporter-amd64",
+        "baselineImage": "prom/blackbox-exporter@sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+        "finalImage": "prom/blackbox-exporter@sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd",
+        "baselineConfigDigest": "sha256:694775639bf5b3228234edf4cd57a5fc3e3a6a7c879fe0ca46ed7919bd2e8b71",
+        "finalConfigDigest": "sha256:e6f02b1a6c427e2a771fb33b42cb167dde3e5e8b3625e55e55aa20aaa018946d",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 114,
+        "afterOccurrences": 1,
+        "netOccurrenceReduction": 113,
+        "beforeSeverityOccurrences": {
+          "HIGH": 50,
+          "MEDIUM": 57,
+          "UNKNOWN": 2,
+          "CRITICAL": 2,
+          "LOW": 3
+        },
+        "afterSeverityOccurrences": {
+          "UNKNOWN": 1
+        },
+        "fixedAdvisoryPackagePairs": 113,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 1,
+        "fixedOccurrences": 113,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 1,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/blackbox-exporter-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/blackbox-exporter-amd64.json"
+      },
+      {
+        "name": "caddy-amd64",
+        "baselineImage": "caddy@sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+        "finalImage": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+        "baselineConfigDigest": "sha256:f77f856a30f0004200b36b322d61da17fade31e24875699d77fb968399b9eb77",
+        "finalConfigDigest": "sha256:3067cc4e02c091399edbd5d65f85a3ff4d511574aecadb47f280c3761e68852e",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 73,
+        "afterOccurrences": 70,
+        "netOccurrenceReduction": 3,
+        "beforeSeverityOccurrences": {
+          "HIGH": 8,
+          "MEDIUM": 17,
+          "LOW": 45,
+          "UNKNOWN": 3
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 8,
+          "MEDIUM": 16,
+          "LOW": 45,
+          "UNKNOWN": 1
+        },
+        "fixedAdvisoryPackagePairs": 3,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 70,
+        "fixedOccurrences": 3,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 70,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/caddy-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/caddy-amd64.json"
+      },
+      {
+        "name": "postgres-amd64",
+        "baselineImage": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+        "finalImage": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+        "baselineConfigDigest": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+        "finalConfigDigest": "sha256:6a2e324ebe59af6031c4c1cd96c1d5072c2ebc36563d2196365e43b8297c062d",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 64,
+        "afterOccurrences": 61,
+        "netOccurrenceReduction": 3,
+        "beforeSeverityOccurrences": {
+          "UNKNOWN": 3,
+          "MEDIUM": 32,
+          "CRITICAL": 1,
+          "HIGH": 25,
+          "LOW": 3
+        },
+        "afterSeverityOccurrences": {
+          "MEDIUM": 31,
+          "UNKNOWN": 1,
+          "CRITICAL": 1,
+          "HIGH": 25,
+          "LOW": 3
+        },
+        "fixedAdvisoryPackagePairs": 3,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 61,
+        "fixedOccurrences": 3,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 61,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/postgres-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/postgres-amd64.json"
+      },
+      {
+        "name": "grafana-amd64",
+        "baselineImage": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+        "finalImage": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+        "baselineConfigDigest": "sha256:75006c93b887a310c7d4b21b557de093cb67caa4e1e4d812cbc08edd7580b7e9",
+        "finalConfigDigest": "sha256:5a2f6d01fcd7ebd17327a817cb40fd0dc2522ad396d7240905d56d4410fa3585",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 519,
+        "afterOccurrences": 3,
+        "netOccurrenceReduction": 516,
+        "beforeSeverityOccurrences": {
+          "HIGH": 171,
+          "MEDIUM": 261,
+          "LOW": 63,
+          "UNKNOWN": 10,
+          "CRITICAL": 14
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 2,
+          "UNKNOWN": 1
+        },
+        "fixedAdvisoryPackagePairs": 355,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 3,
+        "fixedOccurrences": 516,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 3,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/grafana-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/grafana-amd64.json"
+      },
+      {
+        "name": "node-exporter-amd64",
+        "baselineImage": "prom/node-exporter@sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+        "finalImage": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+        "baselineConfigDigest": "sha256:255ec253085fb105696533b31864a5e3b64f1f1e2147b5ec368100cbf3ec9b80",
+        "finalConfigDigest": "sha256:9bbbca8f5cb8e9bd1b835e8ec086b6df6d9a458d2d10ef1c97ea4a9a3ae7e54b",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 106,
+        "afterOccurrences": 32,
+        "netOccurrenceReduction": 74,
+        "beforeSeverityOccurrences": {
+          "HIGH": 46,
+          "MEDIUM": 54,
+          "UNKNOWN": 2,
+          "CRITICAL": 1,
+          "LOW": 3
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 15,
+          "MEDIUM": 15,
+          "UNKNOWN": 1,
+          "LOW": 1
+        },
+        "fixedAdvisoryPackagePairs": 75,
+        "newlyReportedAdvisoryPackagePairs": 1,
+        "remainingAdvisoryPackagePairs": 31,
+        "fixedOccurrences": 75,
+        "newlyReportedOccurrences": 1,
+        "remainingMatchedOccurrences": 31,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/node-exporter-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/node-exporter-amd64.json"
+      },
+      {
+        "name": "prometheus-amd64",
+        "baselineImage": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+        "finalImage": "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+        "baselineConfigDigest": "sha256:a3bc50fcb50fb1409287c32773d8fe799f6cad5511c4ba3e2e851784e7a05026",
+        "finalConfigDigest": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 242,
+        "afterOccurrences": 2,
+        "netOccurrenceReduction": 240,
+        "beforeSeverityOccurrences": {
+          "HIGH": 106,
+          "MEDIUM": 117,
+          "LOW": 11,
+          "UNKNOWN": 4,
+          "CRITICAL": 4
+        },
+        "afterSeverityOccurrences": {
+          "UNKNOWN": 2
+        },
+        "fixedAdvisoryPackagePairs": 122,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 1,
+        "fixedOccurrences": 240,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 2,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/prometheus-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/prometheus-amd64.json"
+      },
+      {
+        "name": "redis-amd64",
+        "baselineImage": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+        "finalImage": "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9",
+        "baselineConfigDigest": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+        "finalConfigDigest": "sha256:98c6ca8f397f86e469be752c3e7ed5eb8b17f2479840cb69a2e413037038e9f4",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 23,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 23,
+        "beforeSeverityOccurrences": {
+          "HIGH": 2,
+          "MEDIUM": 17,
+          "LOW": 2,
+          "UNKNOWN": 2
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 23,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 23,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/redis-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/redis-amd64.json"
+      }
+    ],
+    "manualEvidenceAndApplicabilityMatrix": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/candidate-residual-matrix.json",
+    "manualKafkaCAAlert": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/kafka-manual-ca-alert.json",
+    "imageSecurityApprovalStatus": "BLOCKED_PENDING_VENDOR_PATCHES_AND_APPLICABILITY_CLOSURE",
+    "scopeOfZeroApplicationFindingsClaim": "Trivy full OS/library analysis of the24 exact final app image config IDs, under the recorded snapshot; not a claim that all possible vulnerabilities or JavaScript bundle dependencies are identifiable.",
+    "remainingRiskEvidence": "See candidate-residual-matrix.json and kafka-manual-ca-alert.json. Raw scanner severity counts remain unchanged by triage."
+  },
+  "kafkaStorageTrial": {
+    "result": "PASS",
+    "platform": "linux/amd64",
+    "oneShotCleanRun": false,
+    "guardPath": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/kafka/safe-bootstrap.sh",
+    "guardSha256": "8e129c281535b771d0ab6e563fc88e12c8448933336c783bf3afd01e7485064e",
+    "priorGuardSha256": "188f26316b117d3eb651260d6fb138db9e38ed701757524b33c68a55c5a2fb15",
+    "guardChangeSinceExistingCycle": "Only the fresh formatter argument changed to --cluster-id=<id>, preserving valid leading-hyphen UUIDs. Reconstructing the previous bytes matches the prior report guard hash. Existing-volume branch unchanged.",
+    "freshGuardFailureAndFix": {
+      "report": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-62fd003619f7/report.json",
+      "sha256": "ead1db517a9196ad361a5bc68addef297a7ff57f373b37fa5f9a9c8218703720",
+      "cause": "A valid cluster UUID starting with a hyphen was interpreted as an option when passed as a separate CLI argument.",
+      "fix": "--cluster-id=<id>, matching the upstream Docker wrapper;13focused shell tests and26cloud suite tests pass, including failing-then-passing leading-hyphen regression."
+    },
+    "continuationReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-8d16777136e2/report.json",
+    "priorIndependentHarnessFailures": [
+      {
+        "report": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-4caa1874ec1d/report.json",
+        "sha256": "aadb90510389a8fd2f6005dce0ebbb6d083b5f0130d08db790a903eaacc81cbc",
+        "causeAndCorrection": "Kafka4.3 consumer deprecation notice polluted stdout; use its supported --command-property option."
+      },
+      {
+        "report": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-d332d5f51db5/report.json",
+        "sha256": "88d2c489a8d14b62342d2c119b2a6713daeb8756cb2ca78147b515bd5549d2f4",
+        "causeAndCorrection": "Console producer overrides compression.type with its codec option default none; use explicit --compression-codec lz4 and verify every stored batch."
+      },
+      {
+        "report": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-f4a894035acb/report.json",
+        "sha256": "cb5c43c8dbd96f3c523383535fd7f0a9027bfca06b4a6888fc973732fd702bc9",
+        "causeAndCorrection": "One cold/emulated readiness CLI exceeded35s just before the broker logged started; retry command timeouts inside the overall bounded readiness budget."
+      }
+    ],
+    "harnessSha256": "2bbd03577ae45845d5d1251fd840a4c206eb718b15e4cba30e5387ea5d15b4d9",
+    "continuationHarnessSha256": "497b1b247dfc16e89da57e1333ba44d3aff6fb0ea294154e571d0c4e7dc65955",
+    "scopeLimit": "Actual isolated amd64 Kafka storage/LZ4/identity/features only; no arm64/full commerce/JRE security pass. No feature finalization, image changes, publication, AWS or user-volume access.",
+    "continuationReportSha256": "8862cf4249c99aa2c3093ae840ec6a38325b464cbe071d8ce6f45a3b9896a6ed",
+    "completedStages": [
+      {
+        "label": "old-origin-391",
+        "image": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "identity": {
+          "cluster.id": "-hESEXqNQ3yANUPgZI5bVQ",
+          "directory.id": "FTsonUapfmb0RYPri1zz9w",
+          "node.id": "1",
+          "version": "1"
+        },
+        "finalizedFeatures": {
+          "kraft.version": "0",
+          "metadata.version": "3.9-IV0"
+        },
+        "topicOffsets": "guard-old-origin:0:1",
+        "expectedRead": [],
+        "producedLz4": "of-kafka-remediation-f4a894035acb-old-lz4",
+        "result": "PASS",
+        "sourceReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-f4a894035acb/report.json"
+      },
+      {
+        "label": "old-origin-432",
+        "image": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+        "identity": {
+          "cluster.id": "-hESEXqNQ3yANUPgZI5bVQ",
+          "directory.id": "FTsonUapfmb0RYPri1zz9w",
+          "node.id": "1",
+          "version": "1"
+        },
+        "finalizedFeatures": {
+          "eligible.leader.replicas.version": "0",
+          "group.version": "0",
+          "kraft.version": "0",
+          "metadata.version": "3.9-IV0",
+          "share.version": "0",
+          "streams.version": "0",
+          "transaction.version": "0"
+        },
+        "topicOffsets": "guard-old-origin:0:2",
+        "expectedRead": [
+          "of-kafka-remediation-f4a894035acb-old-lz4"
+        ],
+        "producedLz4": "of-kafka-remediation-f4a894035acb-new-lz4",
+        "result": "PASS",
+        "sourceReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-f4a894035acb/report.json"
+      },
+      {
+        "label": "old-origin-391-return",
+        "image": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "identity": {
+          "cluster.id": "-hESEXqNQ3yANUPgZI5bVQ",
+          "directory.id": "FTsonUapfmb0RYPri1zz9w",
+          "node.id": "1",
+          "version": "1"
+        },
+        "finalizedFeatures": {
+          "kraft.version": "0",
+          "metadata.version": "3.9-IV0"
+        },
+        "topicOffsets": "guard-old-origin:0:2",
+        "expectedRead": [
+          "of-kafka-remediation-f4a894035acb-old-lz4",
+          "of-kafka-remediation-f4a894035acb-new-lz4"
+        ],
+        "producedLz4": null,
+        "result": "PASS",
+        "sourceReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-62fd003619f7/report.json"
+      },
+      {
+        "label": "fresh-guard-432",
+        "image": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+        "identity": {
+          "cluster.id": "-hESEXqNQ3yANUPgZI5bVQ",
+          "directory.id": "JaH02_8zF9UJwNzslnPI5Q",
+          "node.id": "1",
+          "version": "1"
+        },
+        "finalizedFeatures": {
+          "eligible.leader.replicas.version": "0",
+          "group.version": "0",
+          "kraft.version": "0",
+          "metadata.version": "3.9-IV0",
+          "share.version": "0",
+          "streams.version": "0",
+          "transaction.version": "0"
+        },
+        "topicOffsets": "guard-fresh-origin:0:1",
+        "expectedRead": [],
+        "producedLz4": "of-kafka-remediation-8d16777136e2-fresh-new-lz4",
+        "result": "PASS"
+      },
+      {
+        "label": "fresh-guard-391",
+        "image": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "identity": {
+          "cluster.id": "-hESEXqNQ3yANUPgZI5bVQ",
+          "directory.id": "JaH02_8zF9UJwNzslnPI5Q",
+          "node.id": "1",
+          "version": "1"
+        },
+        "finalizedFeatures": {
+          "kraft.version": "0",
+          "metadata.version": "3.9-IV0"
+        },
+        "topicOffsets": "guard-fresh-origin:0:2",
+        "expectedRead": [
+          "of-kafka-remediation-8d16777136e2-fresh-new-lz4"
+        ],
+        "producedLz4": "of-kafka-remediation-8d16777136e2-fresh-old-lz4",
+        "result": "PASS"
+      },
+      {
+        "label": "fresh-guard-432-return",
+        "image": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+        "identity": {
+          "cluster.id": "-hESEXqNQ3yANUPgZI5bVQ",
+          "directory.id": "JaH02_8zF9UJwNzslnPI5Q",
+          "node.id": "1",
+          "version": "1"
+        },
+        "finalizedFeatures": {
+          "eligible.leader.replicas.version": "0",
+          "group.version": "0",
+          "kraft.version": "0",
+          "metadata.version": "3.9-IV0",
+          "share.version": "0",
+          "streams.version": "0",
+          "transaction.version": "0"
+        },
+        "topicOffsets": "guard-fresh-origin:0:2",
+        "expectedRead": [
+          "of-kafka-remediation-8d16777136e2-fresh-new-lz4",
+          "of-kafka-remediation-8d16777136e2-fresh-old-lz4"
+        ],
+        "producedLz4": null,
+        "result": "PASS"
+      }
+    ],
+    "negativeCases": [
+      {
+        "label": "wrong-cluster",
+        "exitCode": 78,
+        "volumeManifestSha256Before": "b581c758cc38e8b7d95ee5db3723841e4951b1ab4843ffc3bb81f12c83afd1ac",
+        "volumeManifestSha256After": "b581c758cc38e8b7d95ee5db3723841e4951b1ab4843ffc3bb81f12c83afd1ac",
+        "result": "PASS"
+      },
+      {
+        "label": "nonempty-missing-meta",
+        "exitCode": 78,
+        "volumeManifestSha256Before": "06e1017fff6b373b67ae6423acc34cd1b1c2c65c32947d6422b697273ff216d1",
+        "volumeManifestSha256After": "06e1017fff6b373b67ae6423acc34cd1b1c2c65c32947d6422b697273ff216d1",
+        "result": "PASS"
+      },
+      {
+        "label": "empty-initialize-denied",
+        "exitCode": 78,
+        "volumeManifestSha256Before": "eb4bd64f7014f7d42e9d358035802242741b974e8dfcd37c59f9c21ce29d781e",
+        "volumeManifestSha256After": "eb4bd64f7014f7d42e9d358035802242741b974e8dfcd37c59f9c21ce29d781e",
+        "result": "PASS"
+      }
+    ],
+    "oldOriginLz4RecordDumpSha256": "3772a8e47593d4a70408aaad870d5c45f0b7a60c191731dadf5a9fa6f25f5b88",
+    "freshOriginLz4RecordDumpSha256": "3329a1a320e42d5fe16856b7be2374341196be338f77c11e04ea1b7255b55ded",
+    "allRetainedProbeVolumes": [
+      "of-kafka-remediation-4caa1874ec1d-old-origin-data",
+      "of-kafka-remediation-62fd003619f7-fresh-guard-data",
+      "of-kafka-remediation-8d16777136e2-empty-denied-data",
+      "of-kafka-remediation-8d16777136e2-missing-meta-data",
+      "of-kafka-remediation-d332d5f51db5-old-origin-data",
+      "of-kafka-remediation-f4a894035acb-old-origin-data"
+    ],
+    "finishedAt": "2026-10-28T01:06:31.467324+00:00",
+    "finalIndependentVerification": {
+      "allSixStoredIdentitiesAndFeatureStates": "PASS",
+      "allSixQuorumClusterIds": "PASS",
+      "bothStoredCodecDumpsAllBatchesLz4": "PASS",
+      "allThreeNegativeVolumeHashesUnchanged": "PASS",
+      "probeContainersRemaining": [],
+      "probeNetworksRemaining": [],
+      "retainedVolumeCount": 6,
+      "actualCodecEvidence": {
+        "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-62fd003619f7/016-old-origin-stored-record-codec.stdout": [
+          "lz4",
+          "lz4"
+        ],
+        "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/of-kafka-remediation-8d16777136e2/044-fresh-origin-stored-record-codec.stdout": [
+          "lz4",
+          "lz4"
+        ]
+      }
+    },
+    "guardLocalVerification": {
+      "focusedShellTests": 13,
+      "cloudSuiteTests": 26,
+      "syntaxCheck": "PASS",
+      "redLog": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/guard-leading-hyphen-red.log",
+      "greenLog": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/guard-leading-hyphen-green.log",
+      "cloudLog": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/infra-research/cloud-suite-with-guard.log"
+    }
+  },
+  "nonKafkaRuntimeChecks": {
+    "result": "PASS",
+    "checks": {
+      "postgres": {
+        "name": "postgres",
+        "startedAt": "2026-10-28T13:06:36.365361+00:00",
+        "status": "PASS",
+        "details": {
+          "stages": [
+            {
+              "stage": "baseline",
+              "image": {
+                "reference": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+                "configurationId": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+                "architecture": "amd64"
+              },
+              "version": "PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+              "eightDatabaseSnapshotsUnchanged": true
+            },
+            {
+              "stage": "candidate",
+              "image": {
+                "reference": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+                "configurationId": "sha256:6a2e324ebe59af6031c4c1cd96c1d5072c2ebc36563d2196365e43b8297c062d",
+                "architecture": "amd64"
+              },
+              "version": "PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+              "eightDatabaseSnapshotsUnchanged": true
+            },
+            {
+              "stage": "rollback",
+              "image": {
+                "reference": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+                "configurationId": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+                "architecture": "amd64"
+              },
+              "version": "PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+              "eightDatabaseSnapshotsUnchanged": true
+            }
+          ],
+          "volume": "orderflow-remediation-smoke-40a4404d62-postgres",
+          "upgradeAndRollback": "PASS",
+          "fixture": "all8 release SQL schemas plus release-checksum synthetic Flyway history and deterministic SQL sentinel",
+          "fullApplicationStartup": "NOT RUN"
+        },
+        "durationSeconds": 75.88
+      },
+      "redis": {
+        "name": "redis",
+        "startedAt": "2026-10-28T13:07:52.248249+00:00",
+        "status": "PASS",
+        "details": {
+          "stages": [
+            {
+              "stage": "baseline",
+              "image": {
+                "reference": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+                "configurationId": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+                "architecture": "amd64"
+              },
+              "version": "7.4.11",
+              "aofRecordRetained": true
+            },
+            {
+              "stage": "candidate",
+              "image": {
+                "reference": "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9",
+                "configurationId": "sha256:98c6ca8f397f86e469be752c3e7ed5eb8b17f2479840cb69a2e413037038e9f4",
+                "architecture": "amd64"
+              },
+              "version": "7.4.12",
+              "aofRecordRetained": true
+            },
+            {
+              "stage": "rollback",
+              "image": {
+                "reference": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+                "configurationId": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+                "architecture": "amd64"
+              },
+              "version": "7.4.11",
+              "aofRecordRetained": true
+            }
+          ],
+          "volume": "orderflow-remediation-smoke-40a4404d62-redis",
+          "upgradeAndRollback": "PASS",
+          "flushOrDataResetUsed": false
+        },
+        "durationSeconds": 2.56
+      },
+      "caddy": {
+        "name": "caddy",
+        "startedAt": "2026-10-28T13:07:54.807369+00:00",
+        "status": "PASS",
+        "details": {
+          "image": {
+            "reference": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+            "configurationId": "sha256:3067cc4e02c091399edbd5d65f85a3ff4d511574aecadb47f280c3761e68852e",
+            "architecture": "amd64"
+          },
+          "existingHarness": "infrastructure/cloud/tests/proxy_integration.py",
+          "runtimeConfig": "actual Caddyfile handlers; only TLS/listeners/upstream/log paths adapted as existing isolated harness",
+          "routingPaths": 6,
+          "internalPathBlocks": 5,
+          "sseImmediate": true,
+          "spoofProtection": true,
+          "bodyBound413": true,
+          "secretRedaction": true,
+          "publicTlsAcme": "NOT RUN"
+        },
+        "durationSeconds": 2.71
+      },
+      "grafana": {
+        "name": "grafana",
+        "startedAt": "2026-10-28T13:08:49.359589+00:00",
+        "status": "PASS",
+        "details": {
+          "stages": [
+            {
+              "stage": "baseline",
+              "image": {
+                "reference": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+                "configurationId": "sha256:75006c93b887a310c7d4b21b557de093cb67caa4e1e4d812cbc08edd7580b7e9",
+                "architecture": "amd64"
+              },
+              "version": "12.1.0",
+              "sqliteHealth": "ok",
+              "syntheticDashboardRetained": true,
+              "syntheticUserRetained": true,
+              "themePreferenceRetained": true,
+              "provisionedDatasourceRetained": true,
+              "dashboardCount": 4,
+              "sqliteTables": 78,
+              "sqliteMigrations": 665,
+              "sqliteIntegrityCheck": "ok"
+            },
+            {
+              "stage": "candidate",
+              "image": {
+                "reference": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+                "configurationId": "sha256:5a2f6d01fcd7ebd17327a817cb40fd0dc2522ad396d7240905d56d4410fa3585",
+                "architecture": "amd64"
+              },
+              "version": "12.4.14",
+              "sqliteHealth": "ok",
+              "syntheticDashboardRetained": true,
+              "syntheticUserRetained": true,
+              "themePreferenceRetained": true,
+              "provisionedDatasourceRetained": true,
+              "dashboardCount": 4,
+              "sqliteTables": 87,
+              "sqliteMigrations": 712,
+              "sqliteIntegrityCheck": "ok"
+            },
+            {
+              "stage": "candidate-restart",
+              "image": {
+                "reference": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+                "configurationId": "sha256:5a2f6d01fcd7ebd17327a817cb40fd0dc2522ad396d7240905d56d4410fa3585",
+                "architecture": "amd64"
+              },
+              "version": "12.4.14",
+              "sqliteHealth": "ok",
+              "syntheticDashboardRetained": true,
+              "syntheticUserRetained": true,
+              "themePreferenceRetained": true,
+              "provisionedDatasourceRetained": true,
+              "dashboardCount": 4,
+              "sqliteTables": 87,
+              "sqliteMigrations": 712,
+              "sqliteIntegrityCheck": "ok"
+            },
+            {
+              "stage": "rollback",
+              "image": {
+                "reference": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+                "configurationId": "sha256:75006c93b887a310c7d4b21b557de093cb67caa4e1e4d812cbc08edd7580b7e9",
+                "architecture": "amd64"
+              },
+              "version": "12.1.0",
+              "sqliteHealth": "ok",
+              "syntheticDashboardRetained": true,
+              "syntheticUserRetained": true,
+              "themePreferenceRetained": true,
+              "provisionedDatasourceRetained": true,
+              "dashboardCount": 4,
+              "sqliteTables": 87,
+              "sqliteMigrations": 712,
+              "sqliteIntegrityCheck": "ok"
+            }
+          ],
+          "volume": "orderflow-remediation-smoke-40a4404d62-grafana",
+          "upgrade": "PASS",
+          "restart": "PASS",
+          "directRollback": "PASS",
+          "baselineSqliteBackup": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/non-kafka-smoke/orderflow-remediation-smoke-40a4404d62/grafana-baseline.db",
+          "fullE2E": "NOT RUN"
+        },
+        "durationSeconds": 68.79
+      },
+      "node-exporter": {
+        "name": "node-exporter",
+        "startedAt": "2026-10-28T13:09:58.155085+00:00",
+        "status": "PASS",
+        "details": {
+          "image": {
+            "reference": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+            "configurationId": "sha256:9bbbca8f5cb8e9bd1b835e8ec086b6df6d9a458d2d10ef1c97ea4a9a3ae7e54b",
+            "architecture": "amd64"
+          },
+          "metricsHttp": 200,
+          "textfileValue": 42,
+          "textfileScrapeError": 0,
+          "hostPidAndReadonly": true,
+          "hostRootfs": "NOT VERIFIED",
+          "environmentLimitation": "Docker Desktop host rootfs rslave bind unavailable: Command 798 failed exit 125; see private log 0798.log",
+          "fallbackScope": "Linux container/VM collector metrics and textfile only"
+        },
+        "durationSeconds": 2.94
+      },
+      "frontend-amd64": {
+        "name": "frontend-amd64",
+        "startedAt": "2026-10-28T13:10:33.516355+00:00",
+        "status": "PASS",
+        "details": {
+          "image": {
+            "reference": "orderflow-remediation/frontend:2026-10-27-amd64",
+            "configurationId": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+            "architecture": "amd64"
+          },
+          "runtimeAssertions": {
+            "node": "v22.23.4",
+            "arch": "x64",
+            "uid": 1001,
+            "toolingAbsent": true,
+            "standaloneAssetsPresent": true
+          },
+          "health": "healthy",
+          "http": {
+            "rootStatus": 200,
+            "staticStatus": 200,
+            "asset": "/app/.next/static/chunks/0-o74znen4827.js"
+          }
+        },
+        "durationSeconds": 8.86
+      },
+      "prometheus": {
+        "name": "prometheus",
+        "startedAt": "2026-10-28T13:16:11.292352+00:00",
+        "status": "PASS",
+        "details": {
+          "staticConfigs": [
+            "cloud",
+            "default"
+          ],
+          "stages": [
+            {
+              "stage": "baseline",
+              "image": {
+                "reference": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+                "configurationId": "sha256:a3bc50fcb50fb1409287c32773d8fe799f6cad5511c4ba3e2e851784e7a05026",
+                "architecture": "amd64"
+              },
+              "health": 200,
+              "retainedSampleTime": 1793193391.183,
+              "retainedSampleValue": 7,
+              "loadedRules": 15
+            },
+            {
+              "stage": "candidate",
+              "image": {
+                "reference": "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+                "configurationId": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+                "architecture": "amd64"
+              },
+              "health": 200,
+              "retainedSampleTime": 1793193391.183,
+              "retainedSampleValue": 7,
+              "loadedRules": 15
+            },
+            {
+              "stage": "restart",
+              "image": {
+                "reference": "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+                "configurationId": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+                "architecture": "amd64"
+              },
+              "health": 200,
+              "retainedSampleTime": 1793193391.183,
+              "retainedSampleValue": 7,
+              "loadedRules": 15
+            },
+            {
+              "stage": "rollback",
+              "image": {
+                "reference": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+                "configurationId": "sha256:a3bc50fcb50fb1409287c32773d8fe799f6cad5511c4ba3e2e851784e7a05026",
+                "architecture": "amd64"
+              },
+              "health": 200,
+              "retainedSampleTime": 1793193391.183,
+              "retainedSampleValue": 7,
+              "loadedRules": 15
+            }
+          ],
+          "volume": "orderflow-remediation-smoke-93607aa040-prometheus",
+          "tsdbSampleSurvivesUpgradeRestartAndRollback": true,
+          "allApplicationTargetsUp": "NOT RUN; one isolated synthetic metrics target only"
+        },
+        "durationSeconds": 96.06
+      },
+      "blackbox-exporter": {
+        "name": "blackbox-exporter",
+        "startedAt": "2026-10-28T13:17:47.352888+00:00",
+        "status": "PASS",
+        "details": {
+          "image": {
+            "reference": "prom/blackbox-exporter@sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd",
+            "configurationId": "sha256:e6f02b1a6c427e2a771fb33b42cb167dde3e5e8b3625e55e55aa20aaa018946d",
+            "architecture": "amd64"
+          },
+          "config": "actual infrastructure/cloud/monitoring/blackbox.yml",
+          "healthHttp": 200,
+          "realBoundedHttpProbes": [
+            {
+              "target": "http://frontend:3000/",
+              "probeSuccess": 1,
+              "durationSeconds": 0.042
+            },
+            {
+              "target": "http://frontend:3000/redirect",
+              "probeSuccess": 0,
+              "durationSeconds": 0.008
+            }
+          ],
+          "publicTls": "NOT RUN"
+        },
+        "durationSeconds": 31.79
+      },
+      "encrypted-backup-restore": {
+        "name": "encrypted-backup-restore",
+        "startedAt": "2026-10-28T13:18:19.142887+00:00",
+        "status": "PASS",
+        "details": {
+          "image": {
+            "reference": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+            "configurationId": "sha256:6a2e324ebe59af6031c4c1cd96c1d5072c2ebc36563d2196365e43b8297c062d",
+            "architecture": "amd64"
+          },
+          "report": {
+            "applicationStartup": "NOT RUN",
+            "checks": [
+              "pg_restore schema/data",
+              "owner-role authenticated SQL connectivity",
+              "Flyway SQL checksum/history",
+              "table counts",
+              "representative record hashes"
+            ],
+            "container": "orderflow-restore-7d294e3ec7da",
+            "databases": 8,
+            "liveRecovery": "NOT RUN",
+            "status": "PASS",
+            "verifiedAt": "2026-10-28T13:19:33.032915+00:00"
+          },
+          "encryptedBackup": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/non-kafka-smoke/orderflow-remediation-smoke-93607aa040/encrypted-backup-fixture/backups/20261028T131825.306977Z-a4679da9",
+          "encryption": "AES-256-CBC/PBKDF2-SHA256-200000",
+          "eightDumpsVerified": true,
+          "originalEvidenceSha256Unchanged": "861dd5c823a83f465b407b0d06131b3f6ca3e48b88b32c317e7e22739bc66cf7",
+          "assertionsRelaxed": false
+        },
+        "durationSeconds": 74.47
+      }
+    },
+    "priorFailedAttemptRetained": true,
+    "fullCommerceE2E": "NOT RUN"
+  },
+  "backendStartup": {
+    "result": "PASS",
+    "scope": "sequential isolated backend image startup and readiness, not full commerce",
+    "rows": [
+      {
+        "service": "auth-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 11.63,
+        "memory": "340MiB / 640MiB"
+      },
+      {
+        "service": "service-registry",
+        "platform": "linux/arm64",
+        "imageId": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 8.98,
+        "memory": "216.3MiB / 320MiB"
+      },
+      {
+        "service": "api-gateway",
+        "platform": "linux/arm64",
+        "imageId": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 8.79,
+        "memory": "259.8MiB / 640MiB"
+      },
+      {
+        "service": "product-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 9.11,
+        "memory": "320.1MiB / 640MiB"
+      },
+      {
+        "service": "cart-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 5.72,
+        "memory": "264.4MiB / 640MiB"
+      },
+      {
+        "service": "inventory-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 20.67,
+        "memory": "423.8MiB / 1GiB"
+      },
+      {
+        "service": "order-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 18.58,
+        "memory": "430.3MiB / 1GiB"
+      },
+      {
+        "service": "payment-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 12.42,
+        "memory": "413.6MiB / 1GiB"
+      },
+      {
+        "service": "delivery-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 11.53,
+        "memory": "488.6MiB / 1GiB"
+      },
+      {
+        "service": "notification-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 10.2,
+        "memory": "382.6MiB / 1GiB"
+      },
+      {
+        "service": "operations-service",
+        "platform": "linux/arm64",
+        "imageId": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 16.45,
+        "memory": "360.5MiB / 640MiB"
+      },
+      {
+        "service": "auth-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 36.45,
+        "memory": "576.7MiB / 640MiB"
+      },
+      {
+        "service": "service-registry",
+        "platform": "linux/amd64",
+        "imageId": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 19.25,
+        "memory": "282.1MiB / 320MiB"
+      },
+      {
+        "service": "api-gateway",
+        "platform": "linux/amd64",
+        "imageId": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 24.35,
+        "memory": "433.5MiB / 640MiB"
+      },
+      {
+        "service": "product-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 31.75,
+        "memory": "484.5MiB / 640MiB"
+      },
+      {
+        "service": "cart-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 22.25,
+        "memory": "422.4MiB / 640MiB"
+      },
+      {
+        "service": "inventory-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 43.28,
+        "memory": "571.7MiB / 1GiB"
+      },
+      {
+        "service": "order-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 43.26,
+        "memory": "601.9MiB / 1GiB"
+      },
+      {
+        "service": "payment-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 41.38,
+        "memory": "554.9MiB / 1GiB"
+      },
+      {
+        "service": "delivery-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 35.16,
+        "memory": "625.9MiB / 1GiB"
+      },
+      {
+        "service": "notification-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 30.31,
+        "memory": "534.1MiB / 1GiB"
+      },
+      {
+        "service": "operations-service",
+        "platform": "linux/amd64",
+        "imageId": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "readiness": "UP",
+        "prometheus": "PASS",
+        "oomKilled": false,
+        "startupSeconds": 28.87,
+        "memory": "499.3MiB / 640MiB"
+      }
+    ],
+    "volumesRetained": [
+      "of-backend-image-a8b1ba5060-postgres",
+      "of-backend-image-a8b1ba5060-redis",
+      "of-backend-image-a8b1ba5060-kafka"
+    ],
+    "flywayHistoryUnchangedAcrossArchitectures": true,
+    "keyBytesRetained": true,
+    "preRestartJwtAcceptedAcrossArchitectures": true,
+    "postgresUserRetained": true,
+    "redisRecordRetained": true,
+    "fullCommerceE2E": "NOT RUN"
+  },
+  "nativeCompression": [
+    {
+      "platform": "linux/arm64",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "none",
+        "--memory",
+        "512m",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:size=64m,mode=1777",
+        "--entrypoint",
+        "sh",
+        "orderflow-remediation/auth-service:2026-10-27-arm64",
+        "-ec",
+        "cd /tmp; jar -xf /app/app.jar BOOT-INF/lib/lz4-java-1.11.4.jar BOOT-INF/lib/snappy-java-1.1.10.11.jar; cat > CompressionProbe.java; java --class-path BOOT-INF/lib/lz4-java-1.11.4.jar:BOOT-INF/lib/snappy-java-1.1.10.11.jar CompressionProbe.java"
+      ],
+      "exitCode": 0,
+      "stderr": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "scope": "actual cloud read-only root and default noexec tmpfs; native codec failures retained; no compression override introduced",
+      "observed": {
+        "java": "21.0.13+11-LTS",
+        "lz4Factory": "LZ4Factory:JavaSafe",
+        "nativeLz4": "UnsatisfiedLinkError",
+        "snappyNative": "UnsatisfiedLinkError",
+        "lz4Roundtrip": true
+      },
+      "lz4Fallback": "PASS",
+      "nativeLz4": "FAIL",
+      "snappyNative": "FAIL"
+    },
+    {
+      "platform": "linux/amd64",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "none",
+        "--memory",
+        "512m",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:size=64m,mode=1777",
+        "--entrypoint",
+        "sh",
+        "orderflow-remediation/auth-service:2026-10-27-amd64",
+        "-ec",
+        "cd /tmp; jar -xf /app/app.jar BOOT-INF/lib/lz4-java-1.11.4.jar BOOT-INF/lib/snappy-java-1.1.10.11.jar; cat > CompressionProbe.java; java --class-path BOOT-INF/lib/lz4-java-1.11.4.jar:BOOT-INF/lib/snappy-java-1.1.10.11.jar CompressionProbe.java"
+      ],
+      "exitCode": 0,
+      "stderr": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "scope": "actual cloud read-only root and default noexec tmpfs; native codec failures retained; no compression override introduced",
+      "observed": {
+        "java": "21.0.13+11-LTS",
+        "lz4Factory": "LZ4Factory:JavaSafe",
+        "nativeLz4": "UnsatisfiedLinkError",
+        "snappyNative": "UnsatisfiedLinkError",
+        "lz4Roundtrip": true
+      },
+      "lz4Fallback": "PASS",
+      "nativeLz4": "FAIL",
+      "snappyNative": "FAIL"
+    }
+  ],
+  "runtimeIdentity": [
+    {
+      "service": "service-registry",
+      "platform": "linux/arm64",
+      "imageId": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/arm64",
+      "imageId": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:4fcee307cab189f63d98e1c37dc284ec7278ea8af34c2a4184244631e141a52f",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:94c018c173dfefad494985ffd6aea228bb0f34bca831bdc31c26be3a5fbebff3",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:94c018c173dfefad494985ffd6aea228bb0f34bca831bdc31c26be3a5fbebff3",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/arm64",
+      "imageId": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+      "runtimeDiffIds": [
+        "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+        "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+        "sha256:94c018c173dfefad494985ffd6aea228bb0f34bca831bdc31c26be3a5fbebff3",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "Picked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "service-registry",
+      "platform": "linux/amd64",
+      "imageId": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/amd64",
+      "imageId": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:8da58e8dbdfa0f63ada6ec873075384b2b27ccc6907b290302541d33adb3816b",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:edb30f1bc3b8c363a928c068ec119c1575f5c6ce2db19e1745ac7fe5e0f2ea9f",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:edb30f1bc3b8c363a928c068ec119c1575f5c6ce2db19e1745ac7fe5e0f2ea9f",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/amd64",
+      "imageId": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+      "runtimeDiffIds": [
+        "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+        "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+        "sha256:edb30f1bc3b8c363a928c068ec119c1575f5c6ce2db19e1745ac7fe5e0f2ea9f",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "javaVersionOutput": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\nopenjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Corretto-21.0.13.0.11 (build 21.0.13+11-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.13.0.11 (build 21.0.13+11-LTS, mixed mode, sharing)\nPicked up JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError\n",
+      "truststore": {
+        "certificates": 153,
+        "uniqueCertificates": 141,
+        "removedRootFingerprintsAbsent": true,
+        "positiveControlsChecked": true
+      },
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory",
+        "256m",
+        "--entrypoint",
+        "sh",
+        "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "-ec",
+        "java -version; apk --no-network list --installed amazon-corretto-21 brotli-libs; keytool -list -rfc -cacerts -storepass changeit"
+      ]
+    }
+  ],
+  "sourceIntegrity": {
+    "result": "PASS",
+    "compatibilityFixturesUnchanged": 44,
+    "historicalFlywaySqlUnchanged": 23,
+    "all24BuiltImageSourceHashesMatch": true,
+    "headUnchanged": true,
+    "allApplicationJavaSourceUnchanged": true
+  },
+  "containerBuilds": [
+    {
+      "name": "build-service-registry-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "service-registry/Dockerfile",
+        "-t",
+        "orderflow-remediation/service-registry:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:10:34Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 74.24,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-service-registry-arm64-final.log",
+      "service": "service-registry",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/service-registry:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "service-registry/Dockerfile": "62b2f1d8fa70ed74e7ad75f3588f901d309487fa8161e8b36a4108f7abd048ac"
+      },
+      "imageId": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-api-gateway-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "api-gateway/Dockerfile",
+        "-t",
+        "orderflow-remediation/api-gateway:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:11:48Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 5.96,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-api-gateway-arm64-final.log",
+      "service": "api-gateway",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/api-gateway:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "api-gateway/Dockerfile": "8a40a8c9c2cc67c0840cb25a12f780737dbc09a9e603c0187a346e56f88bb774"
+      },
+      "imageId": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-auth-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "auth-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/auth-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:11:55Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 8.7,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-auth-service-arm64-final.log",
+      "service": "auth-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/auth-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "auth-service/Dockerfile": "ecae9a4fd47f028e1b5c77c36e40a25c8bd4566a8ce21fd982e0ea61a51d190f"
+      },
+      "imageId": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-product-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "product-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/product-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:12:03Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.99,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-product-service-arm64-final.log",
+      "service": "product-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/product-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "product-service/Dockerfile": "9de317faf490c483428339b0960370a9c051e29623c960ff21207c99c608c01b"
+      },
+      "imageId": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-cart-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "cart-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/cart-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:12:11Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 5.2,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-cart-service-arm64-final.log",
+      "service": "cart-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/cart-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "cart-service/Dockerfile": "1a39adddf0512486526130c54472945d2ff1151f5b7c92c976e20f9c4babef17"
+      },
+      "imageId": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-inventory-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "inventory-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/inventory-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:12:16Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.92,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-inventory-service-arm64-final.log",
+      "service": "inventory-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/inventory-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "inventory-service/Dockerfile": "6d01fa9f0deba92c9cef2f23ba06b69b8f43236e976245efdad0b668c17473ae"
+      },
+      "imageId": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-order-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "order-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/order-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:12:23Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 9.94,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-order-service-arm64-final.log",
+      "service": "order-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/order-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "order-service/Dockerfile": "595bdf2bfa95e544d1b3548a9eab06518a4cf3d0b05a6d5db6d6cb7cf6dd3f6d"
+      },
+      "imageId": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-payment-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "payment-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/payment-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:12:33Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 10.01,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-payment-service-arm64-final.log",
+      "service": "payment-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/payment-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "payment-service/Dockerfile": "ee02474d77e3b264d066efe7eed18585d7e075ecd5509805d32327d84c10fd4a"
+      },
+      "imageId": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-delivery-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "delivery-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/delivery-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:12:44Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 65.9,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-delivery-service-arm64-final.log",
+      "service": "delivery-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/delivery-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "delivery-service/Dockerfile": "714e1b07b11a7cfe25d845cabedc05c690bc14df5873a255472f61062401e8cf"
+      },
+      "imageId": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-notification-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "notification-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/notification-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:13:50Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 8.55,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-notification-service-arm64-final.log",
+      "service": "notification-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/notification-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "notification-service/Dockerfile": "9da9de6dc6c4904a2d482f76c1438aefafd6a5ed0705aeb9ebfc1e285f66736f"
+      },
+      "imageId": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-operations-service-arm64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/arm64",
+        "-f",
+        "operations-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/operations-service:2026-10-27-arm64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:13:59Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.6,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-operations-service-arm64-final.log",
+      "service": "operations-service",
+      "platform": "linux/arm64",
+      "tag": "orderflow-remediation/operations-service:2026-10-27-arm64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "operations-service/Dockerfile": "af528dd79187e9141cd3e7e90d17ea28c9a8cebbc1da8f4fb48700b558600e34"
+      },
+      "imageId": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+      "architecture": "arm64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-service-registry-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "service-registry/Dockerfile",
+        "-t",
+        "orderflow-remediation/service-registry:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:14:05Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 128.73,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-service-registry-amd64-final.log",
+      "service": "service-registry",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/service-registry:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "service-registry/Dockerfile": "62b2f1d8fa70ed74e7ad75f3588f901d309487fa8161e8b36a4108f7abd048ac"
+      },
+      "imageId": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-api-gateway-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "api-gateway/Dockerfile",
+        "-t",
+        "orderflow-remediation/api-gateway:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:16:14Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.96,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-api-gateway-amd64-final.log",
+      "service": "api-gateway",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/api-gateway:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "api-gateway/Dockerfile": "8a40a8c9c2cc67c0840cb25a12f780737dbc09a9e603c0187a346e56f88bb774"
+      },
+      "imageId": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-auth-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "auth-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/auth-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:16:21Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 58.5,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-auth-service-amd64-final.log",
+      "service": "auth-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/auth-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "auth-service/Dockerfile": "ecae9a4fd47f028e1b5c77c36e40a25c8bd4566a8ce21fd982e0ea61a51d190f"
+      },
+      "imageId": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-product-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "product-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/product-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:17:20Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 7.31,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-product-service-amd64-final.log",
+      "service": "product-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/product-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "product-service/Dockerfile": "9de317faf490c483428339b0960370a9c051e29623c960ff21207c99c608c01b"
+      },
+      "imageId": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-cart-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "cart-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/cart-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:17:28Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 6.14,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-cart-service-amd64-final.log",
+      "service": "cart-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/cart-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "cart-service/Dockerfile": "1a39adddf0512486526130c54472945d2ff1151f5b7c92c976e20f9c4babef17"
+      },
+      "imageId": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-inventory-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "inventory-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/inventory-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:17:34Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 7.37,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-inventory-service-amd64-final.log",
+      "service": "inventory-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/inventory-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "inventory-service/Dockerfile": "6d01fa9f0deba92c9cef2f23ba06b69b8f43236e976245efdad0b668c17473ae"
+      },
+      "imageId": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-order-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "order-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/order-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:17:42Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 8.31,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-order-service-amd64-final.log",
+      "service": "order-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/order-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "order-service/Dockerfile": "595bdf2bfa95e544d1b3548a9eab06518a4cf3d0b05a6d5db6d6cb7cf6dd3f6d"
+      },
+      "imageId": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-payment-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "payment-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/payment-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:17:50Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 7.41,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-payment-service-amd64-final.log",
+      "service": "payment-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/payment-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "payment-service/Dockerfile": "ee02474d77e3b264d066efe7eed18585d7e075ecd5509805d32327d84c10fd4a"
+      },
+      "imageId": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-delivery-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "delivery-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/delivery-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:17:58Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 57.9,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-delivery-service-amd64-final.log",
+      "service": "delivery-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/delivery-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "delivery-service/Dockerfile": "714e1b07b11a7cfe25d845cabedc05c690bc14df5873a255472f61062401e8cf"
+      },
+      "imageId": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-notification-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "notification-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/notification-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:18:56Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 9.61,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-notification-service-amd64-final.log",
+      "service": "notification-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/notification-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "notification-service/Dockerfile": "9da9de6dc6c4904a2d482f76c1438aefafd6a5ed0705aeb9ebfc1e285f66736f"
+      },
+      "imageId": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+      "architecture": "amd64",
+      "repoDigests": []
+    },
+    {
+      "name": "build-operations-service-amd64-final",
+      "command": [
+        "docker",
+        "buildx",
+        "build",
+        "--load",
+        "--progress=plain",
+        "--platform",
+        "linux/amd64",
+        "-f",
+        "operations-service/Dockerfile",
+        "-t",
+        "orderflow-remediation/operations-service:2026-10-27-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:19:06Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 9.11,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/build-operations-service-amd64-final.log",
+      "service": "operations-service",
+      "platform": "linux/amd64",
+      "tag": "orderflow-remediation/operations-service:2026-10-27-amd64",
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "operations-service/Dockerfile": "af528dd79187e9141cd3e7e90d17ea28c9a8cebbc1da8f4fb48700b558600e34"
+      },
+      "imageId": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+      "architecture": "amd64",
+      "repoDigests": []
+    }
+  ],
+  "freshNpmAudits": {
+    "all": {
+      "auditReportVersion": 2,
+      "vulnerabilities": {},
+      "metadata": {
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        },
+        "dependencies": {
+          "prod": 72,
+          "dev": 355,
+          "optional": 97,
+          "peer": 44,
+          "peerOptional": 0,
+          "total": 468
+        }
+      }
+    },
+    "omitDev": {
+      "auditReportVersion": 2,
+      "vulnerabilities": {},
+      "metadata": {
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        },
+        "dependencies": {
+          "prod": 72,
+          "dev": 355,
+          "optional": 97,
+          "peer": 44,
+          "peerOptional": 0,
+          "total": 468
+        }
+      }
+    }
+  },
+  "scanCompleteness": {
+    "verifiedAt": "2026-10-28T13:14:51.655967+00:00",
+    "finalApplicationImages": 24,
+    "finalApplicationScanExitCodes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "all24ApplicationReportsContainNoVulnerabilities": true,
+    "backendReportsWithIdentifiedNestedJARPackages": 22,
+    "finalLogicalImages": 32,
+    "rawFindingCountVerifiedAgainstIndex": 174,
+    "uniqueAdvisoryCountVerified": 98,
+    "advisoryIDTransitions": {
+      "noLongerReported": 356,
+      "newlyReported": 0,
+      "remaining": 98
+    },
+    "noVersionInComparisonKey": true,
+    "final32ComparisonSHA256": "b842b0bbce66f11129416c46a3401f3dafe1cf84032b7d376c77de5b1361a230",
+    "beforeAfterOccurrenceConservationVerified": true
+  },
+  "codecReadiness": "LZ4 JavaSafe fallback PASS; native LZ4 and Snappy FAIL under unchanged cloud noexec tmpfs; no native codec pass claimed",
+  "commands": {
+    "backend-final-verify": {
+      "name": "backend-final-verify",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "verify"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:06:32Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 242.16,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/backend-final-verify.log"
+    },
+    "owasp-final-gate": {
+      "name": "owasp-final-gate",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-Psecurity-scan",
+        "org.owasp:dependency-check-maven:12.2.2:aggregate",
+        "-DdataDirectory=/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-data",
+        "-DnvdValidForHours=0"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:10:35Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 46.06,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/owasp-final-gate.log"
+    },
+    "terraform": {
+      "name": "terraform",
+      "command": [
+        "bash",
+        "-c",
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform init -backend=false -lockfile=readonly -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform fmt -check -recursive && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform validate -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform test -no-color"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-27T17:59:16Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 17.33,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/terraform.log"
+    },
+    "final-static-automation": {
+      "name": "final-static-automation",
+      "command": [
+        "bash",
+        "-c",
+        "python3 -m unittest discover -s scripts/cloud/tests -v && python3 -m unittest discover -s scripts/deploy/tests -v && python3 -m unittest discover -s infrastructure/cloud/tests -v && bash scripts/validate-production-config.sh && bash scripts/security-scan.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T01:15:07Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 8.45,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/final-static-automation.log"
+    },
+    "final-cloud-policy": {
+      "name": "final-cloud-policy",
+      "command": [
+        "bash",
+        "-c",
+        "python3 -m unittest discover -s infrastructure/cloud/tests -v && python3 -m unittest discover -s scripts/deploy/tests -v && bash scripts/validate-production-config.sh && bash scripts/security-scan.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T13:22:42Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 2.46,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/final-cloud-policy.log"
+    },
+    "non-kafka-runtime-smoke": {
+      "name": "non-kafka-runtime-smoke",
+      "command": [
+        "python3",
+        "-u",
+        "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/non-kafka-smoke/probe.py",
+        "--run"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow",
+      "startedAt": "2026-10-28T13:06:32Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 254.62,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/non-kafka-runtime-smoke.log"
+    },
+    "non-kafka-runtime-retry": {
+      "name": "non-kafka-runtime-retry",
+      "command": [
+        "python3",
+        "-u",
+        "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/non-kafka-smoke/probe.py",
+        "--run",
+        "--only",
+        "prometheus,blackbox-exporter,encrypted-backup-restore"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow",
+      "startedAt": "2026-10-28T13:16:11Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 202.78,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/non-kafka-runtime-retry.log"
+    },
+    "backend-startup": {
+      "name": "backend-startup",
+      "command": [
+        "python3",
+        "-u",
+        "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/backend-startup-probe.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow",
+      "startedAt": "2026-10-28T13:22:41Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 552.8,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/backend-startup.log"
+    },
+    "native-compression": {
+      "name": "native-compression",
+      "command": [
+        "python3",
+        "-u",
+        "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/native-compression-probe.py"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow",
+      "startedAt": "2026-10-28T13:37:09Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 4.88,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/native-compression.log"
+    },
+    "final-source-safety": {
+      "name": "final-source-safety",
+      "command": [
+        "bash",
+        "-c",
+        "bash scripts/security-scan.sh && bash scripts/verify-log-redaction.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T13:35:32Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 21.05,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/final-source-safety.log"
+    },
+    "mocked-playwright-fixtures": {
+      "name": "mocked-playwright-fixtures",
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "--project=fixtures"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-28T13:35:32Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 35.43,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/mocked-playwright-fixtures.log"
+    },
+    "final-evidence-safety": {
+      "name": "final-evidence-safety",
+      "command": [
+        "bash",
+        "-c",
+        "bash scripts/security-scan.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-28T13:44:23Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.3,
+      "log": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/final-evidence-safety.log"
+    }
+  },
+  "noCommits": true,
+  "noPushes": true,
+  "noImagesPublished": true,
+  "noAwsResourcesCreated": true,
+  "noDnsChanges": true,
+  "fullRealCommerceE2E": "NOT RUN",
+  "rawEvidence": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27"
+}

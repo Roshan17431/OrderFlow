@@ -1,0 +1,2706 @@
+{
+  "assessmentDate": "2026-10-28",
+  "baselineHead": "a1536d32cee31d6c1ea2ac7710ebca031bdeed2d",
+  "gitCommitCreated": false,
+  "applications": [
+    {
+      "name": "service-registry-arm64",
+      "service": "service-registry",
+      "platform": "linux/arm64",
+      "image": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+      "configDigest": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+      "tag": "orderflow-remediation/service-registry:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "service-registry/Dockerfile": "62b2f1d8fa70ed74e7ad75f3588f901d309487fa8161e8b36a4108f7abd048ac"
+      }
+    },
+    {
+      "name": "api-gateway-arm64",
+      "service": "api-gateway",
+      "platform": "linux/arm64",
+      "image": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+      "configDigest": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+      "tag": "orderflow-remediation/api-gateway:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "api-gateway/Dockerfile": "8a40a8c9c2cc67c0840cb25a12f780737dbc09a9e603c0187a346e56f88bb774"
+      }
+    },
+    {
+      "name": "auth-service-arm64",
+      "service": "auth-service",
+      "platform": "linux/arm64",
+      "image": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+      "configDigest": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+      "tag": "orderflow-remediation/auth-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "auth-service/Dockerfile": "ecae9a4fd47f028e1b5c77c36e40a25c8bd4566a8ce21fd982e0ea61a51d190f"
+      }
+    },
+    {
+      "name": "product-service-arm64",
+      "service": "product-service",
+      "platform": "linux/arm64",
+      "image": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+      "configDigest": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+      "tag": "orderflow-remediation/product-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "product-service/Dockerfile": "9de317faf490c483428339b0960370a9c051e29623c960ff21207c99c608c01b"
+      }
+    },
+    {
+      "name": "cart-service-arm64",
+      "service": "cart-service",
+      "platform": "linux/arm64",
+      "image": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+      "configDigest": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+      "tag": "orderflow-remediation/cart-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "cart-service/Dockerfile": "1a39adddf0512486526130c54472945d2ff1151f5b7c92c976e20f9c4babef17"
+      }
+    },
+    {
+      "name": "inventory-service-arm64",
+      "service": "inventory-service",
+      "platform": "linux/arm64",
+      "image": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+      "configDigest": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+      "tag": "orderflow-remediation/inventory-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "inventory-service/Dockerfile": "6d01fa9f0deba92c9cef2f23ba06b69b8f43236e976245efdad0b668c17473ae"
+      }
+    },
+    {
+      "name": "order-service-arm64",
+      "service": "order-service",
+      "platform": "linux/arm64",
+      "image": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+      "configDigest": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+      "tag": "orderflow-remediation/order-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "order-service/Dockerfile": "595bdf2bfa95e544d1b3548a9eab06518a4cf3d0b05a6d5db6d6cb7cf6dd3f6d"
+      }
+    },
+    {
+      "name": "payment-service-arm64",
+      "service": "payment-service",
+      "platform": "linux/arm64",
+      "image": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+      "configDigest": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+      "tag": "orderflow-remediation/payment-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "payment-service/Dockerfile": "ee02474d77e3b264d066efe7eed18585d7e075ecd5509805d32327d84c10fd4a"
+      }
+    },
+    {
+      "name": "delivery-service-arm64",
+      "service": "delivery-service",
+      "platform": "linux/arm64",
+      "image": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+      "configDigest": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+      "tag": "orderflow-remediation/delivery-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "delivery-service/Dockerfile": "714e1b07b11a7cfe25d845cabedc05c690bc14df5873a255472f61062401e8cf"
+      }
+    },
+    {
+      "name": "notification-service-arm64",
+      "service": "notification-service",
+      "platform": "linux/arm64",
+      "image": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+      "configDigest": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+      "tag": "orderflow-remediation/notification-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "notification-service/Dockerfile": "9da9de6dc6c4904a2d482f76c1438aefafd6a5ed0705aeb9ebfc1e285f66736f"
+      }
+    },
+    {
+      "name": "operations-service-arm64",
+      "service": "operations-service",
+      "platform": "linux/arm64",
+      "image": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+      "configDigest": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+      "tag": "orderflow-remediation/operations-service:2026-10-27-arm64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "operations-service/Dockerfile": "af528dd79187e9141cd3e7e90d17ea28c9a8cebbc1da8f4fb48700b558600e34"
+      }
+    },
+    {
+      "name": "service-registry-amd64",
+      "service": "service-registry",
+      "platform": "linux/amd64",
+      "image": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+      "configDigest": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+      "tag": "orderflow-remediation/service-registry:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "service-registry/Dockerfile": "62b2f1d8fa70ed74e7ad75f3588f901d309487fa8161e8b36a4108f7abd048ac"
+      }
+    },
+    {
+      "name": "api-gateway-amd64",
+      "service": "api-gateway",
+      "platform": "linux/amd64",
+      "image": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+      "configDigest": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+      "tag": "orderflow-remediation/api-gateway:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "api-gateway/Dockerfile": "8a40a8c9c2cc67c0840cb25a12f780737dbc09a9e603c0187a346e56f88bb774"
+      }
+    },
+    {
+      "name": "auth-service-amd64",
+      "service": "auth-service",
+      "platform": "linux/amd64",
+      "image": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+      "configDigest": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+      "tag": "orderflow-remediation/auth-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "auth-service/Dockerfile": "ecae9a4fd47f028e1b5c77c36e40a25c8bd4566a8ce21fd982e0ea61a51d190f"
+      }
+    },
+    {
+      "name": "product-service-amd64",
+      "service": "product-service",
+      "platform": "linux/amd64",
+      "image": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+      "configDigest": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+      "tag": "orderflow-remediation/product-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "product-service/Dockerfile": "9de317faf490c483428339b0960370a9c051e29623c960ff21207c99c608c01b"
+      }
+    },
+    {
+      "name": "cart-service-amd64",
+      "service": "cart-service",
+      "platform": "linux/amd64",
+      "image": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+      "configDigest": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+      "tag": "orderflow-remediation/cart-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "cart-service/Dockerfile": "1a39adddf0512486526130c54472945d2ff1151f5b7c92c976e20f9c4babef17"
+      }
+    },
+    {
+      "name": "inventory-service-amd64",
+      "service": "inventory-service",
+      "platform": "linux/amd64",
+      "image": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+      "configDigest": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+      "tag": "orderflow-remediation/inventory-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "inventory-service/Dockerfile": "6d01fa9f0deba92c9cef2f23ba06b69b8f43236e976245efdad0b668c17473ae"
+      }
+    },
+    {
+      "name": "order-service-amd64",
+      "service": "order-service",
+      "platform": "linux/amd64",
+      "image": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+      "configDigest": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+      "tag": "orderflow-remediation/order-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "order-service/Dockerfile": "595bdf2bfa95e544d1b3548a9eab06518a4cf3d0b05a6d5db6d6cb7cf6dd3f6d"
+      }
+    },
+    {
+      "name": "payment-service-amd64",
+      "service": "payment-service",
+      "platform": "linux/amd64",
+      "image": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+      "configDigest": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+      "tag": "orderflow-remediation/payment-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "payment-service/Dockerfile": "ee02474d77e3b264d066efe7eed18585d7e075ecd5509805d32327d84c10fd4a"
+      }
+    },
+    {
+      "name": "delivery-service-amd64",
+      "service": "delivery-service",
+      "platform": "linux/amd64",
+      "image": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+      "configDigest": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+      "tag": "orderflow-remediation/delivery-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "delivery-service/Dockerfile": "714e1b07b11a7cfe25d845cabedc05c690bc14df5873a255472f61062401e8cf"
+      }
+    },
+    {
+      "name": "notification-service-amd64",
+      "service": "notification-service",
+      "platform": "linux/amd64",
+      "image": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+      "configDigest": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+      "tag": "orderflow-remediation/notification-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "notification-service/Dockerfile": "9da9de6dc6c4904a2d482f76c1438aefafd6a5ed0705aeb9ebfc1e285f66736f"
+      }
+    },
+    {
+      "name": "operations-service-amd64",
+      "service": "operations-service",
+      "platform": "linux/amd64",
+      "image": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+      "configDigest": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+      "tag": "orderflow-remediation/operations-service:2026-10-27-amd64",
+      "repositoryDigests": [],
+      "sourceSha256": {
+        "pom.xml": "985e176d388b602fa3db01254ee9091e15db229935b4b76ec18db8acbdfb1dff",
+        ".mvn/wrapper/maven-wrapper.properties": "3b5c9ddd2378ff97e0324028c33c93857ab2be2ea6a8939ae1b65e6a9605214d",
+        "operations-service/Dockerfile": "af528dd79187e9141cd3e7e90d17ea28c9a8cebbc1da8f4fb48700b558600e34"
+      }
+    },
+    {
+      "name": "frontend-arm64",
+      "service": "frontend",
+      "platform": "linux/arm64",
+      "image": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+      "configDigest": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+      "tag": "orderflow-remediation/frontend:2026-10-27-arm64",
+      "repositoryDigests": []
+    },
+    {
+      "name": "frontend-amd64",
+      "service": "frontend",
+      "platform": "linux/amd64",
+      "image": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+      "configDigest": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+      "tag": "orderflow-remediation/frontend:2026-10-27-amd64",
+      "repositoryDigests": []
+    }
+  ],
+  "infrastructure": [
+    {
+      "repo": "library/postgres",
+      "tag": "16.15-alpine",
+      "indexDigest": "sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab",
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+          "configDigest": "sha256:6a2e324ebe59af6031c4c1cd96c1d5072c2ebc36563d2196365e43b8297c062d",
+          "sizeBytes": 116064374,
+          "created": "2026-10-21T22:57:10.664514874Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "GOSU_VERSION=1.19",
+            "LANG=en_US.utf8",
+            "PG_MAJOR=16",
+            "PG_VERSION=16.15",
+            "PG_SHA256=c1575341fa7bd40f5274ea465b34390f4dc64cdd0770af327005caaeb9f6b7ed",
+            "DOCKER_PG_LLVM_DEPS=llvm21-dev \t\tclang21",
+            "PGDATA=/var/lib/postgresql/data"
+          ],
+          "labels": null
+        },
+        "arm64": {
+          "manifestDigest": "sha256:7a8050e52090c5f77effbe7e0cbed4a0587306776c3f26dc99933a63c619eaf1",
+          "configDigest": "sha256:c54a696c68013b2f8f42f479e00a2b6ad24c5ef10ee31cdfb8972cec3dad7eb7",
+          "sizeBytes": 113883909,
+          "created": "2026-10-21T23:19:19.130817935Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "GOSU_VERSION=1.19",
+            "LANG=en_US.utf8",
+            "PG_MAJOR=16",
+            "PG_VERSION=16.15",
+            "PG_SHA256=c1575341fa7bd40f5274ea465b34390f4dc64cdd0770af327005caaeb9f6b7ed",
+            "DOCKER_PG_LLVM_DEPS=llvm21-dev \t\tclang21",
+            "PGDATA=/var/lib/postgresql/data"
+          ],
+          "labels": null
+        }
+      },
+      "name": "postgres",
+      "officialReleaseOrSupportSource": "https://www.postgresql.org/support/versioning/",
+      "service": "postgres",
+      "reference": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "platform": "linux/amd64",
+      "frozenReference": "postgres:16.15-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab",
+      "initialCandidateResearch": {
+        "recommendationStatus": "PREFERRED_SAME_MAJOR",
+        "compatibilityAndResidualRisk": "PostgreSQL 16.15; no baseline HIGH/CRITICAL findings. Keep PGDATA=/var/lib/postgresql/data and PostgreSQL 16. Minor upgrade requires no dump/reload; verify existing schema/Flyway data on isolated copied data. Alpine/libc or collation changes merit release-note review.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "Old/new builds are PostgreSQL16.15. Eight DB old/new/old persistence PASS. Full scan has61 flags including1C/25H in gosu; affected C/H symbols absent in exact helper; raw findings retained.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "library/redis",
+      "tag": "7.4.12-alpine",
+      "indexDigest": "sha256:338fbfc036dc5517ac0b04d6de21521085935336e565f223406180e9d84166e2",
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9",
+          "configDigest": "sha256:98c6ca8f397f86e469be752c3e7ed5eb8b17f2479840cb69a2e413037038e9f4",
+          "sizeBytes": 16243847,
+          "created": "2026-10-26T16:40:19.782717579Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "REDIS_VERSION=7.4.12"
+          ],
+          "labels": null
+        },
+        "arm64": {
+          "manifestDigest": "sha256:c1945f0eeb2d503f8421952da953a3804d38e4f004d4ef11d57826da59d2c332",
+          "configDigest": "sha256:c90c016450904cc9c63d38100c04c72554fcc983e257f1637ab451afaf32da7b",
+          "sizeBytes": 16755638,
+          "created": "2026-10-26T16:40:29.147187384Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "REDIS_VERSION=7.4.12"
+          ],
+          "labels": null
+        }
+      },
+      "name": "redis7412",
+      "officialReleaseOrSupportSource": "https://github.com/redis/redis/releases/tag/7.4.12",
+      "service": "redis",
+      "reference": "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9",
+      "platform": "linux/amd64",
+      "frozenReference": "redis:7.4.12-alpine@sha256:338fbfc036dc5517ac0b04d6de21521085935336e565f223406180e9d84166e2",
+      "initialCandidateResearch": {
+        "recommendationStatus": "PREFERRED_SAME_MINOR",
+        "compatibilityAndResidualRisk": "Redis 7.4.12 security release, standalone server retains /data AOF and same password/config. The 7.4.12 cluster-bus overflow fix requires cluster mode, absent here; current vendor rebuild should also update OS OpenSSL, subject to actual scan. Do not switch to Redis 8 or recreate existing AOF.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "7.4.11->7.4.12->7.4.11 AOF persistence PASS; final full scan zero findings.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "library/caddy",
+      "tag": "2.11.7-alpine",
+      "indexDigest": "sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f",
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+          "configDigest": "sha256:3067cc4e02c091399edbd5d65f85a3ff4d511574aecadb47f280c3761e68852e",
+          "sizeBytes": 24871432,
+          "created": "2026-10-21T21:32:33.967060949Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "CADDY_VERSION=v2.11.7",
+            "XDG_CONFIG_HOME=/config",
+            "XDG_DATA_HOME=/data"
+          ],
+          "labels": {
+            "org.opencontainers.image.description": "a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go",
+            "org.opencontainers.image.documentation": "https://caddyserver.com/docs",
+            "org.opencontainers.image.licenses": "Apache-2.0",
+            "org.opencontainers.image.source": "https://github.com/caddyserver/caddy-docker",
+            "org.opencontainers.image.title": "Caddy",
+            "org.opencontainers.image.url": "https://caddyserver.com",
+            "org.opencontainers.image.vendor": "Light Code Labs",
+            "org.opencontainers.image.version": "v2.11.7"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:cc447f149425221422153c6cdf33a123b3f458839679f950298f68a690a54a5b",
+          "configDigest": "sha256:c7d68e4fa1bb71ae97c0b7e2c468aa3ccad2ae75d0294697d401e28794a5b5ab",
+          "sizeBytes": 23632944,
+          "created": "2026-10-21T21:34:47.656511251Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "CADDY_VERSION=v2.11.7",
+            "XDG_CONFIG_HOME=/config",
+            "XDG_DATA_HOME=/data"
+          ],
+          "labels": {
+            "org.opencontainers.image.description": "a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go",
+            "org.opencontainers.image.documentation": "https://caddyserver.com/docs",
+            "org.opencontainers.image.licenses": "Apache-2.0",
+            "org.opencontainers.image.source": "https://github.com/caddyserver/caddy-docker",
+            "org.opencontainers.image.title": "Caddy",
+            "org.opencontainers.image.url": "https://caddyserver.com",
+            "org.opencontainers.image.vendor": "Light Code Labs",
+            "org.opencontainers.image.version": "v2.11.7"
+          }
+        }
+      },
+      "name": "caddy",
+      "officialReleaseOrSupportSource": "https://github.com/caddyserver/caddy/releases/tag/v2.11.7",
+      "service": "caddy",
+      "reference": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "platform": "linux/amd64",
+      "frozenReference": "caddy:2.11.7-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f",
+      "initialCandidateResearch": {
+        "recommendationStatus": "VENDOR_REBUILD_PARTIAL_FIX_ONLY",
+        "compatibilityAndResidualRisk": "Latest supported Caddy 2 release is still 2.11.7. New Docker image rebuild updates Alpine packages but downloads identical official precompiled 2.11.7 binary; Go 1.26.8 and x/net 0.59.0 baseline findings likely remain. Existing /data and /config volume paths stable. Preserve TLS/SSE/redaction config and validate it.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "Exact candidate proxy/SSE/redaction PASS; full scan70 flags incl8HIGH. Configured HTTP2 CVE-2026-78669 and CA validation CVE-2026-111943 remain blockers.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "prom/prometheus",
+      "tag": "v3.15.1",
+      "indexDigest": "sha256:fa3302279710be2f21a8301ec17a8b4f2301fd829bd113839b3b6b02b6f191a2",
+      "mediaType": "application/vnd.docker.distribution.manifest.list.v2+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+          "configDigest": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+          "sizeBytes": 114075465,
+          "created": "2026-10-21T14:04:11.99362206Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "labels": {
+            "io.prometheus.image.variant": "busybox",
+            "maintainer": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.authors": "The Prometheus Authors",
+            "org.opencontainers.image.description": "The Prometheus monitoring system and time series database",
+            "org.opencontainers.image.documentation": "https://prometheus.io/docs",
+            "org.opencontainers.image.licenses": "Apache License 2.0",
+            "org.opencontainers.image.source": "https://github.com/prometheus/prometheus",
+            "org.opencontainers.image.title": "Prometheus",
+            "org.opencontainers.image.url": "https://github.com/prometheus/prometheus",
+            "org.opencontainers.image.vendor": "Prometheus"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:13020b7e520d56fef031135b91f5635888de441d6c4cfda3608bfbf6f4916dcb",
+          "configDigest": "sha256:345c03f8738a25e86baee35b1ee84cf1007036cbe75f51a2fa8965dd91374b9a",
+          "sizeBytes": 104844832,
+          "created": "2026-10-21T14:04:19.591943962Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "labels": {
+            "io.prometheus.image.variant": "busybox",
+            "maintainer": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.authors": "The Prometheus Authors",
+            "org.opencontainers.image.description": "The Prometheus monitoring system and time series database",
+            "org.opencontainers.image.documentation": "https://prometheus.io/docs",
+            "org.opencontainers.image.licenses": "Apache License 2.0",
+            "org.opencontainers.image.source": "https://github.com/prometheus/prometheus",
+            "org.opencontainers.image.title": "Prometheus",
+            "org.opencontainers.image.url": "https://github.com/prometheus/prometheus",
+            "org.opencontainers.image.vendor": "Prometheus"
+          }
+        }
+      },
+      "name": "prometheus",
+      "officialReleaseOrSupportSource": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
+      "service": "prometheus",
+      "reference": "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+      "platform": "linux/amd64",
+      "frozenReference": "prom/prometheus:v3.15.1@sha256:fa3302279710be2f21a8301ec17a8b4f2301fd829bd113839b3b6b02b6f191a2",
+      "initialCandidateResearch": {
+        "recommendationStatus": "PREFERRED_SUPPORTED_LATEST",
+        "compatibilityAndResidualRisk": "Prometheus 3.15.1 pins grpc 1.83.2, x/net 0.60.0, compress 1.20.0, unlike 3.13.5 LTS grpc 1.83.1. Keep TSDB path /prometheus and current flags; promtool config/rules plus isolated persistence check needed. Do not enable new storage features.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "TSDB/config/rules old/new/restart/old PASS. Final full scan2 non-C/H flags retained.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "grafana/grafana",
+      "tag": "12.4.14",
+      "indexDigest": "sha256:ae509d9ae8c1021ca32ec370a9ca975d40165eda9fccd1e1102d317ff8787cd7",
+      "mediaType": "application/vnd.docker.distribution.manifest.list.v2+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+          "configDigest": "sha256:5a2f6d01fcd7ebd17327a817cb40fd0dc2522ad396d7240905d56d4410fa3585",
+          "sizeBytes": 298314097,
+          "created": "2026-10-26T16:31:06.938423268Z",
+          "env": [
+            "PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "GF_PATHS_CONFIG=/etc/grafana/grafana.ini",
+            "GF_PATHS_DATA=/var/lib/grafana",
+            "GF_PATHS_HOME=/usr/share/grafana",
+            "GF_PATHS_LOGS=/var/log/grafana",
+            "GF_PATHS_PLUGINS=/var/lib/grafana/plugins",
+            "GF_PATHS_PROVISIONING=/etc/grafana/provisioning"
+          ],
+          "labels": {
+            "maintainer": "Grafana Labs <hello@grafana.com>",
+            "org.opencontainers.image.source": "https://github.com/grafana/grafana"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:73ae8ac843aff1b3437efeabcc98a917be7a1989bd7e9e66dcc3035b50e6049b",
+          "configDigest": "sha256:eb9ef524d0792f9de81b84be79fa65fa21dbc9774049fb66ff77fe8b3f89e523",
+          "sizeBytes": 275105809,
+          "created": "2026-10-26T16:31:56.542979499Z",
+          "env": [
+            "PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "GF_PATHS_CONFIG=/etc/grafana/grafana.ini",
+            "GF_PATHS_DATA=/var/lib/grafana",
+            "GF_PATHS_HOME=/usr/share/grafana",
+            "GF_PATHS_LOGS=/var/log/grafana",
+            "GF_PATHS_PLUGINS=/var/lib/grafana/plugins",
+            "GF_PATHS_PROVISIONING=/etc/grafana/provisioning"
+          ],
+          "labels": {
+            "maintainer": "Grafana Labs <hello@grafana.com>",
+            "org.opencontainers.image.source": "https://github.com/grafana/grafana"
+          }
+        }
+      },
+      "name": "grafana12-current",
+      "officialReleaseOrSupportSource": "https://github.com/grafana/grafana/releases/tag/v12.4.14",
+      "service": "grafana",
+      "reference": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+      "platform": "linux/amd64",
+      "frozenReference": "grafana/grafana:12.4.14@sha256:ae509d9ae8c1021ca32ec370a9ca975d40165eda9fccd1e1102d317ff8787cd7",
+      "initialCandidateResearch": {
+        "recommendationStatus": "PREFERRED_SUPPORTED_SAME_MAJOR",
+        "compatibilityAndResidualRisk": "Grafana 12.4.14 is supported 12.x final minor (patch support through 2027-05-24);12.1 is unsupported. Pins Go 1.26.10, pgx 5.10.0, kin-openapi 0.151.0, grpc 1.83.2. Preserve existing /var/lib/grafana, provisioning and dashboards; internal database migrations require isolated copied-data verification and backup for binary rollback. No manual removal/replacement of bundled plugins/JARs.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "12.1.0/12.4.14/restart/12.1.0 SQLite sentinel cycle PASS. Full scan3 flags incl2HIGH Tempo pseudo-version flags; official fixes included by source ancestry.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "prom/node-exporter",
+      "tag": "v1.12.1",
+      "indexDigest": "sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0",
+      "mediaType": "application/vnd.docker.distribution.manifest.list.v2+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+          "configDigest": "sha256:9bbbca8f5cb8e9bd1b835e8ec086b6df6d9a458d2d10ef1c97ea4a9a3ae7e54b",
+          "sizeBytes": 13404971,
+          "created": "2026-07-14T12:11:16.849376637Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "labels": {
+            "io.prometheus.image.variant": "busybox",
+            "maintainer": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.authors": "The Prometheus Authors",
+            "org.opencontainers.image.description": "Prometheus exporter for hardware and OS metrics exposed by *NIX kernels",
+            "org.opencontainers.image.documentation": "https://github.com/prometheus/node_exporter",
+            "org.opencontainers.image.licenses": "Apache License 2.0",
+            "org.opencontainers.image.source": "https://github.com/prometheus/node_exporter",
+            "org.opencontainers.image.title": "node_exporter",
+            "org.opencontainers.image.url": "https://github.com/prometheus/node_exporter",
+            "org.opencontainers.image.vendor": "Prometheus"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:c9ef89f9464f09e7234decaae68a80ab856ff0014435677a99fd48b03dd410ea",
+          "configDigest": "sha256:84acc55a7ba518e054cc71dcddbd1a120973f7926c2c0d6855f7d8d8e2b983e0",
+          "sizeBytes": 12466898,
+          "created": "2026-07-14T12:11:19.884024223Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "labels": {
+            "io.prometheus.image.variant": "busybox",
+            "maintainer": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.authors": "The Prometheus Authors",
+            "org.opencontainers.image.description": "Prometheus exporter for hardware and OS metrics exposed by *NIX kernels",
+            "org.opencontainers.image.documentation": "https://github.com/prometheus/node_exporter",
+            "org.opencontainers.image.licenses": "Apache License 2.0",
+            "org.opencontainers.image.source": "https://github.com/prometheus/node_exporter",
+            "org.opencontainers.image.title": "node_exporter",
+            "org.opencontainers.image.url": "https://github.com/prometheus/node_exporter",
+            "org.opencontainers.image.vendor": "Prometheus"
+          }
+        }
+      },
+      "name": "node-exporter",
+      "officialReleaseOrSupportSource": "https://github.com/prometheus/node_exporter/releases/tag/v1.12.1",
+      "service": "node-exporter",
+      "reference": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "platform": "linux/amd64",
+      "frozenReference": "prom/node-exporter:v1.12.1@sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0",
+      "initialCandidateResearch": {
+        "recommendationStatus": "LATEST_VENDOR_PARTIAL_FIX_ONLY",
+        "compatibilityAndResidualRisk": "Latest 1.12.1 from July 14. go.mod pins x/crypto 0.54.0, x/net 0.57.0, x/text 0.40.0, below baseline fixes 0.55.0/0.60.0/0.41.0. Old Go binary likely retains newer advisories. Keep host PID/rootfs read-only and textfile collector paths; no durable database.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "Metrics/textfile/PID/read-only probes PASS; real Linux host-root propagation NOT RUN. Full scan32 flags incl15HIGH, two parser input paths unresolved.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "prom/blackbox-exporter",
+      "tag": "v0.29.1",
+      "indexDigest": "sha256:ea1c7aa3ef3f307cd03e85f34abb604478ccb90b567fc690da0cd9776da76b13",
+      "mediaType": "application/vnd.docker.distribution.manifest.list.v2+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd",
+          "configDigest": "sha256:e6f02b1a6c427e2a771fb33b42cb167dde3e5e8b3625e55e55aa20aaa018946d",
+          "sizeBytes": 18978684,
+          "created": "2026-10-21T18:11:37.475163882Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "labels": {
+            "io.prometheus.image.variant": "busybox",
+            "maintainer": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.authors": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.description": "Prometheus blackbox prober exporter",
+            "org.opencontainers.image.documentation": "https://github.com/prometheus/blackbox_exporter/blob/main/README.md",
+            "org.opencontainers.image.licenses": "Apache License 2.0",
+            "org.opencontainers.image.source": "https://github.com/prometheus/blackbox_exporter",
+            "org.opencontainers.image.title": "Blackbox Exporter",
+            "org.opencontainers.image.url": "https://github.com/prometheus/blackbox_exporter",
+            "org.opencontainers.image.vendor": "Prometheus"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:bcc3bd71004dcca622fcff5330b36b6c126fc0779145e92b3209c84ce8939a57",
+          "configDigest": "sha256:608fb26fe6fc7e2efd7ca06dc6ddae147b49d5c086db658421e8031fb3ed9702",
+          "sizeBytes": 17601383,
+          "created": "2026-10-21T18:11:40.839677925Z",
+          "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "labels": {
+            "io.prometheus.image.variant": "busybox",
+            "maintainer": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.authors": "The Prometheus Authors <prometheus-developers@googlegroups.com>",
+            "org.opencontainers.image.description": "Prometheus blackbox prober exporter",
+            "org.opencontainers.image.documentation": "https://github.com/prometheus/blackbox_exporter/blob/main/README.md",
+            "org.opencontainers.image.licenses": "Apache License 2.0",
+            "org.opencontainers.image.source": "https://github.com/prometheus/blackbox_exporter",
+            "org.opencontainers.image.title": "Blackbox Exporter",
+            "org.opencontainers.image.url": "https://github.com/prometheus/blackbox_exporter",
+            "org.opencontainers.image.vendor": "Prometheus"
+          }
+        }
+      },
+      "name": "blackbox-exporter",
+      "officialReleaseOrSupportSource": "https://github.com/prometheus/blackbox_exporter/releases/tag/v0.29.1",
+      "service": "blackbox-exporter",
+      "reference": "prom/blackbox-exporter@sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd",
+      "platform": "linux/amd64",
+      "frozenReference": "prom/blackbox-exporter:v0.29.1@sha256:ea1c7aa3ef3f307cd03e85f34abb604478ccb90b567fc690da0cd9776da76b13",
+      "initialCandidateResearch": {
+        "recommendationStatus": "PREFERRED_SUPPORTED_LATEST",
+        "compatibilityAndResidualRisk": "Latest 0.29.1 source pins x/net 0.61.0, grpc 1.84.0, x/crypto 0.58.0, x/text 0.43.0. Preserve blackbox module schema and explicitly configured no-follow-redirects. Validate HTTP probes/health with exact mounted config. No durable storage.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "Health/config/positive and redirect-negative HTTP probe PASS. Final full scan1 non-C/H flag retained.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    },
+    {
+      "repo": "apache/kafka",
+      "tag": "4.3.2",
+      "indexDigest": "sha256:852a0d49fc4e656b022e7f23785411802c9a088c78a7c5e39f33969de9c227a7",
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "platforms": {
+        "amd64": {
+          "manifestDigest": "sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+          "configDigest": "sha256:5f903e08de3eaa781db23c1ca43c274b50accc969f8b46effe5da0c7be73a968",
+          "sizeBytes": 238799351,
+          "created": "2026-10-11T07:21:24.825835835Z",
+          "env": [
+            "PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "JAVA_HOME=/opt/java/openjdk",
+            "LANG=en_US.UTF-8",
+            "LANGUAGE=en_US:en",
+            "LC_ALL=en_US.UTF-8",
+            "JAVA_VERSION=jdk-21.0.12.1+1"
+          ],
+          "labels": {
+            "org.label-schema.build-date": "2026-10-11",
+            "org.label-schema.description": "Apache Kafka",
+            "org.label-schema.name": "kafka",
+            "org.label-schema.vcs-url": "https://github.com/apache/kafka",
+            "org.opencontainers.image.authors": "Apache Kafka"
+          }
+        },
+        "arm64": {
+          "manifestDigest": "sha256:46381c24a695b004d4f0a3a1ca7e5f5de20b3e406b95ab31c05d33327f21339e",
+          "configDigest": "sha256:c141d1403eaab57f2415f67b0406c86ecfc1d52c1949ac8853fd51da0b5faa5e",
+          "sizeBytes": 238535937,
+          "created": "2026-10-11T07:23:29.762948818Z",
+          "env": [
+            "PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "JAVA_HOME=/opt/java/openjdk",
+            "LANG=en_US.UTF-8",
+            "LANGUAGE=en_US:en",
+            "LC_ALL=en_US.UTF-8",
+            "JAVA_VERSION=jdk-21.0.12.1+1"
+          ],
+          "labels": {
+            "org.label-schema.build-date": "2026-10-11",
+            "org.label-schema.description": "Apache Kafka",
+            "org.label-schema.name": "kafka",
+            "org.label-schema.vcs-url": "https://github.com/apache/kafka",
+            "org.opencontainers.image.authors": "Apache Kafka"
+          }
+        }
+      },
+      "name": "kafka432",
+      "officialReleaseOrSupportSource": "https://kafka.apache.org/43/getting-started/upgrade/",
+      "additionalOfficialSources": [
+        "https://issues.apache.org/jira/browse/KAFKA-21174",
+        "https://github.com/apache/kafka/blob/4.3.2/gradle/dependencies.gradle",
+        "https://github.com/apache/kafka/blob/4.3.2/core/src/main/scala/kafka/docker/KafkaDockerWrapper.scala"
+      ],
+      "service": "kafka",
+      "reference": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+      "platform": "linux/amd64",
+      "frozenReference": "apache/kafka:4.3.2@sha256:852a0d49fc4e656b022e7f23785411802c9a088c78a7c5e39f33969de9c227a7",
+      "initialCandidateResearch": {
+        "recommendationStatus": "PREFERRED_CONDITIONAL_GUARDED_BINARY_ONLY_TEST_CANDIDATE",
+        "compatibilityAndResidualRisk": "Supported 4.3.2 accepts existing KRaft 3.9 metadata. Official source pins lz 4-java 1.11.4; vendor configure/launch/wrapper/formatter/bootstrap sources are byte-identical to 4.2.2. Use proposed guard to preserve existing identity, explicitly initialize empty first-install volumes at 3.9-IV0/kraft.version=0, and never finalize any feature upgrade. Require separate old\u2192new\u2192old and new-fresh\u2192old persisted-message/feature checks. Registry JRE 21.0.12.1+1 is behind current 21.0.13+9; exact OS/JAR/JRE scans may remain blocked. Netty is not directly declared in official source dependencies; actual bundle contents still require inventory/scan.",
+        "digestEvidence": "Docker Registry v2 response bytes hashed with SHA-256; child manifests/config fetched read-only; no image layers downloaded and no Docker pull/build/run."
+      },
+      "finalCompatibilityAndResidualRisk": "3.9.1/4.3.2 storage cycles and refusal tests PASS with metadata3.9-IV0 and unchanged identity. Full scan5 flags incl2HIGH plus manual old JRE/CA gap; security remediation incomplete.",
+      "finalDigestEvidence": "Vendor registry index/child/config bytes checked; exact amd64 child pulled, engine config ID matched, full OS/library scan and isolated runtime smoke executed. Initial research below predates complete coverage and is historical.",
+      "securityApproval": "See full report: overall CONTAINER SECURITY REMEDIATION INCOMPLETE"
+    }
+  ],
+  "previousApplications": [
+    {
+      "service": "service-registry",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "frontend",
+      "platform": "linux/arm64",
+      "configDigest": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "service-registry",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "api-gateway",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "auth-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "product-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "cart-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "inventory-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "order-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "payment-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "delivery-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "notification-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "operations-service",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    },
+    {
+      "service": "frontend",
+      "platform": "linux/amd64",
+      "configDigest": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+      "repositoryDigests": [],
+      "ecrManifestDigest": null,
+      "ecrStatus": "NOT PUBLISHED",
+      "sourceRuntimeChangesDuringFreeze": false
+    }
+  ],
+  "previousInfrastructure": [
+    {
+      "services": [
+        "blackbox-exporter"
+      ],
+      "baselineIndexReference": "prom/blackbox-exporter@sha256:92e05d5fe0df01d3980518dc42f07b778a8997048b57392ebc7f7391ebd7bb06",
+      "indexDigest": "sha256:92e05d5fe0df01d3980518dc42f07b778a8997048b57392ebc7f7391ebd7bb06",
+      "platformDigests": {
+        "amd64": "sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+        "arm64": "sha256:c29deb9d1916974b661b149246329de2f2fd113a81e771947d572bb6584f6674"
+      },
+      "localConfigId": "sha256:cccf3e174d3738117d92eb5fdcd58e880d518a824595dadf9368981dbe504548",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "prom/blackbox-exporter@sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+      "frozenCloudReference": "prom/blackbox-exporter:v0.26.0@sha256:92e05d5fe0df01d3980518dc42f07b778a8997048b57392ebc7f7391ebd7bb06",
+      "targetConfigDigest": "sha256:694775639bf5b3228234edf4cd57a5fc3e3a6a7c879fe0ca46ed7919bd2e8b71",
+      "preFreezeConfiguredReference": "prom/blackbox-exporter:v0.26.0",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "caddy"
+      ],
+      "baselineIndexReference": "caddy@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "indexDigest": "sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "platformDigests": {
+        "amd64": "sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+        "arm64": "sha256:84058f1a0e5beb97664a9b79dcfd267b594c033d5bb88d8463cdfb59c0779197"
+      },
+      "localConfigId": "sha256:f6a2207268b0f0914df9d3569e1824d6adcfa7b59fbffe0f3cbc5d2d60423f71",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "caddy@sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+      "frozenCloudReference": "caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "targetConfigDigest": "sha256:f77f856a30f0004200b36b322d61da17fade31e24875699d77fb968399b9eb77",
+      "preFreezeConfiguredReference": "caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "preFreezeConfiguredReferenceImmutable": true,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "database-bootstrap",
+        "postgres"
+      ],
+      "baselineIndexReference": "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "indexDigest": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "platformDigests": {
+        "amd64": "sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+        "arm64": "sha256:2c942175a1255a9abe0366e48c1b401d9f50f835b04dfea13f111609b5530df7"
+      },
+      "localConfigId": "sha256:ef738a34a8651d11b2bace81c55c7e2187f786b484add6c83070884340074368",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+      "frozenCloudReference": "postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "targetConfigDigest": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+      "preFreezeConfiguredReference": "postgres:16-alpine",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "grafana"
+      ],
+      "baselineIndexReference": "grafana/grafana@sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f",
+      "indexDigest": "sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f",
+      "platformDigests": {
+        "amd64": "sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+        "arm64": "sha256:3b7178cb66226403407d80ef83449a00921ed1b5d6cc0c032c15d35f23cc3317"
+      },
+      "localConfigId": "sha256:4b30e14267ee4bd0044d909cbdfac7c1a7c0d8f5c6abdae5bccffe16910d9f3b",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+      "frozenCloudReference": "grafana/grafana:12.1.0@sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f",
+      "targetConfigDigest": "sha256:75006c93b887a310c7d4b21b557de093cb67caa4e1e4d812cbc08edd7580b7e9",
+      "preFreezeConfiguredReference": "grafana/grafana:12.1.0",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "kafka"
+      ],
+      "baselineIndexReference": "apache/kafka@sha256:4ceccc577f03f51f6af8dbfda55194d0d892f4fa7913ffbded567ce3895622ed",
+      "indexDigest": "sha256:4ceccc577f03f51f6af8dbfda55194d0d892f4fa7913ffbded567ce3895622ed",
+      "platformDigests": {
+        "amd64": "sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "arm64": "sha256:39bc3b30084ad6ab33ad2c9a525f15c942bf097b18cb2a1825afa6df3411f8b5"
+      },
+      "localConfigId": "sha256:793ff1e5c750c9f8723804161c211a75bcc011b7b18fa951dd514bd7646e4aaa",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+      "frozenCloudReference": "apache/kafka:3.9.1@sha256:4ceccc577f03f51f6af8dbfda55194d0d892f4fa7913ffbded567ce3895622ed",
+      "targetConfigDigest": "sha256:44a48f9d78af26959fa4d61accb9be35f939a79bfdae05cad6df4baca8e22eeb",
+      "preFreezeConfiguredReference": "apache/kafka:3.9.1",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "node-exporter"
+      ],
+      "baselineIndexReference": "prom/node-exporter@sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a",
+      "indexDigest": "sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a",
+      "platformDigests": {
+        "amd64": "sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+        "arm64": "sha256:2e9d73002adb973441ec1c815a8e7e7c2465f5e535d859d16ee395f2ceb857c7"
+      },
+      "localConfigId": "sha256:94b9e099be351254ca09fd4c88b642254898e70d64960d3d3bed50ac0d771cdb",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "prom/node-exporter@sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+      "frozenCloudReference": "prom/node-exporter:v1.9.1@sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a",
+      "targetConfigDigest": "sha256:255ec253085fb105696533b31864a5e3b64f1f1e2147b5ec368100cbf3ec9b80",
+      "preFreezeConfiguredReference": "prom/node-exporter:v1.9.1",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "prometheus"
+      ],
+      "baselineIndexReference": "prom/prometheus@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996",
+      "indexDigest": "sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996",
+      "platformDigests": {
+        "amd64": "sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+        "arm64": "sha256:dfc3cce6bfa8485ccad377c66f4ef9833524fde710756faa725251b639d19d86"
+      },
+      "localConfigId": "sha256:5a1d4a6d0adfd8f785bb0f1243f2a90457e508eaf5eb7e958aa5ea1463020fcb",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+      "frozenCloudReference": "prom/prometheus:v3.5.0@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996",
+      "targetConfigDigest": "sha256:a3bc50fcb50fb1409287c32773d8fe799f6cad5511c4ba3e2e851784e7a05026",
+      "preFreezeConfiguredReference": "prom/prometheus:v3.5.0",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    },
+    {
+      "services": [
+        "redis"
+      ],
+      "baselineIndexReference": "redis@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "indexDigest": "sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "platformDigests": {
+        "amd64": "sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+        "arm64": "sha256:1f09a89a207d794a8c61d9edfc26e7c58427de10ccef7c5d18d638df79a63b85"
+      },
+      "localConfigId": "sha256:ec4f171e9ff071bb2a1c936057d3be00206069b028b6c0d61df2477e1dd02c42",
+      "localPlatform": "linux/arm64",
+      "targetPlatform": "linux/amd64",
+      "targetReference": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+      "frozenCloudReference": "redis:7-alpine@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "targetConfigDigest": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+      "preFreezeConfiguredReference": "redis:7-alpine",
+      "preFreezeConfiguredReferenceImmutable": false,
+      "frozenCloudReferenceImmutable": true
+    }
+  ],
+  "digestMeaning": {
+    "application": "Immutable local image configuration digest; registry manifest digest NOT PUBLISHED",
+    "infrastructure": "Vendor index and actual amd64 child-manifest/config digests, all matched against Docker engine identities"
+  },
+  "comparison": {
+    "generatedAt": "2026-10-28T13:13:09.679369+00:00",
+    "imageCount": 32,
+    "applicationImageCount": 24,
+    "infrastructureImageCount": 8,
+    "scanExecutionStatus": "PASS",
+    "noFindingSuppressions": true,
+    "databaseSnapshot": {
+      "preparedAt": "2026-10-28T00:50:37.397078+00:00",
+      "cache": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/cache",
+      "retainedComparableOct27Cache": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/cache",
+      "metadata": {
+        "db": {
+          "Version": 2,
+          "NextUpdate": "2026-10-28T19:17:44.708952538Z",
+          "UpdatedAt": "2026-10-27T19:17:44.708952708Z",
+          "DownloadedAt": "2026-10-28T00:49:22.743398Z"
+        },
+        "java-db": {
+          "Version": 1,
+          "NextUpdate": "2026-10-30T01:08:30.264956187Z",
+          "UpdatedAt": "2026-10-27T01:08:30.264956307Z",
+          "DownloadedAt": "2026-10-27T17:48:33.284878Z"
+        }
+      },
+      "officialCurrentOSManifest": {
+        "schemaVersion": 2,
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "artifactType": "application/vnd.aquasec.trivy.config.v1+json",
+        "config": {
+          "mediaType": "application/vnd.oci.empty.v1+json",
+          "digest": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2,
+          "data": "e30="
+        },
+        "layers": [
+          {
+            "mediaType": "application/vnd.aquasec.trivy.db.layer.v1.tar+gzip",
+            "digest": "sha256:ce0f2cbd280c2a0d9de31e870af3d9bf8cfdafdf27c6e11fc725fcb073bf07c8",
+            "size": 136405367,
+            "annotations": {
+              "org.opencontainers.image.title": "db.tar.gz"
+            }
+          }
+        ],
+        "annotations": {
+          "org.opencontainers.image.created": "2026-10-27T19:25:31Z"
+        }
+      },
+      "officialCurrentJavaManifest": {
+        "schemaVersion": 2,
+        "mediaType": "application/vnd.oci.image.manifest.v1+json",
+        "artifactType": "application/vnd.aquasec.trivy.config.v1+json",
+        "config": {
+          "mediaType": "application/vnd.oci.empty.v1+json",
+          "digest": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2,
+          "data": "e30="
+        },
+        "layers": [
+          {
+            "mediaType": "application/vnd.aquasec.trivy.javadb.layer.v1.tar+gzip",
+            "digest": "sha256:07c747058dc47fa9eedfe43092ebd6180710d44b291a5a84e17dae0ae5fd5264",
+            "size": 990329871,
+            "annotations": {
+              "org.opencontainers.image.title": "javadb.tar.gz"
+            }
+          }
+        ],
+        "annotations": {
+          "org.opencontainers.image.created": "2026-10-27T01:09:42Z"
+        }
+      }
+    },
+    "before": {
+      "occurrences": 1577,
+      "uniqueAdvisoryIDs": 454,
+      "uniqueCanonicalCVEIDs": 444,
+      "otherReportedAdvisoryIDs": [
+        "CVE-2026-1965_1",
+        "CVE-2026-1965_2",
+        "GHSA-fv92-fjc5-jj9h",
+        "GHSA-gcjh-h69q-9w9g",
+        "GHSA-hrxh-6v49-42gf",
+        "GHSA-r277-6w6q-xmqw",
+        "GHSA-w5pp-99ch-qj29",
+        "GHSA-w67g-5rqw-f597",
+        "GHSA-xmrv-pmrh-hhx2",
+        "GO-2026-5932"
+      ],
+      "severityOccurrences": {
+        "HIGH": 587,
+        "MEDIUM": 729,
+        "LOW": 205,
+        "CRITICAL": 28,
+        "UNKNOWN": 28
+      }
+    },
+    "after": {
+      "occurrences": 174,
+      "uniqueAdvisoryIDs": 98,
+      "uniqueCanonicalCVEIDs": 97,
+      "otherReportedAdvisoryIDs": [
+        "GO-2026-5932"
+      ],
+      "severityOccurrences": {
+        "HIGH": 52,
+        "MEDIUM": 63,
+        "UNKNOWN": 9,
+        "LOW": 49,
+        "CRITICAL": 1
+      }
+    },
+    "advisoryIDTransitions": {
+      "noLongerReported": [
+        "CVE-2018-1000816",
+        "CVE-2018-12099",
+        "CVE-2018-15727",
+        "CVE-2018-18623",
+        "CVE-2018-18624",
+        "CVE-2018-18625",
+        "CVE-2019-13068",
+        "CVE-2019-19499",
+        "CVE-2020-11110",
+        "CVE-2020-12245",
+        "CVE-2020-12458",
+        "CVE-2020-13430",
+        "CVE-2020-24303",
+        "CVE-2021-39226",
+        "CVE-2022-35957",
+        "CVE-2022-39229",
+        "CVE-2022-39307",
+        "CVE-2022-39324",
+        "CVE-2023-2183",
+        "CVE-2023-2801",
+        "CVE-2023-3128",
+        "CVE-2023-4822",
+        "CVE-2024-10452",
+        "CVE-2024-12243",
+        "CVE-2024-29371",
+        "CVE-2024-58251",
+        "CVE-2024-6763",
+        "CVE-2025-0913",
+        "CVE-2025-10148",
+        "CVE-2025-11065",
+        "CVE-2025-11143",
+        "CVE-2025-12183",
+        "CVE-2025-13034",
+        "CVE-2025-13151",
+        "CVE-2025-14524",
+        "CVE-2025-14819",
+        "CVE-2025-14831",
+        "CVE-2025-15467",
+        "CVE-2025-15468",
+        "CVE-2025-22868",
+        "CVE-2025-22869",
+        "CVE-2025-22870",
+        "CVE-2025-22871",
+        "CVE-2025-22872",
+        "CVE-2025-22873",
+        "CVE-2025-29088",
+        "CVE-2025-32988",
+        "CVE-2025-32989",
+        "CVE-2025-32990",
+        "CVE-2025-3415",
+        "CVE-2025-41115",
+        "CVE-2025-46394",
+        "CVE-2025-4673",
+        "CVE-2025-47906",
+        "CVE-2025-47907",
+        "CVE-2025-47911",
+        "CVE-2025-47913",
+        "CVE-2025-47914",
+        "CVE-2025-48734",
+        "CVE-2025-48924",
+        "CVE-2025-4947",
+        "CVE-2025-5025",
+        "CVE-2025-52881",
+        "CVE-2025-5399",
+        "CVE-2025-54388",
+        "CVE-2025-58057",
+        "CVE-2025-58181",
+        "CVE-2025-58190",
+        "CVE-2025-59375",
+        "CVE-2025-6023",
+        "CVE-2025-62408",
+        "CVE-2025-6395",
+        "CVE-2025-64505",
+        "CVE-2025-64506",
+        "CVE-2025-64720",
+        "CVE-2025-64751",
+        "CVE-2025-65018",
+        "CVE-2025-66199",
+        "CVE-2025-66293",
+        "CVE-2025-66566",
+        "CVE-2025-67030",
+        "CVE-2025-68160",
+        "CVE-2025-68972",
+        "CVE-2025-68973",
+        "CVE-2025-69418",
+        "CVE-2025-69419",
+        "CVE-2025-69420",
+        "CVE-2025-69421",
+        "CVE-2025-6965",
+        "CVE-2025-9086",
+        "CVE-2025-9230",
+        "CVE-2025-9231",
+        "CVE-2025-9232",
+        "CVE-2025-9820",
+        "CVE-2026-100347",
+        "CVE-2026-100348",
+        "CVE-2026-100349",
+        "CVE-2026-100352",
+        "CVE-2026-100354",
+        "CVE-2026-10050",
+        "CVE-2026-101911",
+        "CVE-2026-101912",
+        "CVE-2026-101913",
+        "CVE-2026-102276",
+        "CVE-2026-102277",
+        "CVE-2026-102278",
+        "CVE-2026-102554",
+        "CVE-2026-104844",
+        "CVE-2026-10601",
+        "CVE-2026-106449",
+        "CVE-2026-106450",
+        "CVE-2026-106451",
+        "CVE-2026-106452",
+        "CVE-2026-106453",
+        "CVE-2026-108106",
+        "CVE-2026-111997",
+        "CVE-2026-116590",
+        "CVE-2026-1229",
+        "CVE-2026-13149",
+        "CVE-2026-14257",
+        "CVE-2026-1584",
+        "CVE-2026-18401",
+        "CVE-2026-19032",
+        "CVE-2026-1965_1",
+        "CVE-2026-1965_2",
+        "CVE-2026-2100",
+        "CVE-2026-21724",
+        "CVE-2026-21726",
+        "CVE-2026-21727",
+        "CVE-2026-22184",
+        "CVE-2026-22695",
+        "CVE-2026-22795",
+        "CVE-2026-22796",
+        "CVE-2026-22801",
+        "CVE-2026-2303",
+        "CVE-2026-2332",
+        "CVE-2026-24051",
+        "CVE-2026-24281",
+        "CVE-2026-24308",
+        "CVE-2026-24515",
+        "CVE-2026-24851",
+        "CVE-2026-25210",
+        "CVE-2026-25646",
+        "CVE-2026-25680",
+        "CVE-2026-25681",
+        "CVE-2026-25934",
+        "CVE-2026-27135",
+        "CVE-2026-27136",
+        "CVE-2026-27171",
+        "CVE-2026-27877",
+        "CVE-2026-27878",
+        "CVE-2026-28387",
+        "CVE-2026-28388",
+        "CVE-2026-28389",
+        "CVE-2026-28390",
+        "CVE-2026-29181",
+        "CVE-2026-31789",
+        "CVE-2026-31790",
+        "CVE-2026-32285",
+        "CVE-2026-32776",
+        "CVE-2026-32777",
+        "CVE-2026-32778",
+        "CVE-2026-32952",
+        "CVE-2026-33186",
+        "CVE-2026-33380",
+        "CVE-2026-33381",
+        "CVE-2026-33416",
+        "CVE-2026-33558",
+        "CVE-2026-33630",
+        "CVE-2026-33636",
+        "CVE-2026-33671",
+        "CVE-2026-33672",
+        "CVE-2026-33729",
+        "CVE-2026-33750",
+        "CVE-2026-33762",
+        "CVE-2026-33815",
+        "CVE-2026-33816",
+        "CVE-2026-33845",
+        "CVE-2026-33846",
+        "CVE-2026-33997",
+        "CVE-2026-34165",
+        "CVE-2026-34182",
+        "CVE-2026-34183",
+        "CVE-2026-34757",
+        "CVE-2026-34972",
+        "CVE-2026-34986",
+        "CVE-2026-35189",
+        "CVE-2026-35554",
+        "CVE-2026-3783",
+        "CVE-2026-3784",
+        "CVE-2026-3805",
+        "CVE-2026-3832",
+        "CVE-2026-3833",
+        "CVE-2026-39827",
+        "CVE-2026-39828",
+        "CVE-2026-39829",
+        "CVE-2026-39830",
+        "CVE-2026-39831",
+        "CVE-2026-39832",
+        "CVE-2026-39833",
+        "CVE-2026-39834",
+        "CVE-2026-39835",
+        "CVE-2026-39882",
+        "CVE-2026-39883",
+        "CVE-2026-40179",
+        "CVE-2026-40200",
+        "CVE-2026-40293",
+        "CVE-2026-40930",
+        "CVE-2026-41080",
+        "CVE-2026-41131",
+        "CVE-2026-41506",
+        "CVE-2026-41567",
+        "CVE-2026-41568",
+        "CVE-2026-41602",
+        "CVE-2026-41889",
+        "CVE-2026-42009",
+        "CVE-2026-42010",
+        "CVE-2026-42011",
+        "CVE-2026-42012",
+        "CVE-2026-42013",
+        "CVE-2026-42014",
+        "CVE-2026-42015",
+        "CVE-2026-42127",
+        "CVE-2026-42129",
+        "CVE-2026-42151",
+        "CVE-2026-42154",
+        "CVE-2026-42306",
+        "CVE-2026-42338",
+        "CVE-2026-42502",
+        "CVE-2026-42506",
+        "CVE-2026-42508",
+        "CVE-2026-42583",
+        "CVE-2026-42766",
+        "CVE-2026-42768",
+        "CVE-2026-42770",
+        "CVE-2026-43871",
+        "CVE-2026-44249",
+        "CVE-2026-44740",
+        "CVE-2026-44903",
+        "CVE-2026-44973",
+        "CVE-2026-45022",
+        "CVE-2026-45186",
+        "CVE-2026-45416",
+        "CVE-2026-45445",
+        "CVE-2026-45446",
+        "CVE-2026-45447",
+        "CVE-2026-45536",
+        "CVE-2026-45570",
+        "CVE-2026-45571",
+        "CVE-2026-46595",
+        "CVE-2026-46597",
+        "CVE-2026-46598",
+        "CVE-2026-46675",
+        "CVE-2026-48096",
+        "CVE-2026-4873",
+        "CVE-2026-48758",
+        "CVE-2026-48815",
+        "CVE-2026-50010",
+        "CVE-2026-50219",
+        "CVE-2026-5260",
+        "CVE-2026-5419",
+        "CVE-2026-54512",
+        "CVE-2026-54513",
+        "CVE-2026-54514",
+        "CVE-2026-54515",
+        "CVE-2026-54872",
+        "CVE-2026-54875",
+        "CVE-2026-55170",
+        "CVE-2026-5545",
+        "CVE-2026-55689",
+        "CVE-2026-56131",
+        "CVE-2026-56132",
+        "CVE-2026-56403",
+        "CVE-2026-56404",
+        "CVE-2026-56405",
+        "CVE-2026-56406",
+        "CVE-2026-56407",
+        "CVE-2026-56408",
+        "CVE-2026-56409",
+        "CVE-2026-56410",
+        "CVE-2026-56411",
+        "CVE-2026-56412",
+        "CVE-2026-56740",
+        "CVE-2026-56741",
+        "CVE-2026-56852",
+        "CVE-2026-5773",
+        "CVE-2026-59888",
+        "CVE-2026-59889",
+        "CVE-2026-59901",
+        "CVE-2026-59949",
+        "CVE-2026-6042",
+        "CVE-2026-61709",
+        "CVE-2026-6253",
+        "CVE-2026-6276",
+        "CVE-2026-63072",
+        "CVE-2026-63073",
+        "CVE-2026-63076",
+        "CVE-2026-63209",
+        "CVE-2026-6429",
+        "CVE-2026-66046",
+        "CVE-2026-6790",
+        "CVE-2026-68494",
+        "CVE-2026-68497",
+        "CVE-2026-69152",
+        "CVE-2026-69192",
+        "CVE-2026-71556",
+        "CVE-2026-71557",
+        "CVE-2026-7168",
+        "CVE-2026-72897",
+        "CVE-2026-73502",
+        "CVE-2026-75595",
+        "CVE-2026-75596",
+        "CVE-2026-75803",
+        "CVE-2026-75804",
+        "CVE-2026-75805",
+        "CVE-2026-75806",
+        "CVE-2026-76641",
+        "CVE-2026-76905",
+        "CVE-2026-76956",
+        "CVE-2026-76957",
+        "CVE-2026-77310",
+        "CVE-2026-77354",
+        "CVE-2026-77420",
+        "CVE-2026-77421",
+        "CVE-2026-77422",
+        "CVE-2026-77696",
+        "CVE-2026-81870",
+        "CVE-2026-81871",
+        "CVE-2026-81872",
+        "CVE-2026-8286",
+        "CVE-2026-83557",
+        "CVE-2026-84303",
+        "CVE-2026-84304",
+        "CVE-2026-84445",
+        "CVE-2026-84782",
+        "CVE-2026-84784",
+        "CVE-2026-85091",
+        "CVE-2026-8924",
+        "CVE-2026-8927",
+        "CVE-2026-89425",
+        "CVE-2026-9029",
+        "CVE-2026-9076",
+        "CVE-2026-91776",
+        "CVE-2026-91777",
+        "CVE-2026-93451",
+        "CVE-2026-9358",
+        "CVE-2026-93748",
+        "CVE-2026-93990",
+        "CVE-2026-9496",
+        "GHSA-fv92-fjc5-jj9h",
+        "GHSA-gcjh-h69q-9w9g",
+        "GHSA-hrxh-6v49-42gf",
+        "GHSA-r277-6w6q-xmqw",
+        "GHSA-w5pp-99ch-qj29",
+        "GHSA-w67g-5rqw-f597",
+        "GHSA-xmrv-pmrh-hhx2"
+      ],
+      "newlyReported": [],
+      "remaining": [
+        "CVE-2025-47912",
+        "CVE-2025-58183",
+        "CVE-2025-58185",
+        "CVE-2025-58186",
+        "CVE-2025-58187",
+        "CVE-2025-58188",
+        "CVE-2025-58189",
+        "CVE-2025-61723",
+        "CVE-2025-61724",
+        "CVE-2025-61725",
+        "CVE-2025-61726",
+        "CVE-2025-61727",
+        "CVE-2025-61728",
+        "CVE-2025-61729",
+        "CVE-2025-61730",
+        "CVE-2025-68121",
+        "CVE-2026-102633",
+        "CVE-2026-107891",
+        "CVE-2026-107928",
+        "CVE-2026-107929",
+        "CVE-2026-111497",
+        "CVE-2026-111943",
+        "CVE-2026-114437",
+        "CVE-2026-21728",
+        "CVE-2026-25679",
+        "CVE-2026-27139",
+        "CVE-2026-27142",
+        "CVE-2026-27145",
+        "CVE-2026-28377",
+        "CVE-2026-32280",
+        "CVE-2026-32281",
+        "CVE-2026-32282",
+        "CVE-2026-32283",
+        "CVE-2026-32288",
+        "CVE-2026-32289",
+        "CVE-2026-33811",
+        "CVE-2026-33814",
+        "CVE-2026-33818",
+        "CVE-2026-39820",
+        "CVE-2026-39821",
+        "CVE-2026-39822",
+        "CVE-2026-39823",
+        "CVE-2026-39824",
+        "CVE-2026-39825",
+        "CVE-2026-39826",
+        "CVE-2026-39836",
+        "CVE-2026-42499",
+        "CVE-2026-42504",
+        "CVE-2026-42505",
+        "CVE-2026-42507",
+        "CVE-2026-46600",
+        "CVE-2026-56851",
+        "CVE-2026-56853",
+        "CVE-2026-56854",
+        "CVE-2026-56855",
+        "CVE-2026-56857",
+        "CVE-2026-56858",
+        "CVE-2026-56859",
+        "CVE-2026-56860",
+        "CVE-2026-56862",
+        "CVE-2026-56866",
+        "CVE-2026-61801",
+        "CVE-2026-77214",
+        "CVE-2026-78659",
+        "CVE-2026-78660",
+        "CVE-2026-78662",
+        "CVE-2026-78663",
+        "CVE-2026-78667",
+        "CVE-2026-78669",
+        "CVE-2026-86409",
+        "CVE-2026-86410",
+        "CVE-2026-86411",
+        "CVE-2026-86412",
+        "CVE-2026-86413",
+        "CVE-2026-86414",
+        "CVE-2026-86415",
+        "CVE-2026-87861",
+        "CVE-2026-87862",
+        "CVE-2026-87863",
+        "CVE-2026-87864",
+        "CVE-2026-87865",
+        "CVE-2026-87866",
+        "CVE-2026-92386",
+        "CVE-2026-92387",
+        "CVE-2026-92388",
+        "CVE-2026-92389",
+        "CVE-2026-92390",
+        "CVE-2026-92391",
+        "CVE-2026-92392",
+        "CVE-2026-94265",
+        "CVE-2026-94266",
+        "CVE-2026-94439",
+        "CVE-2026-94440",
+        "CVE-2026-94448",
+        "CVE-2026-97030",
+        "CVE-2026-97031",
+        "CVE-2026-97032",
+        "GO-2026-5932"
+      ]
+    },
+    "applicationResults": {
+      "occurrences": 0,
+      "severityOccurrences": {},
+      "zeroCriticalHighVerifiedAcrossAll24": true
+    },
+    "occurrenceTransitions": {
+      "fixedOccurrences": 1404,
+      "newlyReportedOccurrences": 1,
+      "remainingMatchedOccurrences": 173,
+      "occurrenceDecreaseWithinRemainingPairs": 0,
+      "occurrenceIncreaseWithinRemainingPairs": 0
+    },
+    "advisoryPackageImageTransitions": {
+      "fixedAdvisoryPackagePairs": 1123,
+      "newlyReportedAdvisoryPackagePairs": 1,
+      "remainingAdvisoryPackagePairs": 172
+    },
+    "comparisonMethod": "Keys use logical image, ecosystem/type, package name and advisory ID. Installed version and file path are evidence fields, not identity keys, so version or JAR filename changes do not inflate new/fixed vulnerabilities. Raw target occurrences and multiplicity changes remain separately counted. Newly reported scanner flags are not proof of newly introduced exploitable vulnerabilities.",
+    "coverageHistory": {
+      "originalLimitedCoverageCount": 1377,
+      "expandedSameSnapshotFullCoverageCount": 1530,
+      "coverageExpansion": 153,
+      "JARCoverageExpansion": 92,
+      "GoHelperCoverageExpansion": 61,
+      "newDatabaseRefreshAdded": 47,
+      "freshComparableBaselineCount": 1577
+    },
+    "perImage": [
+      {
+        "name": "kafka-amd64",
+        "baselineImage": "apache/kafka@sha256:5862db4a63a6dd7d46fd14771b10a1b39e069c2c47f17d8e4640f960720a0ead",
+        "finalImage": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+        "baselineConfigDigest": "sha256:44a48f9d78af26959fa4d61accb9be35f939a79bfdae05cad6df4baca8e22eeb",
+        "finalConfigDigest": "sha256:5f903e08de3eaa781db23c1ca43c274b50accc969f8b46effe5da0c7be73a968",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 284,
+        "afterOccurrences": 5,
+        "netOccurrenceReduction": 279,
+        "beforeSeverityOccurrences": {
+          "HIGH": 91,
+          "MEDIUM": 126,
+          "LOW": 59,
+          "CRITICAL": 6,
+          "UNKNOWN": 2
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 2,
+          "MEDIUM": 1,
+          "UNKNOWN": 2
+        },
+        "fixedAdvisoryPackagePairs": 279,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 5,
+        "fixedOccurrences": 279,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 5,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/kafka-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/kafka-amd64.json"
+      },
+      {
+        "name": "service-registry-arm64",
+        "baselineImage": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+        "finalImage": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "baselineConfigDigest": "sha256:86e2a7a2dec0306b583093e81aa1508afae06d1653bd461881de697b4a9ea49d",
+        "finalConfigDigest": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 2,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 2,
+        "beforeSeverityOccurrences": {
+          "HIGH": 2
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 2,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 2,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/service-registry-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/service-registry-arm64.json"
+      },
+      {
+        "name": "api-gateway-arm64",
+        "baselineImage": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+        "finalImage": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "baselineConfigDigest": "sha256:2d86153b09d3aad6918634d78208006b5e9550d0c5bc263db350df422eff9008",
+        "finalConfigDigest": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/api-gateway-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/api-gateway-arm64.json"
+      },
+      {
+        "name": "auth-service-arm64",
+        "baselineImage": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+        "finalImage": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "baselineConfigDigest": "sha256:11982d6a587b1683845a81bc0b3cba0ccd032a54d8d4b6527166e3254ec67e26",
+        "finalConfigDigest": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/auth-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/auth-service-arm64.json"
+      },
+      {
+        "name": "product-service-arm64",
+        "baselineImage": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+        "finalImage": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "baselineConfigDigest": "sha256:4b7aab4e1de3569f90eaeb8f46cf6b586ef7198b9723d8e3878c5801e9e13148",
+        "finalConfigDigest": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/product-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/product-service-arm64.json"
+      },
+      {
+        "name": "cart-service-arm64",
+        "baselineImage": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+        "finalImage": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "baselineConfigDigest": "sha256:0e5f83ea2fb5f7a06c887ca1d6dfd784a3ca8a9c4f2a6d513ea65f0370fc2bf8",
+        "finalConfigDigest": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/cart-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/cart-service-arm64.json"
+      },
+      {
+        "name": "inventory-service-arm64",
+        "baselineImage": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+        "finalImage": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "baselineConfigDigest": "sha256:f024651c095086696a23a53f008c187c0f20f73cac21784f4c54cc5fcb262cb1",
+        "finalConfigDigest": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/inventory-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/inventory-service-arm64.json"
+      },
+      {
+        "name": "order-service-arm64",
+        "baselineImage": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+        "finalImage": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "baselineConfigDigest": "sha256:0e6c7ff97709109c1ca46866cfe968712740ecb0fc0fc2d2840c6147ea922924",
+        "finalConfigDigest": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/order-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/order-service-arm64.json"
+      },
+      {
+        "name": "payment-service-arm64",
+        "baselineImage": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+        "finalImage": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "baselineConfigDigest": "sha256:723b241f940a7b799635d9679c1c1704881d78af3e7ca0bc03b270e899f98bae",
+        "finalConfigDigest": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/payment-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/payment-service-arm64.json"
+      },
+      {
+        "name": "delivery-service-arm64",
+        "baselineImage": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+        "finalImage": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "baselineConfigDigest": "sha256:5ca2a93c3a99dc0a0c9b94596f1b0f89346a5eba6b55a6565d116f6fc8b32407",
+        "finalConfigDigest": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/delivery-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/delivery-service-arm64.json"
+      },
+      {
+        "name": "notification-service-arm64",
+        "baselineImage": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+        "finalImage": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "baselineConfigDigest": "sha256:bca1c3f40184de77fbe0d1407e27d8e05bfa2b1be46b6972bc0c307c1928d5db",
+        "finalConfigDigest": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/notification-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/notification-service-arm64.json"
+      },
+      {
+        "name": "operations-service-arm64",
+        "baselineImage": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+        "finalImage": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "baselineConfigDigest": "sha256:6dc33fdbbc2c92ef738e1f40d3b264fafe8ce8c1734b7ff8b49eebb3043e7f71",
+        "finalConfigDigest": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/operations-service-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/operations-service-arm64.json"
+      },
+      {
+        "name": "service-registry-amd64",
+        "baselineImage": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+        "finalImage": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "baselineConfigDigest": "sha256:65ea7ab3161a58fdcaea222ad3a428eb2f4579b3fd1be0cc0871b5f5f33eaa68",
+        "finalConfigDigest": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 2,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 2,
+        "beforeSeverityOccurrences": {
+          "HIGH": 2
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 2,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 2,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/service-registry-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/service-registry-amd64.json"
+      },
+      {
+        "name": "api-gateway-amd64",
+        "baselineImage": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+        "finalImage": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "baselineConfigDigest": "sha256:8b78a787ccd9551ae064fb8a40022d120a7f30d7f4f968d6410d58049e0fe30e",
+        "finalConfigDigest": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/api-gateway-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/api-gateway-amd64.json"
+      },
+      {
+        "name": "auth-service-amd64",
+        "baselineImage": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+        "finalImage": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "baselineConfigDigest": "sha256:93036b4b65c173126d373e722d38247551d687ae2db6eaf09a076060ff41cb09",
+        "finalConfigDigest": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/auth-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/auth-service-amd64.json"
+      },
+      {
+        "name": "product-service-amd64",
+        "baselineImage": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+        "finalImage": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "baselineConfigDigest": "sha256:f2a186df14515689da2ffd911ae480fb4c10c5def323525bf218eedd68436978",
+        "finalConfigDigest": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/product-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/product-service-amd64.json"
+      },
+      {
+        "name": "cart-service-amd64",
+        "baselineImage": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+        "finalImage": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "baselineConfigDigest": "sha256:b9441b6fe66182a0a3123fcfb5ec1a3052124b6759a253fcf0d4d208c0dacf46",
+        "finalConfigDigest": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 1,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 1,
+        "beforeSeverityOccurrences": {
+          "HIGH": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 1,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 1,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/cart-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/cart-service-amd64.json"
+      },
+      {
+        "name": "inventory-service-amd64",
+        "baselineImage": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+        "finalImage": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "baselineConfigDigest": "sha256:ed81c781c6f586c1905ab33bd573b668be2b3f6e4414247e14750ddf7bfd26a8",
+        "finalConfigDigest": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/inventory-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/inventory-service-amd64.json"
+      },
+      {
+        "name": "order-service-amd64",
+        "baselineImage": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+        "finalImage": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "baselineConfigDigest": "sha256:e03035690b0bc8fed692cd325a6e325242cbacaff97ae6f94e955aa7dec8c9f5",
+        "finalConfigDigest": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/order-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/order-service-amd64.json"
+      },
+      {
+        "name": "payment-service-amd64",
+        "baselineImage": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+        "finalImage": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "baselineConfigDigest": "sha256:7fcbfb90ac5dfa3abc87cdde8b862af5a196a52382633bbb504286fcdec34d49",
+        "finalConfigDigest": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/payment-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/payment-service-amd64.json"
+      },
+      {
+        "name": "delivery-service-amd64",
+        "baselineImage": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+        "finalImage": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "baselineConfigDigest": "sha256:58c3f315ca2679fe0f045c4c44beb8f9cce3660b132e1e5b818dce3685961714",
+        "finalConfigDigest": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/delivery-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/delivery-service-amd64.json"
+      },
+      {
+        "name": "notification-service-amd64",
+        "baselineImage": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+        "finalImage": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "baselineConfigDigest": "sha256:c3fd0477234326fd7dbf226d69242526cf116eee7aa3af80346e0bc6823134f2",
+        "finalConfigDigest": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/notification-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/notification-service-amd64.json"
+      },
+      {
+        "name": "operations-service-amd64",
+        "baselineImage": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+        "finalImage": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "baselineConfigDigest": "sha256:96a0839fd38d0ce03880cf408641d8c56831dcc14907d134a4724f095abfed32",
+        "finalConfigDigest": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 7,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 7,
+        "beforeSeverityOccurrences": {
+          "HIGH": 4,
+          "MEDIUM": 2,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 7,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 7,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/operations-service-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/operations-service-amd64.json"
+      },
+      {
+        "name": "frontend-arm64",
+        "baselineImage": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+        "finalImage": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+        "baselineConfigDigest": "sha256:dd264cd8cc2992c3c980b3ea911ab9d47d3bb79ab891faffb5ca47681a1f5e29",
+        "finalConfigDigest": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+        "platform": "linux/arm64",
+        "beforeOccurrences": 22,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 22,
+        "beforeSeverityOccurrences": {
+          "MEDIUM": 10,
+          "HIGH": 11,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 21,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 22,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/frontend-arm64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/frontend-arm64.json"
+      },
+      {
+        "name": "frontend-amd64",
+        "baselineImage": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+        "finalImage": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+        "baselineConfigDigest": "sha256:e85b417dcd3771ccb45ccca105e68c45857cae1eea584a7e2008ef26c9ba1bce",
+        "finalConfigDigest": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 22,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 22,
+        "beforeSeverityOccurrences": {
+          "MEDIUM": 10,
+          "HIGH": 11,
+          "LOW": 1
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 21,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 22,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/frontend-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/final-app-full/frontend-amd64.json"
+      },
+      {
+        "name": "blackbox-exporter-amd64",
+        "baselineImage": "prom/blackbox-exporter@sha256:c78a587054acf7ac35514a4a3ea577686e52630288f28f005b1ea754857b6151",
+        "finalImage": "prom/blackbox-exporter@sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd",
+        "baselineConfigDigest": "sha256:694775639bf5b3228234edf4cd57a5fc3e3a6a7c879fe0ca46ed7919bd2e8b71",
+        "finalConfigDigest": "sha256:e6f02b1a6c427e2a771fb33b42cb167dde3e5e8b3625e55e55aa20aaa018946d",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 114,
+        "afterOccurrences": 1,
+        "netOccurrenceReduction": 113,
+        "beforeSeverityOccurrences": {
+          "HIGH": 50,
+          "MEDIUM": 57,
+          "UNKNOWN": 2,
+          "CRITICAL": 2,
+          "LOW": 3
+        },
+        "afterSeverityOccurrences": {
+          "UNKNOWN": 1
+        },
+        "fixedAdvisoryPackagePairs": 113,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 1,
+        "fixedOccurrences": 113,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 1,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/blackbox-exporter-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/blackbox-exporter-amd64.json"
+      },
+      {
+        "name": "caddy-amd64",
+        "baselineImage": "caddy@sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+        "finalImage": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+        "baselineConfigDigest": "sha256:f77f856a30f0004200b36b322d61da17fade31e24875699d77fb968399b9eb77",
+        "finalConfigDigest": "sha256:3067cc4e02c091399edbd5d65f85a3ff4d511574aecadb47f280c3761e68852e",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 73,
+        "afterOccurrences": 70,
+        "netOccurrenceReduction": 3,
+        "beforeSeverityOccurrences": {
+          "HIGH": 8,
+          "MEDIUM": 17,
+          "LOW": 45,
+          "UNKNOWN": 3
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 8,
+          "MEDIUM": 16,
+          "LOW": 45,
+          "UNKNOWN": 1
+        },
+        "fixedAdvisoryPackagePairs": 3,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 70,
+        "fixedOccurrences": 3,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 70,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/caddy-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/caddy-amd64.json"
+      },
+      {
+        "name": "postgres-amd64",
+        "baselineImage": "postgres@sha256:1a66d744c1b459e13b05a8fca341da84cb63383e99ce262210efee5a319d4551",
+        "finalImage": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+        "baselineConfigDigest": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+        "finalConfigDigest": "sha256:6a2e324ebe59af6031c4c1cd96c1d5072c2ebc36563d2196365e43b8297c062d",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 64,
+        "afterOccurrences": 61,
+        "netOccurrenceReduction": 3,
+        "beforeSeverityOccurrences": {
+          "UNKNOWN": 3,
+          "MEDIUM": 32,
+          "CRITICAL": 1,
+          "HIGH": 25,
+          "LOW": 3
+        },
+        "afterSeverityOccurrences": {
+          "MEDIUM": 31,
+          "UNKNOWN": 1,
+          "CRITICAL": 1,
+          "HIGH": 25,
+          "LOW": 3
+        },
+        "fixedAdvisoryPackagePairs": 3,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 61,
+        "fixedOccurrences": 3,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 61,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/postgres-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/postgres-amd64.json"
+      },
+      {
+        "name": "grafana-amd64",
+        "baselineImage": "grafana/grafana@sha256:11c2e6c7993917ea89292b942e3428f73907b2809d554154bfb8b4ceb2301cc8",
+        "finalImage": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+        "baselineConfigDigest": "sha256:75006c93b887a310c7d4b21b557de093cb67caa4e1e4d812cbc08edd7580b7e9",
+        "finalConfigDigest": "sha256:5a2f6d01fcd7ebd17327a817cb40fd0dc2522ad396d7240905d56d4410fa3585",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 519,
+        "afterOccurrences": 3,
+        "netOccurrenceReduction": 516,
+        "beforeSeverityOccurrences": {
+          "HIGH": 171,
+          "MEDIUM": 261,
+          "LOW": 63,
+          "UNKNOWN": 10,
+          "CRITICAL": 14
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 2,
+          "UNKNOWN": 1
+        },
+        "fixedAdvisoryPackagePairs": 355,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 3,
+        "fixedOccurrences": 516,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 3,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/grafana-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/grafana-amd64.json"
+      },
+      {
+        "name": "node-exporter-amd64",
+        "baselineImage": "prom/node-exporter@sha256:863b62ff9f392b6f472e22b4b670ad1cabb66b3042502ebd4b2cd192733e1bce",
+        "finalImage": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+        "baselineConfigDigest": "sha256:255ec253085fb105696533b31864a5e3b64f1f1e2147b5ec368100cbf3ec9b80",
+        "finalConfigDigest": "sha256:9bbbca8f5cb8e9bd1b835e8ec086b6df6d9a458d2d10ef1c97ea4a9a3ae7e54b",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 106,
+        "afterOccurrences": 32,
+        "netOccurrenceReduction": 74,
+        "beforeSeverityOccurrences": {
+          "HIGH": 46,
+          "MEDIUM": 54,
+          "UNKNOWN": 2,
+          "CRITICAL": 1,
+          "LOW": 3
+        },
+        "afterSeverityOccurrences": {
+          "HIGH": 15,
+          "MEDIUM": 15,
+          "UNKNOWN": 1,
+          "LOW": 1
+        },
+        "fixedAdvisoryPackagePairs": 75,
+        "newlyReportedAdvisoryPackagePairs": 1,
+        "remainingAdvisoryPackagePairs": 31,
+        "fixedOccurrences": 75,
+        "newlyReportedOccurrences": 1,
+        "remainingMatchedOccurrences": 31,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/node-exporter-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/node-exporter-amd64.json"
+      },
+      {
+        "name": "prometheus-amd64",
+        "baselineImage": "prom/prometheus@sha256:8672a850efe2f9874702406c8318704edb363587f8c2ca88586b4c8fdb5cea24",
+        "finalImage": "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+        "baselineConfigDigest": "sha256:a3bc50fcb50fb1409287c32773d8fe799f6cad5511c4ba3e2e851784e7a05026",
+        "finalConfigDigest": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 242,
+        "afterOccurrences": 2,
+        "netOccurrenceReduction": 240,
+        "beforeSeverityOccurrences": {
+          "HIGH": 106,
+          "MEDIUM": 117,
+          "LOW": 11,
+          "UNKNOWN": 4,
+          "CRITICAL": 4
+        },
+        "afterSeverityOccurrences": {
+          "UNKNOWN": 2
+        },
+        "fixedAdvisoryPackagePairs": 122,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 1,
+        "fixedOccurrences": 240,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 2,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/prometheus-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/prometheus-amd64.json"
+      },
+      {
+        "name": "redis-amd64",
+        "baselineImage": "redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+        "finalImage": "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9",
+        "baselineConfigDigest": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+        "finalConfigDigest": "sha256:98c6ca8f397f86e469be752c3e7ed5eb8b17f2479840cb69a2e413037038e9f4",
+        "platform": "linux/amd64",
+        "beforeOccurrences": 23,
+        "afterOccurrences": 0,
+        "netOccurrenceReduction": 23,
+        "beforeSeverityOccurrences": {
+          "HIGH": 2,
+          "MEDIUM": 17,
+          "LOW": 2,
+          "UNKNOWN": 2
+        },
+        "afterSeverityOccurrences": {},
+        "fixedAdvisoryPackagePairs": 23,
+        "newlyReportedAdvisoryPackagePairs": 0,
+        "remainingAdvisoryPackagePairs": 0,
+        "fixedOccurrences": 23,
+        "newlyReportedOccurrences": 0,
+        "remainingMatchedOccurrences": 0,
+        "occurrenceDecreaseWithinRemainingPairs": 0,
+        "occurrenceIncreaseWithinRemainingPairs": 0,
+        "baselineRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/baseline-full/redis-amd64.json",
+        "finalRawReport": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/fresh-2026-10-28/candidate-full/redis-amd64.json"
+      }
+    ],
+    "manualEvidenceAndApplicabilityMatrix": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/candidate-residual-matrix.json",
+    "manualKafkaCAAlert": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/kafka-manual-ca-alert.json",
+    "imageSecurityApprovalStatus": "BLOCKED_PENDING_VENDOR_PATCHES_AND_APPLICABILITY_CLOSURE",
+    "scopeOfZeroApplicationFindingsClaim": "Trivy full OS/library analysis of the24 exact final app image config IDs, under the recorded snapshot; not a claim that all possible vulnerabilities or JavaScript bundle dependencies are identifiable.",
+    "remainingRiskEvidence": "See candidate-residual-matrix.json and kafka-manual-ca-alert.json. Raw scanner severity counts remain unchanged by triage."
+  },
+  "noImagesPublished": true
+}

@@ -1,0 +1,2817 @@
+{
+  "generatedAt": "2026-10-28T01:05:30.270649+00:00",
+  "scope": "All 53 raw candidate CRITICAL/HIGH occurrences under the fresh comparable Trivy snapshot. No raw finding is filtered or suppressed. Manual CA evidence is a separate supplemental item.",
+  "countsByDisposition": {
+    "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY": 31,
+    "NO_CONFIGURED_HELPER_INVOCATION_NATIVE_LIBRARY_NOT_LINKED": 3,
+    "AFFECTED_CODE_AND_CONFIGURED_HTTP2_PATH_PRESENT": 2,
+    "VENDOR_CA_VALIDATION_PATCH_GAP_CONDITIONAL_EXPOSURE": 1,
+    "CURRENT_CONFIGURATION_LACKS_FILESERVER_PREREQUISITE": 1,
+    "CURRENT_CONFIGURATION_LACKS_ECH_PREREQUISITE": 1,
+    "OFFICIAL_FIX_INCLUDED_VERSION_MAPPING_FLAG": 2,
+    "CURRENT_CONFIGURATION_LACKS_TLS_HTTP2_PREREQUISITE": 5,
+    "SYMBOL_PRESENT_RUNTIME_INPUT_PATH_UNRESOLVED": 2,
+    "HOSTNAME_AUTHORIZATION_PREREQUISITE_NOT_IDENTIFIED": 1,
+    "ATTACKER_CONTROLLED_HTML_TEMPLATE_INPUT_NOT_IDENTIFIED": 1,
+    "XML_SYMBOL_PRESENT_INPUT_REQUIRES_LOCAL_FILE_OR_DISABLED_COLLECTOR": 1,
+    "NATIVE_LIBRARY_PRESENT_RUNTIME_CALLER_PREREQUISITE_UNPROVEN": 2
+  },
+  "reviewedConfigurationSHA256": {
+    "Caddyfile": "d36970126b62fefd46dd4a7e1527697f327cd35136c6d02075d65c2f5bef3a2f",
+    "docker-compose.cloud.yml": "f92bd92eee1ab3fa7bc963e4f5eb39533d88bde30207f2add318347d932e99e1"
+  },
+  "officialGoDocs": "https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck",
+  "goBinaryAnalysisDBTimestamp": "2026-10-27T21:16:18Z",
+  "trivyDBUpdatedAt": "2026-10-27T19:17:44.708952708Z",
+  "manualKafkaCAAlert": {
+    "checkedAt": "2026-10-28T00:56:14.627818+00:00",
+    "image": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+    "keytoolCommand": [
+      "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/jdk21-current/amazon-corretto-21.jdk/Contents/Home/bin/keytool",
+      "-J-Xmx128m",
+      "-list",
+      "-rfc",
+      "-keystore",
+      "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/binaries/kafka-amd64/cacerts",
+      "-storepass",
+      "changeit"
+    ],
+    "keytoolExitCode": 0,
+    "checkCommand": [
+      "python3",
+      "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/java-candidate/check-truststore.py",
+      "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/binaries/kafka-amd64/truststore.rfc"
+    ],
+    "checkExitCode": 1,
+    "checkOutput": "Traceback (most recent call last):\n  File \"/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/frontend/java-candidate/check-truststore.py\", line 12, in <module>\n    assert not remaining, \"Removed root CA certificate still trusted: \" + json.dumps(remaining)\n           ^^^^^^^^^^^^^\nAssertionError: Removed root CA certificate still trusted: [{\"alias\": \"emsigneccrootcag3 [jdk]\", \"sha256\": \"86A1ECBA089C4A8D3BBE2734C612BA341D813E043CF9E8A862CD5C57A36BBE6B\"}, {\"alias\": \"emsignrootcag1 [jdk]\", \"sha256\": \"40F6AF0346A99AA1CD1D555A4E9CCE62C7F9634603EE406615833DC8C8D00367\"}]\n",
+    "operation": "Read-only static image truststore inspection; no container run",
+    "javaReleaseFile": "IMPLEMENTOR=\"Eclipse Adoptium\"\nIMPLEMENTOR_VERSION=\"Temurin-21.0.12.1+1\"\nJAVA_RUNTIME_VERSION=\"21.0.12.1+1-LTS\"\nJAVA_VERSION=\"21.0.12.1\"\nJAVA_VERSION_DATE=\"2026-08-18\"\nLIBC=\"musl\"\nMODULES=\"java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.jvmstat jdk.attach jdk.charsets jdk.internal.opt jdk.zipfs jdk.compiler jdk.crypto.ec jdk.crypto.cryptoki jdk.dynalink jdk.internal.ed jdk.editpad jdk.hotspot.agent jdk.httpserver jdk.incubator.vector jdk.internal.le jdk.internal.vm.ci jdk.internal.vm.compiler jdk.internal.vm.compiler.management jdk.jartool jdk.javadoc jdk.jcmd jdk.management jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jpackage jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.rmi jdk.net jdk.nio.mapmode jdk.random jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported jdk.unsupported.desktop jdk.xml.dom\"\nOS_ARCH=\"x86_64\"\nOS_NAME=\"Linux\"\nSOURCE=\".:git:1c417fbfc2f7\"\nBUILD_SOURCE=\"git:e6ba7dec3d07654074559310376a3ae89da5f4ac\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk21u.git\"\nFULL_VERSION=\"21.0.12.1+1-LTS\"\nSEMANTIC_VERSION=\"21.0.12.1+1\"\nBUILD_INFO=\"OS: Linux Version: 6.8.0-1064-azure\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"21.0.12.1+1-LTS\"\nIMAGE_TYPE=\"JRE\"\n",
+    "manualAdvisory": "CVE-2026-114820",
+    "primarySource": "https://www.oracle.com/security-alerts/alert-cve-2026-114820.html"
+  },
+  "finalConfigurationSHA256": {
+    "Caddyfile": "d36970126b62fefd46dd4a7e1527697f327cd35136c6d02075d65c2f5bef3a2f",
+    "docker-compose.cloud.yml": "a0b5fde183356fe971521b4afe32ed763c46a2ff7c4f182adfdd2417a39742e2"
+  },
+  "configurationReviewContinuation": "Original hash records pre-final-pin review. Final edits pin seven verified vendor references; proxy handlers/listeners/exporter prerequisite settings retained; final runtime/deployment policy tests passed.",
+  "rows": [
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2025-68121",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.24.13, 1.25.7, 1.26.0-rc.3",
+      "Status": "fixed",
+      "Severity": "CRITICAL",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "azure": 2,
+        "bitnami": 4,
+        "cbl-mariner": 2,
+        "nvd": 4,
+        "oracle-oval": 3,
+        "photon": 4,
+        "redhat": 2,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "V3Score": 9.1
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+          "V3Score": 10
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "V3Score": 7.4
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262112+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4337",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2025-68121.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2025-61726",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.24.12, 1.25.6",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 2,
+        "bitnami": 3,
+        "cbl-mariner": 2,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262462+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4341",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2025-61726.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2025-61729",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.24.11, 1.25.5",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 3,
+        "bitnami": 3,
+        "cbl-mariner": 1,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262478+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2025-4155",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2025-61729.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-111943",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.26.10, 1.27.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 4
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N",
+          "V3Score": 6.8
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262490+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6809",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-111943.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-25679",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.8, 1.26.1",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262500+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4601",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-25679.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-27145",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.11, 1.26.4",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "azure": 2,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262509+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5037",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-27145.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-32280",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.9, 1.26.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262519+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4947",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-32280.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-32281",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.9, 1.26.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "nvd": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 2,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 5.9
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262529+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4946",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-32281.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-32283",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.9, 1.26.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "nvd": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262539+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4870",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-32283.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-33811",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.10, 1.26.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "nvd": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262550+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4981",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-33811.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-33814",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.10, 1.26.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 2,
+        "bitnami": 3,
+        "nvd": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262560+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4918",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-33814.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-33818",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262570+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5972",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-33818.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-39820",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.10, 1.26.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "nvd": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262580+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4986",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-39820.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-39821",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 4,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:N",
+          "V3Score": 8.2
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262589+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5026",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-39821.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-39822",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.12, 1.26.5, 1.27.0-rc.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "V3Score": 7.8
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "V3Score": 7.8
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262598+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4970",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-39822.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-39836",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.10, 1.26.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "bitnami": 3,
+        "nvd": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 2,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "nvd": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262607+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4971",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-39836.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-42499",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.10, 1.26.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262616+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-4977",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-42499.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-42504",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.11, 1.26.4",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262627+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5038",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-42504.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56853",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262637+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6089",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56853.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56858",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 2,
+        "oracle-oval": 3,
+        "photon": 2,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "V3Score": 6.1
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+          "V3Score": 8.1
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262647+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6091",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56858.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56859",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262657+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6088",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56859.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56860",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 2,
+        "oracle-oval": 3,
+        "photon": 2,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 5.9
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262667+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6218",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56860.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56862",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262677+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6090",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56862.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78667",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262686+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6609",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78667.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262695+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6611",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78669.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "target": "usr/local/bin/gosu",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-97031",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.24.6",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262705+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6607",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-97031.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/postgres-amd64-messages.json",
+          "binaries/postgres-amd64/go-build-info.txt",
+          "../candidate-full/postgres-gosu-comparison.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck successfully extracted symbols from the static gosu v1.19.0 binary (Go 1.24.6) but found none of the advisory vulnerable symbols for this module. Another medium user-database parsing advisory does match, confirming symbol extraction worked. The raw version flag is retained; no current exploitable TLS/URL/mail/etc path is established for this helper.",
+        "recommendedAction": "Prefer a vendor gosu rebuild for version hygiene. Do not call these 26 critical/high version matches remotely exploitable without affected code and input prerequisites."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a (alpine 3.23.7)",
+      "type": "alpine",
+      "class": "os-pkgs",
+      "VulnerabilityID": "CVE-2026-111497",
+      "PkgName": "brotli-libs",
+      "InstalledVersion": "1.2.0-r0",
+      "FixedVersion": "1.2.1-r0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 4,
+        "bitnami": 4,
+        "oracle-oval": 3,
+        "photon": 4,
+        "redhat": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+          "V40Score": 9.2
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "V3Score": 8.1
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262713+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://www.cve.org/CVERecord?id=CVE-2026-111497",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-111497.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "native-linkage.json",
+          "vendor-sources/reviewed-Caddyfile",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/google/brotli/releases/tag/v1.2.1"
+        ],
+        "disposition": "NO_CONFIGURED_HELPER_INVOCATION_NATIVE_LIBRARY_NOT_LINKED",
+        "assessment": "ELF inspection proves /usr/bin/caddy is static and has no DT_NEEDED native libraries. The configured process is Caddy and its Compose healthcheck invokes wget, not curl. Thus installed curl/libcurl/Brotli versions do not by themselves establish an HTTP request path into these native libraries. curl exposure requires running an HTTP/2 upload; Brotli requires passing an attacker-controlled compressed stream to its decoder.",
+        "recommendedAction": "Use vendor Alpine package security rebuilds when available. Reopen if scripts/plugins begin invoking curl or native decoders; do not suppress raw package flags."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a (alpine 3.23.7)",
+      "type": "alpine",
+      "class": "os-pkgs",
+      "VulnerabilityID": "CVE-2026-92392",
+      "PkgName": "curl",
+      "InstalledVersion": "8.22.0-r0",
+      "FixedVersion": "8.23.0-r0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "amazon": 3,
+        "redhat": 3,
+        "ubuntu": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "V3Score": 8.1
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262722+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://www.cve.org/CVERecord?id=CVE-2026-92392",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-92392.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "native-linkage.json",
+          "vendor-sources/reviewed-Caddyfile",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://curl.se/docs/CVE-2026-92392.html"
+        ],
+        "disposition": "NO_CONFIGURED_HELPER_INVOCATION_NATIVE_LIBRARY_NOT_LINKED",
+        "assessment": "ELF inspection proves /usr/bin/caddy is static and has no DT_NEEDED native libraries. The configured process is Caddy and its Compose healthcheck invokes wget, not curl. Thus installed curl/libcurl/Brotli versions do not by themselves establish an HTTP request path into these native libraries. curl exposure requires running an HTTP/2 upload; Brotli requires passing an attacker-controlled compressed stream to its decoder.",
+        "recommendedAction": "Use vendor Alpine package security rebuilds when available. Reopen if scripts/plugins begin invoking curl or native decoders; do not suppress raw package flags."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a (alpine 3.23.7)",
+      "type": "alpine",
+      "class": "os-pkgs",
+      "VulnerabilityID": "CVE-2026-92392",
+      "PkgName": "libcurl",
+      "InstalledVersion": "8.22.0-r0",
+      "FixedVersion": "8.23.0-r0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "amazon": 3,
+        "redhat": 3,
+        "ubuntu": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "V3Score": 8.1
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.262731+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://www.cve.org/CVERecord?id=CVE-2026-92392",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-92392.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "native-linkage.json",
+          "vendor-sources/reviewed-Caddyfile",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://curl.se/docs/CVE-2026-92392.html"
+        ],
+        "disposition": "NO_CONFIGURED_HELPER_INVOCATION_NATIVE_LIBRARY_NOT_LINKED",
+        "assessment": "ELF inspection proves /usr/bin/caddy is static and has no DT_NEEDED native libraries. The configured process is Caddy and its Compose healthcheck invokes wget, not curl. Thus installed curl/libcurl/Brotli versions do not by themselves establish an HTTP request path into these native libraries. curl exposure requires running an HTTP/2 upload; Brotli requires passing an attacker-controlled compressed stream to its decoder.",
+        "recommendedAction": "Use vendor Alpine package security rebuilds when available. Reopen if scripts/plugins begin invoking curl or native decoders; do not suppress raw package flags."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "usr/bin/caddy",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.59.0",
+      "FixedVersion": "0.60.0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.264306+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6611",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78669.json",
+        "affectedModuleMatchingSymbolCount": 333,
+        "symbolExamples": [
+          "golang.org/x/net/http2.Framer.WriteRSTStream",
+          "golang.org/x/net/http2.Transport.RoundTripOpt",
+          "golang.org/x/net/http2.connError.Error",
+          "golang.org/x/net/http2.Transport.RoundTrip",
+          "golang.org/x/net/http2.chunkWriter.Write",
+          "golang.org/x/net/http2.unencryptedTransport.RoundTrip"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/caddy-amd64-messages.json",
+          "vendor-sources/reviewed-Caddyfile"
+        ],
+        "additionalOfficialSources": [
+          "https://go.dev/issue/81742",
+          "https://caddyserver.com/docs/caddyfile/options#protocols"
+        ],
+        "disposition": "AFFECTED_CODE_AND_CONFIGURED_HTTP2_PATH_PRESENT",
+        "assessment": "The exact Caddy binary contains affected HTTP/2 symbols for this module. The reviewed Caddyfile explicitly configures protocols h1 h2 and publishes HTTPS. A peer can reach the HTTP/2 endpoint; header/body/time limits do not establish removal of the repeated SETTINGS frame CPU-amplification flaw. Exploit success was not tested.",
+        "recommendedAction": "Use a supported vendor Caddy rebuild with fixed Go and x/net, or evaluate and verify HTTP/1-only configuration as a temporary mitigation."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "usr/bin/caddy",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-111943",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.10, 1.27.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 4
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N",
+          "V3Score": 6.8
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.265465+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6809",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-111943.json",
+        "affectedModuleMatchingSymbolCount": 1,
+        "symbolExamples": [
+          "crypto/x509.Certificate.Verify"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/caddy-amd64-messages.json",
+          "caddy-ca-alert-evidence.json"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "VENDOR_CA_VALIDATION_PATCH_GAP_CONDITIONAL_EXPOSURE",
+        "assessment": "crypto/x509.Certificate.Verify is present and automatic certificate management uses outbound TLS validation. The image system CA bundle also retains an eSign G1 root implicated in the separate CA alert. This does not prove a forged chain or network interception, and the Go advisory specifically adds an intermediate-certificate denylist. A fixed Go build remains warranted; private networking would not remove this trust-validation prerequisite.",
+        "recommendedAction": "Use a vendor Go 1.26.10/1.27.3 rebuild and current vendor CA bundle. Keep the related CA evidence separate from claiming a demonstrated exploit."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "usr/bin/caddy",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78667",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.266451+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6609",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78667.json",
+        "affectedModuleMatchingSymbolCount": 50,
+        "symbolExamples": [
+          "net/http.ServeFile",
+          "net/http.fileHandler.ServeHTTP",
+          "net/http.ServeFile",
+          "net/http.fileHandler.ServeHTTP",
+          "net/http.fileTransport.RoundTrip",
+          "net/http.fileHandler.ServeHTTP"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/caddy-amd64-messages.json",
+          "vendor-sources/reviewed-Caddyfile"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_FILESERVER_PREREQUISITE",
+        "assessment": "Vulnerable file-serving symbols are linked, but the reviewed routes only reverse_proxy or respond; no file_server, ServeFile or ServeContent route is configured. The upstream advisory requires Range parsing in FileServer/ServeContent/ServeFile, so the compiled optional module alone does not show an active route.",
+        "recommendedAction": "Keep the vendor patch tracked and re-evaluate if static-file serving is enabled."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "usr/bin/caddy",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.267784+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6611",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78669.json",
+        "affectedModuleMatchingSymbolCount": 3922,
+        "symbolExamples": [
+          "net/http.http2ClientConn.Ping",
+          "net/http.ParseTime",
+          "net/http.fileTransport.RoundTrip",
+          "net/http.http2connError.Error",
+          "net/http.Get",
+          "net/http.Request.UserAgent"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/caddy-amd64-messages.json",
+          "vendor-sources/reviewed-Caddyfile"
+        ],
+        "additionalOfficialSources": [
+          "https://go.dev/issue/81742",
+          "https://caddyserver.com/docs/caddyfile/options#protocols"
+        ],
+        "disposition": "AFFECTED_CODE_AND_CONFIGURED_HTTP2_PATH_PRESENT",
+        "assessment": "The exact Caddy binary contains affected HTTP/2 symbols for this module. The reviewed Caddyfile explicitly configures protocols h1 h2 and publishes HTTPS. A peer can reach the HTTP/2 endpoint; header/body/time limits do not establish removal of the repeated SETTINGS frame CPU-amplification flaw. Exploit success was not tested.",
+        "recommendedAction": "Use a supported vendor Caddy rebuild with fixed Go and x/net, or evaluate and verify HTTP/1-only configuration as a temporary mitigation."
+      }
+    },
+    {
+      "scan": "caddy-amd64",
+      "image": "caddy@sha256:04913b1da43339a40ad1ea87827d70a576ac5aa6cf674c6e24fdca675887533a",
+      "target": "usr/bin/caddy",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-97031",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.268718+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6607",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-97031.json",
+        "affectedModuleMatchingSymbolCount": 9,
+        "symbolExamples": [
+          "crypto/tls.Conn.Write",
+          "crypto/tls.Dial",
+          "crypto/tls.Dialer.Dial",
+          "crypto/tls.Conn.HandshakeContext",
+          "crypto/tls.QUICConn.Start",
+          "crypto/tls.Dialer.DialContext"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/caddy-amd64-messages.json",
+          "vendor-sources/reviewed-Caddyfile"
+        ],
+        "additionalOfficialSources": [
+          "https://caddyserver.com/docs/automatic-https#enabling-ech"
+        ],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_ECH_PREREQUISITE",
+        "assessment": "Affected TLS symbols are linked, but Caddy ECH requires explicit ech/DNS-provider configuration. The reviewed Caddyfile has neither. The advisory requires processing malicious ECH inner references; no ECH keys/config are provisioned by this configuration.",
+        "recommendedAction": "Track the vendor Go patch and re-evaluate before enabling ECH."
+      }
+    },
+    {
+      "scan": "grafana-amd64",
+      "image": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+      "target": "usr/share/grafana/bin/grafana",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-21728",
+      "PkgName": "github.com/grafana/tempo",
+      "InstalledVersion": "v1.5.1-0.20260427112133-525d1bab07e0",
+      "FixedVersion": "2.8.4, 2.9.2, 2.10.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "ghsa": 3,
+        "redhat": 3
+      },
+      "CVSS": {
+        "ghsa": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269110+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5528",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-21728.json",
+        "affectedModuleMatchingSymbolCount": 1291,
+        "symbolExamples": [
+          "github.com/grafana/tempo/pkg/tempopb.streamingQuerierSearchTagValuesV2Server.SetHeader",
+          "github.com/grafana/tempo/pkg/tempopb.TimeSeries.ProtoMessage",
+          "github.com/grafana/tempo/pkg/tempopb.MetadataMetrics.XXX_Marshal",
+          "github.com/grafana/tempo/pkg/tempopb.SearchTagValuesRequest.XXX_Marshal",
+          "github.com/grafana/tempo/pkg/tempopb.streamingQuerierSearchTagValuesServer.Send",
+          "github.com/grafana/tempo/pkg/tempopb/common/v1.AnyValue_BytesValue.MarshalToSizedBuffer"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/tempo-dos-fix-ancestry.json",
+          "vendor-sources/tempo-bundled-frontend-config.go",
+          "govulncheck/grafana-amd64-messages.json"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/grafana/tempo/compare/650eb1985a0776789c8564122990f588a742356f...525d1bab07e0",
+          "https://github.com/grafana/tempo/commit/650eb1985a0776789c8564122990f588a742356f"
+        ],
+        "disposition": "OFFICIAL_FIX_INCLUDED_VERSION_MAPPING_FLAG",
+        "assessment": "The exact bundled Tempo pseudo-version ends in commit 525d1bab07e0. GitHub comparison proves the official fix commit is an ancestor (behind_by=0 and merge base equals fix). The bundled current source still contains the fix: search result limit 256*1024 / S3 encryption key flagext.Secret. The Go advisory has no affected-symbol restriction, so govulncheck broadly flags generated Tempo protobuf code. This is not proof of a vulnerable Tempo server in Grafana.",
+        "recommendedAction": "Retain raw scanner findings and attach source ancestry/content evidence; request upstream advisory pseudo-version reconciliation. Do not replace bundled files."
+      }
+    },
+    {
+      "scan": "grafana-amd64",
+      "image": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+      "target": "usr/share/grafana/bin/grafana",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-28377",
+      "PkgName": "github.com/grafana/tempo",
+      "InstalledVersion": "v1.5.1-0.20260427112133-525d1bab07e0",
+      "FixedVersion": "2.10.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "ghsa": 3,
+        "redhat": 2
+      },
+      "CVSS": {
+        "ghsa": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+          "V3Score": 6.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269435+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5359",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-28377.json",
+        "affectedModuleMatchingSymbolCount": 1291,
+        "symbolExamples": [
+          "github.com/grafana/tempo/pkg/tempopb/common/v1.AnyValue.XXX_Merge",
+          "github.com/grafana/tempo/pkg/tempopb.SearchTagValuesBlockRequest.GetPagesToSearch",
+          "github.com/grafana/tempo/pkg/tempopb.streamingQuerierSearchTagValuesServer.RecvMsg",
+          "github.com/grafana/tempo/pkg/tempopb.SubmitRedactionRequest.GetTenantId",
+          "github.com/grafana/tempo/pkg/tempopb.PushErrorReason.EnumDescriptor",
+          "github.com/grafana/tempo/pkg/tempopb.SearchTagsV2Scope.Descriptor"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/tempo-s3-fix-ancestry.json",
+          "vendor-sources/tempo-bundled-s3-config.go",
+          "govulncheck/grafana-amd64-messages.json"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/grafana/tempo/compare/bb8ca663db34a0980c9758b40d918fda3b4dbec3...525d1bab07e0",
+          "https://github.com/grafana/tempo/commit/bb8ca663db34a0980c9758b40d918fda3b4dbec3"
+        ],
+        "disposition": "OFFICIAL_FIX_INCLUDED_VERSION_MAPPING_FLAG",
+        "assessment": "The exact bundled Tempo pseudo-version ends in commit 525d1bab07e0. GitHub comparison proves the official fix commit is an ancestor (behind_by=0 and merge base equals fix). The bundled current source still contains the fix: search result limit 256*1024 / S3 encryption key flagext.Secret. The Go advisory has no affected-symbol restriction, so govulncheck broadly flags generated Tempo protobuf code. This is not proof of a vulnerable Tempo server in Grafana.",
+        "recommendedAction": "Retain raw scanner findings and attach source ancestry/content evidence; request upstream advisory pseudo-version reconciliation. Do not replace bundled files."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56854",
+      "PkgName": "golang.org/x/crypto",
+      "InstalledVersion": "v0.54.0",
+      "FixedVersion": "0.55.0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "amazon": 3,
+        "redhat": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N",
+          "V3Score": 6.8
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269570+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6303",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56854.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "binaries/node-exporter-amd64/go-build-info.txt"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck found no symbols from this advisory for this exact affected module in the static node_exporter binary. Module-specific matching is important: the x/net HTTP/2 record must not inherit matches from stdlib. The raw version finding remains retained.",
+        "recommendedAction": "Prefer the vendor rebuild, retain the binary/symbol evidence, and re-evaluate upon component/build changes."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.57.0",
+      "FixedVersion": "0.60.0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269699+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6611",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78669.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "binaries/node-exporter-amd64/go-build-info.txt"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck found no symbols from this advisory for this exact affected module in the static node_exporter binary. Module-specific matching is important: the x/net HTTP/2 record must not inherit matches from stdlib. The raw version finding remains retained.",
+        "recommendedAction": "Prefer the vendor rebuild, retain the binary/symbol evidence, and re-evaluate upon component/build changes."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56851",
+      "PkgName": "golang.org/x/text",
+      "InstalledVersion": "v0.40.0",
+      "FixedVersion": "0.41.0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "azure": 3,
+        "redhat": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269767+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6629",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56851.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "binaries/node-exporter-amd64/go-build-info.txt"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck found no symbols from this advisory for this exact affected module in the static node_exporter binary. Module-specific matching is important: the x/net HTTP/2 record must not inherit matches from stdlib. The raw version finding remains retained.",
+        "recommendedAction": "Prefer the vendor rebuild, retain the binary/symbol evidence, and re-evaluate upon component/build changes."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-111943",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.26.10, 1.27.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 2,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 4
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N",
+          "V3Score": 6.8
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269832+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6809",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-111943.json",
+        "affectedModuleMatchingSymbolCount": 1,
+        "symbolExamples": [
+          "crypto/x509.Certificate.Verify"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/exporter-toolkit-v0.17.1-tls_config.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go",
+          "https://github.com/prometheus/exporter-toolkit/blob/v0.17.1/web/tls_config.go"
+        ],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_TLS_HTTP2_PREREQUISITE",
+        "assessment": "Affected symbols are present, but node_exporter starts an empty http.Server and exporter-toolkit v0.17.1 explicitly serves plaintext HTTP with HTTP/2 disabled when --web.config.file is empty. The reviewed Compose command has no web-config file or TLS configuration. Supervisord HTTP client collection is disabled by default. This conclusion is based on protocol/configuration prerequisites, not private-network placement.",
+        "recommendedAction": "Track a vendor rebuild and repeat this assessment before enabling TLS, HTTP/2, authentication plugins or outgoing TLS clients."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-33818",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269901+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5972",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-33818.json",
+        "affectedModuleMatchingSymbolCount": 2,
+        "symbolExamples": [
+          "encoding/asn1.Unmarshal",
+          "encoding/asn1.UnmarshalWithParams"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "vendor-sources/node-exporter-source/node_exporter.go"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "SYMBOL_PRESENT_RUNTIME_INPUT_PATH_UNRESOLVED",
+        "assessment": "The affected parser symbols are present. Local source/configuration review did not identify a network-controlled ASN.1 or relative-URL-resolution path, but binary mode cannot establish the full call graph. This remains an unresolved vendor finding rather than a proven exemption or demonstrated exploitable path.",
+        "recommendedAction": "Require a vendor patched rebuild or source call-graph/vendor VEX evidence before closing this finding."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-39821",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 4,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:N",
+          "V3Score": 8.2
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.269974+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5026",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-39821.json",
+        "affectedModuleMatchingSymbolCount": 10,
+        "symbolExamples": [
+          "net/http.Transport.RoundTrip",
+          "net/http.http1ClientConn.Close",
+          "net/http.Transport.NewClientConn",
+          "net/http.ClientConn.RoundTrip",
+          "net/http.Client.Post",
+          "net/http.http2ClientConn.RoundTrip"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "govulncheck/node-exporter-amd64-messages.json"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go"
+        ],
+        "disposition": "HOSTNAME_AUTHORIZATION_PREREQUISITE_NOT_IDENTIFIED",
+        "assessment": "IDNA/HTTP symbols are present, but the advisory requires inconsistent hostname authorization before and after ToUnicode/ToASCII conversion. This node_exporter configuration exposes local collectors and has no hostname-based authorization or configured remote XML-RPC client. A matching imported symbol does not prove that privilege-check sequence.",
+        "recommendedAction": "Track vendor remediation; re-evaluate if remote collectors or hostname-based policy are configured."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-46600",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "azure": 2,
+        "bitnami": 3,
+        "redhat": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270040+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-5942",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-46600.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "binaries/node-exporter-amd64/go-build-info.txt"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck found no symbols from this advisory for this exact affected module in the static node_exporter binary. Module-specific matching is important: the x/net HTTP/2 record must not inherit matches from stdlib. The raw version finding remains retained.",
+        "recommendedAction": "Prefer the vendor rebuild, retain the binary/symbol evidence, and re-evaluate upon component/build changes."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56853",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270107+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6089",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56853.json",
+        "affectedModuleMatchingSymbolCount": 4,
+        "symbolExamples": [
+          "net/http.Server.Serve",
+          "net/http.Server.ListenAndServeTLS",
+          "net/http.Server.ListenAndServe",
+          "net/http.Server.ServeTLS"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/exporter-toolkit-v0.17.1-tls_config.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go",
+          "https://github.com/prometheus/exporter-toolkit/blob/v0.17.1/web/tls_config.go"
+        ],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_TLS_HTTP2_PREREQUISITE",
+        "assessment": "Affected symbols are present, but node_exporter starts an empty http.Server and exporter-toolkit v0.17.1 explicitly serves plaintext HTTP with HTTP/2 disabled when --web.config.file is empty. The reviewed Compose command has no web-config file or TLS configuration. Supervisord HTTP client collection is disabled by default. This conclusion is based on protocol/configuration prerequisites, not private-network placement.",
+        "recommendedAction": "Track a vendor rebuild and repeat this assessment before enabling TLS, HTTP/2, authentication plugins or outgoing TLS clients."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56858",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 2,
+        "oracle-oval": 3,
+        "photon": 2,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "V3Score": 6.1
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+          "V3Score": 8.1
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270172+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6091",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56858.json",
+        "affectedModuleMatchingSymbolCount": 2,
+        "symbolExamples": [
+          "html/template.Template.Execute",
+          "html/template.Template.ExecuteTemplate"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/exporter-toolkit-v0.17.1-landing_page.go"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go",
+          "https://github.com/prometheus/exporter-toolkit/blob/v0.17.1/web/landing_page.go"
+        ],
+        "disposition": "ATTACKER_CONTROLLED_HTML_TEMPLATE_INPUT_NOT_IDENTIFIED",
+        "assessment": "html/template symbols are linked, but the node_exporter landing page is prepared from static/operator-controlled data at startup. Exporter-toolkit uses text/template for that page and ServeHTTP only writes the pre-rendered bytes. No configured path supplying attacker-controlled JavaScript-regex template data was identified. This is source/configuration evidence, not full source call-graph proof.",
+        "recommendedAction": "Track the vendor Go patch; do not label raw imported-symbol matches as demonstrated XSS."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56859",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270239+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6088",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56859.json",
+        "affectedModuleMatchingSymbolCount": 6,
+        "symbolExamples": [
+          "encoding/xml.Decoder.Skip",
+          "encoding/xml.Decoder.Decode",
+          "encoding/xml.Unmarshal",
+          "encoding/xml.Decoder.RawToken",
+          "encoding/xml.Decoder.DecodeElement",
+          "encoding/xml.Decoder.Token"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/collector/os_release.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/collector/os_release.go",
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/collector/supervisord.go"
+        ],
+        "disposition": "XML_SYMBOL_PRESENT_INPUT_REQUIRES_LOCAL_FILE_OR_DISABLED_COLLECTOR",
+        "assessment": "Exact source shows XML use for a fallback macOS SystemVersion.plist file and the default-disabled Supervisord XML-RPC collector. The reviewed Linux deployment has no Supervisord enable flag and reads host files through a read-only mount. A network scrape does not itself supply XML to those paths; local host-file control or enabling a remote collector would require a new assessment.",
+        "recommendedAction": "Keep vendor patch pending and do not enable Supervisord against untrusted XML endpoints without a fixed build."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56860",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 2,
+        "oracle-oval": 3,
+        "photon": 2,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 5.9
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270306+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6218",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56860.json",
+        "affectedModuleMatchingSymbolCount": 2,
+        "symbolExamples": [
+          "net/url.URL.ResolveReference",
+          "net/url.URL.Parse"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "vendor-sources/node-exporter-source/node_exporter.go"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "SYMBOL_PRESENT_RUNTIME_INPUT_PATH_UNRESOLVED",
+        "assessment": "The affected parser symbols are present. Local source/configuration review did not identify a network-controlled ASN.1 or relative-URL-resolution path, but binary mode cannot establish the full call graph. This remains an unresolved vendor finding rather than a proven exemption or demonstrated exploitable path.",
+        "recommendedAction": "Require a vendor patched rebuild or source call-graph/vendor VEX evidence before closing this finding."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-56862",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.25.13, 1.26.6, 1.27.0-rc.3",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "photon": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270377+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6090",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-56862.json",
+        "affectedModuleMatchingSymbolCount": 5,
+        "symbolExamples": [
+          "crypto/tls.Conn.Read",
+          "crypto/tls.Conn.Write",
+          "crypto/tls.Conn.Handshake",
+          "crypto/tls.Dialer.DialContext",
+          "crypto/tls.Conn.HandshakeContext"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/exporter-toolkit-v0.17.1-tls_config.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go",
+          "https://github.com/prometheus/exporter-toolkit/blob/v0.17.1/web/tls_config.go"
+        ],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_TLS_HTTP2_PREREQUISITE",
+        "assessment": "Affected symbols are present, but node_exporter starts an empty http.Server and exporter-toolkit v0.17.1 explicitly serves plaintext HTTP with HTTP/2 disabled when --web.config.file is empty. The reviewed Compose command has no web-config file or TLS configuration. Supervisord HTTP client collection is disabled by default. This conclusion is based on protocol/configuration prerequisites, not private-network placement.",
+        "recommendedAction": "Track a vendor rebuild and repeat this assessment before enabling TLS, HTTP/2, authentication plugins or outgoing TLS clients."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78667",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270439+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6609",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78667.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "govulncheck/node-exporter-amd64-messages.json",
+          "binaries/node-exporter-amd64/go-build-info.txt"
+        ],
+        "additionalOfficialSources": [],
+        "disposition": "AFFECTED_SYMBOLS_ABSENT_IN_EXACT_BINARY",
+        "assessment": "govulncheck found no symbols from this advisory for this exact affected module in the static node_exporter binary. Module-specific matching is important: the x/net HTTP/2 record must not inherit matches from stdlib. The raw version finding remains retained.",
+        "recommendedAction": "Prefer the vendor rebuild, retain the binary/symbol evidence, and re-evaluate upon component/build changes."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "azure": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270556+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6611",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-78669.json",
+        "affectedModuleMatchingSymbolCount": 364,
+        "symbolExamples": [
+          "net/http.response.FlushError",
+          "net/http.Server.Serve",
+          "net/http.NewRequest",
+          "net/http.Request.PostFormValue",
+          "net/http.Client.Do",
+          "net/http.serverHandler.ServeHTTP"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/exporter-toolkit-v0.17.1-tls_config.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go",
+          "https://github.com/prometheus/exporter-toolkit/blob/v0.17.1/web/tls_config.go"
+        ],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_TLS_HTTP2_PREREQUISITE",
+        "assessment": "Affected symbols are present, but node_exporter starts an empty http.Server and exporter-toolkit v0.17.1 explicitly serves plaintext HTTP with HTTP/2 disabled when --web.config.file is empty. The reviewed Compose command has no web-config file or TLS configuration. Supervisord HTTP client collection is disabled by default. This conclusion is based on protocol/configuration prerequisites, not private-network placement.",
+        "recommendedAction": "Track a vendor rebuild and repeat this assessment before enabling TLS, HTTP/2, authentication plugins or outgoing TLS clients."
+      }
+    },
+    {
+      "scan": "node-exporter-amd64",
+      "image": "prom/node-exporter@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "target": "bin/node_exporter",
+      "type": "gobinary",
+      "class": "lang-pkgs",
+      "VulnerabilityID": "CVE-2026-97031",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.5",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 4,
+        "amazon": 3,
+        "bitnami": 3,
+        "oracle-oval": 4,
+        "redhat": 3,
+        "rocky": 4
+      },
+      "CVSS": {
+        "bitnami": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "V3Score": 7.5
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270624+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://pkg.go.dev/vuln/GO-2026-6607",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-97031.json",
+        "affectedModuleMatchingSymbolCount": 5,
+        "symbolExamples": [
+          "crypto/tls.Conn.Handshake",
+          "crypto/tls.Conn.Write",
+          "crypto/tls.Conn.Read",
+          "crypto/tls.Dialer.DialContext",
+          "crypto/tls.Conn.HandshakeContext"
+        ],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "vendor-sources/node-exporter-source/node_exporter.go",
+          "vendor-sources/exporter-toolkit-v0.17.1-tls_config.go",
+          "vendor-sources/node-exporter-source/collector/supervisord.go",
+          "vendor-sources/reviewed-docker-compose.cloud.yml"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/prometheus/node_exporter/blob/6044da783597cc3b57aef7580ddcdcff58a4ee99/node_exporter.go",
+          "https://github.com/prometheus/exporter-toolkit/blob/v0.17.1/web/tls_config.go"
+        ],
+        "disposition": "CURRENT_CONFIGURATION_LACKS_TLS_HTTP2_PREREQUISITE",
+        "assessment": "Affected symbols are present, but node_exporter starts an empty http.Server and exporter-toolkit v0.17.1 explicitly serves plaintext HTTP with HTTP/2 disabled when --web.config.file is empty. The reviewed Compose command has no web-config file or TLS configuration. Supervisord HTTP client collection is disabled by default. This conclusion is based on protocol/configuration prerequisites, not private-network placement.",
+        "recommendedAction": "Track a vendor rebuild and repeat this assessment before enabling TLS, HTTP/2, authentication plugins or outgoing TLS clients."
+      }
+    },
+    {
+      "scan": "kafka-amd64",
+      "image": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+      "target": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30 (alpine 3.24.2)",
+      "type": "alpine",
+      "class": "os-pkgs",
+      "VulnerabilityID": "CVE-2026-111497",
+      "PkgName": "brotli-libs",
+      "InstalledVersion": "1.2.0-r1",
+      "FixedVersion": "1.2.1-r0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "amazon": 3,
+        "azure": 4,
+        "bitnami": 4,
+        "oracle-oval": 3,
+        "photon": 4,
+        "redhat": 3,
+        "ubuntu": 2
+      },
+      "CVSS": {
+        "bitnami": {
+          "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+          "V40Score": 9.2
+        },
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "V3Score": 8.1
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270633+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://www.cve.org/CVERecord?id=CVE-2026-111497",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-111497.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "native-linkage.json",
+          "kafka-manual-ca-alert.json"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/google/brotli/releases/tag/v1.2.1"
+        ],
+        "disposition": "NATIVE_LIBRARY_PRESENT_RUNTIME_CALLER_PREREQUISITE_UNPROVEN",
+        "assessment": "The advisory requires an attacker-controlled Brotli-compressed stream to reach the native Brotli decoder. Kafka supported message codecs are gzip/snappy/lz4/zstd, and the image font manager links to FreeType rather than demonstrating a broker Brotli path. Native library presence is confirmed; reachability through font/native processing is not conclusively excluded.",
+        "recommendedAction": "Prefer the supported vendor image with patched Alpine libraries; retain as unresolved until vendor/call-path evidence closes it. Separately address the verified JRE CA alert."
+      }
+    },
+    {
+      "scan": "kafka-amd64",
+      "image": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30",
+      "target": "apache/kafka@sha256:8f325fc00143fed78eabe00b033a86747078bb06edc21345d06651f77ae44f30 (alpine 3.24.2)",
+      "type": "alpine",
+      "class": "os-pkgs",
+      "VulnerabilityID": "CVE-2026-77214",
+      "PkgName": "libexpat",
+      "InstalledVersion": "2.8.5-r0",
+      "FixedVersion": "2.9.0-r0",
+      "Status": "fixed",
+      "Severity": "HIGH",
+      "VendorSeverity": {
+        "alma": 3,
+        "azure": 3,
+        "oracle-oval": 3,
+        "redhat": 3,
+        "rocky": 3
+      },
+      "CVSS": {
+        "redhat": {
+          "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:L",
+          "V3Score": 8.2
+        }
+      },
+      "triage": {
+        "reviewedAt": "2026-10-28T01:05:30.270641+00:00",
+        "rawFindingRetained": true,
+        "officialAdvisory": "https://www.cve.org/CVERecord?id=CVE-2026-77214",
+        "officialAdvisoryEvidenceFile": "/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/java-coverage/residual-triage/advisories/CVE-2026-77214.json",
+        "affectedModuleMatchingSymbolCount": 0,
+        "symbolExamples": [],
+        "binaryModeLimitation": "Symbol presence does not prove runtime reachability; symbol absence is scoped to this exact binary and official advisory symbol definitions. No exploit attempt was performed.",
+        "evidenceFiles": [
+          "native-linkage.json",
+          "kafka-manual-ca-alert.json"
+        ],
+        "additionalOfficialSources": [
+          "https://github.com/libexpat/libexpat/commit/13c5f63a7f1c52c2feee3b16a1134d4fb68e9ea0"
+        ],
+        "disposition": "NATIVE_LIBRARY_PRESENT_RUNTIME_CALLER_PREREQUISITE_UNPROVEN",
+        "assessment": "The advisory requires the embedding caller to pass an unchecked length to XML_ParseBuffer after a parse buffer exists. Merely receiving XML is insufficient to prove that API misuse. Installed libexpat is confirmed, but that caller/input path is not established for this plaintext Kafka broker.",
+        "recommendedAction": "Prefer the supported vendor image with patched Alpine libraries; retain as unresolved until vendor/call-path evidence closes it. Separately address the verified JRE CA alert."
+      }
+    }
+  ]
+}
