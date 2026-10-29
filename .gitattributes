@@ -1,0 +1,2 @@
+# Unified-diff context prefixes precede Go tabs; preserve the authenticated patch bytes.
+orderflow/infrastructure/images/grafana/dependency-update.patch whitespace=-space-before-tab

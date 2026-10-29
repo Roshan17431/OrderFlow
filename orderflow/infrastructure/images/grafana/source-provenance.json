@@ -1,0 +1,26 @@
+{
+  "sourceCommit": "3c98af3ba0773ad12a8a54b1faec7dc62d8d6725",
+  "sourceTree": "27ddaf5bf75e5301dc14f6f5b94db14e5f567a12",
+  "sourceArchiveSHA256": "f3649301d9b20d046b8d30fdd350df8c7fb9a8ad7c56e9bf3811008d2ae3a18f",
+  "dependencyPatchSHA256": "acd062305fbe34b7b81c6ada0082e49bf6d713f6199caf33893765488adf3d3e",
+  "originalRootGoModSHA256": "c98c07a7faf0273ddfcee9f3395ddbad417b18540e5ff6bae5c3335f8f1dbd07",
+  "patchedRootGoModSHA256": "acae954bffa0b9aea56a03fe9bf7a3ba785857a34f2e1792ee40492e7553574c",
+  "originalRootGoSumSHA256": "43eb8fab21ddfedcd7c7e450ccc0a5580fc3a05727ba0f320e78a6ef6e6b5f65",
+  "patchedRootGoSumSHA256": "187290622ea4dff4133726d762eea68855e732cefd52a9ac553c884bb407c184",
+  "originalGoWorkSHA256": "85f032cb2decb70f46a48486903cb54e3067e96fe0afb1f80d09f21df2b65969",
+  "originalGoWorkSumSHA256": "dfc18031ec8b00eaf8d05f2662fdf939763d2e1065a6efd63eed529d2cc058d7",
+  "goJose416Sums": [
+    "github.com/go-jose/go-jose/v4 v4.1.6 h1:sNRkftxFJxwsILiQukqp5z83QBSmntVwmgRY7AqBDO4=",
+    "github.com/go-jose/go-jose/v4 v4.1.6/go.mod h1:x4oUasVrzR7071A4TnHLGSPpNOm2a21K9Kf04k1rs08="
+  ],
+  "sourceDateEpoch": 1793099935,
+  "builderAMD64Manifest": "sha256:bff16a94c0b4b6d9642581e2a3aa81beb3edb940b2f5a3aac1d22c6a68cb7747",
+  "runtimeAMD64Manifest": "sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+  "sourceAuthentication": "Official GitHub verified signed release commit; annotated tag unsigned; all21753 archive blobs matched exact commit tree. Archive SHA256 locally computed/pinned, not vendor-published checksum.",
+  "sourceURL": "https://codeload.github.com/grafana/grafana/tar.gz/3c98af3ba0773ad12a8a54b1faec7dc62d8d6725",
+  "builderIndex": "sha256:d200d2dd76b03a99b52651fd1325aff7dcd35422c35c01bac56571b0507f3deb",
+  "buildProducedVerifiedArtifact": false,
+  "buildStagePlatform": "BUILDPLATFORM; local builder linux/arm64, output linux/amd64",
+  "assessmentStatus": "DRAFT_NOT_APPROVED; initial build timed out, subsequent links canceled; no image produced, scan/runtime/rollback NOT RUN",
+  "attemptEvidenceCache": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28"
+}
