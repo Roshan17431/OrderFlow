@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "status": "AUTHENTICATED_UPSTREAM_SOURCE_AND_REVIEWED_BUILD_INPUTS",
+  "asOf": "2026-10-28",
+  "vendorLatest": {
+    "tag": "v1.12.1",
+    "releasedAt": "2026-07-14T12:34:45Z",
+    "releaseURL": "https://github.com/prometheus/node_exporter/releases/tag/v1.12.1",
+    "indexDigest": "sha256:1b4e4438faca4dd7e001dd445d161a4a2091b0fededa84093b3a8dfeae1f1be0",
+    "fixedStableVendorArtifactFound": false
+  },
+  "source": {
+    "repository": "https://github.com/prometheus/node_exporter",
+    "tag": "v1.12.1",
+    "tagObject": "fc12f2c0ca65e65f046a5583bbcaf996a578afb4",
+    "commit": "6044da783597cc3b57aef7580ddcdcff58a4ee99",
+    "gitTree": "9ede8536809e9659b4b19d0fc43ac4222c4b9135",
+    "archiveURL": "https://codeload.github.com/prometheus/node_exporter/tar.gz/6044da783597cc3b57aef7580ddcdcff58a4ee99",
+    "archiveFile": "node_exporter-6044da7.tar.gz",
+    "archiveSHA256": "cfec7478aa9bfd011f29df084584b7c7b68dfef85a24d28e9d6d5f88224f83c3",
+    "upstreamGoModSHA256": "0e4614c617f16e308698ed1afdd0f0f055b119d4cdf015b336c095eb35fa34ed",
+    "upstreamGoSumSHA256": "e9457fad10a31b707ebfb68dc8378ec71f3271d04faf84f7ec8f9d231d81ea57",
+    "signature": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEEoFiTUofnXYMugU5GxkayPJ4yRfEFAmpWJbYACgkQxkayPJ4y\nRfH0tQ/+ILVXEc6yzYGN3BT0ajCalx5gpg2OdqaIfRUeOEI1A+1bS9wF/bnbh7vb\naQAHLlThgffeGqi2UgKIPNw666376CaGENmuLVOxukQcuBUeIIcjUtMwHRizDG5P\n0YXA6Ff4WuCJpZJFneddL++ThtQiHfyNmu9MHdE9NqniT81gBNO9LXwu8Lqvoef8\nHGtdkhmPb/jO2Yma/gD5Eo/Y1Jn5OO72qA299X9FgMfNfWxsCz2pOewskEl3gq74\njxSMRPD6UzRB0p1g/sH9i1kjtuXnsh418bQMXCMCI6wJI/MD+VNT5cgAAS2nc37T\njYGCFIXSZ6LUKvFsKY7Gy7xV+vSZpiL3meSg9nNjUaEYfrU6tF3ytLWlExpMoHll\nBKMePafV+neQdKv51pB2ts6+OzZ5NogGdRRFYER8a7EGI/E853XriMC//kHlE0UB\nATSmuCwsFs7ZfGMU0B3S4Q9DV8mVl0XzX3k/6FKp9P7fdvx0GXLnE1X7fFXu0YyE\n69ykmVobwOdKeEeOwzSQG44l8fXP9RFqLKxr4uW2ZGnG9c48vMH7DPc9IgfgpERU\nNsKXB4sOFZ3m4tpRCSZIjNl0fI7lLVLS6J31doR9pdTazri6EvKIw03pECgTNRpI\ndNUIdWgCoqh9Y0pyifxWmtjeZy0bEo30/oE+cm2pBkuFq7FxJFg=\n=Wa6u\n-----END PGP SIGNATURE-----\n",
+      "payload": "object 6044da783597cc3b57aef7580ddcdcff58a4ee99\ntype commit\ntag v1.12.1\ntagger Ben Kochie <superq@gmail.com> 1784030646 +0200\n\nv1.12.1\n",
+      "verified_at": "2026-07-14T12:04:14Z"
+    },
+    "authentication": {
+      "tag": "fc12f2c0ca65e65f046a5583bbcaf996a578afb4",
+      "tagSHA1Reconstructed": "fc12f2c0ca65e65f046a5583bbcaf996a578afb4",
+      "commit": "6044da783597cc3b57aef7580ddcdcff58a4ee99",
+      "apiTagVerified": true,
+      "apiTagReason": "valid",
+      "expectedGitTree": "9ede8536809e9659b4b19d0fc43ac4222c4b9135",
+      "archiveGitTree": "9ede8536809e9659b4b19d0fc43ac4222c4b9135",
+      "archiveTreeMatchesCommit": true,
+      "localOpenPGPRsaSignatureValid": true,
+      "verifiedSigningKeyFingerprints": [
+        "A058935287E75D832E814E46C646B23C9E3245F1"
+      ],
+      "signatureHashAlgorithm": "sha512",
+      "keySource": "https://api.github.com/users/SuperQ/gpg_keys",
+      "keyTrustScope": "Key HTTPS-bound to official signed tag maintainer; GitHub API independently reports signature valid. No pre-existing local trust anchor or gpg installed.",
+      "commitSHA1Reconstructed": "6044da783597cc3b57aef7580ddcdcff58a4ee99",
+      "commitObjectMatchesSignedTag": true,
+      "commitObjectSource": "git fetch --depth=1 --no-tags https://github.com/prometheus/node_exporter.git refs/tags/v1.12.1",
+      "rawCommitTreeMatchesArchive": true
+    },
+    "commitObjectFile": "commit-object.raw",
+    "tagObjectFile": "tag-object.raw"
+  },
+  "builder": {
+    "image": "library/golang:1.27.3-alpine3.24",
+    "indexDigest": "sha256:d200d2dd76b03a99b52651fd1325aff7dcd35422c35c01bac56571b0507f3deb",
+    "amd64Manifest": "sha256:bff16a94c0b4b6d9642581e2a3aa81beb3edb940b2f5a3aac1d22c6a68cb7747",
+    "config": "sha256:f0f96555233b6c3b36fd9b525e8d2abcfe6226c74b499bcc6702b49e0ff3fe3c",
+    "runtime": {
+      "User": null,
+      "Entrypoint": null,
+      "Cmd": [
+        "/bin/sh"
+      ],
+      "Env": [
+        "PATH=/go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "GOLANG_VERSION=1.27.3",
+        "GOTOOLCHAIN=local",
+        "GOPATH=/go"
+      ],
+      "WorkingDir": "/go"
+    },
+    "created": "2026-10-21T22:58:12.197499363Z"
+  }
+}
