@@ -5,6 +5,7 @@ TLS/ACME disabled only in the in-memory test config, not the deployed Caddyfile.
 """
 import http.server
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -14,7 +15,7 @@ import urllib.error
 import urllib.request
 import uuid
 ROOT=Path(__file__).resolve().parents[3]
-IMAGE='caddy:2.11.7-alpine'
+IMAGE=os.environ.get('ORDERFLOW_CADDY_TEST_IMAGE', 'caddy:2.11.7-alpine')
 
 class Echo(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -36,7 +37,10 @@ threading.Thread(target=server.serve_forever,daemon=True).start()
 name='orderflow-phase10-proxy-'+uuid.uuid4().hex[:8]
 with tempfile.TemporaryDirectory(prefix='orderflow-proxy-') as tmp:
     tmp=Path(tmp)
-    r=subprocess.run(['docker','run','--rm','--name',name+'-adapt','-e','DOMAIN_NAME=orderflow.example.invalid','-e','ACME_EMAIL=operator@example.invalid','-v',str(ROOT/'infrastructure/caddy/Caddyfile')+':/etc/caddy/Caddyfile:ro',IMAGE,'caddy','adapt','--config','/etc/caddy/Caddyfile'],capture_output=True,text=True,check=True)
+    # Bind image-declared volumes so --rm never deletes anonymous Docker volumes.
+    for directory in ['data', 'config']:(tmp/directory).mkdir()
+    state_mounts=['-v',str(tmp/'data')+':/data','-v',str(tmp/'config')+':/config']
+    r=subprocess.run(['docker','run','--rm','--name',name+'-adapt',*state_mounts,'-e','DOMAIN_NAME=orderflow.example.invalid','-e','ACME_EMAIL=operator@example.invalid','-v',str(ROOT/'infrastructure/caddy/Caddyfile')+':/etc/caddy/Caddyfile:ro',IMAGE,'caddy','adapt','--config','/etc/caddy/Caddyfile'],capture_output=True,text=True,check=True)
     config=json.loads(r.stdout)
     config['logging']['logs']['log0']['writer']['filename']='/logs/access.json'
     # Replace only listener/TLS/upstream addresses. Preserve route handlers,
@@ -55,7 +59,7 @@ with tempfile.TemporaryDirectory(prefix='orderflow-proxy-') as tmp:
     replace(config)
     (tmp/'config.json').write_text(json.dumps(config));(tmp/'logs').mkdir()
     try:
-        subprocess.run(['docker','run','-d','--name',name,'--memory','128m','-p','127.0.0.1::8085','-v',str(tmp/'config.json')+':/etc/caddy/test.json:ro','-v',str(tmp/'logs')+':/logs',IMAGE,'caddy','run','--config','/etc/caddy/test.json'],check=True,capture_output=True)
+        subprocess.run(['docker','run','-d','--name',name,'--memory','128m',*state_mounts,'-p','127.0.0.1::8085','-v',str(tmp/'config.json')+':/etc/caddy/test.json:ro','-v',str(tmp/'logs')+':/logs',IMAGE,'caddy','run','--config','/etc/caddy/test.json'],check=True,capture_output=True)
         port=json.loads(subprocess.check_output(['docker','inspect',name]))[0]['NetworkSettings']['Ports']['8085/tcp'][0]['HostPort']
         def request(path, headers=None, data=None):
             h={'Host':'orderflow.example.invalid'};h.update(headers or {})
@@ -75,6 +79,7 @@ with tempfile.TemporaryDirectory(prefix='orderflow-proxy-') as tmp:
         assert h['x-forwarded-for']!='203.0.113.5, 1.1.1.1' and ',' not in h['x-forwarded-for']
         assert h['x-forwarded-proto']=='https' and h['x-forwarded-host']=='orderflow.example.invalid'
         assert h['x-correlation-id']=='fixture-correlation'
+        assert h['authorization']=='Bearer HEADER_SECRET' and h['cookie']=='secret=COOKIE_SECRET'
         start=time.monotonic()
         with request('/api/notifications/stream') as r:
             assert r.readline()==b'data: first\n' and time.monotonic()-start<.8,'SSE was buffered'
