@@ -1,0 +1,1407 @@
+{
+  "assessmentDate": "2026-10-29",
+  "head": "a1536d32cee31d6c1ea2ac7710ebca031bdeed2d",
+  "status": "VERIFICATION_SET_NOT_DEPLOYMENT_APPROVAL",
+  "images": [
+    {
+      "name": "service-registry-arm64",
+      "image": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:1045491507fd8c51a3429ad7b122d57306ffd1a9acf2e6e6625ceaa77d8648b2"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 174,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:4b2ac4def2fefabb422ed84ed19d117466d31f46e9bc0318bc602d7160a60b12 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 136,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "api-gateway-arm64",
+      "image": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:8f7f1f6ffe9e35e13717c3615af3cbaa4cefad97c7bab6f9015068fa947907b3"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 198,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:435e13fe502b19ee63d2ab1af3baa766027054f9c4fa3c6c81776f35ffb1ea98 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 160,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "auth-service-arm64",
+      "image": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:4fcee307cab189f63d98e1c37dc284ec7278ea8af34c2a4184244631e141a52f",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:eba8c6836a88d8e04f2821facb69428ed405dfaa7f8105bb026a2225a2415380"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 224,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:68cb0a9313ce0d5af5ee5862215902ee4cb303482a055930a5766dca2778ca3f (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 186,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "product-service-arm64",
+      "image": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:5e983ff8c2efb89cb9394a0d18d6a899fb7ac280123985836bdaacac7aec0753"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 205,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:2c7306caeb35d4f7cb505e9f818cdbf7878104a530db639d801debaa7a743499 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 167,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "cart-service-arm64",
+      "image": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:db80ab38a0918af231e3e353306a4c592987a270c62e55aa8a8d62587926445b"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 196,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:2e5d573ed8703d78f8e5096aa8ff43caeec03ffc84620c3640c5ba33af7c62be (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 158,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "inventory-service-arm64",
+      "image": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:d5a991fa0ecddd573c2587ae8d8a1409b68c12b7a1bdbe19844866fc6aa42445"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 231,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:fc4fb132887c3dd461bc7ba9d4ad28362959b5348c2d0fe05d8d5a274d4c616a (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 193,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "order-service-arm64",
+      "image": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:920f9422921344260bc214829aae8467fb627d825f03cd0147191b99ddf6d6d8"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 231,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:5026980cfd93d6a9274f8c3bb5f7c8454797835fe7c6a34707863b8d55e1e40d (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 193,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "payment-service-arm64",
+      "image": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:3ada4bec747d3536f39a29fb66a4d945c2fb02f5e60ee2026f10d37d5d8c6825",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:23b25a974c10eee043296be4e1561366d2ed640459cdaceefe2f6bbb3636cd88"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 231,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:7cadcfe69ee2e2276dc2e1d1583d13c5b43d659afe528e69ebcf669a783704f6 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 193,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "delivery-service-arm64",
+      "image": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:94c018c173dfefad494985ffd6aea228bb0f34bca831bdc31c26be3a5fbebff3",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:41d4d1f5dcd2f403d8c8bcc912ed6a1fac5c0c4aec02e64467f5022fd14dbf22"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 213,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:a70f7ae9cf8b65d692f65932f70f033d25fd88b47f27e955c5d76e4e67473cc2 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 175,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "notification-service-arm64",
+      "image": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:94c018c173dfefad494985ffd6aea228bb0f34bca831bdc31c26be3a5fbebff3",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:3c8f54fbc4a5696efc2998f8013fb74587b5f9596e7731b113b5078dae92177b"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 213,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:38e78b98dac54cea028b702bdefb6d754d898a3d932df73de3539351cb9094c3 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 175,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "operations-service-arm64",
+      "image": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:40b130fda9ac713556d0e123eb14e54181cf097ea8c042cde7d21e6ea8ee9e54",
+            "sha256:94c018c173dfefad494985ffd6aea228bb0f34bca831bdc31c26be3a5fbebff3",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:435341ecc4dbc6dc75128baeeb821f0b26f616a682de921c943f3996be44b347"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 212,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:d6b28d7ef1cbfbd471da7ac3e8cf30ff8586e76ad70ecfaf39f5114dddecb4a1 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 174,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "service-registry-amd64",
+      "image": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:c79c255ccd46eaa1f669d285c0735842a26e7b5944dc44c793d5ef87d7b3a293"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 174,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:0d646920c02ded52c3628bda472059f6253330a68df66a440306adfead01035a (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 136,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "api-gateway-amd64",
+      "image": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:8cdf7ec8ce52b1d04909d2de3fbbf5582468cac91febf467685762ac0fbb3a2a"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 198,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:3999c78fec9495b1fe4900369b161516156fe7bbbf5099f036246c7d775dfaa3 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 160,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "auth-service-amd64",
+      "image": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:8da58e8dbdfa0f63ada6ec873075384b2b27ccc6907b290302541d33adb3816b",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:dfd8fbb8872a11c6e27fb2e6b45ea37a757e1260ca2fa4fea06c073ce44e2b4c"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 224,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:eee21c962d83bcd457ec446371e0e8b16e7639bd6b324cdb84fbe894c6debd4f (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 186,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "product-service-amd64",
+      "image": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:6795bed56d552cc7e2c8754b19384854520a4b80ffba752db4809aa1346d6ae7"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 205,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:907a0f9c7e08a3c4feaa44d427f09f5717ac88ca91d8a1baad36ae6ca7d4a260 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 167,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "cart-service-amd64",
+      "image": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:3e95613412890756524545dbb69fdf7a3e9c143b8be8079af1c9520a27b09081"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 196,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:6c49a0384fe7046dd93c8e6ba29f97725613696e1286134acd28f8e547f2582d (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 158,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "inventory-service-amd64",
+      "image": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:dafa13c471d50ea8023e63b0b4a3b3d6b02b8bb036227fe58eebc6accee36906"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 231,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:69601dec6de4d5f89654de97ae4380f106a0bdc9f3c1387438b99229b4638219 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 193,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "order-service-amd64",
+      "image": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:34b6ac99b37b6177ecf2cf5ddfc236d84dda3048db02412a89242dc32e56fab4"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 231,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:89d55ddbae960efcd8bf352e8dcfc8f6d181e402af6312e73431006667321131 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 193,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "payment-service-amd64",
+      "image": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:2f01e6cbf9f715b25534271244a27ba76b70f756a0c8888231ce9ab1824d2521",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:1e6a9dc99fa7fd9b8af65b1d44ce51a9f9df792337121b0d994d2639106832b7"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 231,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:c9986f846b762aeeeed1696e5143a8d14962e2a0ea9c8823151755a80282967e (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 193,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "delivery-service-amd64",
+      "image": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:edb30f1bc3b8c363a928c068ec119c1575f5c6ce2db19e1745ac7fe5e0f2ea9f",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:6a854243241ea5c5fa8e34d44bffccfe3fd9ae9915f4deb64921d966ace967c3"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 213,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:a04d5d7193b60d9721b466033238364770fd52de613b460f26ccfb31afea9fe6 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 175,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "notification-service-amd64",
+      "image": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:edb30f1bc3b8c363a928c068ec119c1575f5c6ce2db19e1745ac7fe5e0f2ea9f",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:6c4fbdb2b0c25ec0ef3b1e0a0e3cbd7820d471310e327b92877a3dfc8862572a"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 213,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:fd5597e7b16ccd6b3c228cee398f1da59863d3c6b6d4b90637309ea732af403c (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 175,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "operations-service-amd64",
+      "image": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:1ca67dfe5949e7ed8abb60cb47224b7645ee0c0a3e8f7d58537404df88846c37",
+            "sha256:edb30f1bc3b8c363a928c068ec119c1575f5c6ce2db19e1745ac7fe5e0f2ea9f",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:12c950eb07d9d0b1d3ad203261b11dc60cb3d4450ae89760099a9ab4e080e3e3"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 212,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:e4d22e71cd2836683e8cbdfcf804734e73b2c4159a8a000ab66783ffd7d327ef (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 38,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 174,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "frontend-arm64",
+      "image": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+      "platform": "linux/arm64",
+      "inspectedIdentity": {
+        "Id": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91",
+        "Architecture": "arm64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:a278e6f39431cd0ed74238a3d377893ad0d905d68b676bf9a65529080669756b",
+            "sha256:ed2fa3bfce0851e5f40913f6f664cf1755980f7e2a8822973d0fe15873735b38",
+            "sha256:0ca452b73f4b88c1eaade3446cbb1139c5ec4063aeea4fe3b6e42cc44a8f54c1",
+            "sha256:e68a59dbeb63b908a32be5877e54faccae35909fc59e6c39ffc5d213be6b9245",
+            "sha256:ade62e54a2ae3033a8999be71fe4adeb1790d2ee3624ff0d2a671464b0e4b761",
+            "sha256:83d80b39e94dfece977ef0c0fd949c60c2fe80a549301d4cdfbd810bb70e8dba",
+            "sha256:db8bd49f383807e5027d83edb08afd20d7a0dd474830742520aa02544931f3c5",
+            "sha256:d2ad5d00e66ffea45119b95881e45dc2a48e4414c71a0746c33be26e2ac8577b"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 43,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:0eae0a7a44091e81e3505dceb23c5e4212dcb451afb25b15aae099a9d8ccbb91 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 19,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Node.js",
+          "type": "node-pkg",
+          "class": "lang-pkgs",
+          "packageCount": 24,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "frontend-amd64",
+      "image": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:30ad2d1597a9c97acebab3677fb203383cecf282375bb030d114b01f98a1adb4",
+            "sha256:7f78e22f72fbece43b0a1236ad7b98579faaa411ce7445c98d8f6bfc7f06b1bc",
+            "sha256:92ef3b67b69bfad75b1f2a2df8279578ae15f7282b28f5d29bb4a85709285ecd",
+            "sha256:ccc17352605ea0d54bad32ba5631292fc16d971d285c16b2d3034797bb5def2c",
+            "sha256:3d1d6e96288db4caf236a5ba69419f37336ade42cd27bee0f763481798ad9d21",
+            "sha256:8387abc3ccd7bb0eebc1b69ca739447543064a8f7134ac302accf0f960aff8c2",
+            "sha256:86f8371d9ac4d6b87cc8daec75bf2185c9c9ff1c7b63081b673fb26de18f0238"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 43,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:beca3a85d09c24d74b1357a499e4ae6afca88f455bb6aa6ce0a1d3f1452d7872 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 19,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Node.js",
+          "type": "node-pkg",
+          "class": "lang-pkgs",
+          "packageCount": 24,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "postgres-amd64",
+      "image": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:6a2e324ebe59af6031c4c1cd96c1d5072c2ebc36563d2196365e43b8297c062d",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:01b30c4f9334fd3fc87f0dae6409f8389bfd9080bc90483b5f82538c4bfa6bad",
+            "sha256:ef85c285f4d94f725a18d59861425fae4cd4292411a266f0f7c996da56b12241",
+            "sha256:2031b0840ad47e9c1a3ba38eeeeb0394f4669912a9ceb7e46a6e1010481c78e4",
+            "sha256:f9c01bd070e92a57275842dd4404275777ae43d3a1441535203cf8c07cc5dbe6",
+            "sha256:186e8576ba4680c93663d578a56d5fc911d90fceea963360f98113bd82c06352",
+            "sha256:ab84077a90d6d470fdce1b260a4933e0b4f27dfe1e2c31937330f3b122d37b81",
+            "sha256:8ba3d773b4b316920969c4f6101ea82b22bcab55c482b8428f92509405eef925",
+            "sha256:c83b0ed6bc6c32a7786e695d07e8f2dadcbf7be47fe175446dcc176b0cedc78e",
+            "sha256:adde673549347091759744c22cc7a2349c472bf16e1af2b5e05c67ae2716dd92",
+            "sha256:f695cd7dfa486ca674e5e37eff6876eef9d140d3442f1cbc76123bb358a6dbea"
+          ]
+        },
+        "RepoDigests": [
+          "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28"
+        ]
+      },
+      "packageCount": 49,
+      "vulnerabilityCount": 61,
+      "vulnerabilitiesBySeverity": {
+        "MEDIUM": 31,
+        "UNKNOWN": 1,
+        "CRITICAL": 2,
+        "HIGH": 25,
+        "LOW": 2
+      },
+      "results": [
+        {
+          "target": "postgres@sha256:cbf42f0edc946c0bc1b8eeed62403734e1f25dc67a3491455d07a92fdb558b28 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 45,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "usr/local/bin/gosu",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 4,
+          "vulnerabilityCount": 61
+        }
+      ]
+    },
+    {
+      "name": "redis-amd64",
+      "image": "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:98c6ca8f397f86e469be752c3e7ed5eb8b17f2479840cb69a2e413037038e9f4",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:41058dd4c122275500b8ee145e3ff1692ea26c7c568f55c00caf2878e7c61db0",
+            "sha256:338f8c63ebcfdff3e439326ea5be5e6a0f24bfbfe2503c1242639415081c6651",
+            "sha256:e25a6d0890ccf5755b416dfbab97d7f1ddeb121a8cd864ff094fb39a8bf489a0",
+            "sha256:f39b22d10b312b7d0b1cbac4d917fac8a645384a79e5f769aedf9912ed8e0d58",
+            "sha256:c460815394691dea2b5ff912a7e7cb1d17dd587fc00a989d91ecafb814c55da5",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:b0d9ff30ecc74f02994b20117103e44895e889dfde9b4b84041c278708e136a3"
+          ]
+        },
+        "RepoDigests": [
+          "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9"
+        ]
+      },
+      "packageCount": 19,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "redis@sha256:1cf73a2f04808e55a8bd2f5706c2aa0ebb0f71938f93deb7af79f48311cd5cb9 (alpine 3.21.9)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 19,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "caddy-amd64",
+      "image": "sha256:716553983668bb5c11ee1fd653814a9eba175a1879f86cab7fc5cdf7cfbbe9ce",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:716553983668bb5c11ee1fd653814a9eba175a1879f86cab7fc5cdf7cfbbe9ce",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:54ea9baa1bbd7651dbda5c61569dad60fa601c73e5b784e154e8ba0f314e84fd",
+            "sha256:ffe3f66a572836b76678fc7bd0f6cc19a2ef8585cca6fe0ba7c2e1037d2e1159",
+            "sha256:4bb692fe970995252617470d76a9c95d18cd822a52a59558822b5f1d29d6cf2f",
+            "sha256:d08f1a0adb5011e488b16040328bb140738ff8248022d359170147464b656e5b",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:b06089d597eca843a5c379b2717e50f354002e1cf6073a4941f04b49f098db46",
+            "sha256:068d1e4ef93f6bf9e9e00716380f300c4b8f41a0040785747d7c21ecea6bd4c9"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 194,
+      "vulnerabilityCount": 3,
+      "vulnerabilitiesBySeverity": {
+        "MEDIUM": 1,
+        "HIGH": 1,
+        "UNKNOWN": 1
+      },
+      "results": [
+        {
+          "target": "sha256:716553983668bb5c11ee1fd653814a9eba175a1879f86cab7fc5cdf7cfbbe9ce (alpine 3.23.7)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 32,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "usr/bin/caddy",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 162,
+          "vulnerabilityCount": 3
+        }
+      ]
+    },
+    {
+      "name": "prometheus-amd64",
+      "image": "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:aa34e3131bf0650960e1ec314a32f7295b019a881db18dda84d319e96c3d68df",
+            "sha256:58edf90fd8b3580d1bdfb1819eb4baef9e6479a78a9fdf23bf53d634f8d0d866",
+            "sha256:2fc31feccedf781f9ba10f1dc31b7a5c5f99806b228dc0926e491e7513e59970",
+            "sha256:fb12eacba20f7d9d036ae50c67af3c0793f877d9c4757285d0a82897061a5938",
+            "sha256:770fd9406b0477f9bbb8860e153031830c5eb5390dd125c792cc193061d0be52",
+            "sha256:51a0ba75bf5b6876f337292b5f1e564296d90f1dd744629102d721e526c941b3",
+            "sha256:fe8eb306fc8273c003cfeb5d354b87030d265fd0836eb4d093480775d1d6fdcc",
+            "sha256:963ad0c2213af92cbd5febf801523b700a1b775a19d054e1ab2f1f560d969825",
+            "sha256:ee396323de68e4c6c6a83038819edb7cc8c6511ac9e878216b00b2537a7b1362"
+          ]
+        },
+        "RepoDigests": [
+          "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae"
+        ]
+      },
+      "packageCount": 439,
+      "vulnerabilityCount": 6,
+      "vulnerabilitiesBySeverity": {
+        "UNKNOWN": 6
+      },
+      "results": [
+        {
+          "target": "bin/prometheus",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 241,
+          "vulnerabilityCount": 3
+        },
+        {
+          "target": "bin/promtool",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 198,
+          "vulnerabilityCount": 3
+        }
+      ]
+    },
+    {
+      "name": "grafana-amd64",
+      "image": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:5a2f6d01fcd7ebd17327a817cb40fd0dc2522ad396d7240905d56d4410fa3585",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+            "sha256:72e8f79558e46c37fc0ac2b980789f98a7762aac32766732874d7167888236ff",
+            "sha256:daf8326594455c17bc0e61d2db243ea1e89a62614d47c83283019fea869442c4",
+            "sha256:2b0b16299438b760cb419dcfabaaedc0911a89c7fe42bb9f5d6435401e642e79",
+            "sha256:fb6882e3799ab9323f1f7294f079898c06aa2265eca62c28bf6ea381808df333",
+            "sha256:eb28a914737f7fa586c93da17ad50afbc55940dde1cbfff40b72fbdc9127266d",
+            "sha256:4d009b78478ab1856704762dd2c92025009dc569f92edc8ebb490afc121bdfe3",
+            "sha256:a7f5d4a61866e4b63c94decfbd1f0c277b645c85b13c7cb40e072bb128f48c80",
+            "sha256:9a3231137c948659e4a6b194a75ed3eccf8739b7b43fc8631af67fe986d0b6da",
+            "sha256:cc4707b5dea145af3095f9140a245f9b2413e9bd87ecdeec3c2936c1c7197f00",
+            "sha256:16f4475d93cd645772491197be672281f2dc7865e36cd39752f5cde98dc16ccc",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:543d853a3766b6668e323ae9c56c01ac9e136a926f5f009a223f50ea3737da3a"
+          ]
+        },
+        "RepoDigests": [
+          "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89"
+        ]
+      },
+      "packageCount": 600,
+      "vulnerabilityCount": 6,
+      "vulnerabilitiesBySeverity": {
+        "HIGH": 3,
+        "UNKNOWN": 3
+      },
+      "results": [
+        {
+          "target": "grafana/grafana@sha256:1b59d2076a5e08e0e9929a1225f37869ee7719f4a11c004fbfcfa8b772858e89 (alpine 3.24.3)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 33,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Node.js",
+          "type": "node-pkg",
+          "class": "lang-pkgs",
+          "packageCount": 15,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "usr/share/grafana/bin/grafana",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 540,
+          "vulnerabilityCount": 6
+        },
+        {
+          "target": "usr/share/grafana/bin/grafana-cli",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 6,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "usr/share/grafana/bin/grafana-server",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 6,
+          "vulnerabilityCount": 0
+        }
+      ]
+    },
+    {
+      "name": "node-exporter-amd64",
+      "image": "sha256:5ff191eabbc68ae1f9a8fb3f5395258ddb6e2c6dc6a2e94facfe73dcb4206273",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:5ff191eabbc68ae1f9a8fb3f5395258ddb6e2c6dc6a2e94facfe73dcb4206273",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:aa7b79d243076cc760c0b06dd535bb163cb216cb4fcf4d38019ffee58d862cc6",
+            "sha256:b72b848ff706c7d193e04254f0007214a04d63c3854b190545535cbef8fffab2",
+            "sha256:8c4ca5f8e36f62b6ed1033d21822349ed71549d5dd4e54cf1136bd5a42ad07d0",
+            "sha256:9fc042cfe80fe02e96742c698c785ae4a320cf4ab22a31c0a9715404244fd5b1"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 48,
+      "vulnerabilityCount": 1,
+      "vulnerabilitiesBySeverity": {
+        "UNKNOWN": 1
+      },
+      "results": [
+        {
+          "target": "bin/node_exporter",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 48,
+          "vulnerabilityCount": 1
+        }
+      ]
+    },
+    {
+      "name": "blackbox-exporter-amd64",
+      "image": "prom/blackbox-exporter@sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:e6f02b1a6c427e2a771fb33b42cb167dde3e5e8b3625e55e55aa20aaa018946d",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:aa34e3131bf0650960e1ec314a32f7295b019a881db18dda84d319e96c3d68df",
+            "sha256:58edf90fd8b3580d1bdfb1819eb4baef9e6479a78a9fdf23bf53d634f8d0d866",
+            "sha256:bb7b9c09b8692297cb82deb1d2068687974dc4135b8274b3a790742cf22885b4",
+            "sha256:eaab7ec8fc18668211bc97149c216de558b64a3aedd8f3c39f063b54cc3834fc"
+          ]
+        },
+        "RepoDigests": [
+          "prom/blackbox-exporter@sha256:66eae352a79e6f677aeddd8c25a9bdb017586dc5fbd230f22329213d891f94bd"
+        ]
+      },
+      "packageCount": 42,
+      "vulnerabilityCount": 3,
+      "vulnerabilitiesBySeverity": {
+        "UNKNOWN": 3
+      },
+      "results": [
+        {
+          "target": "bin/blackbox_exporter",
+          "type": "gobinary",
+          "class": "lang-pkgs",
+          "packageCount": 42,
+          "vulnerabilityCount": 3
+        }
+      ]
+    },
+    {
+      "name": "kafka-amd64",
+      "image": "sha256:903985f89446dd332a1a1080fd7d4ef5f29e9872da0247657d88c5f05f4db62e",
+      "platform": "linux/amd64",
+      "inspectedIdentity": {
+        "Id": "sha256:903985f89446dd332a1a1080fd7d4ef5f29e9872da0247657d88c5f05f4db62e",
+        "Architecture": "amd64",
+        "Os": "linux",
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:74d97c428c51a828f9051a7a40a53ff1fc99e54fc30323ce36760701b0b7f711",
+            "sha256:baf1a350e0e1d00ceba2137c71230f7da7169c5c0abcae7c9f6c2d722cb6d94e",
+            "sha256:d87dbc49b44ca2d4171fe12f7dfcb9dbc62b4a43a9a0e34a26a7ae39498e7cf7",
+            "sha256:9248f3d0047d55db8f014b4fe149d51b85515efcbf6342449dd9c34a66cee9fc",
+            "sha256:d2abfe9c833160e132446b4a633f9f61a3ecbecbca128daa66bb0253e6f2f70f",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:94a2bee7309389672259383a82a46d0b9553c9f509283dd3e37ae519eafd09aa",
+            "sha256:d4d19199aaf63b4ed0d0be6e6305aad14d42fb324d2fc2faf7cc80fe9ef1fce9",
+            "sha256:b7761d21b9486b948da41292e1adca0d769c96e0b123c6ebe5227619f56d0e96",
+            "sha256:341ee2bb392f9f612e5f192c5566b5fd225be501a030ef0909a9cd3c8047199e",
+            "sha256:a448f4afe4695b146884decbc29c5dd7fe6919f2d0610c4ea84d7b8cdd1066bb",
+            "sha256:44ca284fb53936394538e8022ed2c54469ec094f0db8f6209ccfed86e5c9d2cf",
+            "sha256:8c2bca299609d4845a84172adbfc5cb99cce6792ec47d0836fc984c9017b6c5a",
+            "sha256:3967fb60d447b8379b12c4e620a08db7ed8ff604048455c5e146ea9adfc00645",
+            "sha256:910babe366489724acc6855e9f5d0c6087ca06ab0564101252ceccae1dc7dd06"
+          ]
+        },
+        "RepoDigests": []
+      },
+      "packageCount": 202,
+      "vulnerabilityCount": 0,
+      "vulnerabilitiesBySeverity": {},
+      "results": [
+        {
+          "target": "sha256:903985f89446dd332a1a1080fd7d4ef5f29e9872da0247657d88c5f05f4db62e (alpine 3.24.2)",
+          "type": "alpine",
+          "class": "os-pkgs",
+          "packageCount": 93,
+          "vulnerabilityCount": 0
+        },
+        {
+          "target": "Java",
+          "type": "jar",
+          "class": "lang-pkgs",
+          "packageCount": 109,
+          "vulnerabilityCount": 0
+        }
+      ]
+    }
+  ],
+  "customArtifactIdentityWarning": "Caddy/Kafka/node-exporter sha256 values are local config IDs, not published registry manifest digests. No ECR publication or populated deployment manifest exists.",
+  "rejectedGrafana13": {
+    "checkedAt": "2026-10-29T02:52:21.671067+00:00",
+    "tag": "grafana/grafana:13.3.0",
+    "indexDigest": "sha256:488984b716c0862639f91a698adbe2862677a5a07bad42da5f03f3030883b205",
+    "amd64Manifest": {
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "size": 2622,
+      "digest": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
+      }
+    },
+    "reference": "grafana/grafana@sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+    "sourceURL": "https://raw.githubusercontent.com/grafana/grafana/v13.3.0/go.mod",
+    "sourceDeclaredRelevantVersions": [
+      "go 1.27.3",
+      "github.com/go-jose/go-jose/v4 v4.1.6 // @grafana/identity-access-team"
+    ]
+  },
+  "grafana12Draft": "No built artifact; source draft only",
+  "databaseMetadata": {
+    "db": {
+      "Version": 2,
+      "NextUpdate": "2026-10-29T19:18:03.419608078Z",
+      "UpdatedAt": "2026-10-28T19:18:03.419608319Z",
+      "DownloadedAt": "2026-10-29T01:05:42.681709Z"
+    },
+    "java-db": {
+      "Version": 1,
+      "NextUpdate": "2026-10-30T01:08:30.264956187Z",
+      "UpdatedAt": "2026-10-27T01:08:30.264956307Z",
+      "DownloadedAt": "2026-10-27T17:48:33.284878Z"
+    }
+  },
+  "maintainedSourceBindings": {
+    "caddy": {
+      "infrastructure/images/caddy/go.mod": "4b449fb3ed4d9fd1c711d6b9a50d134af32cd982d061e4cf8a7e88d6d89ef774",
+      "infrastructure/images/caddy/Dockerfile": "1f4fdfb74032a013431fdd619de03b8fcccb808583b034c4072845282c98d5dc",
+      "infrastructure/images/caddy/go.sum": "b7737e46ff36faecafcb8bd2eef43e7eeb143bff6271b4501e91bf3bf1679f44",
+      "infrastructure/images/caddy/main.go": "b8eb1a79154025315c7a374951649162acc37084d9be39479f97c11b2db753b5"
+    },
+    "kafka": {
+      "infrastructure/images/kafka/Dockerfile": "0389c02c21937e95d9688938cbb0b6ba02e11963b97c267f3c4df5a5fb83bb0e",
+      "infrastructure/images/kafka/corretto-signing-key.pub": "6cfdf08be09f32ca298e2d5bd4a359ee2b275765c09b56d514624bf831eafb91"
+    },
+    "node-exporter": {
+      "infrastructure/images/node-exporter/go.mod": "57c83f68e6b65f17c4235ca6c2a6de2b55324ebc9806db6199d9abaf25f41d9b",
+      "infrastructure/images/node-exporter/Dockerfile": "c877744f62ce5e8efb7ccd608b4b22f0d915751e96955d0266dd449377ae5846",
+      "infrastructure/images/node-exporter/go.sum": "900eae667063c7b94f4fc994ced89cd41e4bec219a93ec743f20c330eee34f13",
+      "infrastructure/images/node-exporter/source-provenance.json": "cbd4c94329d317db7f49467e7919f16a36a90763040a7f0b32e7d831b4b2b5f5"
+    }
+  },
+  "applicationImageSourceBindings": "All22 backend prior inventory input hashes verified. Frontend source files byte-identical to task start; both prior image config IDs rescanned. See source review and October28 inventory."
+}

@@ -1,2 +1,4 @@
 # Unified-diff context prefixes precede Go tabs; preserve the authenticated patch bytes.
 orderflow/infrastructure/images/grafana/dependency-update.patch whitespace=-space-before-tab
+# CSV exports retain their original CRLF record terminators as audit evidence.
+orderflow/deploy/infrastructure-findings-*-2026-10-29.csv whitespace=cr-at-eol

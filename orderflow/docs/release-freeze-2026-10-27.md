@@ -1,5 +1,7 @@
 # Migrated release freeze and AWS approval worksheet
 
+Current follow-up: [October 29 infrastructure security remediation](infrastructure-security-remediation-2026-10-29.md) completes the original Caddy, Kafka and exporter remediation and records exact residual findings and runtime limitations. Grafana still blocks infrastructure security approval. The October 27 results below are retained as historical evidence.
+
 Assessment: **2026-10-27**. Decision: **BLOCKED**. The migrated source is committed locally and its unchanged Maven security gate passes. Newly executed container scans report unresolved findings, the additional Java-image library analysis is incomplete, and the retained JRE predates the current Java 21 patch release. These prevent AWS approval. Full real-backend acceptance remains **NOT RUN**.
 
 No Git push, image publication, AWS account operation, EC2 launch, Terraform apply, paid resource creation or DNS modification occurred. This worksheet authorizes none of those actions.

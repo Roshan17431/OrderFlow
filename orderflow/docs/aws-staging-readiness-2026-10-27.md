@@ -1,5 +1,7 @@
 # OrderFlow — AWS Mumbai staging readiness
 
+Current follow-up: [October 29 infrastructure security remediation](infrastructure-security-remediation-2026-10-29.md) records the patched infrastructure candidates, restricted initial Kafka codec scope and unresolved Grafana blocker. AWS approval remains blocked. The preparation results below are historical.
+
 > Historical preparation-task snapshot. Its uncommitted status, container-scan NOT RUN and preparation conclusion describe that earlier task. The subsequent [release freeze and approval worksheet](release-freeze-2026-10-27.md) records local commits, fresh scans and the current AWS approval decision: **BLOCKED**. No full-stack acceptance has run.
 
 Assessment: **2026-10-27**. Baseline HEAD: `4197fbe1095663f0dbc32d2705bf95b202fb2702`, branch `master`. The migrated working tree remains uncommitted. **READY FOR AWS STAGING APPROVAL** means preparation is ready for the approval checklist below; it does not mean AWS acceptance or production readiness has passed.

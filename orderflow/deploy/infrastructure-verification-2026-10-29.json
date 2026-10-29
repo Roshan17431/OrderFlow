@@ -1,0 +1,464 @@
+{
+  "assessmentDate": "2026-10-29",
+  "conclusion": "INFRASTRUCTURE SECURITY REMEDIATION INCOMPLETE",
+  "baselineHead": "a1536d32cee31d6c1ea2ac7710ebca031bdeed2d",
+  "comparableBefore": {
+    "total": 189,
+    "severity": {
+      "MEDIUM": 63,
+      "UNKNOWN": 21,
+      "CRITICAL": 6,
+      "HIGH": 53,
+      "LOW": 46
+    },
+    "uniqueAdvisories": 101
+  },
+  "comparableAfter": {
+    "total": 80,
+    "severity": {
+      "MEDIUM": 32,
+      "UNKNOWN": 15,
+      "CRITICAL": 2,
+      "HIGH": 29,
+      "LOW": 2
+    },
+    "uniqueAdvisories": 68
+  },
+  "historicalRawFindings": 174,
+  "trivyScansCompleted": 32,
+  "trivyZeroFindingApplicationImages": 24,
+  "trivyExitZeroMeans": "Scan execution completed; it is not a zero-vulnerability gate result.",
+  "backendTests": {
+    "unit": {
+      "tests": 226,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "integration": {
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "owasp": {
+    "dependencies": 165,
+    "findings": [
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "CVE": "CVE-2022-40159",
+        "severity": "MEDIUM",
+        "CVSS": 6.5
+      },
+      {
+        "dependency": "commons-jxpath-1.3.jar",
+        "CVE": "CVE-2022-40160",
+        "severity": "MEDIUM",
+        "CVSS": 6.5
+      },
+      {
+        "dependency": "kafka-clients-4.2.2.jar",
+        "CVE": "CVE-2026-41115",
+        "severity": "MEDIUM",
+        "CVSS": 4.3
+      }
+    ],
+    "scanInfo": {
+      "engineVersion": "12.2.2",
+      "dataSource": [
+        {
+          "name": "NVD API Last Checked",
+          "timestamp": "2026-10-29T01:10:21Z"
+        },
+        {
+          "name": "NVD API Last Modified",
+          "timestamp": "2026-10-28T20:00:11-04"
+        },
+        {
+          "name": "NVD Cache Last Checked",
+          "timestamp": "2026-10-29T01:10:21Z"
+        },
+        {
+          "name": "NVD Cache Last Modified",
+          "timestamp": "2026-10-28T20:00:11-04"
+        }
+      ]
+    },
+    "exceptions": []
+  },
+  "codecScope": {
+    "assessmentDate": "2026-10-29",
+    "status": "APPROVED_INITIAL_STAGING_SCOPE",
+    "approvalSource": "Direct user response to native codec scope question on 2026-10-29",
+    "approvalText": "Approve fresh-only staging with none/gzip/Java-safe LZ4",
+    "approvedStorage": "New empty Kafka storage for first staging only; initialization remains a separately checked first-install action",
+    "permittedCodecs": [
+      "none",
+      "gzip",
+      "lz4-java-safe"
+    ],
+    "applicationProducerDefault": "none; measured using the actual Kafka4.2.2 client on both architectures",
+    "excluded": [
+      "Snappy producers or records",
+      "Zstd producers or records",
+      "native LZ4 requirement",
+      "imported or existing legacy Kafka storage",
+      "external producers outside this scope"
+    ],
+    "securitySettings": "No change to read-only root, noexec hardened /tmp, UID or cloud JVM heap settings",
+    "rawMeasurementStatus": "COMPLETE",
+    "rawCompatibilityStatus": "FAIL",
+    "measuredPasses": {
+      "producerAndConsumer": 12,
+      "codecs": [
+        "none",
+        "gzip",
+        "lz4"
+      ],
+      "architectures": [
+        "linux/arm64",
+        "linux/amd64"
+      ]
+    },
+    "measuredFailures": {
+      "producerAndConsumer": 8,
+      "codecs": [
+        "snappy",
+        "zstd"
+      ],
+      "nativeLz4Diagnostic": "FAIL on both architectures; Java-safe Kafka LZ4 passed"
+    },
+    "evidence": {
+      "rawResultsCache": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/codec-matrix-1/results.json",
+      "sha256": "16b3c396d263804a2f57e1b3acec7cff33075b6d7ce479b0d6baf6dbce623268",
+      "rawProbeExitCode": 2
+    },
+    "limits": "This records an approved deployment scope, not a code-enforced Kafka codec allowlist. Do not connect other producers or import records. Revalidate and obtain a new scope decision before any change. Native failures are not resolved. No arbitrary legacy compressed-record compatibility is claimed.",
+    "awsProvisioningAuthorized": false
+  },
+  "binaryReproducibility": [
+    {
+      "component": "caddy",
+      "result": "PASS",
+      "firstImageConfigId": "sha256:716553983668bb5c11ee1fd653814a9eba175a1879f86cab7fc5cdf7cfbbe9ce",
+      "repeatImageConfigId": "sha256:716553983668bb5c11ee1fd653814a9eba175a1879f86cab7fc5cdf7cfbbe9ce",
+      "firstBinarySHA256": "c54ede2c6e90dc8e274c15d18a7d52b7cd72805057bc97c2e5399105ba820778",
+      "repeatBinarySHA256": "c54ede2c6e90dc8e274c15d18a7d52b7cd72805057bc97c2e5399105ba820778",
+      "scope": "Two actual builds; build stage cache disabled on repeat, dependency/compiler cache retained; binary reproducibility only, not time-dependent OS package layers"
+    },
+    {
+      "component": "node-exporter",
+      "result": "PASS",
+      "firstImageConfigId": "sha256:5ff191eabbc68ae1f9a8fb3f5395258ddb6e2c6dc6a2e94facfe73dcb4206273",
+      "repeatImageConfigId": "sha256:5ff191eabbc68ae1f9a8fb3f5395258ddb6e2c6dc6a2e94facfe73dcb4206273",
+      "firstBinarySHA256": "a02c1e2a5deea399ac276c85cbeb35262e290f18a9a445448a40b90a836d8826",
+      "repeatBinarySHA256": "a02c1e2a5deea399ac276c85cbeb35262e290f18a9a445448a40b90a836d8826",
+      "scope": "Two actual builds; build stage cache disabled on repeat, dependency/compiler cache retained; binary reproducibility only, not time-dependent OS package layers"
+    }
+  ],
+  "caddyTls": {
+    "status": "PASS",
+    "checks": 29,
+    "evidence": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/proxy-tls-reviewed/result.json"
+  },
+  "kafkaPersistence": {
+    "status": "PASS",
+    "evidence": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/kafka-persistence-attempt-2/report.json"
+  },
+  "exporterRuntime": "PASS scoped metrics/textfile/read-only/PID; native Linux host-root propagation and NIC correctness NOT RUN",
+  "grafana13Trial": {
+    "security": "NOT APPROVED;181raw,7CRITICAL,39HIGH",
+    "runtime": "FAIL: candidate OOMKilled=true/exit137 at384MiB; baseline12.4 login/assets/Prometheus query passed",
+    "restartAndRollback": "NOT RUN after candidate failed",
+    "evidence": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/grafana-smoke/orderflow-remediation-smoke-f7b7b186a9/results.json"
+  },
+  "fullCommerceAWS": "NOT RUN",
+  "frontend": "No frontend source change in this task. Fresh npm audits both0; prior138Vitest/10mockedPlaywright/lint/typecheck/build PASS retained, not represented as rerun.",
+  "commands": {
+    "backend-verify-2026-10-29": {
+      "name": "backend-verify-2026-10-29",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "clean",
+        "verify"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T01:04:38Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 318.65,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/backend-verify-2026-10-29.log"
+    },
+    "owasp-2026-10-29": {
+      "name": "owasp-2026-10-29",
+      "command": [
+        "./mvnw",
+        "-B",
+        "-ntp",
+        "-Psecurity-scan",
+        "org.owasp:dependency-check-maven:12.2.2:aggregate",
+        "-DdataDirectory=/Users/roshan/.cache/orderflow-boot4/2026-10-27/dependency-data",
+        "-DnvdValidForHours=0"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T01:09:57Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 224.18,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/owasp-2026-10-29.log"
+    },
+    "npm-audit-2026-10-29": {
+      "name": "npm-audit-2026-10-29",
+      "command": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-29T01:05:16Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.58,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/npm-audit-2026-10-29.log"
+    },
+    "npm-audit-production-2026-10-29": {
+      "name": "npm-audit-production-2026-10-29",
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev",
+        "--json"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/frontend",
+      "startedAt": "2026-10-29T01:05:16Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.58,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/npm-audit-production-2026-10-29.log"
+    },
+    "terraform-2026-10-29": {
+      "name": "terraform-2026-10-29",
+      "command": [
+        "bash",
+        "-c",
+        "/Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform init -backend=false -lockfile=readonly -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform fmt -check -recursive && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform validate -no-color && /Users/roshan/.cache/orderflow-toolchains/terraform-1.16.5/terraform test -no-color"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/terraform",
+      "startedAt": "2026-10-29T01:05:45Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 7.15,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/terraform-2026-10-29.log"
+    },
+    "static-policy-2026-10-29": {
+      "name": "static-policy-2026-10-29",
+      "command": [
+        "bash",
+        "-c",
+        "python3 -m unittest discover -s scripts/cloud/tests -v && python3 -m unittest discover -s scripts/deploy/tests -v && python3 -m unittest discover -s infrastructure/cloud/tests -v && python3 infrastructure/cloud/tests/kafka_codec_probe.py --self-test && python3 infrastructure/cloud/tests/kafka_broker_persistence_probe.py --self-test && bash scripts/validate-production-config.sh && bash scripts/security-scan.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T01:46:46Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 4.78,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/static-policy-2026-10-29.log"
+    },
+    "log-redaction-final": {
+      "name": "log-redaction-final",
+      "command": [
+        "python3",
+        "-c",
+        "import os,pathlib;os.environ[\"JAVA_HOME\"]=pathlib.Path(\"/Users/roshan/.cache/orderflow-container-remediation/2026-10-27/current-java-home.txt\").read_text().strip();os.environ[\"LOG_INPUT\"]=\"/Users/roshan/.cache/orderflow-infra-final/2026-10-28/log-redaction-clean-tests.log\";os.execvp(\"bash\",[\"bash\",\"scripts/verify-log-redaction.sh\"])"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T02:55:26Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 10.02,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/log-redaction-final.log"
+    },
+    "grafana-build-amd64": {
+      "name": "grafana-build-amd64",
+      "command": [
+        "docker",
+        "build",
+        "--platform",
+        "linux/amd64",
+        "--progress",
+        "plain",
+        "-f",
+        "infrastructure/images/grafana/Dockerfile",
+        "-t",
+        "orderflow-infra-security/grafana:2026-10-29-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T01:40:59Z",
+      "timedOut": true,
+      "exitCode": 124,
+      "durationSeconds": 1802.32,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/grafana-build-amd64.log"
+    },
+    "grafana-build-amd64-retry": {
+      "name": "grafana-build-amd64-retry",
+      "command": [
+        "docker",
+        "build",
+        "--platform",
+        "linux/amd64",
+        "--progress",
+        "plain",
+        "-f",
+        "infrastructure/images/grafana/Dockerfile",
+        "-t",
+        "orderflow-infra-security/grafana:2026-10-29-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T02:26:23Z",
+      "timedOut": false,
+      "exitCode": 130,
+      "durationSeconds": 670.41,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/grafana-build-amd64-retry.log"
+    },
+    "grafana-build-amd64-production-link": {
+      "name": "grafana-build-amd64-production-link",
+      "command": [
+        "docker",
+        "build",
+        "--platform",
+        "linux/amd64",
+        "--progress",
+        "plain",
+        "-f",
+        "infrastructure/images/grafana/Dockerfile",
+        "-t",
+        "orderflow-infra-security/grafana:2026-10-29-amd64",
+        "."
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T02:37:31Z",
+      "timedOut": false,
+      "exitCode": 130,
+      "durationSeconds": 892.59,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/grafana-build-amd64-production-link.log"
+    },
+    "grafana-vendor13-runtime-final": {
+      "name": "grafana-vendor13-runtime-final",
+      "command": [
+        "python3",
+        "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/run-grafana-smoke.py",
+        "grafana/grafana@sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T03:02:36Z",
+      "timedOut": false,
+      "exitCode": 1,
+      "durationSeconds": 205.49,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/grafana-vendor13-runtime-final.log"
+    },
+    "static-policy-final": {
+      "name": "static-policy-final",
+      "command": [
+        "bash",
+        "-c",
+        "python3 -m unittest discover -s scripts/cloud/tests -v && python3 -m unittest discover -s scripts/deploy/tests -v && python3 -m unittest discover -s infrastructure/cloud/tests -v && python3 infrastructure/cloud/tests/kafka_codec_probe.py --self-test && python3 infrastructure/cloud/tests/kafka_broker_persistence_probe.py --self-test && bash scripts/validate-production-config.sh && bash scripts/security-scan.sh && git diff --check"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T03:50:35Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 33.73,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/static-policy-final.log"
+    },
+    "monitoring-static-reviewed": {
+      "name": "monitoring-static-reviewed",
+      "command": [
+        "python3",
+        "-c",
+        "import os;os.environ[\"PATH\"]=\"/Users/roshan/.cache/orderflow-infra-final/2026-10-28/monitoring-bin:\"+os.environ[\"PATH\"];os.execvp(\"bash\",[\"bash\",\"scripts/validate-monitoring.sh\"])"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T03:48:12Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 1.02,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/monitoring-static-reviewed.log"
+    },
+    "cloud-monitoring-static-final": {
+      "name": "cloud-monitoring-static-final",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--memory",
+        "128m",
+        "--entrypoint",
+        "promtool",
+        "-v",
+        "/Users/roshan/Documents/OrderFlow/orderflow/monitoring/prometheus/rules:/etc/prometheus/rules:ro",
+        "-v",
+        "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/cloud/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro",
+        "-v",
+        "/Users/roshan/Documents/OrderFlow/orderflow/infrastructure/cloud/monitoring/cloud-alerts.yml:/etc/prometheus/cloud-alerts.yml:ro",
+        "prom/prometheus@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+        "check",
+        "config",
+        "/etc/prometheus/prometheus.yml"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T03:47:55Z",
+      "timedOut": false,
+      "exitCode": 0,
+      "durationSeconds": 0.6,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/cloud-monitoring-static-final.log"
+    },
+    "monitoring-static-initial-wrapper": {
+      "name": "monitoring-static-final",
+      "command": [
+        "python3",
+        "-c",
+        "import os;os.environ[\"PATH\"]=\"/Users/roshan/.cache/orderflow-infra-final/2026-10-28/monitoring-bin:\"+os.environ[\"PATH\"];os.execvp(\"bash\",[\"bash\",\"scripts/validate-monitoring.sh\"])"
+      ],
+      "cwd": "/Users/roshan/Documents/OrderFlow/orderflow",
+      "startedAt": "2026-10-29T03:47:50Z",
+      "timedOut": false,
+      "exitCode": 1,
+      "durationSeconds": 4.57,
+      "log": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/monitoring-static-final.log"
+    }
+  },
+  "cacheEvidenceRoot": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28",
+  "safety": {
+    "gitCommits": 0,
+    "pushes": 0,
+    "imagePublications": 0,
+    "awsOperations": 0,
+    "terraformApply": 0,
+    "dnsChanges": 0,
+    "realBusinessDataChanges": 0,
+    "dockerVolumes": {
+      "existingBusinessVolumesDeleted": false,
+      "namedPersistenceProbeVolumesRetained": true,
+      "exception": "Promtool validation containers used --rm without overriding vendor /prometheus VOLUME, so Docker auto-removed newly created anonymous scratch volumes. This violates the no-volume-deletion constraint; no existing or named data volume was selected for removal. The cache-only wrapper now mounts /prometheus as tmpfs.",
+      "manualDockerVolumeRmCommands": 0
+    }
+  },
+  "monitoring": "PASS current pinned Prometheus static config/rules and dashboards; live all-service targets NOT RUN",
+  "sourceReview": "deploy/infrastructure-source-review-2026-10-29.json",
+  "evidenceSHA256": {
+    "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/scans-2026-10-29/starting32/findings-all.json": "5a1c3fd9003bcff2a1fc756c0e8424f3efdd6ffdf05fc1b61c64584565d93d15",
+    "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/scans-2026-10-29/selected32/findings-all.json": "9103ede0450244ee834a43160d6e90137c235fa248539fd4c99fd646f54b3323",
+    "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/codec-matrix-1/results.json": "16b3c396d263804a2f57e1b3acec7cff33075b6d7ce479b0d6baf6dbce623268",
+    "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/kafka-persistence-attempt-2/report.json": "a0451214ee2463ca9f0f728eac8dd00c1a688892feafe5852a4fff1078975b17",
+    "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/proxy-tls-reviewed/result.json": "91243d69d6ff0e543b39062b7a357fc2b78e82b60ab44bd8f3d76e58cc41b302",
+    "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/final-binary-reproducibility.json": "4dd3c23e8ef8a3ea8e7175e8407d79ea9d78c094f6a2f44bdc9b26691d79bbba"
+  }
+}

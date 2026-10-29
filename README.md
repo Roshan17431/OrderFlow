@@ -4,7 +4,7 @@ A full-stack microservices commerce portfolio with a Next.js storefront, vendor 
 
 **Live demo: not deployed.** AWS account access, an owned domain and explicit approval for the reviewed billable resource plan are required before deployment. **Demo payments charge no real money; email and SMS are simulated.**
 
-Phase 10 infrastructure and release tooling are implemented locally. The Spring Boot 4.1.2 / Spring Cloud 2025.1.4 migration passes the unchanged dependency security gate. The local release freeze found unresolved container vulnerabilities and an incomplete Java-image scan, so AWS approval is **BLOCKED**; see the [release freeze and approval worksheet](orderflow/docs/release-freeze-2026-10-27.md). Full-stack acceptance remains NOT RUN. AWS deployment has not occurred.
+Phase 10 infrastructure and release tooling are implemented locally. The Spring Boot 4.1.2 / Spring Cloud 2025.1.4 migration passes the unchanged dependency security gate. The [October 29 infrastructure security review](orderflow/docs/infrastructure-security-remediation-2026-10-29.md) records zero findings across all 24 application images and remediation of the original Caddy, Kafka and node-exporter blockers. Grafana still blocks infrastructure security approval. Initial Kafka staging is restricted to new empty storage with none, gzip or Java-safe LZ4 compression. The [release freeze and approval worksheet](orderflow/docs/release-freeze-2026-10-27.md) remains historical evidence. Full-stack acceptance remains NOT RUN. AWS deployment has not occurred.
 
 ## Architecture
 

@@ -1,0 +1,50 @@
+{
+  "assessmentDate": "2026-10-29",
+  "status": "APPROVED_INITIAL_STAGING_SCOPE",
+  "approvalSource": "Direct user response to native codec scope question on 2026-10-29",
+  "approvalText": "Approve fresh-only staging with none/gzip/Java-safe LZ4",
+  "approvedStorage": "New empty Kafka storage for first staging only; initialization remains a separately checked first-install action",
+  "permittedCodecs": [
+    "none",
+    "gzip",
+    "lz4-java-safe"
+  ],
+  "applicationProducerDefault": "none; measured using the actual Kafka4.2.2 client on both architectures",
+  "excluded": [
+    "Snappy producers or records",
+    "Zstd producers or records",
+    "native LZ4 requirement",
+    "imported or existing legacy Kafka storage",
+    "external producers outside this scope"
+  ],
+  "securitySettings": "No change to read-only root, noexec hardened /tmp, UID or cloud JVM heap settings",
+  "rawMeasurementStatus": "COMPLETE",
+  "rawCompatibilityStatus": "FAIL",
+  "measuredPasses": {
+    "producerAndConsumer": 12,
+    "codecs": [
+      "none",
+      "gzip",
+      "lz4"
+    ],
+    "architectures": [
+      "linux/arm64",
+      "linux/amd64"
+    ]
+  },
+  "measuredFailures": {
+    "producerAndConsumer": 8,
+    "codecs": [
+      "snappy",
+      "zstd"
+    ],
+    "nativeLz4Diagnostic": "FAIL on both architectures; Java-safe Kafka LZ4 passed"
+  },
+  "evidence": {
+    "rawResultsCache": "/Users/roshan/.cache/orderflow-infra-final/2026-10-28/codec-matrix-1/results.json",
+    "sha256": "16b3c396d263804a2f57e1b3acec7cff33075b6d7ce479b0d6baf6dbce623268",
+    "rawProbeExitCode": 2
+  },
+  "limits": "This records an approved deployment scope, not a code-enforced Kafka codec allowlist. Do not connect other producers or import records. Revalidate and obtain a new scope decision before any change. Native failures are not resolved. No arbitrary legacy compressed-record compatibility is claimed.",
+  "awsProvisioningAuthorized": false
+}
