@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "<ONLY_AFTER_AUTHORIZED_PUBLICATION_COPY_RELEASE_VERSION>",
+  "gitSha": "<SAME_FULL_GIT_SHA_AS_RELEASE_MANIFEST>",
+  "platform": "<SAME_LINUX_PLATFORM_AS_RELEASE_MANIFEST>",
+  "awsAccountId": "<SAME_12_DIGIT_ACCOUNT_AS_RELEASE_MANIFEST>",
+  "awsRegion": "<SAME_REGION_AS_RELEASE_MANIFEST>",
+  "environment": "cloud-demo",
+  "images": {
+    "caddy": {
+      "uri": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/orderflow/<REVIEWED_EXISTING_SERVICE_REPOSITORY>@sha256:<PUBLISHED_CADDY_REGISTRY_MANIFEST_DIGEST_64_HEX>",
+      "digest": "sha256:<PUBLISHED_CADDY_REGISTRY_MANIFEST_DIGEST_64_HEX>"
+    },
+    "kafka": {
+      "uri": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/orderflow/<REVIEWED_EXISTING_SERVICE_REPOSITORY>@sha256:<PUBLISHED_KAFKA_REGISTRY_MANIFEST_DIGEST_64_HEX>",
+      "digest": "sha256:<PUBLISHED_KAFKA_REGISTRY_MANIFEST_DIGEST_64_HEX>"
+    },
+    "node-exporter": {
+      "uri": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/orderflow/<REVIEWED_EXISTING_SERVICE_REPOSITORY>@sha256:<PUBLISHED_NODE_EXPORTER_REGISTRY_MANIFEST_DIGEST_64_HEX>",
+      "digest": "sha256:<PUBLISHED_NODE_EXPORTER_REGISTRY_MANIFEST_DIGEST_64_HEX>"
+    },
+    "grafana": {
+      "uri": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/orderflow/<REVIEWED_EXISTING_SERVICE_REPOSITORY>@sha256:<PUBLISHED_GRAFANA_REGISTRY_MANIFEST_DIGEST_64_HEX>",
+      "digest": "sha256:<PUBLISHED_GRAFANA_REGISTRY_MANIFEST_DIGEST_64_HEX>"
+    }
+  }
+}

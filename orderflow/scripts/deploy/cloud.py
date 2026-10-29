@@ -22,6 +22,8 @@ SERVICES = ('service-registry', 'api-gateway', 'auth-service', 'product-service'
             'inventory-service', 'order-service', 'payment-service', 'delivery-service',
             'notification-service', 'operations-service', 'frontend')
 OWNERS = ('AUTH', 'PRODUCT', 'INVENTORY', 'ORDER', 'PAYMENT', 'DELIVERY', 'NOTIFICATION', 'OPERATIONS')
+INFRA_IMAGE_VARIABLES = {'caddy':'INFRA_IMAGE_CADDY', 'kafka':'INFRA_IMAGE_KAFKA',
+                         'node-exporter':'INFRA_IMAGE_NODE_EXPORTER', 'grafana':'INFRA_IMAGE_GRAFANA'}
 REPO = Path(__file__).resolve().parents[2]
 
 class SafetyError(Exception):
@@ -110,6 +112,44 @@ def validate_manifest(data):
         require(bool(re.fullmatch('[0-9a-f]{64}',digest)), 'invalid migration SHA256')
     return data
 
+def validate_infrastructure_target(data, release):
+    fields={'schemaVersion','releaseVersion','gitSha','platform','awsAccountId','awsRegion','environment','images'}
+    require(isinstance(data,dict) and set(data)==fields,'unknown or missing infrastructure manifest fields forbidden')
+    require(type(data['schemaVersion']) is int and data['schemaVersion']==1,'unsupported infrastructure image schema')
+    for key in fields-{'schemaVersion','images'}:
+        require(isinstance(data[key],str) and data[key]==release[key],f'infrastructure {key} does not match release manifest')
+    require(isinstance(data['images'],dict) and set(data['images'])==set(INFRA_IMAGE_VARIABLES),
+            'exactly caddy, kafka, node-exporter and grafana infrastructure images required')
+    registry=f"{release['awsAccountId']}.dkr.ecr.{release['awsRegion']}.amazonaws.com/orderflow/"
+    for service,image in data['images'].items():
+        require(isinstance(image,dict) and set(image)=={'uri','digest'},'invalid infrastructure image record')
+        digest=image['digest']
+        require(isinstance(digest,str) and bool(re.fullmatch(r'sha256:[0-9a-f]{64}',digest)),
+                'infrastructure sha256 registry manifest digest required')
+        require(isinstance(image['uri'],str) and image['uri'] in {registry+repository+'@'+digest for repository in SERVICES},
+                f'infrastructure repository/target/digest mismatch: {service}')
+    return data
+
+def validate_infrastructure_manifest(data, release):
+    validate_manifest(release)
+    return validate_infrastructure_target(data,release)
+
+def infrastructure_required(compose_text):
+    slots=set(re.findall(r'\$(?:\{)?(INFRA_IMAGE_[A-Z_]+)',compose_text))
+    require(not slots or slots==set(INFRA_IMAGE_VARIABLES.values()),'all four infrastructure image slots required')
+    return bool(slots)
+
+def cloud_compose_text(repo):
+    try: return (Path(repo)/'docker-compose.cloud.yml').read_text()
+    except (OSError,UnicodeError): raise SafetyError('release cloud Compose missing or invalid') from None
+
+def infrastructure_images(repo, release):
+    if not infrastructure_required(cloud_compose_text(repo)): return {}
+    path=Path(repo)/'deploy/infrastructure-images.json'
+    require(path.is_file() and not path.is_symlink() and path.stat().st_size>0,
+            'approved release infrastructure-images.json missing, empty or not a regular file')
+    return validate_infrastructure_manifest(read_json(path),release)['images']
+
 def migration_hashes(repo):
     return {str(p.relative_to(repo)):hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(Path(repo).glob('*/src/main/resources/db/migration/*.sql'))}
@@ -150,6 +190,7 @@ def target(args, data=None):
     require(identity.get('Account')==args.account, 'authenticated AWS account differs from explicit target')
 
 def compose(args, data):
+    infrastructure=infrastructure_images(args.repo,data)
     values=parse_env(args.runtime_env)
     required=['POSTGRES_PASSWORD','REDIS_PASSWORD','APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET','GRAFANA_ADMIN_PASSWORD']
     required += [f'{owner}_POSTGRES_{suffix}' for owner in OWNERS for suffix in ('DB','USER','PASSWORD')]
@@ -170,6 +211,8 @@ def compose(args, data):
                 'RELEASE_VERSION':data['releaseVersion'],'DOMAIN_NAME':args.domain,
                 'ECR_REGISTRY':f'{args.account}.dkr.ecr.{args.region}.amazonaws.com'})
     env.update({'IMAGE_'+name.upper().replace('-','_'):image['uri'] for name,image in data['images'].items()})
+    # Frozen release metadata wins over ambient values and protected runtime.env alike.
+    env.update({INFRA_IMAGE_VARIABLES[name]:image['uri'] for name,image in infrastructure.items()})
     command=['docker','compose','--profile','observability','--project-name','orderflow-cloud','--env-file',args.runtime_env,
              '-f',str(Path(args.repo)/'docker-compose.yml'),'-f',str(Path(args.repo)/'docker-compose.cloud.yml')]
     return command,env
@@ -289,6 +332,13 @@ def pull(args,data):
     for service,image in data['images'].items():
         platform=run(['docker','image','inspect','--format','{{.Os}}/{{.Architecture}}',image['uri']]).strip()
         require(platform==data['platform'],f'pulled image architecture mismatch: {service}')
+    if infrastructure_required(cloud_compose_text(args.repo)):
+        for service,variable in INFRA_IMAGE_VARIABLES.items():
+            uri=env[variable]
+            platform=run(['docker','image','inspect','--format','{{.Os}}/{{.Architecture}}',uri]).strip()
+            require(platform==data['platform'],f'pulled infrastructure image architecture mismatch: {service}')
+            digests=json.loads(run(['docker','image','inspect','--format','{{json .RepoDigests}}',uri]))
+            require(isinstance(digests,list) and uri in digests,f'pulled infrastructure registry manifest digest mismatch: {service}')
     uid=run(['docker','run','--rm','--network','none','--read-only','--cap-drop','ALL','--entrypoint','id',data['images']['auth-service']['uri'],'-u']).strip()
     gid=run(['docker','run','--rm','--network','none','--read-only','--cap-drop','ALL','--entrypoint','id',data['images']['auth-service']['uri'],'-g']).strip()
     require(uid=='10001' and gid=='10001','auth image runtime UID/GID must match persistent JWT files')
@@ -433,8 +483,20 @@ def validate_artifact(path, data, initial_seed=False):
                 total+=member.size; require(total<=1024**3,'release archive exceeds size bound')
                 files[name]=member
             require(required.issubset(files),'release archive incomplete')
+            compose_member=files['docker-compose.cloud.yml']
+            require(compose_member.isfile(),'release archive cloud Compose must be a regular file')
+            compose_text=archive.extractfile(compose_member).read().decode('utf-8')
+            if '/opt/orderflow/kafka-safe-bootstrap.sh' in compose_text:
+                guard=files.get('infrastructure/kafka/safe-bootstrap.sh')
+                require(guard is not None and guard.isfile() and guard.size>0,
+                        'release archive Kafka storage guard missing or empty')
             embedded=json.load(archive.extractfile(files['deploy/release-manifest.json']))
             require(validate_manifest(embedded)==data,'release archive manifest does not match external immutable manifest')
+            if infrastructure_required(compose_text):
+                infrastructure=files.get('deploy/infrastructure-images.json')
+                require(infrastructure is not None and infrastructure.isfile() and infrastructure.size>0,
+                        'release archive approved infrastructure-images.json missing, empty or not a regular file')
+                validate_infrastructure_manifest(json.load(archive.extractfile(infrastructure)),embedded)
             migration_files={name:hashlib.sha256(archive.extractfile(member).read()).hexdigest()
                              for name,member in files.items() if member.isfile() and re.fullmatch(r'[^/]+/src/main/resources/db/migration/[^/]+\.sql',name)}
             require(migration_files==data['migrationCompatibility']['files'],'archive SQL hashes differ from manifest')
@@ -473,7 +535,7 @@ def remote(args):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['validate','preflight','fetch-secrets','generate','pull','health','verify','deploy','rollback','backup-predeploy','remote'])
+    parser.add_argument('action',choices=['validate','validate-artifact','preflight','fetch-secrets','generate','pull','health','verify','deploy','rollback','backup-predeploy','remote'])
     for key in ('account','region','environment','domain','release'): parser.add_argument('--'+key,default='')
     parser.add_argument('--manifest',default='deploy/release-manifest.json')
     parser.add_argument('--runtime-env',default='/opt/orderflow/config/runtime.env')
@@ -493,6 +555,9 @@ def main():
     require(1<=args.timeout<=3600,'timeout must be 1..3600 seconds')
     require(args.minimum_free_gb>=1,'minimum free disk space must be positive')
     if args.action=='validate': validate_manifest(read_json(args.manifest)); print('release manifest valid; no deployment performed'); return
+    if args.action=='validate-artifact':
+        validate_artifact(args.artifact,validate_manifest(read_json(args.manifest)),args.initial_demo_seed)
+        print('release artifact valid; no deployment performed'); return
     if args.action in ('fetch-secrets','generate','remote'):
         if args.action=='fetch-secrets':
             with lock(args.state_dir): fetch_secrets(args)

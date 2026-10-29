@@ -33,6 +33,252 @@ class CloudSafety(unittest.TestCase):
                 for s in self.cloud.SERVICES},
                 'migrationCompatibility': {'backwardCompatible': True, 'files': {'auth-service/V1.sql': 'a'*64}}}
 
+    def infrastructure_manifest(self):
+        return {'schemaVersion': 1, 'releaseVersion': 'v1.0.0', 'gitSha': 'a'*40,
+                'platform': 'linux/amd64', 'awsAccountId': '123456789012',
+                'awsRegion': 'us-east-1', 'environment': 'cloud-demo', 'images': {
+                    name: {'digest': 'sha256:'+digit*64,
+                           'uri': '123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/'+repository+'@sha256:'+digit*64}
+                    for name, repository, digit in [('caddy', 'frontend', 'b'),
+                        ('kafka', 'service-registry', 'c'), ('node-exporter', 'operations-service', 'd'),
+                        ('grafana', 'notification-service', 'e')]}}
+
+    def test_infrastructure_contract_accepts_exactly_four_reviewed_records(self):
+        data=self.infrastructure_manifest()
+        data['images']['grafana']={'digest':'sha256:'+'e'*64,
+            'uri':'123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/notification-service@sha256:'+'e'*64}
+        try: result=self.cloud.validate_infrastructure_manifest(data,self.manifest())
+        except self.cloud.SafetyError as error: self.fail('four reviewed infrastructure records rejected: '+str(error))
+        self.assertEqual(set(result['images']),{'caddy','kafka','node-exporter','grafana'})
+
+    def test_three_record_infrastructure_manifest_requires_grafana(self):
+        data=self.infrastructure_manifest(); data['images'].pop('grafana',None)
+        with self.assertRaises(self.cloud.SafetyError):
+            self.cloud.validate_infrastructure_manifest(data,self.manifest())
+
+    def compose_fixture(self, *, legacy=False):
+        from argparse import Namespace
+        self.root.joinpath('docker-compose.cloud.yml').write_text(
+            'services:\n  caddy:\n    image: caddy:2.11.7-alpine@sha256:'+'a'*64+'\n' if legacy else
+            'services:\n'+''.join('  '+name+':\n    image: "${'+variable+':?approved release pin required}"\n'
+                for name, variable in [('caddy', 'INFRA_IMAGE_CADDY'), ('kafka', 'INFRA_IMAGE_KAFKA'),
+                                       ('node-exporter', 'INFRA_IMAGE_NODE_EXPORTER'), ('grafana', 'INFRA_IMAGE_GRAFANA')]))
+        config=self.root/'config'; config.mkdir(exist_ok=True)
+        values={'ORDERFLOW_ENVIRONMENT':'cloud-demo','DOMAIN_NAME':'demo.example.com'}
+        values.update({key:'fixture' for key in ['POSTGRES_PASSWORD','REDIS_PASSWORD',
+            'APP_PAYMENT_SIMULATOR_WEBHOOK_SECRET','GRAFANA_ADMIN_PASSWORD']})
+        values.update({owner+'_POSTGRES_'+suffix:'fixture' for owner in self.cloud.OWNERS
+                       for suffix in ('DB','USER','PASSWORD')})
+        for variable in ('INFRA_IMAGE_CADDY','INFRA_IMAGE_KAFKA','INFRA_IMAGE_NODE_EXPORTER','INFRA_IMAGE_GRAFANA'):
+            values[variable]='stale-runtime:latest'
+        runtime=config/'runtime.env'
+        runtime.write_text(''.join(key+'='+value+'\n' for key,value in values.items())); runtime.chmod(0o600)
+        for name in ('jwt-private.pem','jwt-public.pem','backup.key','cloud-accounts.json'):
+            path=config/name; path.write_text('fixture'); path.chmod(0o400 if name.startswith('jwt-') else 0o600)
+        return Namespace(repo=str(self.root),runtime_env=str(runtime),account='123456789012',
+                         region='us-east-1',environment='cloud-demo',domain='demo.example.com',timeout=10)
+
+    def compose_with_fixture_keys(self, args):
+        import os
+        original_stat=Path.stat
+        def fixture_stat(path, *arguments, **options):
+            value=original_stat(path,*arguments,**options)
+            if path.name in ('jwt-private.pem','jwt-public.pem'):
+                fields=list(value); fields[4]=10001; fields[5]=10001
+                return os.stat_result(fields)
+            return value
+        # Key ownership and OpenSSL are separate contracts; use real metadata/env parsing here.
+        with patch.object(Path,'stat',fixture_stat),patch.object(self.cloud,'run',return_value=b'fixture-public-key'):
+            return self.cloud.compose(args,self.manifest())
+
+    def write_infrastructure_manifest(self, data=None):
+        path=self.root/'deploy/infrastructure-images.json'; path.parent.mkdir(exist_ok=True)
+        path.write_text(json.dumps(self.infrastructure_manifest() if data is None else data))
+        return path
+
+    def test_new_compose_rejects_missing_empty_or_symlink_infrastructure_manifest(self):
+        args=self.compose_fixture()
+        with self.assertRaises(self.cloud.SafetyError): self.compose_with_fixture_keys(args)
+        path=self.write_infrastructure_manifest(); path.write_text('')
+        with self.assertRaises(self.cloud.SafetyError): self.compose_with_fixture_keys(args)
+        path.unlink(); target=self.root/'outside.json'; target.write_text(json.dumps(self.infrastructure_manifest())); path.symlink_to(target)
+        with self.assertRaises(self.cloud.SafetyError): self.compose_with_fixture_keys(args)
+
+    def test_infrastructure_manifest_rejects_target_git_platform_digest_and_unknown_fields(self):
+        args=self.compose_fixture()
+        mutations=[('gitSha','b'*40),('awsAccountId','999999999999'),('awsRegion','ap-south-1'),
+                   ('platform','linux/arm64'),('environment','other'),('releaseVersion','v2.0.0'),
+                   ('schemaVersion',True),('unexpected','forbidden')]
+        for key,value in mutations:
+            with self.subTest(key=key):
+                data=self.infrastructure_manifest(); data[key]=value; self.write_infrastructure_manifest(data)
+                with self.assertRaises(self.cloud.SafetyError): self.compose_with_fixture_keys(args)
+        invalid_images=[{'uri':'repo:latest','digest':'sha256:'+'b'*64},
+            {'uri':'123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/frontend@sha256:'+'b'*64,'digest':'sha256:'+'e'*64},
+            {'uri':'123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/new-infrastructure@sha256:'+'b'*64,'digest':'sha256:'+'b'*64},
+            {'uri':'999999999999.dkr.ecr.us-east-1.amazonaws.com/orderflow/frontend@sha256:'+'b'*64,'digest':'sha256:'+'b'*64},
+            {'uri':'123456789012.dkr.ecr.ap-south-1.amazonaws.com/orderflow/frontend@sha256:'+'b'*64,'digest':'sha256:'+'b'*64},
+            {'uri':'sha256:'+'b'*64,'digest':'sha256:'+'b'*64},
+            {'uri':'repo:latest','digest':None}]
+        for image in invalid_images:
+            with self.subTest(image=image):
+                data=self.infrastructure_manifest(); data['images']['caddy']=image; self.write_infrastructure_manifest(data)
+                with self.assertRaises(self.cloud.SafetyError): self.compose_with_fixture_keys(args)
+        for extra in ('image-field','extra-image','missing-image','missing-top-field'):
+            with self.subTest(extra=extra):
+                data=self.infrastructure_manifest()
+                if extra=='image-field': data['images']['caddy']['configId']='sha256:'+'b'*64
+                elif extra=='extra-image': data['images']['postgres']=data['images']['caddy']
+                elif extra=='missing-image': del data['images']['kafka']
+                else: del data['gitSha']
+                self.write_infrastructure_manifest(data)
+                with self.assertRaises(self.cloud.SafetyError): self.compose_with_fixture_keys(args)
+
+    def test_release_pins_override_both_ambient_and_runtime_environment(self):
+        args=self.compose_fixture(); self.write_infrastructure_manifest()
+        variables={'INFRA_IMAGE_CADDY':'stale-ambient:latest','INFRA_IMAGE_KAFKA':'stale-ambient:latest',
+                   'INFRA_IMAGE_NODE_EXPORTER':'stale-ambient:latest','INFRA_IMAGE_GRAFANA':'stale-ambient:latest'}
+        with patch.dict('os.environ',variables): command,env=self.compose_with_fixture_keys(args)
+        expected=self.infrastructure_manifest()['images']
+        self.assertEqual(env['INFRA_IMAGE_CADDY'],expected['caddy']['uri'])
+        self.assertEqual(env['INFRA_IMAGE_KAFKA'],expected['kafka']['uri'])
+        self.assertEqual(env['INFRA_IMAGE_NODE_EXPORTER'],expected['node-exporter']['uri'])
+        self.assertEqual(env['INFRA_IMAGE_GRAFANA'],expected['grafana']['uri'])
+        self.assertIn(str(self.root/'docker-compose.cloud.yml'),command)
+        self.assertEqual(len(self.manifest()['images']),12)
+
+    def test_legacy_fixed_vendor_compose_does_not_require_infrastructure_manifest(self):
+        args=self.compose_fixture(legacy=True)
+        self.compose_with_fixture_keys(args)
+
+    def infrastructure_archive(self, infrastructure=None, *, legacy=False, directory=False):
+        import io, tarfile, hashlib
+        data=self.manifest(); sql=b'SELECT 1;'; sql_path='auth-service/src/main/resources/db/migration/V1.sql'
+        data['migrationCompatibility']['files']={sql_path:hashlib.sha256(sql).hexdigest()}
+        files={'deploy/release-manifest.json':json.dumps(data).encode(),sql_path:sql}
+        for name in ['scripts/deploy/remote-entrypoint.sh','scripts/deploy/cloud.py',
+                     'scripts/cloud/verify-journey.sh','scripts/cloud/verify_journey.py','docker-compose.yml']:
+            files[name]=b'fixture'
+        files['docker-compose.cloud.yml']=b'image: caddy:2.11.7-alpine@sha256:'+b'a'*64 if legacy else (
+            b'image: ${INFRA_IMAGE_CADDY:?approved pin required}\n'
+            b'image: ${INFRA_IMAGE_KAFKA:?approved pin required}\n'
+            b'image: ${INFRA_IMAGE_NODE_EXPORTER:?approved pin required}\n'
+            b'image: ${INFRA_IMAGE_GRAFANA:?approved pin required}\n')
+        if infrastructure is not None: files['deploy/infrastructure-images.json']=infrastructure
+        archive=self.root/'infrastructure.tar.gz'
+        with tarfile.open(archive,'w:gz') as output:
+            for name,body in files.items():
+                info=tarfile.TarInfo('./'+name)
+                if directory and name=='deploy/infrastructure-images.json':
+                    info.type=tarfile.DIRTYPE; output.addfile(info)
+                else:
+                    info.size=len(body); output.addfile(info,io.BytesIO(body))
+        return archive,data
+
+    def test_new_archive_requires_regular_nonempty_valid_bound_infrastructure_manifest(self):
+        stale=self.infrastructure_manifest(); stale['gitSha']='b'*40
+        missing_grafana=self.infrastructure_manifest(); del missing_grafana['images']['grafana']
+        for value,directory in [(None,False),(b'',False),(b'{}',False),
+                                (json.dumps(stale).encode(),False),
+                                (json.dumps(missing_grafana).encode(),False),
+                                (json.dumps(self.infrastructure_manifest()).encode(),True)]:
+            with self.subTest(value=value,directory=directory):
+                archive,data=self.infrastructure_archive(value,directory=directory)
+                with self.assertRaises(self.cloud.SafetyError): self.cloud.validate_artifact(archive,data)
+        archive,data=self.infrastructure_archive(json.dumps(self.infrastructure_manifest()).encode())
+        self.cloud.validate_artifact(archive,data)
+
+    def test_fixed_vendor_rollback_archive_remains_valid_without_new_manifest(self):
+        archive,data=self.infrastructure_archive(legacy=True)
+        self.cloud.validate_artifact(archive,data)
+
+    def test_artifact_validation_command_is_offline_and_fails_closed(self):
+        import subprocess, sys
+        for infrastructure in (json.dumps(self.infrastructure_manifest()).encode(),None):
+            with self.subTest(infrastructure_present=infrastructure is not None):
+                archive,data=self.infrastructure_archive(infrastructure)
+                manifest=self.root/'external-manifest.json'; manifest.write_text(json.dumps(data))
+                result=subprocess.run([sys.executable,str(MODULE),'validate-artifact','--manifest',str(manifest),
+                                       '--artifact',str(archive)],text=True,capture_output=True)
+                if infrastructure is None:
+                    self.assertEqual(result.returncode,1)
+                    self.assertIn('infrastructure-images.json',result.stderr)
+                else:
+                    self.assertEqual(result.returncode,0,result.stderr)
+                    self.assertIn('no deployment performed',result.stdout)
+
+    def run_publication_validation(self, approved_json):
+        import os, shutil, subprocess, textwrap
+        workflow=MODULE.parents[3]/'.github/workflows/build-images.yml'
+        source=workflow.read_text().split('      - name: Validate explicit publication target\n',1)[1]
+        source=source.split('      - uses:',1)[0]
+        script=textwrap.dedent(source.split('        run: |\n',1)[1])
+        checkout=self.root/'checkout'; (checkout/'scripts/deploy').mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(MODULE,checkout/'scripts/deploy/cloud.py')
+        pins=checkout/'deploy/infrastructure-images.json'; pins.parent.mkdir(exist_ok=True)
+        pins.write_text(json.dumps({'staleCheckoutFileMustNotAuthorizePublication':True}))
+        env=os.environ.copy()
+        env.update({'AWS_ACCOUNT_ID':'123456789012','AWS_REGION':'us-east-1','RELEASE_VERSION':'v1.0.0',
+                    'TARGET_PLATFORM':'linux/amd64','GITHUB_SHA':'a'*40,'DOMAIN_NAME':'demo.example.com',
+                    'ROLE_ARN':'arn:aws:iam::123456789012:role/reviewed-publish','NEXT_PUBLIC_OAUTH_PROVIDERS':'',
+                    'APPROVED_INFRASTRUCTURE_IMAGES_JSON':approved_json})
+        result=subprocess.run(['bash','-e','-o','pipefail','-c',script],cwd=checkout,env=env,
+                              text=True,capture_output=True)
+        return result,pins
+
+    def test_publication_generates_pins_from_reviewed_json_without_a_self_referencing_commit(self):
+        expected=self.infrastructure_manifest()
+        result,pins=self.run_publication_validation(json.dumps(expected))
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(json.loads(pins.read_text()),expected)
+
+    def test_publication_requires_reviewed_grafana_record_before_credentials(self):
+        pins=self.infrastructure_manifest(); pins['images'].pop('grafana',None)
+        result,_=self.run_publication_validation(json.dumps(pins))
+        self.assertNotEqual(result.returncode,0)
+        pins['images']['grafana']={'digest':'sha256:'+'e'*64,
+            'uri':'123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/notification-service@sha256:'+'e'*64}
+        result,path=self.run_publication_validation(json.dumps(pins))
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(json.loads(path.read_text()),pins)
+
+    def test_publication_rejects_missing_malformed_or_mismatched_reviewed_json_before_credentials(self):
+        values=['','{malformed-json']
+        for key,value in [('gitSha','b'*40),('awsAccountId','999999999999'),('awsRegion','ap-south-1'),
+                          ('platform','linux/arm64'),('releaseVersion','v2.0.0')]:
+            pins=self.infrastructure_manifest(); pins[key]=value; values.append(json.dumps(pins))
+        pins=self.infrastructure_manifest(); pins['images']['caddy']['digest']='sha256:'+'e'*64
+        values.append(json.dumps(pins))
+        pins=self.infrastructure_manifest(); pins['unexpected']='$(touch must-not-execute)'
+        values.append(json.dumps(pins))
+        for approved_json in values:
+            with self.subTest(approved_json=approved_json):
+                result,path=self.run_publication_validation(approved_json)
+                self.assertNotEqual(result.returncode,0)
+                self.assertEqual(json.loads(path.read_text()),{'staleCheckoutFileMustNotAuthorizePublication':True})
+                self.assertFalse((path.parent.parent/'must-not-execute').exists())
+
+    def test_pull_checks_infrastructure_registry_manifest_and_platform(self):
+        args=self.compose_fixture(); self.write_infrastructure_manifest()
+        command,env=self.compose_with_fixture_keys(args)
+        for failure in ('repo-digest','architecture','grafana-repo-digest','grafana-architecture',None):
+            with self.subTest(failure=failure):
+                def external(command,**options):
+                    if command[:3]==['docker','image','inspect']:
+                        uri=command[-1]
+                        if command[4]=='{{json .RepoDigests}}':
+                            mismatch=failure=='repo-digest' or (failure=='grafana-repo-digest' and uri==env['INFRA_IMAGE_GRAFANA'])
+                            return json.dumps([] if mismatch else [uri])
+                        if uri==env['INFRA_IMAGE_CADDY'] and failure=='architecture': return 'linux/arm64'
+                        if uri==env['INFRA_IMAGE_GRAFANA'] and failure=='grafana-architecture': return 'linux/arm64'
+                        return 'linux/amd64'
+                    if command[:2]==['docker','run']: return '10001'
+                    return ''
+                with patch.object(self.cloud,'compose',return_value=(command,env)),patch.object(self.cloud,'run',side_effect=external):
+                    if failure:
+                        with self.assertRaises(self.cloud.SafetyError): self.cloud.pull(args,self.manifest())
+                    else: self.cloud.pull(args,self.manifest())
+
     def test_missing_target_fields_fail_closed(self):
         for field in ['awsAccountId', 'awsRegion', 'environment', 'releaseVersion']:
             with self.subTest(field=field):
@@ -150,6 +396,30 @@ class CloudSafety(unittest.TestCase):
         self.cloud.validate_artifact(archive,data)
         data['gitSha']='b'*40
         with self.assertRaises(self.cloud.SafetyError): self.cloud.validate_artifact(archive,data)
+
+    def test_guarded_kafka_archive_requires_script_but_legacy_archive_still_valid(self):
+        import io, tarfile, hashlib
+        for guarded, include_script in [(False, False), (True, False), (True, True)]:
+            with self.subTest(guarded=guarded, include_script=include_script):
+                data=self.manifest(); sql=b'SELECT 1;'
+                sql_path='auth-service/src/main/resources/db/migration/V1.sql'
+                data['migrationCompatibility']['files']={sql_path:hashlib.sha256(sql).hexdigest()}
+                files={'deploy/release-manifest.json':json.dumps(data).encode(),sql_path:sql}
+                for name in ['scripts/deploy/remote-entrypoint.sh','scripts/deploy/cloud.py','scripts/cloud/verify-journey.sh','scripts/cloud/verify_journey.py','docker-compose.yml','docker-compose.cloud.yml']:
+                    files[name]=b'fixture'
+                if guarded:
+                    files['docker-compose.cloud.yml']=b'command: [/bin/bash, /opt/orderflow/kafka-safe-bootstrap.sh]'
+                if include_script:
+                    files['infrastructure/kafka/safe-bootstrap.sh']=b'#!/bin/bash\nexit 0\n'
+                archive=self.root/'guarded.tar.gz'
+                with tarfile.open(archive,'w:gz') as output:
+                    for name,body in files.items():
+                        info=tarfile.TarInfo('./'+name); info.size=len(body); output.addfile(info,io.BytesIO(body))
+                if guarded and not include_script:
+                    with self.assertRaisesRegex(self.cloud.SafetyError,'Kafka storage guard'):
+                        self.cloud.validate_artifact(archive,data)
+                else:
+                    self.cloud.validate_artifact(archive,data)
 
     def test_secret_fetch_requires_journey_credentials_before_writing(self):
         from argparse import Namespace

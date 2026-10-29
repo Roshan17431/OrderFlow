@@ -16,6 +16,11 @@ on:
         required: true
         type: boolean
         default: false
+      infrastructure_images_json:
+        description: Reviewed nonsecret infrastructure JSON for this exact Git SHA; published registry digests only
+        required: false
+        type: string
+        default: ''
   workflow_call:
     inputs:
       release_version:
@@ -27,6 +32,10 @@ on:
       backward_compatible:
         required: true
         type: boolean
+      infrastructure_images_json:
+        required: false
+        type: string
+        default: ''
 permissions:
   contents: read
 concurrency:
@@ -54,6 +63,7 @@ jobs:
       TARGET_PLATFORM: ${{ inputs.platform }}
       COMPATIBILITY: ${{ inputs.backward_compatible }}
       NEXT_PUBLIC_OAUTH_PROVIDERS: ${{ vars.NEXT_PUBLIC_OAUTH_PROVIDERS }}
+      APPROVED_INFRASTRUCTURE_IMAGES_JSON: ${{ inputs.infrastructure_images_json || vars.APPROVED_INFRASTRUCTURE_IMAGES_JSON }}
     defaults:
       run:
         working-directory: orderflow
@@ -62,7 +72,7 @@ jobs:
       - name: Validate explicit publication target
         run: |
           python3 - <<'PY'
-          import os,re
+          import json,os,re,sys
           for key,pattern in {'AWS_ACCOUNT_ID':r'[0-9]{12}','AWS_REGION':r'[a-z]{2}(?:-[a-z]+)+-[0-9]','RELEASE_VERSION':r'v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?','TARGET_PLATFORM':r'linux/(?:amd64|arm64)'}.items():
               assert re.fullmatch(pattern,os.environ[key]), f'explicit valid {key} required'
           assert os.environ['ROLE_ARN'].startswith('arn:aws:iam::'+os.environ['AWS_ACCOUNT_ID']+':role/')
@@ -70,6 +80,21 @@ jobs:
           provider_names=os.environ.get('NEXT_PUBLIC_OAUTH_PROVIDERS','')
           providers=provider_names.split(',') if provider_names else []
           assert set(providers)<= {'google','github'} and len(providers)==len(set(providers)), 'NEXT_PUBLIC_OAUTH_PROVIDERS must be blank or distinct comma-separated google/github names'
+          assert re.fullmatch(r'[0-9a-f]{40}',os.environ['GITHUB_SHA']), 'full workflow Git SHA required'
+          sys.path.insert(0,'scripts/deploy')
+          import cloud
+          try:
+              raw=os.environ.get('APPROVED_INFRASTRUCTURE_IMAGES_JSON','')
+              cloud.require(bool(raw.strip()),'Approved infrastructure_images_json input or cloud-demo-publish APPROVED_INFRASTRUCTURE_IMAGES_JSON variable required')
+              approved=json.loads(raw)
+              release={key:os.environ[value] for key,value in {'releaseVersion':'RELEASE_VERSION','gitSha':'GITHUB_SHA','platform':'TARGET_PLATFORM','awsAccountId':'AWS_ACCOUNT_ID','awsRegion':'AWS_REGION'}.items()}
+              release['environment']='cloud-demo'
+              cloud.validate_infrastructure_target(approved,release)
+              cloud.atomic_json('deploy/infrastructure-images.json',approved)
+          except json.JSONDecodeError:
+              raise SystemExit('Approved infrastructure JSON is malformed; no publication performed') from None
+          except cloud.SafetyError as error:
+              raise SystemExit(str(error)) from None
           PY
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -105,7 +130,9 @@ jobs:
           mkdir -p /tmp/orderflow-release
           git archive "$GITHUB_SHA:orderflow" | tar -x -C /tmp/orderflow-release
           cp deploy/release-manifest.json /tmp/orderflow-release/deploy/release-manifest.json
+          cp deploy/infrastructure-images.json /tmp/orderflow-release/deploy/infrastructure-images.json
           tar -czf deploy/release.tar.gz -C /tmp/orderflow-release .
+          python3 scripts/deploy/cloud.py validate-artifact --manifest deploy/release-manifest.json --artifact deploy/release.tar.gz
           sha256sum deploy/release.tar.gz > deploy/release.tar.gz.sha256
       - uses: actions/upload-artifact@v4
         with:
