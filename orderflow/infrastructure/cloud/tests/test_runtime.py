@@ -19,6 +19,10 @@ def fixture_env():
     for service in APPS:
         key = 'IMAGE_'+service.upper().replace('-', '_')
         env[key] = '123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/'+service+'@sha256:'+'a'*64
+    # Synthetic references exercise config only; these are not published registry artifacts.
+    for variable, repository in [('INFRA_IMAGE_CADDY','frontend'), ('INFRA_IMAGE_KAFKA','service-registry'),
+                                 ('INFRA_IMAGE_NODE_EXPORTER','operations-service'), ('INFRA_IMAGE_GRAFANA','notification-service')]:
+        env[variable]='123456789012.dkr.ecr.us-east-1.amazonaws.com/orderflow/'+repository+'@sha256:'+'b'*64
     env.update(DOMAIN_NAME='orderflow.example.invalid', ACME_EMAIL='operator@example.invalid', POSTGRES_USER='fixture_admin', KAFKA_CLUSTER_ID='MkU3OEVBNTcwNTJENDM2Qk')
     return env
 
@@ -62,6 +66,21 @@ class RuntimePolicyTests(unittest.TestCase):
             if name not in APPS:
                 self.assertRegex(service['image'], r'^.+@sha256:[a-f0-9]{64}$', name)
 
+    def test_maintained_infrastructure_uses_explicit_approved_release_slots(self):
+        expected={'caddy':'INFRA_IMAGE_CADDY','kafka':'INFRA_IMAGE_KAFKA','node-exporter':'INFRA_IMAGE_NODE_EXPORTER',
+                  'grafana':'INFRA_IMAGE_GRAFANA'}
+        for service,variable in expected.items():
+            self.assertEqual(self.services[service]['image'],fixture_env()[variable])
+
+    def test_missing_maintained_infrastructure_pin_fails_before_startup(self):
+        for variable in ('INFRA_IMAGE_CADDY','INFRA_IMAGE_KAFKA','INFRA_IMAGE_NODE_EXPORTER','INFRA_IMAGE_GRAFANA'):
+            with self.subTest(variable=variable):
+                env=os.environ.copy(); env.update(fixture_env()); env.pop(variable)
+                result=subprocess.run(['docker','compose','-f','docker-compose.yml','-f','docker-compose.cloud.yml',
+                                       '--profile','observability','config','--quiet'],cwd=ROOT,env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+                self.assertIn(variable,result.stderr)
+
     def test_no_local_passwords_or_localhost_public_origin(self):
         for name, s in self.services.items():
             for key, value in s.get('environment', {}).items():
@@ -96,6 +115,17 @@ class RuntimePolicyTests(unittest.TestCase):
             self.assertTrue(v['read_only'])
             self.assertFalse(v['bind']['create_host_path'])
         self.assertEqual(len(auth['volumes']), 2)
+
+    def test_kafka_uses_fail_closed_storage_guard_without_replacing_its_data_volume(self):
+        kafka = self.services['kafka']
+        self.assertEqual(kafka.get('command'), ['/bin/bash', '/opt/orderflow/kafka-safe-bootstrap.sh'])
+        self.assertEqual(kafka['environment'].get('ORDERFLOW_KAFKA_INITIALIZE_EMPTY'), 'false')
+        mounts = {volume['target']: volume for volume in kafka['volumes']}
+        self.assertEqual(mounts['/var/lib/kafka/data']['source'], 'kafka-data')
+        guard = mounts['/opt/orderflow/kafka-safe-bootstrap.sh']
+        self.assertTrue(guard['read_only'])
+        self.assertFalse(guard['bind']['create_host_path'])
+        self.assertTrue(Path(guard['source']).is_file())
 
     def test_kafka_and_redis_are_persistent_and_private(self):
         k = self.services['kafka']

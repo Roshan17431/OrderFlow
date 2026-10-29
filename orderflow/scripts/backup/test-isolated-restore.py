@@ -29,7 +29,9 @@ def main():
         try:
             deadline=time.monotonic()+45
             while True:
-                try: b.run(cmd+['exec','-T','postgres','pg_isready','-U','postgres'],env=env,cwd=root); break
+                # The entrypoint's temporary initialization server accepts Unix
+                # sockets; TCP opens only on the final server used by this test.
+                try: b.run(cmd+['exec','-T','postgres','pg_isready','-h','127.0.0.1','-U','postgres'],env=env,cwd=root); break
                 except b.SafetyError:
                     b.require(time.monotonic()<deadline,'fixture postgres did not start'); time.sleep(1)
             for owner in b.OWNERS:
